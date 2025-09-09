@@ -47,12 +47,12 @@ namespace TagTool.Porting.Gen3
             return base.GetFallbackTag(blamTag);
         }
 
-        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition = null)
+        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName)
         {
             if (blamTag.IsInGroup("rmt2"))
-                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag);
+                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag, blamParentTagName);
 
-            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition);
+            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName);
         }
 
         protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
@@ -348,6 +348,7 @@ namespace TagTool.Porting.Gen3
                     return versionedFlags;
 
                 case GameObject.MultiplayerObjectBlock multiplayer:
+                    multiplayer = ConvertStructure(cacheStream, blamCacheStream, multiplayer, definition, blamTagName);
                     return ConvertMultiplayerObject(cacheStream, blamCacheStream, definition, blamTagName, multiplayer);
 
                 case BipedPhysicsFlags bipedPhysicsFlags:
@@ -596,6 +597,11 @@ namespace TagTool.Porting.Gen3
             }
 
             return true;
+        }
+
+        protected override bool CanCachePortedTag(CachedTag blamTag, CachedTag tag, string blamParentTagName)
+        {
+            return tag == null || !tag.IsInGroup("rmt2");
         }
 
         class TraversalData

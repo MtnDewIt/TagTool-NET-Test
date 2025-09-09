@@ -3033,7 +3033,7 @@ namespace TagTool.Scripting.Compiler
 
         private DatumHandle CompileObjectExpression(ScriptString objectString)
         {
-            ushort? objectOpcode = objectString.Value == "none" ? null : (ushort?)HsType.ObjectName;
+            ushort? objectOpcode = objectString.Value == "none" ? null : GetHsTypeAsInteger(HsType.ObjectName);
             var handle = AllocateExpression(HsType.Object, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, objectOpcode, line: (short)objectString.Line);
 
             if (handle != DatumHandle.None)
@@ -3054,7 +3054,7 @@ namespace TagTool.Scripting.Compiler
 
         private DatumHandle CompileUnitExpression(ScriptString unitString)
         {
-            ushort? unitOpcode = unitString.Value == "none" ? null : (ushort?)HsType.UnitName;
+            ushort? unitOpcode = unitString.Value == "none" ? null : GetHsTypeAsInteger(HsType.UnitName);
             var handle = AllocateExpression(HsType.Unit, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, unitOpcode, line: (short)unitString.Line);
 
             if (handle != DatumHandle.None)
@@ -3075,7 +3075,7 @@ namespace TagTool.Scripting.Compiler
 
         private DatumHandle CompileVehicleExpression(ScriptString vehicleString)
         {
-            ushort? vehicleOpcode = vehicleString.Value == "none" ? null : (ushort?)HsType.VehicleName;
+            ushort? vehicleOpcode = vehicleString.Value == "none" ? null : GetHsTypeAsInteger(HsType.VehicleName);
             var handle = AllocateExpression(HsType.Vehicle, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, vehicleOpcode, line: (short)vehicleString.Line);
 
             if (handle != DatumHandle.None)
@@ -3117,7 +3117,7 @@ namespace TagTool.Scripting.Compiler
 
         private DatumHandle CompileDeviceExpression(ScriptString deviceString)
         {
-            ushort? deviceOpcode = deviceString.Value == "none" ? null : (ushort?)HsType.DeviceName;
+            ushort? deviceOpcode = deviceString.Value == "none" ? null : GetHsTypeAsInteger(HsType.DeviceName);
             var handle = AllocateExpression(HsType.Device, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, deviceOpcode, line: (short)deviceString.Line);
 
             if (handle != DatumHandle.None)
@@ -3138,7 +3138,7 @@ namespace TagTool.Scripting.Compiler
 
         private DatumHandle CompileSceneryExpression(ScriptString sceneryString)
         {
-            ushort? sceneryOpcode = sceneryString.Value == "none" ? null : (ushort?)HsType.SceneryName;
+            ushort? sceneryOpcode = sceneryString.Value == "none" ? null : GetHsTypeAsInteger(HsType.SceneryName);
             var handle = AllocateExpression(HsType.Scenery, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, sceneryOpcode, line: (short)sceneryString.Line);
 
             if (handle != DatumHandle.None)

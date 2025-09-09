@@ -669,6 +669,7 @@ namespace TagTool.Porting.Gen2
                         Source = (ObjectIdentifier.SourceValue)scenobj.ObjectData.ObjectId.Source,
                     },
                     Multiplayer = new Scenario.MultiplayerObjectProperties(),
+                    HavokMoppIndex = -1
                 };
                 newScenario.Scenery.Add(scenery);
                 AutoConverter.TranslateEnum(gen2Tag.Scenery[scenobjindex].SceneryData.ValidMultiplayerGames, out scenery.Multiplayer.EngineFlags, scenery.Multiplayer.EngineFlags.GetType());

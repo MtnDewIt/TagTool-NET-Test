@@ -33,6 +33,17 @@ namespace TagTool.Shaders.ShaderMatching
         public bool UseMs30 { get; set; } = false;
         public bool PerfectMatchesOnly { get; set; } = false;
 
+        static readonly string[] ContentBugDecals = [
+            "objects\\vehicles\\scorpion\\shaders\\number_decal",
+            "objects\\vehicles\\scorpion\\shaders\\scorpion_decal",
+            "objects\\vehicles\\scorpion\\shaders\\icon",
+            "objects\\vehicles\\shared\\pelican_110_hc\\shaders\\pelican_decals",
+            "levels\\solo\\100_citadel\\decals\\gravel",
+            "levels\\dlc\\bunkerworld\\decals\\decal_missile_facility",
+            "levels\\shared\\decals\\multi\\riverworld\\riverworld_granite_decal",
+            "objects\\levels\\multi\\shrine\\shaders\\xtra_decals"
+        ];
+
         public ShaderMatcherNew()
         {
         }
@@ -144,7 +155,7 @@ namespace TagTool.Shaders.ShaderMatching
         /// <summary>
         /// Find the closest template in the base cache to the input template.
         /// </summary>
-        public CachedTag FindClosestTemplate(CachedTag sourceRmt2Tag, RenderMethodTemplate sourceRmt2, bool canGenerate)
+        public CachedTag FindClosestTemplate(CachedTag sourceRmt2Tag, RenderMethodTemplate sourceRmt2, bool canGenerate, string blamRenderMethodName)
         {
             Debug.Assert(IsInitialized);
     
@@ -156,7 +167,7 @@ namespace TagTool.Shaders.ShaderMatching
             }
 
             // rebuild options to match base cache
-            sourceRmt2Desc = RebuildRmt2Options(sourceRmt2Desc);
+            sourceRmt2Desc = RebuildRmt2Options(sourceRmt2Desc, blamRenderMethodName);
 
             string tagName = $"shaders\\{sourceRmt2Desc.Type}_templates\\_{string.Join("_", sourceRmt2Desc.Options)}";
 
@@ -444,7 +455,7 @@ namespace TagTool.Shaders.ShaderMatching
         /// <summary>
         /// Rebuilds an rmt2's options in memory so indices match up with the base cache
         /// </summary>
-        private Rmt2Descriptor RebuildRmt2Options(Rmt2Descriptor srcRmt2Descriptor)
+        private Rmt2Descriptor RebuildRmt2Options(Rmt2Descriptor srcRmt2Descriptor, string renderMethodName)
         {
             if (srcRmt2Descriptor.Type != "black" && PortingCache.Version >= CacheVersion.Halo3Beta)
             {
@@ -485,6 +496,15 @@ namespace TagTool.Shaders.ShaderMatching
 
                         int portingOptionIndex = srcRmt2Descriptor.Options[j];
                         string optionName = PortingCache.StringTable.GetString(portingRmdfDefinition.Categories[j].ShaderOptions[portingOptionIndex].Name);
+
+                        // Workaround for H3/ODST content bug
+                        if (srcRmt2Descriptor.Type == "decal" && methodName == "bump_mapping" && (PortingCache.Version == CacheVersion.Halo3Retail || PortingCache.Version == CacheVersion.Halo3ODST))
+                        {
+                            if (ContentBugDecals.Contains(renderMethodName) && (optionName == "standard" || optionName == "standard_mask"))
+                            {
+                                optionName += "_diffuse";
+                            }
+                        }
 
                         if (PortingCache.Version == CacheVersion.HaloReach)
                         {

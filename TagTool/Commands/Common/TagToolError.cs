@@ -23,7 +23,7 @@ namespace TagTool.Commands.Common
     /// <remarks>
     /// Prefer using <see cref="Log.Error(string)"/> directly when outside of commands
     /// </remarks>
-    class TagToolError
+    public class TagToolError
     {
         public readonly CommandError Error;
         public readonly string Message;

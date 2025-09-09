@@ -13,7 +13,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Porting
 {
-    static class PortingContextFactory
+    public static class PortingContextFactory
     {
         public static CommandContext Create(CommandContextStack contextStack, GameCache currentCache, GameCache portingCache)
         {
