@@ -606,6 +606,11 @@ namespace TagTool.Porting.Gen3
             return true;
         }
 
+        protected override bool CanCachePortedTag(CachedTag blamTag, CachedTag tag, string blamParentTagName)
+        {
+            return tag == null || !tag.IsInGroup("rmt2");
+        }
+
         class TraversalData
         {
             // A list of render methods to defer conversion until the end

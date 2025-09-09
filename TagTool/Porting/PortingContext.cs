@@ -80,6 +80,18 @@ namespace TagTool.Porting
         }
 
         /// <summary>
+        /// Checks if a ported tag can be cached for future calls to ConvertTag <see cref="ConvertTag"/>
+        /// </summary>
+        /// <param name="blamTag">Tag to be converted</param>
+        /// <param name="tag">Converted tag</param>
+        /// <param name="blamParentTagName">Parent tag that references <paramref name="tag"/></param>
+        /// <returns>True if the tag can be cached, false if conversion should run each time this tag is encountered</returns>
+        protected virtual bool CanCachePortedTag(CachedTag blamTag, CachedTag tag, string blamParentTagName)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// Ports a tag from the source cache to the destination cache
         /// </summary>
         /// <param name="cacheStream">Destination cache stream</param>
@@ -112,7 +124,8 @@ namespace TagTool.Porting
                     Log.Warning($"using bitm tag reference \"{blamTag}\" from source cache");
             }
 
-            PortedTags[blamTag.Index] = result;
+            if (CanCachePortedTag(blamTag, result, blamParentTagName))
+                PortedTags[blamTag.Index] = result;
             return result;
         }
         protected virtual bool GroupIsValid(CachedTag blamTag, out CachedTag resultTag)
