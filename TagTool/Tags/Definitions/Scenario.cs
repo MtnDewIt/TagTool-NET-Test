@@ -1381,10 +1381,10 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public MultiplayerObjectRemappingPolicy RemappingPolicyReach;
 
-            public sbyte TeleporterChannel;
+            public MultiplayerTeleporterChannel TeleporterChannel;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
-            public TeleporterPassabilityFlags TeleporterPassability;
+            public MultiplayerTeleporterPassabilityFlags TeleporterPassability;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public StringId LocationName;

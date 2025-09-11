@@ -148,6 +148,17 @@ namespace TagTool.Tags.Definitions.Common
         Zulu,
     }
 
+    [Flags]
+    public enum MultiplayerTeleporterPassabilityFlags : byte
+    {
+        None,
+        DisallowPlayers = 1 << 0,
+        AllowLightLandVehicles = 1 << 1,
+        AllowHeavyLandVehicles = 1 << 2,
+        AllowFlyingVehicles = 1 << 3,
+        AllowProjectiles = 1 << 4,
+    }
+
     public enum GameEngineType : int
     {
         None,
@@ -311,17 +322,5 @@ namespace TagTool.Tags.Definitions.Common
         Ignore,
         Symmetric,
         Asymmetric,
-    }
-
-
-    [Flags]
-    public enum TeleporterPassabilityFlags : byte
-    {
-        None,
-        DisallowPlayers = 1 << 0,
-        AllowLightLandVehicles = 1 << 1,
-        AllowHeavyLandVehicles = 1 << 2,
-        AllowFlyingVehicles = 1 << 3,
-        AllowProjectiles = 1 << 4,
     }
 }

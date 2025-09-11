@@ -387,7 +387,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public MultiplayerObjectTypeReach TypeReach;
 
-            public TeleporterPassabilityFlags TeleporterPassability;
+            public MultiplayerTeleporterPassabilityFlags TeleporterPassability;
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public MultiplayerObjectFlags Flags;

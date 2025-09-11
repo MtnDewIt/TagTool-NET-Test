@@ -147,7 +147,7 @@ namespace TagTool.BlamFile
 
             for (int i = 0; i < quotaBuilder.Count; i++)
             {
-                result.Quotas[i].ObjectDefinitionIndex = 0;
+                result.Quotas[i].ObjectDefinitionIndex = -1;
                 result.Quotas[i].MaximumCount = (byte)quotaBuilder[i].MinimumCount;
                 result.Quotas[i].MaximumCount = (byte)quotaBuilder[i].MaximumCount;
                 result.Quotas[i].PlacedOnMap = (byte)quotaBuilder[i].PlacedOnMap;
@@ -172,7 +172,7 @@ namespace TagTool.BlamFile
             return result;
         }
 
-        private static Blf GenerateBlf(MapVariant mapVariant, IList<string> tagnames)
+        private static Blf GenerateBlf(MapVariant mapVariant, List<string> tagnames)
         {
             var blf = new Blf(CacheVersion.HaloOnlineED, CachePlatform.Original);
 

@@ -347,7 +347,7 @@ namespace TagTool.Commands.Scenarios
                     case MultiplayerObjectType.TeleporterTwoWay:
                     case MultiplayerObjectType.TeleporterReceiver:
                     case MultiplayerObjectType.TeleporterSender:
-                        multiplayer.TeleporterChannel = (sbyte)placement.Properties.SharedStorage;
+                        multiplayer.TeleporterChannel = (MultiplayerTeleporterChannel)placement.Properties.SharedStorage;
                         break;
                     default:
                         multiplayer.SpawnOrder = (sbyte)placement.Properties.SharedStorage;
