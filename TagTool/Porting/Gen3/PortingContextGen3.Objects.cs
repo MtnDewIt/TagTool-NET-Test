@@ -94,9 +94,11 @@ namespace TagTool.Porting.Gen3
 
                         foreach (var target in hlmt.Targets)
                         {
-                            if (target.LockOnData.TrackingType == StringId.Invalid && CacheContext.StringTable.GetString(target.MarkerName) == "target_main")
+                            if (target.LockOnData.TrackingType == StringId.Empty && CacheContext.StringTable.GetString(target.MarkerName) == "target_main")
                             {
                                 target.LockOnData.TrackingType = CacheContext.StringTable.GetStringId("bipeds");
+                                if (target.LockOnData.TrackingType == StringId.Invalid)
+                                    target.LockOnData.TrackingType = StringId.Empty;
                             }
                         }
 

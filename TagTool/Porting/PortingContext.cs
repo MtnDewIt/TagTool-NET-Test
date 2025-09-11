@@ -469,23 +469,23 @@ namespace TagTool.Porting
         /// <returns>The existing or newly allocated string id in the destination cache</returns>
         protected virtual StringId ConvertStringId(StringId stringId)
         {
-            if (stringId == StringId.Invalid)
+            if (stringId == StringId.Invalid || stringId == StringId.Empty)
                 return stringId;
 
             if (PortedStringIds.ContainsKey(stringId.Value))
                 return PortedStringIds[stringId.Value];
 
-            var value = BlamCache.StringTable.GetString(stringId);
-            var edStringId = CacheContext.StringTable.GetStringId(value);
+            string value = BlamCache.StringTable.GetString(stringId);
+            if (value == null)
+            {
+                Log.Error($"Failed to resolve string while converting StringId {stringId}");
+                return StringId.Invalid;
+            }
 
+            StringId edStringId = CacheContext.StringTable.GetOrAddString(value);
 
-            if (edStringId != StringId.Invalid)
-                return PortedStringIds[stringId.Value] = edStringId;
-
-            if (edStringId == StringId.Invalid || !CacheContext.StringTable.Contains(value))
-                return PortedStringIds[stringId.Value] = CacheContext.StringTable.AddString(value);
-
-            return PortedStringIds[stringId.Value];
+            PortedStringIds[stringId.Value] = edStringId;
+            return edStringId;
         }
 
         /// <summary>

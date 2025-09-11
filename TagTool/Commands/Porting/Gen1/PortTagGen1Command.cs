@@ -163,19 +163,17 @@ namespace TagTool.Commands.Porting
 
         public StringId ConvertStringId(StringId stringId)
         {
-            if (stringId == StringId.Invalid)
+            if (stringId == StringId.Invalid || stringId == StringId.Empty)
                 return stringId;
 
-            var value = Gen1Cache.StringTable.GetString(stringId);
-            var edStringId = Cache.StringTable.GetStringId(value);
+            string value = Gen1Cache.StringTable.GetString(stringId);
+            if (value == null)
+            {
+                Log.Error($"Failed to resolve string while converting StringId {stringId}");
+                return StringId.Invalid;
+            }
 
-            if (edStringId != StringId.Invalid)
-                return edStringId;
-
-            if (edStringId == StringId.Invalid || !Cache.StringTable.Contains(value))
-                return Cache.StringTable.AddString(value);
-
-            return stringId;
+            return Cache.StringTable.GetOrAddString(value);
         }
 
         private List<CachedTag> ParseLegacyTag(string tagSpecifier)

@@ -131,8 +131,7 @@ namespace TagTool.Shaders.ShaderGenerator
             CategoryBlock.ShaderOption result = new CategoryBlock.ShaderOption();
 
             string optionName = FixupMethodOptionName(generator.GetMethodOptionNames((int)categoryIndex).GetValue(optionIndex).ToString().ToLower());
-            StringId nameId = cache.StringTable.GetStringId(optionName);
-            result.Name = nameId != StringId.Invalid ? nameId : cache.StringTable.AddString(optionName);
+            result.Name = cache.StringTable.GetOrAddString(optionName);
 
             var parameters = generator.GetParametersInOption(categoryName, optionIndex, out string rmopName, out _);
 
@@ -151,8 +150,8 @@ namespace TagTool.Shaders.ShaderGenerator
 
             if (autoMacro)
             {
-                result.PixelFunction = StringId.Invalid;
-                result.VertexFunction = StringId.Invalid;
+                result.PixelFunction = StringId.Empty;
+                result.VertexFunction = StringId.Empty;
             }
             else
             { } // TODO
@@ -165,8 +164,7 @@ namespace TagTool.Shaders.ShaderGenerator
             CategoryBlock result = new CategoryBlock();
 
             string categoryName = FixupMethodOptionName(generator.GetMethodNames().GetValue(categoryIndex).ToString().ToLower());
-            StringId nameId = cache.StringTable.GetStringId(categoryName);
-            result.Name = nameId != StringId.Invalid ? nameId : cache.StringTable.AddString(categoryName);
+            result.Name = cache.StringTable.GetOrAddString(categoryName);
 
             result.ShaderOptions = new List<CategoryBlock.ShaderOption>();
 
@@ -181,8 +179,8 @@ namespace TagTool.Shaders.ShaderGenerator
 
             if (autoMacro)
             {
-                result.PixelFunction = StringId.Invalid;
-                result.VertexFunction = StringId.Invalid;
+                result.PixelFunction = StringId.Empty;
+                result.VertexFunction = StringId.Empty;
             }
             else
             { } // TODO
@@ -269,8 +267,7 @@ namespace TagTool.Shaders.ShaderGenerator
 
                 RenderMethodOption.ParameterBlock parameterBlock = new RenderMethodOption.ParameterBlock();
 
-                StringId nameId = cache.StringTable.GetStringId(parameter.ParameterName);
-                parameterBlock.Name = nameId != StringId.Invalid ? nameId : cache.StringTable.AddString(parameter.ParameterName);
+                parameterBlock.Name = cache.StringTable.GetOrAddString(parameter.ParameterName);
 
                 parameterBlock.RenderMethodExtern = (RenderMethodExtern)parameter.RenderMethodExtern;
 

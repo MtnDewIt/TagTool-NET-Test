@@ -36,7 +36,7 @@ namespace TagTool.Cache.Monolithic
                 if (index > 0 && index < Count)
                     return this[index];
                 else
-                    return "invalid";
+                    return null;
             }
         }
 

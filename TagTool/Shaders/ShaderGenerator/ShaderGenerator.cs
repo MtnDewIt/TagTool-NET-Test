@@ -36,12 +36,7 @@ namespace TagTool.Shaders.ShaderGenerator
     {
         private static StringId AddString(GameCache cache, string str)
         {
-            if (str == "")
-                return StringId.Invalid;
-            var stringId = cache.StringTable.GetStringId(str);
-            if (stringId == StringId.Invalid)
-                stringId = cache.StringTable.AddString(str);
-            return stringId;
+            return cache.StringTable.GetOrAddString(str);
         }
 
         private static List<ShaderParameter> GenerateShaderParametersFromGenerator(GameCache cache, ShaderGeneratorResult result)
@@ -687,11 +682,11 @@ namespace TagTool.Shaders.ShaderGenerator
         }
 
         private static StringId AddStringSafe(GameCache cache, string str)
-        {
+        {   
+            // TODO: not thread safe
+
             var sTable = (StringTableHaloOnline)cache.StringTable;
 
-            if (str == "")
-                return StringId.Invalid;
             var stringId = sTable.GetStringId(str);
             if (stringId == StringId.Invalid)
                 stringId = sTable.AddStringBlocking(str);
@@ -748,11 +743,11 @@ namespace TagTool.Shaders.ShaderGenerator
                             Category = category,
                             PsMacro = "category_" + category,
                             //VsMacro = "category_" + category,
-                            VsMacro = "invalid",
+                            VsMacro = "",
                             Option = option,
                             PsMacroValue = "category_" + category + "_option_" + option,
                             //VsMacroValue = "category_" + category + "_option_" + option
-                            VsMacroValue = "invalid"
+                            VsMacroValue = ""
                         });
                     }
                     // definitions
@@ -763,11 +758,11 @@ namespace TagTool.Shaders.ShaderGenerator
                             Category = category,
                             PsMacro = "category_" + category + "_option_" + cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
                             //VsMacro = "category_" + category + "_option_" + cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
-                            VsMacro = "invalid",
+                            VsMacro = "",
                             Option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
                             PsMacroValue = j.ToString(),
                             //VsMacroValue = j.ToString()
-                            VsMacroValue = "invalid"
+                            VsMacroValue = ""
                         });
                     }
                 }

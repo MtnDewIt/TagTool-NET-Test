@@ -135,7 +135,7 @@ namespace TagTool.Commands.Editing
                         }
                     }
                     break;
-                case StringId stringId when stringId != StringId.Invalid:
+                case StringId stringId when stringId != StringId.Invalid && stringId != StringId.Empty:
                     {
                         var str = Cache.StringTable.GetString(stringId);
                         strings.Add(str);
@@ -239,7 +239,7 @@ namespace TagTool.Commands.Editing
             if (value == null)
                 return null;
             if (value is StringId)
-                return StringId.Invalid;
+                return StringId.Empty;
 
             return GetDefaultValue(value.GetType());
         }

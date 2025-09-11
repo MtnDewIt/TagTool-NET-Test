@@ -35,8 +35,8 @@ namespace TagTool.Porting.Gen3
                 //OvershieldScale = isOvershield ? 1.0f : 0.0f;
                 EdgeGlowColor = new ShieldImpactFunction
                 {
-                    InputVariable = StringId.Invalid,
-                    RangeVariable = StringId.Invalid,
+                    InputVariable = StringId.Empty,
+                    RangeVariable = StringId.Empty,
                     Function = new TagFunction
                     {
                         Data = new byte[] { 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } // black
@@ -44,8 +44,8 @@ namespace TagTool.Porting.Gen3
                 },
                 EdgeGlowIntensity = new ShieldImpactFunction
                 {
-                    InputVariable = StringId.Invalid,
-                    RangeVariable = StringId.Invalid,
+                    InputVariable = StringId.Empty,
+                    RangeVariable = StringId.Empty,
                     Function = new TagFunction
                     {
                         Data = new byte[] { 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, } // zero intensity
@@ -113,8 +113,8 @@ namespace TagTool.Porting.Gen3
                 },
                 PlasmaEdgeColor = new ShieldImpactFunction
                 {
-                    InputVariable = StringId.Invalid,
-                    RangeVariable = StringId.Invalid,
+                    InputVariable = StringId.Empty,
+                    RangeVariable = StringId.Empty,
                     Function = new TagFunction
                     {
                         Data = new byte[] { 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00 } // black 
@@ -122,8 +122,8 @@ namespace TagTool.Porting.Gen3
                 },
                 PlasmaEdgeIntensity = new ShieldImpactFunction
                 {
-                    InputVariable = StringId.Invalid,
-                    RangeVariable = StringId.Invalid,
+                    InputVariable = StringId.Empty,
+                    RangeVariable = StringId.Empty,
                     Function = new TagFunction // zero intensity
                     {
                         Data = new byte[] { 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, }

@@ -98,11 +98,7 @@ namespace TagTool.Shaders
                 case StringId stringId:
                     {
                         var str = sourceCache.StringTable.GetString(stringId);
-                        var destStringId = destCache.StringTable.GetStringId(str);
-                        if (stringId != StringId.Invalid && destStringId == StringId.Invalid)
-                            return destCache.StringTable.AddString(str);
-                        else
-                            return destStringId;
+                        return destCache.StringTable.GetOrAddString(str);
                     }
                 case CachedTag srcTag:
                     {

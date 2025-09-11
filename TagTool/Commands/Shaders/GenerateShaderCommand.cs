@@ -12,6 +12,7 @@ using HaloShaderGenerator.Shader;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Common.Logging;
+using TagTool.Common;
 
 namespace TagTool.Commands.Shaders
 {
@@ -200,9 +201,7 @@ namespace TagTool.Commands.Shaders
 
             foreach (var register in generatorResult.Registers)
             {
-                var nameId = cache.StringTable.GetStringId(register.Name);
-                if (nameId == TagTool.Common.StringId.Invalid)
-                    nameId = cache.StringTable.AddString(register.Name);
+                StringId nameId = cache.StringTable.GetOrAddString(register.Name);
 
                 ShaderParameter.RType rType = (ShaderParameter.RType)Enum.Parse(typeof(ShaderParameter.RType), register.registerType.ToString());
 

@@ -65,8 +65,8 @@ namespace TagTool.Porting.Gen2
             //RENDER GEO RESOURCE
             //begin building render geo resource
             var builder = new RenderModelBuilder(CacheContext);
-            builder.BeginRegion(StringId.Invalid);
-            builder.BeginPermutation(StringId.Invalid);
+            builder.BeginRegion(StringId.Empty);
+            builder.BeginPermutation(StringId.Empty);
 
             //COLLISION RESOURCE
             //create new collisionresource and populate values from tag

@@ -292,7 +292,7 @@ namespace TagTool.Commands.Sounds
 
                     var perm = new Permutation
                     {
-                        ImportName = StringId.Invalid,
+                        ImportName = StringId.Empty,
                         SampleCount = (uint)sampleCount
                     };
 

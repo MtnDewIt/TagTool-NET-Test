@@ -46,12 +46,8 @@ namespace TagTool.Shaders.ShaderGenerator
 
             rmdf.Categories = new List<RenderMethodDefinition.CategoryBlock>();
 
-            var blacknessStringid = cache.StringTable.GetStringId("blackness(no_options)");
-            if (blacknessStringid == StringId.Invalid)
-            {
-                blacknessStringid = cache.StringTable.AddString("blackness(no_options)");
-            }
-            rmdf.Categories.Add(new RenderMethodDefinition.CategoryBlock { Name = blacknessStringid, VertexFunction = StringId.Invalid, PixelFunction = StringId.Invalid });
+            var blacknessStringid = cache.StringTable.GetOrAddString("blackness(no_options)");
+            rmdf.Categories.Add(new RenderMethodDefinition.CategoryBlock { Name = blacknessStringid, VertexFunction = StringId.Empty, PixelFunction = StringId.Empty });
 
             return rmdf;
         }

@@ -682,7 +682,7 @@ namespace TagTool.Porting.Gen3
             var seatMappingIndex = (int)-1;
 
             if (vehicleExpr.Flags == HsSyntaxNodeFlags.Group &&
-                seatMappingStringId != StringId.Invalid)
+                seatMappingStringId != StringId.Empty)
             {
                 if (BlamCache.ScriptDefinitions.Scripts[vehicleExpr.Opcode].Name == "ai_vehicle_get_from_starting_location")
                 {
@@ -714,7 +714,7 @@ namespace TagTool.Porting.Gen3
 
                         var variantName = CacheContext.StringTable.GetString(unitDefinition.DefaultModelVariant);
 
-                        if (fireTeam.VehicleVariant != StringId.Invalid)
+                        if (fireTeam.VehicleVariant != StringId.Empty)
                             variantName = CacheContext.StringTable.GetString(fireTeam.VehicleVariant);
 
                         if (unitDefinition.Model.Index == -1)
@@ -827,7 +827,7 @@ namespace TagTool.Porting.Gen3
             seatMappingExpr.ValueType = HsType.UnitSeatMapping;
             seatMappingExpr.Data = BitConverter.GetBytes((seatMappingIndex & ushort.MaxValue) | (1 << 16)).Reverse().ToArray();
             //all four bytes need to be FF for the argument to be "none"
-            if (seatMappingStringId == StringId.Invalid)
+            if (seatMappingStringId == StringId.Empty)
                 seatMappingExpr.Data = BitConverter.GetBytes(-1);
         }
 

@@ -151,9 +151,9 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 
                         var instance = resourceDefinition.InstancedGeometry[instanceDef.DefinitionIndex];
 
-                        var instanceName = instanceDef.Name != StringId.Invalid ?
-                            CacheContext.StringTable.GetString(instanceDef.Name) :
-                            $"instance_{instanceDef.DefinitionIndex}";
+                        var instanceName = CacheContext.StringTable.GetString(instanceDef.Name);
+                        if(string.IsNullOrEmpty(instanceName))
+                            instanceName = $"instance_{instanceDef.DefinitionIndex}";
 
                         for (var i = 0; i < instance.CollisionInfo.Vertices.Count; i++)
                         {
