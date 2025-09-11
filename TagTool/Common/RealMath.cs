@@ -222,8 +222,8 @@ namespace TagTool.Common
             float quantizedX = (float)(value % (int)encodingConstants.ActualPerAxisMaxCount) / encodingConstants.QuantizedValueCount;
             float quantizedY = (float)(value % (int)encodingConstants.ActualPerAxisMaxCount) % encodingConstants.QuantizedValueCount;
 
-            float x = DequantizeReal((int)quantizedX, -1.0f, 1.0f, encodingConstants.QuantizedValueCount, true, false);
-            float y = DequantizeReal((int)quantizedY, -1.0f, 1.0f, encodingConstants.QuantizedValueCount, true, false);
+            float x = DequantizeReal((int)quantizedX, -1.0f, 1.0f, encodingConstants.QuantizedValueCount - 1, false, false);
+            float y = DequantizeReal((int)quantizedY, -1.0f, 1.0f, encodingConstants.QuantizedValueCount - 1, false, false);
 
             vector = face switch
             {

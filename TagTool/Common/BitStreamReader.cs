@@ -46,7 +46,7 @@ namespace TagTool.Common
             }
             else
             {
-                int quantized = ReadSignedInteger(upBits);
+                int quantized = (int)ReadUnsigned(upBits);
                 RealMath.DequantizeUnitVector3d(quantized, out up, upBits);
             }
 

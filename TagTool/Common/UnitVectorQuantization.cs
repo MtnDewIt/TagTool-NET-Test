@@ -86,7 +86,7 @@ namespace TagTool.Common
                 }
 
                 uint actualPerAxisMaxCount = (uint)mask;
-                uint quantizedValueCount = (uint)(Math.Sqrt(mask) - 1);
+                uint quantizedValueCount = (uint)(Math.Sqrt(mask)) - 1;
 
                 return new EncodingConstants(quantizedValueCount, actualPerAxisMaxCount);
             }
