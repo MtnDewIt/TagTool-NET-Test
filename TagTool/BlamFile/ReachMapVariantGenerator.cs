@@ -147,12 +147,12 @@ namespace TagTool.BlamFile
 
             for (int i = 0; i < quotaBuilder.Count; i++)
             {
-                result.Quotas[i].ObjectDefinitionIndex = -1;
+                result.Quotas[i].ObjectDefinitionIndex = 0;
                 result.Quotas[i].MaximumCount = (byte)quotaBuilder[i].MinimumCount;
                 result.Quotas[i].MaximumCount = (byte)quotaBuilder[i].MaximumCount;
                 result.Quotas[i].PlacedOnMap = (byte)quotaBuilder[i].PlacedOnMap;
                 result.Quotas[i].MaxAllowed = (sbyte)quotaBuilder[i].MaxAllowed;
-                // result.PlaceableQuotaCount++;
+                result.PlaceableQuotaCount++;
             }
 
             destTagNames = new List<string>();

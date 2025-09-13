@@ -192,7 +192,6 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             objectDatum.Flags = (VariantObjectPlacementFlags)stream.ReadUnsigned(16);
             objectDatum.QuotaIndex = stream.ReadSignedInteger(32);
 
-            // TODO: Set default values for ObjectIdentifier
             objectDatum.ParentObject = new ObjectIdentifier();
 
             if (stream.ReadBool())

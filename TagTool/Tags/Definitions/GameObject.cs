@@ -614,19 +614,19 @@ namespace TagTool.Tags.Definitions
     public class GameObjectType8 : TagStructure
     {
         [TagField(EnumType = typeof(sbyte), MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
-        public GameObjectTypeHalo2 Halo2;
+        public GameObjectTypeHalo2 Halo2 = GameObjectTypeHalo2.None;
 
         [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-        public GameObjectTypeHalo3Retail Halo3Retail;
+        public GameObjectTypeHalo3Retail Halo3Retail = GameObjectTypeHalo3Retail.None;
 
         [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
-        public GameObjectTypeHalo3ODST Halo3ODST;
+        public GameObjectTypeHalo3ODST Halo3ODST = GameObjectTypeHalo3ODST.None;
 
         [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
-        public GameObjectTypeHaloOnline HaloOnline;
+        public GameObjectTypeHaloOnline HaloOnline = GameObjectTypeHaloOnline.None;
 
         [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.HaloReach)]
-        public GameObjectTypeHalo3Retail HaloReach;
+        public GameObjectTypeHalo3Retail HaloReach = GameObjectTypeHalo3Retail.None;
 
         public Enum GetValue(CacheVersion version)
         {
@@ -665,19 +665,19 @@ namespace TagTool.Tags.Definitions
     public class GameObjectType16 : TagStructure
     {
         [TagField(EnumType = typeof(short), MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
-        public GameObjectTypeHalo2 Halo2;
+        public GameObjectTypeHalo2 Halo2 = GameObjectTypeHalo2.None;
 
         [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-        public GameObjectTypeHalo3Retail Halo3Retail;
+        public GameObjectTypeHalo3Retail Halo3Retail = GameObjectTypeHalo3Retail.None;
 
         [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
-        public GameObjectTypeHalo3ODST Halo3ODST;
+        public GameObjectTypeHalo3ODST Halo3ODST = GameObjectTypeHalo3ODST.None;
 
         [TagField(EnumType = typeof(short), MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
-        public GameObjectTypeHaloOnline HaloOnline;
+        public GameObjectTypeHaloOnline HaloOnline = GameObjectTypeHaloOnline.None;
 
         [TagField(EnumType = typeof(short), MinVersion = CacheVersion.HaloReach)]
-        public GameObjectTypeHalo3Retail HaloReach;
+        public GameObjectTypeHalo3Retail HaloReach = GameObjectTypeHalo3Retail.None;
 
         public Enum GetValue(CacheVersion version)
         {
@@ -716,19 +716,19 @@ namespace TagTool.Tags.Definitions
     public class GameObjectType32 : TagStructure
     {
         [TagField(EnumType = typeof(int), MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
-        public GameObjectTypeHalo2 Halo2;
+        public GameObjectTypeHalo2 Halo2 = GameObjectTypeHalo2.None;
 
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-        public GameObjectTypeHalo3Retail Halo3Retail;
+        public GameObjectTypeHalo3Retail Halo3Retail = GameObjectTypeHalo3Retail.None;
 
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
-        public GameObjectTypeHalo3ODST Halo3ODST;
+        public GameObjectTypeHalo3ODST Halo3ODST = GameObjectTypeHalo3ODST.None;
 
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
-        public GameObjectTypeHaloOnline HaloOnline;
+        public GameObjectTypeHaloOnline HaloOnline = GameObjectTypeHaloOnline.None;
 
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.HaloReach)]
-        public GameObjectTypeHalo3Retail HaloReach;
+        public GameObjectTypeHalo3Retail HaloReach = GameObjectTypeHalo3Retail.None;
 
         public Enum GetValue(CacheVersion version)
         {
