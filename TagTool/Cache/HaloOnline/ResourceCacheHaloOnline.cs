@@ -79,8 +79,6 @@ namespace TagTool.Cache.HaloOnline
             for (var i = 0; i < addresses.Count - 1; i++)
                 sizes.Add(addresses[i + 1] - addresses[i]);
 
-            // TODO: Casting Bad. Make Better
-            sizes.Add(Header.FileOffsets - addresses.Last());
             sizes.Add(Header.FileOffsets - addresses.Last());
 
             foreach (var resource in Resources)
