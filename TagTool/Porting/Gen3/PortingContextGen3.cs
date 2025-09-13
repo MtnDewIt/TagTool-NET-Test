@@ -457,6 +457,11 @@ namespace TagTool.Porting.Gen3
                     MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, edTag, blamTag);
                     break;
             }
+
+            if (blamTag.IsInGroup("rm  ") || PortingConstants.EffectGroups.Contains(blamTag.Group.Tag))
+            {
+                new RenderMethodMerger(this).MergeRenderMethods(cacheStream, blamCacheStream, edTag, blamTag);
+            }
         }
 
         protected override bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, out CachedTag resultTag)
