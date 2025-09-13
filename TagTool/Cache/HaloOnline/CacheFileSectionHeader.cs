@@ -8,7 +8,7 @@ namespace TagTool.Cache.HaloOnline
     public class CacheFileSectionHeader : TagStructure
     {
         public uint Unknown0;
-        public int FileOffsets;
+        public uint FileOffsets;
         public int FileCount;
         public uint UnknownC;
         public LastModificationDate CreationDate;
@@ -19,7 +19,7 @@ namespace TagTool.Cache.HaloOnline
         {
             return new CacheFileSectionHeader
             {
-                FileOffsets = (int)GetStructureSize(typeof(CacheFileSectionHeader), version, platform),
+                FileOffsets = GetStructureSize(typeof(CacheFileSectionHeader), version, platform),
                 CreationDate = LastModificationDate.CreateFromVersion(version)
             };
         }

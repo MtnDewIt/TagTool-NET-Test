@@ -398,7 +398,7 @@ namespace TagTool.Cache.HaloOnline
         private void UpdateFileHeader(EndianWriter writer, uint offsetTableOffset)
         {
             // TODO: Casting Bad. Make Better
-            Header.FileOffsets = (int)offsetTableOffset;
+            Header.FileOffsets = offsetTableOffset;
             Header.FileCount = Tags.Count;
             writer.BaseStream.Position = 0;
             var dataContext = new DataSerializationContext(writer);
