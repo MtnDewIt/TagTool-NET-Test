@@ -10,8 +10,8 @@ namespace TagTool.Geometry
     /// A material describing how a mesh part should be rendered.
     /// </summary>
     [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo2PC)]
-    [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline604673)]
-    [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Eldorado604673)]
+    [TagStructure(Size = 0x30, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
     public class RenderMaterial : TagStructure
 	{
@@ -27,10 +27,10 @@ namespace TagTool.Geometry
         [TagField(Flags = Label)]
         public CachedTag RenderMethod;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Eldorado700123, MaxVersion = CacheVersion.Eldorado700123)]
         public List<Skin> Skins;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<Property> Properties;
 
         public int ImportedMaterialIndex;
@@ -53,7 +53,7 @@ namespace TagTool.Geometry
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public short LightmapChartGroupIndex;
 
-        [TagField(Length = 3, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 3, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Padding1;
 
         [TagStructure(Size = 0x14)]

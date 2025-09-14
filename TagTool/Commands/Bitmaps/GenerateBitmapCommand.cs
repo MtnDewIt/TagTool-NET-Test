@@ -15,10 +15,10 @@ namespace TagTool.Commands.Tags
 {
 	class GenerateBitmapCommand : Command
 	{
-		public GameCacheHaloOnlineBase Cache { get; }
+		public GameCacheEldoradoBase Cache { get; }
 		public object TagDefinition { get; private set; }
 
-        public GenerateBitmapCommand(GameCacheHaloOnlineBase cache)
+        public GenerateBitmapCommand(GameCacheEldoradoBase cache)
 			: base(true,
 
 				  "GenerateBitmap",

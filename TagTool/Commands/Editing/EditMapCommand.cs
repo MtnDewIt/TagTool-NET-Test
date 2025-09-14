@@ -10,10 +10,10 @@ namespace TagTool.Commands.Editing
     public class EditMapCommand : Command 
     {
         private CommandContextStack ContextStack { get; }
-        private GameCacheHaloOnlineBase CacheContext { get; }
+        private GameCacheEldoradoBase CacheContext { get; }
         private GameCache Cache { get; }
 
-        public EditMapCommand(CommandContextStack contextStack, GameCacheHaloOnlineBase cacheContext, GameCache cache) : base(
+        public EditMapCommand(CommandContextStack contextStack, GameCacheEldoradoBase cacheContext, GameCache cache) : base(
             false,
 
             "EditMap",
@@ -102,7 +102,7 @@ namespace TagTool.Commands.Editing
                     mapFileData.Read(reader);
                     stream.Position = 0;
 
-                    var header = mapFileData.Header as CacheFileHeaderGenHaloOnline;
+                    var header = mapFileData.Header as CacheFileHeaderEldorado;
 
                     if (header.Name == mapName) 
                     {

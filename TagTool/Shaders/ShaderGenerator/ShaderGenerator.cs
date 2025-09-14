@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
@@ -62,7 +62,7 @@ namespace TagTool.Shaders.ShaderGenerator
 
         private static StringId AddStringSafe(GameCache cache, string str)
         {
-            var sTable = (StringTableHaloOnline)cache.StringTable;
+            var sTable = (StringTableEldorado)cache.StringTable;
 
             if (str == "")
                 return StringId.Invalid;

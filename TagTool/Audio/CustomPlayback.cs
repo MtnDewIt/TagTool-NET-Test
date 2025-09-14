@@ -9,7 +9,7 @@ namespace TagTool.Audio
 {
     [TagStructure(Size = 0x34, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x48, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x54, MinVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x54, MinVersion = CacheVersion.EldoradoED)]
     public class CustomPlayback : TagStructure
 	{
         public List<PlatformSoundOverrideMixbins> OverrideMixbins;
@@ -24,7 +24,7 @@ namespace TagTool.Audio
         public List<FilterLfoBlock> FilterLfo;
         public List<SoundEffectPlaybackBlock> SoundEffect;
 
-        [TagField(Length = 0xC, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(Length = 0xC, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.EldoradoED)]
         public byte[] Padding2;
 
         [TagStructure(Size = 0x8)]

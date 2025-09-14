@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TagTool.Cache.Gen3;
 using TagTool.Tags;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
     /// <summary>
     /// Contains tag data and a description of it.

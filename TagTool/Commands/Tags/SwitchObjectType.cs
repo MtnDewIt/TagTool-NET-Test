@@ -4,7 +4,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache.Gen3;
 using TagTool.Tags.Definitions;
 
@@ -12,9 +12,9 @@ namespace TagTool.Commands.Tags
 {
     class SwitchObjectTypeCommand : Command
     {
-        public GameCacheHaloOnlineBase Cache { get; }
+        public GameCacheEldoradoBase Cache { get; }
 
-        public SwitchObjectTypeCommand(GameCacheHaloOnlineBase cache)
+        public SwitchObjectTypeCommand(GameCacheEldoradoBase cache)
             : base(true,
 
                   "SwitchObjectType",

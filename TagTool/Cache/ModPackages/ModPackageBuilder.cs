@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 
 namespace TagTool.Cache.ModPackages
 {
     public class ModPackageBuilder
     {
-        private readonly GameCacheHaloOnlineBase BaseCache;
+        private readonly GameCacheEldoradoBase BaseCache;
         private List<string> TagCacheNames = [];
         private ModPackageMetadata Metadata;
         private ModifierFlags ModifierFlags;
 
-        public ModPackageBuilder(GameCacheHaloOnlineBase baseCache)
+        public ModPackageBuilder(GameCacheEldoradoBase baseCache)
         {
             BaseCache = baseCache;
         }
@@ -60,8 +60,8 @@ namespace TagTool.Cache.ModPackages
             var modPackage = new ModPackage();
             modPackage.Header.ModifierFlags = ModifierFlags;
             modPackage.Metadata = Metadata ?? new ModPackageMetadata();
-            modPackage.StringTable = new StringTableHaloOnline(BaseCache.Version);
-            modPackage.StringTable.AddRange(BaseCache.StringTableHaloOnline);
+            modPackage.StringTable = new StringTableEldorado(BaseCache.Version);
+            modPackage.StringTable.AddRange(BaseCache.StringTableEldorado);
             modPackage.TagCacheNames.Clear();
             modPackage.TagCachesStreams.Clear();
             modPackage.CacheNames.Clear();

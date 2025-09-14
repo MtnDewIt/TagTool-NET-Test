@@ -7,9 +7,9 @@ namespace TagTool.Commands.Tags
 {
     class ListUnusedTagsCommand : Command
     {
-        public GameCacheHaloOnlineBase Cache { get; }
+        public GameCacheEldoradoBase Cache { get; }
 
-        public ListUnusedTagsCommand(GameCacheHaloOnlineBase cache)
+        public ListUnusedTagsCommand(GameCacheEldoradoBase cache)
             : base(false,
 
                   "ListUnusedTags",
@@ -29,7 +29,7 @@ namespace TagTool.Commands.Tags
 
             var depCounts = new Dictionary<int, int>();
 
-            foreach (var tag in Cache.TagCacheGenHO.Tags)
+            foreach (var tag in Cache.TagCacheEldorado.Tags)
             {
                 if (tag == null)
                     continue;

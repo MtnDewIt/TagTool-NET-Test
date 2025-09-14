@@ -84,7 +84,7 @@ namespace TagTool.Commands.Shaders
                 Cache.Serialize(stream, rmdfTag, rmdf);
             }
 
-            (Cache as GameCacheHaloOnlineBase).SaveTagNames();
+            (Cache as GameCacheEldoradoBase).SaveTagNames();
 
             Console.WriteLine($"\"{rmdfName}\" generated successfully.");
             return true;

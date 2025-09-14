@@ -3,19 +3,19 @@ using TagTool.IO;
 using TagTool.Tags;
 using TagTool.BlamFile.Chunks;
 
-namespace TagTool.BlamFile.HaloOnline
+namespace TagTool.BlamFile.Eldorado
 {
     [TagStructure(Size = 0x148F8, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x14AC8, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x19468, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x19638, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-    [TagStructure(Size = 0x29904, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
-    [TagStructure(Size = 0x198F9, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x29904, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.EldoradoED)]
+    [TagStructure(Size = 0x198F9, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x1D564, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x1D734, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x21C2C, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x21DFC, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4, Platform = CachePlatform.MCC)]
-    public class HaloOnlineBlf : TagStructure 
+    public class EldoradoBlf : TagStructure 
     {
         public EndianFormat Format;
         public Blf.BlfFileContentFlags ContentFlags;
@@ -44,10 +44,10 @@ namespace TagTool.BlamFile.HaloOnline
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfScenario Scenario;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.EldoradoED)]
         public BlfModPackageReference ModReference;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.EldoradoED)]
         public BlfMapVariantTagNames MapVariantTagNames;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
@@ -77,7 +77,7 @@ namespace TagTool.BlamFile.HaloOnline
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public byte[] Buffer;
 
-        public HaloOnlineBlf(Blf blfData) 
+        public EldoradoBlf(Blf blfData) 
         {
             Format = blfData.Format;
             ContentFlags = blfData.ContentFlags;

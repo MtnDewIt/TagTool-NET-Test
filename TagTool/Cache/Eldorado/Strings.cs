@@ -2,7 +2,7 @@
  * Hardcoded list of stringids for MS23. Used to create fresh string table and string_ids.dat. Do not change the order or the strings as they are used in the engine.
  */
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
     public enum StringIDType
     {

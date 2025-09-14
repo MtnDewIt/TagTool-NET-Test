@@ -8,16 +8,16 @@ using TagTool.Tags.Definitions.Common;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "light_volume_system", Tag = "ltvl", Size = 0xC, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "light_volume_system", Tag = "ltvl", Size = 0x14, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "light_volume_system", Tag = "ltvl", Size = 0x14, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "light_volume_system", Tag = "ltvl", Size = 0xC, MaxVersion = CacheVersion.HaloReach11883)]
     public class LightVolumeSystem : TagStructure
 	{
         public List<LightVolumeDefinitionBlock> LightVolumes;
 
-        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Unused1;
 
-        [TagStructure(Size = 0x17C, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x17C, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x1C8, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x17C, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0x168, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3ODST)]

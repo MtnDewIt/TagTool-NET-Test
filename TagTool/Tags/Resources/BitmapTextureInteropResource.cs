@@ -15,7 +15,7 @@ namespace TagTool.Tags.Resources
 
         [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x34, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x40, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class BitmapDefinition : TagStructure
@@ -31,7 +31,7 @@ namespace TagTool.Tags.Resources
     [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x18, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class BitmapTextureInteropDefinition : TagStructure
     {
@@ -48,21 +48,21 @@ namespace TagTool.Tags.Resources
         public int D3DFormat;
 
         [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST, EnumType = typeof(sbyte))]
-        [TagField(Gen = CacheGeneration.HaloOnline, EnumType = typeof(sbyte))]
+        [TagField(Gen = CacheGeneration.Eldorado, EnumType = typeof(sbyte))]
         public BitmapFormat Format;
 
         [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public BitmapImageCurve Curve;
 
         [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public BitmapFlags Flags;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public int Unknown1;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public int Unknown2;
     }
 }

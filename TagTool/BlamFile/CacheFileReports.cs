@@ -18,7 +18,7 @@ namespace TagTool.BlamFile
             Version = version;
         }
 
-        public void Read(EndianReader reader, CacheFileHeaderGenHaloOnline header)
+        public void Read(EndianReader reader, CacheFileHeaderEldorado header)
         {
             var deserializer = new TagDeserializer(Version, CachePlatform.Original);
             var dataContext = new DataSerializationContext(reader);
@@ -44,7 +44,7 @@ namespace TagTool.BlamFile
                 serializer.Serialize(dataContext, Reports[i]);
         }
 
-        [TagStructure(Size = 0x114, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x114, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
         public class CacheFileReport : TagStructure
         {
             [TagField(Length = 0x20)]
@@ -64,7 +64,7 @@ namespace TagTool.BlamFile
             public uint Unknown10C;
             public uint Unknown110;
 
-            [TagStructure(Size = 0x7C, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x7C, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
             public class FileReferencePersist : TagStructure
             {
                 public Tag Signature;

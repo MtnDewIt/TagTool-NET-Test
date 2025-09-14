@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.IO;
 using TagTool.JSON.Objects;
 using TagTool.JSON.Handlers;
@@ -18,7 +18,7 @@ namespace TagTool.Commands.JSON
     public class GenerateBlfObjectCommand : Command
     {
         private GameCache Cache;
-        private GameCacheHaloOnlineBase CacheContext;
+        private GameCacheEldoradoBase CacheContext;
         private string PathPrefix = null;
 
         private int FileCount = 0;
@@ -47,7 +47,7 @@ namespace TagTool.Commands.JSON
             ".shot"
         };
 
-        public GenerateBlfObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
+        public GenerateBlfObjectCommand(GameCache cache, GameCacheEldoradoBase cacheContext) : base
         (
             false,
             "GenerateBlfObject",

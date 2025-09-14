@@ -2,7 +2,7 @@
 using TagTool.Serialization;
 using TagTool.Tags;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
     [TagStructure(Size = 0x20)]
     public class CacheFileSectionHeader : TagStructure

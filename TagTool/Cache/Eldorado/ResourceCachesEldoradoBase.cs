@@ -8,27 +8,27 @@ using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Resources;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
-    // Wrapper for multiple ResourceCacheHaloOnline instances (one per .dat), implements the abstract class and refers to the individual class
-    public abstract class ResourceCachesHaloOnlineBase : ResourceCache
+    // Wrapper for multiple ResourceCacheEldorado instances (one per .dat), implements the abstract class and refers to the individual class
+    public abstract class ResourceCachesEldoradoBase : ResourceCache
     {
-        public GameCacheHaloOnlineBase Cache;
+        public GameCacheEldoradoBase Cache;
         public TagDeserializer Deserializer;
         public TagSerializer Serializer;
 
         public PageableResource GetPageableResource(TagResourceReference resourceReference)
         {
-            return resourceReference.HaloOnlinePageableResource;
+            return resourceReference.EldoradoPageableResource;
         }
 
-        public abstract ResourceCacheHaloOnline GetResourceCache(ResourceLocation location);
+        public abstract ResourceCacheEldorado GetResourceCache(ResourceLocation location);
 
         public abstract Stream OpenCacheRead(ResourceLocation location);
         public abstract Stream OpenCacheReadWrite(ResourceLocation location);
         public abstract Stream OpenCacheWrite(ResourceLocation location);
 
-        private ResourceCacheHaloOnline GetResourceCache(PageableResource resource, out ResourceLocation location)
+        private ResourceCacheEldorado GetResourceCache(PageableResource resource, out ResourceLocation location)
         {
             if (!resource.GetLocation(out location))
                 return null;
@@ -198,7 +198,7 @@ namespace TagTool.Cache.HaloOnline
 
         public void ReplaceResource(TagResourceReference resource, object resourceDefinition)
         {
-            ReplaceResource(resource.HaloOnlinePageableResource, resourceDefinition);
+            ReplaceResource(resource.EldoradoPageableResource, resourceDefinition);
         }
 
         /// <summary>
@@ -240,16 +240,16 @@ namespace TagTool.Cache.HaloOnline
 
         public bool IsResourceReferenceValid(TagResourceReference resourceReference)
         {
-            if (resourceReference == null || resourceReference.HaloOnlinePageableResource == null)
+            if (resourceReference == null || resourceReference.EldoradoPageableResource == null)
                 return false;
-            var page = resourceReference.HaloOnlinePageableResource.Page;
+            var page = resourceReference.EldoradoPageableResource.Page;
             if(page != null)
             {
-                var index = resourceReference.HaloOnlinePageableResource.Page.Index;
+                var index = resourceReference.EldoradoPageableResource.Page.Index;
                 if (index == -1)
                     return false;
             }
-            var resource = resourceReference.HaloOnlinePageableResource.Resource;
+            var resource = resourceReference.EldoradoPageableResource.Resource;
             if (page == null || resource == null)
                 return false;
 
@@ -394,7 +394,7 @@ namespace TagTool.Cache.HaloOnline
             pageableResource.Resource.FlagsHO = ResourceData.DataFlags.HasPageableData;
             pageableResource.Resource.ResourceType = resourceType;
 
-            resourceReference.HaloOnlinePageableResource = pageableResource;
+            resourceReference.EldoradoPageableResource = pageableResource;
 
             var definitionStream = new MemoryStream();
             var dataStream = new MemoryStream();
@@ -489,7 +489,7 @@ namespace TagTool.Cache.HaloOnline
 
         public class LoadedResourceCache
         {
-            public ResourceCacheHaloOnline Cache { get; set; }
+            public ResourceCacheEldorado Cache { get; set; }
             public FileInfo File { get; set; }
         }
     }

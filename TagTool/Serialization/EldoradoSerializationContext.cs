@@ -1,5 +1,5 @@
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Common;
 using TagTool.IO;
 using System;
@@ -14,18 +14,18 @@ namespace TagTool.Serialization
     /// <summary>
     /// A serialization context for serializing and deserializing tags.
     /// </summary>
-    public class HaloOnlineSerializationContext : ISerializationContext
+    public class EldoradoSerializationContext : ISerializationContext
     {
         private const int DefaultBlockAlign = 4;
 
         private Stream Stream { get; }
-        protected GameCacheHaloOnlineBase Context { get; }
+        protected GameCacheEldoradoBase Context { get; }
         private CachedTagData Data { get; set; }
 
         /// <summary>
         /// Gets the tag that the context is operating on.
         /// </summary>
-        public CachedTagHaloOnline Tag { get; }
+        public CachedTagEldorado Tag { get; }
 
         /// <summary>
         /// Creates a tag serialization context which serializes data into a tag.
@@ -33,7 +33,7 @@ namespace TagTool.Serialization
         /// <param name="stream">The stream to write to.</param>
         /// <param name="context">The game cache context.</param>
         /// <param name="tag">The tag to overwrite.</param>
-        public HaloOnlineSerializationContext(Stream stream, GameCacheHaloOnlineBase context, CachedTagHaloOnline tag)
+        public EldoradoSerializationContext(Stream stream, GameCacheEldoradoBase context, CachedTagEldorado tag)
         {
             Stream = stream;
             Context = context;
@@ -58,13 +58,13 @@ namespace TagTool.Serialization
         {
             Data.MainStructOffset = mainStructOffset;
             Data.Data = data;
-            Context.TagCacheGenHO.SetTagData(Stream, Tag, Data);
+            Context.TagCacheEldorado.SetTagData(Stream, Tag, Data);
             Data = null;
         }
 
         public EndianReader BeginDeserialize(TagStructureInfo info)
         {
-            var data = Context.TagCacheGenHO.ExtractTagRaw(Stream, Tag);
+            var data = Context.TagCacheEldorado.ExtractTagRaw(Stream, Tag);
             var reader = new EndianReader(new MemoryStream(data));
             reader.BaseStream.Position = Tag.DefinitionOffset;
             return reader;
@@ -81,7 +81,7 @@ namespace TagTool.Serialization
 
         public virtual CachedTag GetTagByIndex(int index)
         {
-            return Context.TagCacheGenHO.GetTag(index);
+            return Context.TagCacheEldorado.GetTag(index);
         }
 
         public virtual CachedTag GetTagByName(TagGroup group, string name)
@@ -101,13 +101,13 @@ namespace TagTool.Serialization
 
         private class TagDataBlock : IDataBlock
         {
-            private readonly HaloOnlineSerializationContext _context;
+            private readonly EldoradoSerializationContext _context;
             private readonly List<CachedTagData.PointerFixup> _fixups = new List<CachedTagData.PointerFixup>();
             private readonly List<uint> _resourceOffsets = new List<uint>();
             private readonly List<uint> _tagReferenceOffsets = new List<uint>();
             private uint _align = DefaultBlockAlign;
 
-            public TagDataBlock(HaloOnlineSerializationContext context)
+            public TagDataBlock(EldoradoSerializationContext context)
             {
                 _context = context;
                 Stream = new MemoryStream();

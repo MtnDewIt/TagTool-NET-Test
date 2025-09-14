@@ -6,7 +6,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Tags;
 using TagTool.Serialization;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Scripting;
 using TagTool.Cache.Gen3;
 
@@ -15,18 +15,18 @@ namespace TagTool.Commands
     
     public class RebuildCacheFileCommand : Command
     {
-        GameCacheHaloOnline Cache;
+        GameCacheEldorado Cache;
 
-        Dictionary<int, CachedTagHaloOnline> ConvertedTags;
+        Dictionary<int, CachedTagEldorado> ConvertedTags;
         Dictionary<ResourceLocation, Dictionary<int, PageableResource>> CopiedResources;
 
         Dictionary<ResourceLocation, Stream> SourceResourceStreams;
         Dictionary<ResourceLocation, Stream> DestinationResourceStreams;
 
-        public RebuildCacheFileCommand(GameCacheHaloOnline cache) : base(false, "RebuildCacheFile", "Create new cache files from the current cache.", "RebuildCacheFile [dir]", "")
+        public RebuildCacheFileCommand(GameCacheEldorado cache) : base(false, "RebuildCacheFile", "Create new cache files from the current cache.", "RebuildCacheFile [dir]", "")
         {
             Cache = cache;
-            ConvertedTags = new Dictionary<int, CachedTagHaloOnline>();
+            ConvertedTags = new Dictionary<int, CachedTagEldorado>();
             CopiedResources = new Dictionary<ResourceLocation, Dictionary<int, PageableResource>>();
             DestinationResourceStreams = new Dictionary<ResourceLocation, Stream>();
             SourceResourceStreams = new Dictionary<ResourceLocation, Stream>();
@@ -50,7 +50,7 @@ namespace TagTool.Commands
 
             var destStringIdPath = Path.Combine(dir.FullName, Cache.StringIdCacheFile.Name);
 
-            var destCacheContext = new GameCacheHaloOnline(dir);
+            var destCacheContext = new GameCacheEldorado(dir);
             Cache.StringIdCacheFile.CopyTo(destStringIdPath, true);
 
             foreach (var value in Enum.GetValues(typeof(ResourceLocation)))
@@ -70,14 +70,14 @@ namespace TagTool.Commands
             using (var destStream = destCacheContext.OpenCacheReadWrite())
             {
                 // copy cfgt
-                CopyTag((CachedTagHaloOnline)Cache.TagCache.GetTag("global_tags", "cfgt"), Cache, srcStream, destCacheContext, destStream);
+                CopyTag((CachedTagEldorado)Cache.TagCache.GetTag("global_tags", "cfgt"), Cache, srcStream, destCacheContext, destStream);
 
                 // copy rmt2
                 foreach (var tag in Cache.TagCache.NonNull())
                 {
                     if (tag.Group.Tag == "rmt2" && !ConvertedTags.ContainsKey(tag.Index))
                     {
-                        CopyTag((CachedTagHaloOnline)tag, Cache, srcStream, destCacheContext, destStream);
+                        CopyTag((CachedTagEldorado)tag, Cache, srcStream, destCacheContext, destStream);
                     }
                 }
                 // copy scnr
@@ -85,7 +85,7 @@ namespace TagTool.Commands
                 {
                     if (tag.Group.Tag == "scnr" && !ConvertedTags.ContainsKey(tag.Index))
                     {
-                        CopyTag((CachedTagHaloOnline)tag, Cache, srcStream, destCacheContext, destStream);
+                        CopyTag((CachedTagEldorado)tag, Cache, srcStream, destCacheContext, destStream);
                     }
                 }
             }
@@ -111,7 +111,7 @@ namespace TagTool.Commands
         }
 
 
-        private CachedTagHaloOnline CopyTag(CachedTagHaloOnline srcTag, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)
+        private CachedTagEldorado CopyTag(CachedTagEldorado srcTag, GameCacheEldorado srcCacheContext, Stream srcStream, GameCacheEldorado destCacheContext, Stream destStream)
         {
             if (srcTag == null)
                 return null;
@@ -123,21 +123,21 @@ namespace TagTool.Commands
                 return ConvertedTags[srcTag.Index];
 
             var structureType = srcCacheContext.TagCache.TagDefinitions.GetTagDefinitionType(srcTag.Group);
-            var srcContext = new HaloOnlineSerializationContext(srcStream, srcCacheContext, srcTag);
+            var srcContext = new EldoradoSerializationContext(srcStream, srcCacheContext, srcTag);
             var tagData = srcCacheContext.Deserializer.Deserialize(srcContext, structureType);
-            CachedTagHaloOnline destTag = null;
+            CachedTagEldorado destTag = null;
 
-            for (var i = 0; i < destCacheContext.TagCacheGenHO.Tags.Count; i++)
+            for (var i = 0; i < destCacheContext.TagCacheEldorado.Tags.Count; i++)
             {
-                if (destCacheContext.TagCacheGenHO.Tags[i] == null)
+                if (destCacheContext.TagCacheEldorado.Tags[i] == null)
                 {
-                    destCacheContext.TagCacheGenHO.Tags[i] = destTag = new CachedTagHaloOnline(i, (TagGroupGen3)srcTag.Group);
+                    destCacheContext.TagCacheEldorado.Tags[i] = destTag = new CachedTagEldorado(i, (TagGroupGen3)srcTag.Group);
                     break;
                 }
             }
 
             if (destTag == null)
-                destTag = (CachedTagHaloOnline)destCacheContext.TagCacheGenHO.AllocateTag(srcTag.Group);
+                destTag = (CachedTagEldorado)destCacheContext.TagCacheEldorado.AllocateTag(srcTag.Group);
 
             ConvertedTags[srcTag.Index] = destTag;
 
@@ -151,13 +151,13 @@ namespace TagTool.Commands
             if (structureType == typeof(Scenario))
                 CopyScenario((Scenario)tagData);
 
-            var destContext = new HaloOnlineSerializationContext(destStream, destCacheContext, destTag);
+            var destContext = new EldoradoSerializationContext(destStream, destCacheContext, destTag);
             destCacheContext.Serializer.Serialize(destContext, tagData);
 
             return destTag;
         }
 
-        private object CopyData(object data, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)
+        private object CopyData(object data, GameCacheEldorado srcCacheContext, Stream srcStream, GameCacheEldorado destCacheContext, Stream destStream)
         {
             if (data == null)
                 return null;
@@ -167,8 +167,8 @@ namespace TagTool.Commands
             if (type.IsPrimitive)
                 return data;
 
-            if (type == typeof(CachedTagHaloOnline))
-                return CopyTag((CachedTagHaloOnline)data, srcCacheContext, srcStream, destCacheContext, destStream);
+            if (type == typeof(CachedTagEldorado))
+                return CopyTag((CachedTagEldorado)data, srcCacheContext, srcStream, destCacheContext, destStream);
 
             if (type == typeof(PageableResource))
                 return CopyResource((PageableResource)data, srcCacheContext, destCacheContext);
@@ -185,7 +185,7 @@ namespace TagTool.Commands
             return data;
         }
 
-        private Array CopyArray(Array array, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)
+        private Array CopyArray(Array array, GameCacheEldorado srcCacheContext, Stream srcStream, GameCacheEldorado destCacheContext, Stream destStream)
         {
             if (array.GetType().GetElementType().IsPrimitive)
                 return array;
@@ -200,7 +200,7 @@ namespace TagTool.Commands
             return array;
         }
 
-        private object CopyList(object list, Type type, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)
+        private object CopyList(object list, Type type, GameCacheEldorado srcCacheContext, Stream srcStream, GameCacheEldorado destCacheContext, Stream destStream)
         {
             if (type.GenericTypeArguments[0].IsPrimitive)
                 return list;
@@ -220,7 +220,7 @@ namespace TagTool.Commands
             return list;
         }
 
-        private object CopyStructure(TagStructure data, Type type, GameCacheHaloOnline srcCacheContext, Stream srcStream, GameCacheHaloOnline destCacheContext, Stream destStream)
+        private object CopyStructure(TagStructure data, Type type, GameCacheEldorado srcCacheContext, Stream srcStream, GameCacheEldorado destCacheContext, Stream destStream)
         {
             foreach (var field in data.GetTagFieldEnumerable(srcCacheContext.Version, srcCacheContext.Platform))
                 field.SetValue(data, CopyData(field.GetValue(data), srcCacheContext, srcStream, destCacheContext, destStream));
@@ -228,7 +228,7 @@ namespace TagTool.Commands
             return data;
         }
 
-        private PageableResource CopyResource(PageableResource pageable, GameCacheHaloOnline srcCacheContext, GameCacheHaloOnline destCacheContext)
+        private PageableResource CopyResource(PageableResource pageable, GameCacheEldorado srcCacheContext, GameCacheEldorado destCacheContext)
         {
             if (pageable == null || pageable.Page.Index < 0 || !pageable.GetLocation(out var location))
                 return null;

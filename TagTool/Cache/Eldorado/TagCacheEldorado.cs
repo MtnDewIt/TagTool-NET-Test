@@ -10,17 +10,17 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
-    public class TagCacheHaloOnline : TagCache
+    public class TagCacheEldorado : TagCache
     {
-        public List<CachedTagHaloOnline> Tags = new List<CachedTagHaloOnline>();
+        public List<CachedTagEldorado> Tags = new List<CachedTagEldorado>();
         public CacheFileSectionHeader Header;
 
         public override IEnumerable<CachedTag> TagTable { get => Tags; }
-        public readonly StringTableHaloOnline StringTableReference;
+        public readonly StringTableEldorado StringTableReference;
         
-        public TagCacheHaloOnline(CacheVersion version, Stream stream, StringTableHaloOnline stringTable, Dictionary<int, string> names = null)
+        public TagCacheEldorado(CacheVersion version, Stream stream, StringTableEldorado stringTable, Dictionary<int, string> names = null)
         {
             Version = version;
             CachePlatform = CachePlatform.Original;
@@ -74,7 +74,7 @@ namespace TagTool.Cache.HaloOnline
                 if (names.ContainsKey(i))
                     name = names[i];
 
-                var tag = new CachedTagHaloOnline(i, name) { HeaderOffset = headerOffsets[i] };
+                var tag = new CachedTagEldorado(i, name) { HeaderOffset = headerOffsets[i] };
                 Tags.Add(tag);
 
                 reader.BaseStream.Position = tag.HeaderOffset;
@@ -92,7 +92,7 @@ namespace TagTool.Cache.HaloOnline
         public override CachedTag AllocateTag(TagGroup type, string name = null)
         {
             var tagIndex = Tags.Count;
-            var tag = new CachedTagHaloOnline(tagIndex, type, name);
+            var tag = new CachedTagEldorado(tagIndex, type, name);
             Tags.Add(tag);
             return tag;
         }
@@ -102,12 +102,12 @@ namespace TagTool.Cache.HaloOnline
         /// </summary>
         public override CachedTag CreateCachedTag(int index, TagGroup group, string name = null)
         {
-            return new CachedTagHaloOnline(index, group, name);
+            return new CachedTagEldorado(index, group, name);
         }
 
         public override CachedTag CreateCachedTag()
         {
-            return new CachedTagHaloOnline(-1, new TagGroupGen3(), null);
+            return new CachedTagEldorado(-1, new TagGroupGen3(), null);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="stream">The stream to read from.</param>
         /// <param name="tag">The tag to read.</param>
         /// <returns>The data that was read.</returns>
-        public byte[] ExtractTagRaw(Stream stream, CachedTagHaloOnline tag)
+        public byte[] ExtractTagRaw(Stream stream, CachedTagEldorado tag)
         {
             if (tag == null)
                 throw new ArgumentNullException(nameof(tag));
@@ -137,7 +137,7 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="stream">The stream to read from.</param>
         /// <param name="tag">The tag to read.</param>
         /// <returns>The data that was read.</returns>
-        public CachedTagData ExtractTag(Stream stream, CachedTagHaloOnline tag)
+        public CachedTagData ExtractTag(Stream stream, CachedTagEldorado tag)
         {
             if (tag == null)
                 throw new ArgumentNullException(nameof(tag));
@@ -171,7 +171,7 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="tag">The tag to overwrite.</param>
         /// <param name="data">The data to overwrite the tag with.</param>
         /// <exception cref="System.ArgumentNullException">tag</exception>
-        public void SetTagDataRaw(Stream stream, CachedTagHaloOnline tag, byte[] data)
+        public void SetTagDataRaw(Stream stream, CachedTagEldorado tag, byte[] data)
         {
             if (tag == null)
                 throw new ArgumentNullException(nameof(tag));
@@ -201,7 +201,7 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="stream">The stream to write to.</param>
         /// <param name="tag">The tag to overwrite.</param>
         /// <param name="data">The data to store.</param>
-        public void SetTagData(Stream stream, CachedTagHaloOnline tag, CachedTagData data)
+        public void SetTagData(Stream stream, CachedTagEldorado tag, CachedTagData data)
         {
             if (tag == null)
                 throw new ArgumentNullException(nameof(tag));
@@ -213,7 +213,7 @@ namespace TagTool.Cache.HaloOnline
                 throw new ArgumentException("The tag data buffer is null");
 
             // Ensure the data fits
-            var headerSize = CachedTagHaloOnline.CalculateHeaderSize(data);
+            var headerSize = CachedTagEldorado.CalculateHeaderSize(data);
             var alignedHeaderSize = (uint)((headerSize + 0xF) & ~0xF);
             if (tag.HeaderOffset < 0)
                 tag.HeaderOffset = GetNewTagOffset(tag.Index);
@@ -247,7 +247,7 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="tag">The tag to read.</param>
         /// <param name="dataOffset">On return, this will contain the offset of the tag's data relative to its header.</param>
         /// <returns>The description that was built. </returns>
-        private static CachedTagData BuildTagData(Stream stream, CachedTagHaloOnline tag, out uint dataOffset)
+        private static CachedTagData BuildTagData(Stream stream, CachedTagEldorado tag, out uint dataOffset)
         {
             var data = new CachedTagData
             {
@@ -302,7 +302,7 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="oldSize">The current size of the block to resize.</param>
         /// <param name="newSize">The new size of the block.</param>
         /// <exception cref="System.ArgumentException">Cannot resize a block to a negative size</exception>
-        private void ResizeBlock(Stream stream, CachedTagHaloOnline tag, long startOffset, long oldSize, long newSize)
+        private void ResizeBlock(Stream stream, CachedTagEldorado tag, long startOffset, long oldSize, long newSize)
         {
             if (newSize < 0)
                 throw new ArgumentException("Cannot resize a block to a negative size");
@@ -327,7 +327,7 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="startOffset">The offset where the resize operation took place.</param>
         /// <param name="sizeDelta">The amount to add to each tag offset after the start offset.</param>
         /// <param name="ignore">A tag to ignore.</param>
-        private void FixTagOffsets(long startOffset, long sizeDelta, CachedTagHaloOnline ignore)
+        private void FixTagOffsets(long startOffset, long sizeDelta, CachedTagEldorado ignore)
         {
             foreach (var adjustTag in Tags.Where(t => t != null && t != ignore && t.HeaderOffset >= startOffset))
                 adjustTag.HeaderOffset += sizeDelta;
@@ -406,14 +406,14 @@ namespace TagTool.Cache.HaloOnline
             serializer.Serialize(dataContext, Header);
         }
 
-        public HashSet<CachedTagHaloOnline> FindDependencies(CachedTagHaloOnline tag)
+        public HashSet<CachedTagEldorado> FindDependencies(CachedTagEldorado tag)
         {
-            var result = new HashSet<CachedTagHaloOnline>();
+            var result = new HashSet<CachedTagEldorado>();
             FindDependencies(result, tag);
             return result;
         }
 
-        private void FindDependencies(ISet<CachedTagHaloOnline> results, CachedTagHaloOnline tag)
+        private void FindDependencies(ISet<CachedTagEldorado> results, CachedTagEldorado tag)
         {
             foreach (var index in tag.Dependencies)
             {

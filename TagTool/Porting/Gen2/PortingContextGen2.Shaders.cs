@@ -19,7 +19,7 @@ using static TagTool.Tags.Definitions.MultiplayerVariantSettingsInterfaceDefinit
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using ShaderGen2 = TagTool.Tags.Definitions.Gen2.Shader;
 using TagGroupGen3 = TagTool.Cache.Gen3.TagGroupGen3;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen2
@@ -1429,7 +1429,7 @@ namespace TagTool.Porting.Gen2
             RenderMethodDefinition rmdf;
 
             RenderMethodTemplate rmt2Definition;
-            if (!CacheContext.TagCacheGenHO.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
+            if (!CacheContext.TagCacheEldorado.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
             {
                 if (CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
                 {
@@ -1500,7 +1500,7 @@ namespace TagTool.Porting.Gen2
             };
 
             rmDefinition.ShaderProperties.Add(shaderProperty);
-            rmDefinition.BaseRenderMethod = CacheContext.TagCacheGenHO.GetTag<RenderMethodDefinition>(rmt2Desc.GetRmdfName());
+            rmDefinition.BaseRenderMethod = CacheContext.TagCacheEldorado.GetTag<RenderMethodDefinition>(rmt2Desc.GetRmdfName());
             Definition = rmDefinition;
 
             // Add all the texture maps
@@ -1571,7 +1571,7 @@ namespace TagTool.Porting.Gen2
                 //                string originalName = h2_texture_reference[i].Bitmap.ToString();
                 //                newSpec.Name = originalName.Insert(originalName.LastIndexOf(".bitmap"), "_spec");
                 //
-                //                //CacheContext.TagCacheGenHO.Tags[tagIndex] = (CachedTagHaloOnline)newSpec;
+                //                //CacheContext.TagCacheGenHO.Tags[tagIndex] = (CachedTagEldorado)newSpec;
                 //
                 //                bitmapBase.Data = BitmapDecoder.FillR(bitmapBase.Data, multiChannelBitmapImage.Width, multiChannelBitmapImage.Height);
                 //
@@ -1620,7 +1620,7 @@ namespace TagTool.Porting.Gen2
                                         }
                                         break;
                                 }
-                                Definition.ShaderProperties[0].TextureConstants[samplerIndex].Bitmap = CacheContext.TagCacheGenHO.GetTag(current_bitmap);
+                                Definition.ShaderProperties[0].TextureConstants[samplerIndex].Bitmap = CacheContext.TagCacheEldorado.GetTag(current_bitmap);
                                 break;
                             }
                         }

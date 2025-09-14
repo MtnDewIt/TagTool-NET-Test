@@ -8,7 +8,7 @@ using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -82,7 +82,7 @@ namespace TagTool.Commands.Modding
             if (mapFile.MapFileBlf == null)
                 return new TagToolError(CommandError.CustomError, "Invalid map map file. Missing blf data");
 
-            var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
+            var header = (CacheFileHeaderEldorado)mapFile.Header;
 
             // handle optional sandbox.map argument
             if (args.Count > 1)
@@ -149,7 +149,7 @@ namespace TagTool.Commands.Modding
                 mapFile.Read(new EndianReader(mapStream));
                 mapStream.Position = 0;
 
-                var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
+                var header = (CacheFileHeaderEldorado)mapFile.Header;
                 var mapVariant = mapFile.MapFileBlf?.MapVariant?.MapVariant;
                 var mapName = mapFile.MapFileBlf?.Scenario?.Names[0]?.Name;
 
@@ -161,7 +161,7 @@ namespace TagTool.Commands.Modding
 
         private void InjectMapVariantIntoMapFile(MapFile mapFile, Blf mapVariantBlf)
         {
-            var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
+            var header = (CacheFileHeaderEldorado)mapFile.Header;
 
             mapVariantBlf.MapVariant.MapVariant.MapId = header.MapId;
             if (mapFile.MapFileBlf.Scenario != null)

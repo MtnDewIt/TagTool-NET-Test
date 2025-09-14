@@ -8,14 +8,14 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1A8, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1AC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline235640)]
-    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1B4, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1AC, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado235640)]
+    [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1B4, MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "projectile", Tag = "proj", Size = 0x1F8, MinVersion = CacheVersion.HaloReach)]
     public class Projectile : GameObject
     {
-        [TagField(MaxVersion = CacheVersion.HaloOnline235640)]
+        [TagField(MaxVersion = CacheVersion.Eldorado235640)]
         public ProjectileFlags Flags;
-        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123)]
         public ProjectileFlagsHO FlagsHO;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public ProjectileFlagsReach FlagsReach;
@@ -38,9 +38,9 @@ namespace TagTool.Tags.Definitions
         public float MaximumRange; // detonates after traveling this distance (world units)
         public float BounceMaximumRange; // detonates after this distance, but is reset after a bounce. Combines with maximum range
         
-        [TagField(MinVersion = CacheVersion.HaloOnline301003)]
+        [TagField(MinVersion = CacheVersion.Eldorado301003)]
         public float MaxLatchTimeToDetonate; // projectile will detonate regardless of weapon latching after this total time (seconds)
-        [TagField(MinVersion = CacheVersion.HaloOnline301003)]
+        [TagField(MinVersion = CacheVersion.Eldorado301003)]
         public float MaxLatchTimeToArm; // projectile will arm itself regardless of detonation mode if latched for this amount of time. (seconds)
         
         public AiSoundVolume DetonationNoiseForAi;
@@ -66,12 +66,12 @@ namespace TagTool.Tags.Definitions
 
         public DamageReportingType DamageReportingType;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public sbyte DamageReportingVariant; // weapon variant
 
         [TagField(Length = 3, Flags = Padding, MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(Length = 1, Flags = Padding, MinVersion = CacheVersion.HaloReach)]
-        [TagField(Length = 1, Flags = Padding, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 1, Flags = Padding, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Padding1;
        
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -99,7 +99,7 @@ namespace TagTool.Tags.Definitions
         public float InitialVelocity;// bullet's velocity when inflicting maximum damage (world units per second)
         public float FinalVelocity; // bullet's velocity when inflicting minimum damage (world units per second)
         
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED)]
         public float IndirectFireVelocity;
         
         public float AiVelocityScaleNormal; // scale on the initial velocity when fired by the ai on normal difficulty
@@ -266,11 +266,11 @@ namespace TagTool.Tags.Definitions
             Quiet
         }
         
-        [TagStructure(Size = 0x40, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloReach)]
         public class ProjectileMaterialResponseBlock : TagStructure
 		{
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public ProjectileMaterialResponseFlags Flags;
             public MaterialResponseValue DefaultResponse;
 
@@ -298,7 +298,7 @@ namespace TagTool.Tags.Definitions
             public Angle AngularNoise; // (degrees) angle of incidence is randomly perturbed by at most this amount to simulate irregularity.
             public float VelocityNoise; // (wu/s) the velocity is randomly perturbed by at most this amount to simulate irregularity.
             public float InitialFriction; // the fraction of the projectile's velocity lost on penetration
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float MaximumDistance; // the maximum distance the projectile can travel through on object of this material
             public float ParallelFriction; // the fraction of the projectile's velocity parallel to the surface lost on impact
             public float PerpendicularFriction; // the fraction of the projectile's velocity perpendicular to the surface lost on impact

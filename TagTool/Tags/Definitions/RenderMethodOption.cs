@@ -14,7 +14,7 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x48, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x54, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x48, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloReach)]
         public class ParameterBlock : TagStructure
         {
@@ -23,7 +23,7 @@ namespace TagTool.Tags.Definitions
             public StringId UiNameOverride;
             public OptionDataType Type;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
             public RenderMethodExtern RenderMethodExtern;
             [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
             public RenderMethodExternH3MCC RenderMethodExternH3MCC;

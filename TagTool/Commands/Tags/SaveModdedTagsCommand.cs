@@ -7,9 +7,9 @@ namespace TagTool.Commands.Tags
 {
     class SaveModdedTagsCommand : Command
     {
-        public GameCacheHaloOnlineBase Cache { get; }
+        public GameCacheEldoradoBase Cache { get; }
 
-        public SaveModdedTagsCommand(GameCacheHaloOnlineBase cache) :
+        public SaveModdedTagsCommand(GameCacheEldoradoBase cache) :
             base(true,
 
                 "SaveModdedTags",

@@ -6,7 +6,7 @@ using TagTool.Tags;
 namespace TagTool.Audio
 {
     [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x38, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.ReleaseBuild)]
     [TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
     public class PitchRange : TagStructure
@@ -14,14 +14,14 @@ namespace TagTool.Audio
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild)]
         public short ImportNameIndex;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public StringId ImportName;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild)]
         public short PitchRangeParametersIndex;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public PitchRangeParameter PitchRangeParameters;
 
@@ -29,26 +29,26 @@ namespace TagTool.Audio
         // Attenuation override
         //
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public SoundDistanceParameters DistanceParameters;
 
         /// <summary>
         /// keeps track of played permutations
         /// </summary>
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public int RuntimePermutationFlags;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public short PermutationCount;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public sbyte RuntimeDiscardedPermutationIndex;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public sbyte RuntimeLastPermutationIndex;
 
@@ -70,7 +70,7 @@ namespace TagTool.Audio
         [TagField(Platform = CachePlatform.MCC, BuildType = CacheBuildType.ReleaseBuild)]
         public uint EncodedPermutationInfoMCC;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public List<Permutation> Permutations;
     }

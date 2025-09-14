@@ -4,40 +4,40 @@ using System.IO;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache.Resources;
 
 namespace TagTool.Cache
 {
-    public abstract class GameCacheHaloOnlineBase : GameCache
+    public abstract class GameCacheEldoradoBase : GameCache
     {
-        public TagCacheHaloOnline TagCacheGenHO;
-        public StringTableHaloOnline StringTableHaloOnline;
-        public ResourceCachesHaloOnlineBase ResourceCaches;
+        public TagCacheEldorado TagCacheEldorado;
+        public StringTableEldorado StringTableEldorado;
+        public ResourceCachesEldoradoBase ResourceCaches;
 
         public List<int> ModifiedTags = new List<int>();
 
-        public override TagCache TagCache => TagCacheGenHO;
-        public override StringTable StringTable => StringTableHaloOnline;
+        public override TagCache TagCache => TagCacheEldorado;
+        public override StringTable StringTable => StringTableEldorado;
         public override ResourceCache ResourceCache => ResourceCaches;
 
         #region Serialization Methods
 
         public override void Serialize(Stream stream, CachedTag instance, object definition)
         {
-            if (typeof(CachedTagHaloOnline) == instance.GetType())
-                Serialize(stream, (CachedTagHaloOnline)instance, definition);
+            if (typeof(CachedTagEldorado) == instance.GetType())
+                Serialize(stream, (CachedTagEldorado)instance, definition);
             else
                 throw new Exception($"Try to serialize a {instance.GetType()} into an Halo Online Game Cache");
             
         }
 
-        public void Serialize(Stream stream, CachedTagHaloOnline instance, object definition)
+        public void Serialize(Stream stream, CachedTagEldorado instance, object definition)
         {
             if (!ModifiedTags.Contains(instance.Index))
                 SignalModifiedTag(instance.Index);
 
-            Serializer.Serialize(new HaloOnlineSerializationContext(stream, this, instance), definition);
+            Serializer.Serialize(new EldoradoSerializationContext(stream, this, instance), definition);
         }
 
         public T Deserialize<T>(ISerializationContext context) =>
@@ -47,10 +47,10 @@ namespace TagTool.Cache
             Deserializer.Deserialize(context, type);
 
         public override T Deserialize<T>(Stream stream, CachedTag instance) =>
-            Deserialize<T>(new HaloOnlineSerializationContext(stream, this, (CachedTagHaloOnline)instance));
+            Deserialize<T>(new EldoradoSerializationContext(stream, this, (CachedTagEldorado)instance));
 
         public override object Deserialize(Stream stream, CachedTag instance) =>
-            Deserialize(new HaloOnlineSerializationContext(stream, this, (CachedTagHaloOnline)instance), TagCache.TagDefinitions.GetTagDefinitionType(instance.Group));
+            Deserialize(new EldoradoSerializationContext(stream, this, (CachedTagEldorado)instance), TagCache.TagDefinitions.GetTagDefinitionType(instance.Group));
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace TagTool.Cache
             {
                 foreach (var instance in ModifiedTags)
                 {
-                    var tag = TagCacheGenHO.Tags[instance];
+                    var tag = TagCacheEldorado.Tags[instance];
                     string name;
                     if (tag.Name == null)
                         name = $"0x{tag.Index:X8}";

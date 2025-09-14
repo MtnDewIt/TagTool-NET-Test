@@ -17,14 +17,14 @@ namespace TagTool.Tags.Definitions
 
         public List<DataReferenceBlock> PerPixelLightmapDataReferences;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<CachedTag> PerVertexLightmapDataReferences;
 
         public List<Airprobe> Airprobes;
         public List<SceneryLightProbe> SceneryLightProbes;
         public List<MachineLightProbes> MachineLightProbes;
 
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0xC, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0xC, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] DeprecatedLightmapBspDataBlock = new byte[0xC];
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -32,7 +32,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         public List<NullBlock> UberLightBspIndexRemapping;
 
-        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
         public class DataReferenceBlock : TagStructure
         {

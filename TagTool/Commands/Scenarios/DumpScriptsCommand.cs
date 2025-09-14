@@ -47,7 +47,7 @@ namespace TagTool.Commands.Scenarios
         {
             case 0:
                 {
-                    if (Cache.Version == CacheVersion.HaloOnlineED)
+                    if (Cache.Version == CacheVersion.EldoradoED)
                         csvFileName = "ED" + csvFileName;
                     else
                         csvFileName = $"{Cache.Version}" + csvFileName;
@@ -160,12 +160,12 @@ namespace TagTool.Commands.Scenarios
                 case CacheVersion.Halo3ODST:
                     return type.ToString();
 
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
+                case CacheVersion.EldoradoED:
+                case CacheVersion.Eldorado106708:
                     return type.ToString();
 
                 default:
-                    Log.Warning($"No HsType found for cache \"{version}\". Defaulting to HaloOnline");
+                    Log.Warning($"No HsType found for cache \"{version}\". Defaulting to Eldorado");
                     return type.ToString();
             }
         }

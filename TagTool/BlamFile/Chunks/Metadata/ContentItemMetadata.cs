@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace TagTool.BlamFile.Chunks.Metadata
 {
-    [TagStructure(Size = 0xF8, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0xF8, MaxVersion = CacheVersion.Eldorado700123)]
     public class ContentItemMetadata : TagStructure
     {
         public ulong UniqueId;

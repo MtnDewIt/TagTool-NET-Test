@@ -7,9 +7,9 @@ using TagTool.Common.Logging;
 using TagTool.Serialization;
 using TagTool.Tags;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
-    public class ResourceCachesHaloOnline : ResourceCachesHaloOnlineBase
+    public class ResourceCachesEldorado : ResourceCachesEldoradoBase
     {
         public DirectoryInfo Directory;
 
@@ -28,7 +28,7 @@ namespace TagTool.Cache.HaloOnline
         private Dictionary<ResourceLocation, LoadedResourceCache> LoadedResourceCaches { get; } = new Dictionary<ResourceLocation, LoadedResourceCache>();
 
 
-        public ResourceCachesHaloOnline(GameCacheHaloOnlineBase cache)
+        public ResourceCachesEldorado(GameCacheEldoradoBase cache)
         {
             Cache = cache;
             Serializer = new ResourceSerializer(Cache.Version, Cache.Platform);
@@ -42,7 +42,7 @@ namespace TagTool.Cache.HaloOnline
 
         public override Stream OpenCacheWrite(ResourceLocation location) => LoadResourceCache(location).File.OpenWrite();
 
-        public override ResourceCacheHaloOnline GetResourceCache(ResourceLocation location)
+        public override ResourceCacheEldorado GetResourceCache(ResourceLocation location)
         {
             return LoadResourceCache(location).Cache;
         }
@@ -51,7 +51,7 @@ namespace TagTool.Cache.HaloOnline
         {
             if (!LoadedResourceCaches.TryGetValue(location, out LoadedResourceCache cache) && location != ResourceLocation.None)
             {
-                ResourceCacheHaloOnline resourceCache;
+                ResourceCacheEldorado resourceCache;
 
                 var file = new FileInfo(Path.Combine(Directory.FullName, ResourceCacheNames[location]));
                 Stream stream;
@@ -73,7 +73,7 @@ namespace TagTool.Cache.HaloOnline
 
                 using (stream)
                 {
-                    resourceCache = new ResourceCacheHaloOnline(Cache.Version, Cache.Platform, stream);
+                    resourceCache = new ResourceCacheEldorado(Cache.Version, Cache.Platform, stream);
                 }
 
                 cache = new LoadedResourceCache

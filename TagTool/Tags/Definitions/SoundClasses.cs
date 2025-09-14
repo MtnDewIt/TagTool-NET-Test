@@ -14,7 +14,7 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x98, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0xC0, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0xD4, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
-        [TagStructure(Size = 0xA0, MinVersion = CacheVersion.HaloOnlineED)]
+        [TagStructure(Size = 0xA0, MinVersion = CacheVersion.EldoradoED)]
         public class Class : TagStructure
 		{
             public short MaxSoundsPerTag;
@@ -50,9 +50,9 @@ namespace TagTool.Tags.Definitions
             // Distance Parameters
             //
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Bounds<float> DefaultDistanceBounds;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Bounds<float> DistanceBounds;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public SoundClassDistanceParameters DistanceParameters;
@@ -82,7 +82,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
             public SoundClassDucking PdaDucking;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float UnknownCortanaEffect;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -98,9 +98,9 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float TransmissionInterpolationTime; // default is 0.5 seconds (seconds)
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float ObstructionMaxBend;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float OcclusionMaxBend;
 
             public int XmaCompressionLevel;

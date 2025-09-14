@@ -7,7 +7,7 @@ namespace TagTool.Porting.Gen3
 {
     partial class PortingContextGen3
     {
-        private ShieldImpact PreConvertShieldImpact(ShieldImpact shit, CacheVersion blamVersion, GameCacheHaloOnlineBase cache)
+        private ShieldImpact PreConvertShieldImpact(ShieldImpact shit, CacheVersion blamVersion, GameCacheEldoradoBase cache)
         {
             CachedTag noise1 = shit.H3Values.ShieldImpactNoiseTexture1;
             CachedTag noise2 = shit.H3Values.ShieldImpactNoiseTexture2;

@@ -9,9 +9,9 @@ namespace TagTool.Commands.Tags
 {
     class NameShaderTagsCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache { get; }
+        private GameCacheEldoradoBase Cache { get; }
 
-        public NameShaderTagsCommand(GameCacheHaloOnlineBase cache)
+        public NameShaderTagsCommand(GameCacheEldoradoBase cache)
             : base(false,
 
                   "NameShaderTags",
@@ -103,7 +103,7 @@ namespace TagTool.Commands.Tags
                 for (int i = 0; i < rasg.DefaultShaders.Count; i++)
                 {
                     string name;
-                    if (Cache.Version == CacheVersion.HaloOnline700123 && i == 110)
+                    if (Cache.Version == CacheVersion.Eldorado700123 && i == 110)
                         name = "unknown_6E";
                     else
                         name = ((HaloShaderGenerator.Globals.ExplicitShader)i).ToString();

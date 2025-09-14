@@ -10,10 +10,10 @@ namespace TagTool.Commands.Scenarios
     public class ConvertPlacementLightprobesCommand : Command 
     {
         public GameCache Cache { get; set; }
-        public GameCacheHaloOnlineBase CacheContext { get; set; }
+        public GameCacheEldoradoBase CacheContext { get; set; }
         public Scenario Scnr { get; set; }
 
-        public ConvertPlacementLightprobesCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext, Scenario scnr) : base
+        public ConvertPlacementLightprobesCommand(GameCache cache, GameCacheEldoradoBase cacheContext, Scenario scnr) : base
         (
             false,
             "ConvertPlacementLightprobes",

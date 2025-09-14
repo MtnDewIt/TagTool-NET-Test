@@ -12,7 +12,7 @@ namespace TagTool.Bitmaps
         {
             BitmapTextureInteropResource result = BitmapUtils.CreateEmptyBitmapTextureInteropResource();
 
-            if (cache is GameCacheHaloOnlineBase)
+            if (cache is GameCacheEldoradoBase)
             {
                 // TODO: for cubemaps, fix mipmap order to d3d9 expected order
                 result.Texture.Definition.PrimaryResourceData = new TagData(file.BitmapData);

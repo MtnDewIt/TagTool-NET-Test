@@ -25,7 +25,7 @@ namespace TagTool.Porting.Gen3
         private readonly RenderGeometryConverter GeometryConverter;
         private TraversalData _traversalData = null;
 
-        public PortingContextGen3(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
+        public PortingContextGen3(GameCacheEldoradoBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
         {
             GeometryConverter = new RenderGeometryConverter(cacheContext, blamCache);
         }
@@ -115,7 +115,7 @@ namespace TagTool.Porting.Gen3
                     }
                     break;
 
-                case ShieldImpact shit when BlamCache.Version < CacheVersion.HaloOnlineED:
+                case ShieldImpact shit when BlamCache.Version < CacheVersion.EldoradoED:
                     shit = PreConvertShieldImpact(shit, BlamCache.Version, CacheContext);
                     // These won't convert automatically due to versioning
                     shit.Plasma.PlasmaNoiseBitmap1 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap1);
@@ -577,7 +577,7 @@ namespace TagTool.Porting.Gen3
                 string templateName = renderMethod.ShaderProperties[0].Template.Name;
                 if (TagTool.Shaders.ShaderMatching.ShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
                 {
-                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
+                    foreach (var tag in CacheContext.TagCacheEldorado.TagTable)
                     {
                         if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
                         {

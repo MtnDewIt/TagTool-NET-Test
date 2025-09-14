@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Extensions;
 
 namespace TagTool.Commands.Tags
 {
     public class ImportTagCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache { get; }
+        private GameCacheEldoradoBase Cache { get; }
 
-        public ImportTagCommand(GameCacheHaloOnlineBase cache)
+        public ImportTagCommand(GameCacheEldoradoBase cache)
             : base(true,
 
                   "ImportTag",
@@ -46,7 +46,7 @@ namespace TagTool.Commands.Tags
 
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                Cache.TagCacheGenHO.SetTagDataRaw(stream, (CachedTagHaloOnline)instance, data);
+                Cache.TagCacheEldorado.SetTagDataRaw(stream, (CachedTagEldorado)instance, data);
 
                 // Reserialize to avoid issues with missing tag reference fixups
                 var definition = Cache.Deserialize(stream, instance);

@@ -11,7 +11,7 @@ namespace TagTool.BlamFile.Chunks
 {
     [TagStructure(Size = 0xFE60, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0xFC74, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-    [TagStructure(Size = 0x259E0, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x259E0, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x1F00C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x1F514, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x2DFF4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4, Platform = CachePlatform.Original)]
@@ -26,11 +26,11 @@ namespace TagTool.BlamFile.Chunks
         public byte[] UnknownData;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708, Platform = CachePlatform.Original)]
         public SavedFilmHeader Header;
 
         [TagStructure(Size = 0xFE60, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x259E0, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x259E0, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708, Platform = CachePlatform.Original)]
         public class SavedFilmHeader : TagStructure 
         {
             [TagField(Length = 0x4)]
@@ -71,13 +71,13 @@ namespace TagTool.BlamFile.Chunks
             public int SnippetStartTick;
 
             [TagField(Length = 0x538, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-            [TagField(Length = 0xD80, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708, Platform = CachePlatform.Original)]
+            [TagField(Length = 0xD80, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708, Platform = CachePlatform.Original)]
             public byte[] PaddingToAlignForUtilityDrive;
         }
 
         public static BlfSavedFilmHeader Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext)
         {
-            if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline106708) && deserializer.CachePlatform == CachePlatform.Original)
+            if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.Halo3Retail, CacheVersion.Eldorado106708) && deserializer.CachePlatform == CachePlatform.Original)
             {
                 var savedFilmHeader = new BlfSavedFilmHeader();
 
@@ -114,7 +114,7 @@ namespace TagTool.BlamFile.Chunks
                 {
                     savedFilmHeader.Header.PaddingToAlignForUtilityDrive = reader.ReadBytes(0x538);
                 }
-                else if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.HaloOnline106708) 
+                else if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.Eldorado106708) 
                 {
                     savedFilmHeader.Header.PaddingToAlignForUtilityDrive = reader.ReadBytes(0xD80);
                 }
@@ -129,7 +129,7 @@ namespace TagTool.BlamFile.Chunks
 
         public static void Encode(TagSerializer serializer, DataSerializationContext dataContext, BlfSavedFilmHeader savedFilmHeader)
         {
-            if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline106708) && serializer.CachePlatform == CachePlatform.Original) 
+            if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.Eldorado106708) && serializer.CachePlatform == CachePlatform.Original) 
             {
                 GameOptions.Encode(savedFilmHeader.Header.Options);
             }

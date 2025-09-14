@@ -31,15 +31,15 @@ namespace TagTool.Geometry
         /// </summary>
         public RenderGeometryApiResourceDefinition Convert(RenderGeometry geometry, RenderGeometryApiResourceDefinition resourceDefinition)
         {
-            if(CacheVersionDetection.IsBetween(DestCache.Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline106708))
+            if(CacheVersionDetection.IsBetween(DestCache.Version, CacheVersion.EldoradoED, CacheVersion.Eldorado106708))
             {
                 if (CacheVersionDetection.IsBetween(SourceCache.Version, CacheVersion.Halo3Beta, CacheVersion.Halo3ODST))
                 {
                     return ConvertHalo3(geometry, resourceDefinition);
                 }
-                else if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, SourceCache.Version))
+                else if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, SourceCache.Version))
                 {
-                    return ConvertHaloOnline(geometry, resourceDefinition);
+                    return ConvertEldorado(geometry, resourceDefinition);
                 }
                 else if (SourceCache.Version >= CacheVersion.HaloReach)
                 {
@@ -50,10 +50,10 @@ namespace TagTool.Geometry
             return null;
         }
 
-        private RenderGeometryApiResourceDefinition ConvertHaloOnline(RenderGeometry geometry, RenderGeometryApiResourceDefinition resourceDefinition)
+        private RenderGeometryApiResourceDefinition ConvertEldorado(RenderGeometry geometry, RenderGeometryApiResourceDefinition resourceDefinition)
         {
             // The format changed starting with version 235640
-            if (SourceCache.Version <= CacheVersion.HaloOnline106708)
+            if (SourceCache.Version <= CacheVersion.Eldorado106708)
                 return resourceDefinition;
             foreach(var buffer in resourceDefinition.VertexBuffers)
             {
@@ -188,7 +188,7 @@ namespace TagTool.Geometry
                 else
                 {
                     geometry.Resource = DestCache.ResourceCache.CreateRenderGeometryApiResource(resourceDefinition);
-                    geometry.Resource.HaloOnlinePageableResource.Resource.ResourceType = TagResourceTypeGen3.None;
+                    geometry.Resource.EldoradoPageableResource.Resource.ResourceType = TagResourceTypeGen3.None;
                     return resourceDefinition;
                 }
             }
@@ -553,7 +553,7 @@ namespace TagTool.Geometry
                 else
                 {
                     geometry.Resource = DestCache.ResourceCache.CreateRenderGeometryApiResource(resourceDefinition);
-                    geometry.Resource.HaloOnlinePageableResource.Resource.ResourceType = TagResourceTypeGen3.None;
+                    geometry.Resource.EldoradoPageableResource.Resource.ResourceType = TagResourceTypeGen3.None;
                     return resourceDefinition;
                 }
             }

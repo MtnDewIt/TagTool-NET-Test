@@ -6,23 +6,23 @@ namespace TagTool.Audio
 {
     [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x30, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach)]
     public class Promotion : TagStructure
 	{
         public List<Rule> Rules;
         public List<RuntimeTimer> RuntimeTimers;
 
-        public uint Unknown1;
-        public uint Unknown2;
-        public uint Unknown3;
+        public uint RuntimeActivePromotionIndex;
+        public uint RuntimeLastPromotionTime;
+        public uint RuntimeSuppressionTimeout;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint LongestPermutationDuration;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint TotalSampleSize;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
-        public uint Unknown11;
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding, Gen = CacheGeneration.Eldorado)]
+        public uint Padding;
 
         [TagStructure(Size = 0x10)]
         public class Rule : TagStructure
@@ -35,8 +35,8 @@ namespace TagTool.Audio
             /// </summary>
             public float SuppressionTime;   // seconds
 
-            public uint Unknown1;
-            public uint Unknown2;
+            public uint RuntimeRolloverTime;
+            public uint ImpulsePromotionTime;
         }
 
         [TagStructure(Size = 0x4)]

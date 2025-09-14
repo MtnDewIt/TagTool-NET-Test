@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using System.Linq;
 using System.IO;
 using TagTool.IO;
@@ -54,18 +54,18 @@ namespace TagTool.Commands.Tags
 
             using (var stream = Cache.OpenCacheReadWrite()) // TODO: implement better way of nulling tags, support gen3
             {
-                if (Cache is GameCacheHaloOnlineBase)
+                if (Cache is GameCacheEldoradoBase)
                 {
-                    var cacheHaloOnline = Cache as GameCacheHaloOnlineBase;
-                    var tagHaloOnline = tag as CachedTagHaloOnline;
+                    var cacheEldorado = Cache as GameCacheEldoradoBase;
+                    var tagEldorado = tag as CachedTagEldorado;
 
                     if(nullResources)
-                        NullOrphanedResources(cacheHaloOnline, stream, tagHaloOnline);
+                        NullOrphanedResources(cacheEldorado, stream, tagEldorado);
 
-                    cacheHaloOnline.TagCacheGenHO.Tags[tag.Index] = null;
+                    cacheEldorado.TagCacheEldorado.Tags[tag.Index] = null;
 
                     byte[] blankheader = Enumerable.Repeat((byte)0x00, 0x24).ToArray();
-                    cacheHaloOnline.TagCacheGenHO.SetTagDataRaw(stream, tagHaloOnline, blankheader);
+                    cacheEldorado.TagCacheEldorado.SetTagDataRaw(stream, tagEldorado, blankheader);
                 }
 
                 else
@@ -78,11 +78,11 @@ namespace TagTool.Commands.Tags
             return true;
         }
 
-        private static void NullOrphanedResources(GameCacheHaloOnlineBase cache, Stream stream, CachedTagHaloOnline deletedTag)
+        private static void NullOrphanedResources(GameCacheEldoradoBase cache, Stream stream, CachedTagEldorado deletedTag)
         {
             // Collect all resource references from the cache
             var allResources = new List<PageableResource>();
-            foreach (CachedTagHaloOnline tag in cache.TagCache.NonNull())
+            foreach (CachedTagEldorado tag in cache.TagCache.NonNull())
                 GetTagResources(allResources, cache, stream, tag);
 
             // Get the deleted tag's resources
@@ -111,7 +111,7 @@ namespace TagTool.Commands.Tags
             }
         }
 
-        private static void GetTagResources(List<PageableResource> resources, GameCache cache, Stream stream, CachedTagHaloOnline tag)
+        private static void GetTagResources(List<PageableResource> resources, GameCache cache, Stream stream, CachedTagEldorado tag)
         {
             var reader = new EndianReader(stream, cache.Endianness);
             var ctx = new DataSerializationContext(reader);

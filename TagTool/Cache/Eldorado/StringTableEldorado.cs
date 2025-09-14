@@ -6,26 +6,26 @@ using System.Text;
 using TagTool.Common;
 using TagTool.IO;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
-    public class StringTableHaloOnline : StringTable
+    public class StringTableEldorado : StringTable
     {
         private object _cacheLock = new object();
 
-        public StringTableHaloOnline(CacheVersion version)
+        public StringTableEldorado(CacheVersion version)
         {
             Version = version;
             Resolver = null;
 
-            if (CacheVersionDetection.Compare(Version, CacheVersion.HaloOnline700123) >= 0)
+            if (CacheVersionDetection.Compare(Version, CacheVersion.Eldorado700123) >= 0)
                 Resolver = new StringIdResolverMS30();
-            else if (CacheVersionDetection.Compare(Version, CacheVersion.HaloOnline498295) >= 0)
+            else if (CacheVersionDetection.Compare(Version, CacheVersion.Eldorado498295) >= 0)
                 Resolver = new StringIdResolverMS28();
             else
                 Resolver = new StringIdResolverMS23();
         }
 
-        public StringTableHaloOnline(CacheVersion version, Stream stream) : this(version)
+        public StringTableEldorado(CacheVersion version, Stream stream) : this(version)
         {
             if ( stream != null && stream.Length != 0)
                 Load(stream);

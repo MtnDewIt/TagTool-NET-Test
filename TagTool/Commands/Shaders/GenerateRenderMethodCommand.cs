@@ -15,9 +15,9 @@ namespace TagTool.Commands.Shaders
 {
     public class GenerateRenderMethodCommand : Command
     {
-        GameCacheHaloOnlineBase Cache;
+        GameCacheEldoradoBase Cache;
 
-        public GenerateRenderMethodCommand(GameCacheHaloOnlineBase cache) :
+        public GenerateRenderMethodCommand(GameCacheEldoradoBase cache) :
             base(true,
 
                 "GenerateRenderMethod",
@@ -117,14 +117,14 @@ namespace TagTool.Commands.Shaders
                 rmDefinition.ShaderProperties.Add(shaderProperty);
 
                 Cache.Serialize(stream, rmTag, definition);
-                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
+                (Cache as GameCacheEldoradoBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated {rmGroup} tag: {rmTag.Name}.{rmTag.Group}");
             return true;
         }
 
-        static public RenderMethod GenerateRenderMethod(CachedTag rmt2Tag, CachedTag rmdfTag, GameCacheHaloOnlineBase cache, Stream stream, byte[] options)
+        static public RenderMethod GenerateRenderMethod(CachedTag rmt2Tag, CachedTag rmdfTag, GameCacheEldoradoBase cache, Stream stream, byte[] options)
         {
             var rmt2 = cache.Deserialize<RenderMethodTemplate>(stream, rmt2Tag);
             var rmdf = cache.Deserialize<RenderMethodDefinition>(stream, rmdfTag);

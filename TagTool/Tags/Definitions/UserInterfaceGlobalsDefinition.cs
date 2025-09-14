@@ -6,8 +6,8 @@ using static TagTool.Tags.Definitions.Gen4.UserInterfaceGlobalsDefinition;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x3C, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x50, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline449175)]
-    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x60, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x50, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado449175)]
+    [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0x60, MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "user_interface_globals_definition", Tag = "wgtz", Size = 0xA4, MinVersion = CacheVersion.HaloReach)]
 
     public class UserInterfaceGlobalsDefinition : TagStructure
@@ -38,14 +38,14 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<CampaignStateScreenScriptBlock> CampaignStateScreenScripts;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public CachedTag TextureRenderList;
-        [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
         public CachedTag SwearFilter; // TODO: Version number
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public uint UnknownHO;
 
-        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
         public class ScreenWidget : TagStructure
 		{

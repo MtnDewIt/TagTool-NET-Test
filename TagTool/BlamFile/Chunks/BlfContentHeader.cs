@@ -9,14 +9,14 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0xFC, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0xFC, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x2B4, MinVersion = CacheVersion.HaloReach)]
     public class BlfContentHeader : BlfChunkHeader
     {
         public short BuildVersion;
         public short MapMinorVersion;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
         public ContentItemMetadata Metadata;
 
         [TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.Halo2AMP)]

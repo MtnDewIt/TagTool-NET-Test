@@ -6,7 +6,7 @@ using TagTool.Tags;
 namespace TagTool.Audio
 {
     [TagStructure(Size = 0x38, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC)]
-    [TagStructure(Size = 0x44,  MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x44,  MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x54, MinVersion = CacheVersion.HaloReach)]
     public class PlaybackParameter : TagStructure
 	{
@@ -39,10 +39,10 @@ namespace TagTool.Audio
         /// <summary>
         /// fraction of requests to play this sound that will be ignored (0 means always play.)
         /// </summary>
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float SkipFraction;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float MaximumBendPerSecond;  // cents
 
 

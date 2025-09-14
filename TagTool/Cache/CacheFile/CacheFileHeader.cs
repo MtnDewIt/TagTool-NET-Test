@@ -37,25 +37,25 @@ namespace TagTool.Cache
                 case CacheVersion.Halo3ODST:
                 case CacheVersion.HaloReach:
                     return deserializer.Deserialize<CacheFileHeaderGen3>(dataContext);
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                case CacheVersion.HaloOnline155080:
-                case CacheVersion.HaloOnline235640:
-                case CacheVersion.HaloOnline301003:
-                case CacheVersion.HaloOnline327043:
-                case CacheVersion.HaloOnline372731:
-                case CacheVersion.HaloOnline416097:
-                case CacheVersion.HaloOnline430475:
-                case CacheVersion.HaloOnline454665:
-                case CacheVersion.HaloOnline449175:
-                case CacheVersion.HaloOnline498295:
-                case CacheVersion.HaloOnline530605:
-                case CacheVersion.HaloOnline532911:
-                case CacheVersion.HaloOnline554482:
-                case CacheVersion.HaloOnline571627:
-                case CacheVersion.HaloOnline604673:
-                case CacheVersion.HaloOnline700123:
-                    return deserializer.Deserialize<CacheFileHeaderGenHaloOnline>(dataContext);
+                case CacheVersion.EldoradoED:
+                case CacheVersion.Eldorado106708:
+                case CacheVersion.Eldorado155080:
+                case CacheVersion.Eldorado235640:
+                case CacheVersion.Eldorado301003:
+                case CacheVersion.Eldorado327043:
+                case CacheVersion.Eldorado372731:
+                case CacheVersion.Eldorado416097:
+                case CacheVersion.Eldorado430475:
+                case CacheVersion.Eldorado454665:
+                case CacheVersion.Eldorado449175:
+                case CacheVersion.Eldorado498295:
+                case CacheVersion.Eldorado530605:
+                case CacheVersion.Eldorado532911:
+                case CacheVersion.Eldorado554482:
+                case CacheVersion.Eldorado571627:
+                case CacheVersion.Eldorado604673:
+                case CacheVersion.Eldorado700123:
+                    return deserializer.Deserialize<CacheFileHeaderEldorado>(dataContext);
                 case CacheVersion.Halo4:
                 case CacheVersion.Halo2AMP:
                     return deserializer.Deserialize<CacheFileHeaderGen4>(dataContext);

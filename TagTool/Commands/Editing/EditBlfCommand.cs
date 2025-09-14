@@ -11,10 +11,10 @@ namespace TagTool.Commands.Editing
     public class EditBlfCommand : Command 
     {
         private CommandContextStack ContextStack { get; }
-        private GameCacheHaloOnlineBase CacheContext { get; }
+        private GameCacheEldoradoBase CacheContext { get; }
         private GameCache Cache { get; }
 
-        public EditBlfCommand(CommandContextStack contextStack, GameCacheHaloOnlineBase cacheContext, GameCache cache) : base(
+        public EditBlfCommand(CommandContextStack contextStack, GameCacheEldoradoBase cacheContext, GameCache cache) : base(
             false,
 
             "EditBlf",

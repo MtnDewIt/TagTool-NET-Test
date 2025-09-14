@@ -8,7 +8,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x4C, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x64, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x48, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x48, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x74, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "survival_mode_globals", Tag = "smdt", Size = 0x70, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class SurvivalModeGlobals : TagStructure
@@ -34,7 +34,7 @@ namespace TagTool.Tags.Definitions
         [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public List<SurvivalEvent> GeneralEvents;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<SurvivalEvent> SurvivalEvents;
 
         [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
@@ -46,14 +46,14 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "sdzg" }, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public CachedTag RequiredResources;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public uint UnknownHO;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public uint UnknownHO_1;
 
         [TagStructure(Size = 0x108, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x10C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline327043)]
-        [TagStructure(Size = 0x20C, MinVersion = CacheVersion.HaloOnline372731, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado327043)]
+        [TagStructure(Size = 0x20C, MinVersion = CacheVersion.Eldorado372731, MaxVersion = CacheVersion.Eldorado700123)]
         public class SurvivalEvent : TagStructure
 		{
             public GameEngineEventFlagsDefinition Flags;
@@ -61,7 +61,7 @@ namespace TagTool.Tags.Definitions
             [TagField(Flags = Label)]
             public StringId Event;
 
-            [TagField(Length = 0x100, MinVersion = CacheVersion.HaloOnline372731, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Length = 0x100, MinVersion = CacheVersion.Eldorado372731, MaxVersion = CacheVersion.Eldorado700123)]
             public string Unknown1;
 
             public AudienceValue Audience;
@@ -71,7 +71,7 @@ namespace TagTool.Tags.Definitions
             public StringId DisplayString;
             public StringId DisplayMedal; // This is only valid on Flavor Events and will not award a medal for Engine Events
 
-            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+            [TagField(MinVersion = CacheVersion.EldoradoED)]
             public uint Unknown2;
 
             public float DisplayTime; // seconds

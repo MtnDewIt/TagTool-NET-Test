@@ -23,19 +23,19 @@ namespace TagTool.Tags.Definitions
             Female = 1 << 0
         }
 
-        [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach)]
         public class SoundReference : TagStructure
 		{
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public SoundReferenceFlags Flags;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Length = 2, Flags = Padding)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123, Length = 2, Flags = Padding)]
             public byte[] Padding0;
 
             public StringId Vocalization;
 
-            [TagField(ValidTags = new[] { "snd!" }, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(ValidTags = new[] { "snd!" }, MaxVersion = CacheVersion.Eldorado700123)]
             public CachedTag Sound;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]

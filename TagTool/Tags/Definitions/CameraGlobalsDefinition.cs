@@ -5,7 +5,7 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "camera_globals_definition", Tag = "glca", Size = 0xA0, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Name = "camera_globals_definition", Tag = "glca", Size = 0xA4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "camera_globals_definition", Tag = "glca", Size = 0xA4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "camera_globals_definition", Tag = "glca", Size = 0xD8, MinVersion = CacheVersion.HaloReach)]
     public class CameraGlobalsDefinition : TagStructure
 	{

@@ -6,7 +6,7 @@ using TagTool.Pathfinding;
 
 namespace TagTool.Tags.Resources
 {
-    [TagStructure(Name = "structure_bsp_cache_file_tag_resources", Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "structure_bsp_cache_file_tag_resources", Size = 0x30, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "structure_bsp_cache_file_tag_resources", Size = 0xC4, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "structure_bsp_cache_file_tag_resources", Size = 0xC8, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class StructureBspCacheFileTagResources : TagStructure

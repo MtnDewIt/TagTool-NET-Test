@@ -107,8 +107,8 @@ namespace TagTool.Commands.Sounds
 
             switch (Cache)
             {
-                case GameCacheHaloOnlineBase _:
-                    ExportHaloOnlineSound(outDirectory, soundData, targetFormat);
+                case GameCacheEldoradoBase _:
+                    ExportEldoradoSound(outDirectory, soundData, targetFormat);
                     break;
                 case GameCacheGen3 _:
                     ExportGen3Sound(outDirectory, soundData, targetFormat);
@@ -177,7 +177,7 @@ namespace TagTool.Commands.Sounds
             }
         }
 
-        private void ExportHaloOnlineSound(string outDirectory, byte[] soundData, Compression? targetFormat)
+        private void ExportEldoradoSound(string outDirectory, byte[] soundData, Compression? targetFormat)
         {
             if (targetFormat != null)
                 throw new NotSupportedException("Converting formats from halo online cache not supported");

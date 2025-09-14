@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TagTool.Audio;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags;
@@ -183,7 +183,7 @@ namespace TagTool.Porting.Gen2
                     HudWidget.BitmapWidget newBitmapWidget = new HudWidget.BitmapWidget
                     {
                         Name = CacheContext.StringTable.GetStringId("ping"),
-                        Bitmap = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\bitmaps\\motion_tracker.bitmap"),
+                        Bitmap = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\bitmaps\\motion_tracker.bitmap"),
                         BitmapSequenceIndex = 1,
                         StateData = new List<StateDatum>(),
                         PlacementData = new List<PlacementDatum>(),
@@ -208,7 +208,7 @@ namespace TagTool.Porting.Gen2
                         Active = new AnimationDatum.ChudWidgetAnimationStruct
                         {
                             InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time,
-                            Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\motion_tracker_ping.chud_animation_definition")
+                            Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\motion_tracker_ping.chud_animation_definition")
                         }
                     };
                     RenderDatum newRenderData = new RenderDatum
@@ -326,7 +326,7 @@ namespace TagTool.Porting.Gen2
                             HudWidget.BitmapWidget newBitmapWidget = new HudWidget.BitmapWidget
                             {
                                 Name = CacheContext.StringTable.GetStringId(bitmapWidgetString),
-                                Bitmap = CacheContext.TagCacheGenHO.GetTag(nhdt.BitmapWidgets[bitmapIndex].Bitmap.ToString()),
+                                Bitmap = CacheContext.TagCacheEldorado.GetTag(nhdt.BitmapWidgets[bitmapIndex].Bitmap.ToString()),
                                 BitmapSequenceIndex = (byte)nhdt.BitmapWidgets[bitmapIndex].FullscreenSequenceIndex,
                                 StateData = new List<StateDatum>(),
                                 PlacementData = new List<PlacementDatum>(),
@@ -775,7 +775,7 @@ namespace TagTool.Porting.Gen2
             {
                 case "binocular_mask":
                     animationData.Active.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Active.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\zoom_scope.chud_animation_definition");
+                    animationData.Active.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\zoom_scope.chud_animation_definition");
                     break;
                 case "frag_grenade_default":
                 case "frag_count":
@@ -786,7 +786,7 @@ namespace TagTool.Porting.Gen2
                 case "no_grenades":
                 case "motion_tracker_background":
                     animationData.Initializing.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Initializing.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\dimming.chud_animation_definition");
+                    animationData.Initializing.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\dimming.chud_animation_definition");
                     break;
                 case "weapon_background_right":
                 case "weapon_background_right_out":
@@ -797,29 +797,29 @@ namespace TagTool.Porting.Gen2
                 case "weapon_background_single":
                 case "weapon_background_out":
                     animationData.Readying.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Readying.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\fade_in.chud_animation_definition");
+                    animationData.Readying.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\fade_in.chud_animation_definition");
                     break;
                 case "ammo_meter_right":
                 case "ammo_meter_left":
                 case "ammo_meter_single":
                     animationData.Readying.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Readying.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\fade_in.chud_animation_definition");
+                    animationData.Readying.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\fade_in.chud_animation_definition");
                     animationData.Flashing.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Flashing.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\flash_test.chud_animation_definition");
+                    animationData.Flashing.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\flash_test.chud_animation_definition");
                     break;
                 case "shield_mask":
                     animationData.Initializing.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Initializing.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\dimming.chud_animation_definition");
+                    animationData.Initializing.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\dimming.chud_animation_definition");
                     animationData.Flashing.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Flashing.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\shields_out.chud_animation_definition");
+                    animationData.Flashing.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\shields_out.chud_animation_definition");
                     break;
                 case "shield_meter":
                     animationData.Initializing.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Initializing.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\shield_dimming.chud_animation_definition");
+                    animationData.Initializing.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\shield_dimming.chud_animation_definition");
                     animationData.Active.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Active.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\shield_dimming.chud_animation_definition");
+                    animationData.Active.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\shield_dimming.chud_animation_definition");
                     animationData.Flashing.InputType = AnimationDatum.ChudWidgetAnimationStruct.ChudWidgetAnimationInputTypeEnum.Time;
-                    animationData.Flashing.Animation = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\animations\\shields_out.chud_animation_definition");
+                    animationData.Flashing.Animation = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\animations\\shields_out.chud_animation_definition");
                     break;
             }
             return animationData;
@@ -935,7 +935,7 @@ namespace TagTool.Porting.Gen2
 
         public void ConvertBitmapData(CachedTag gen2BitmapRef, int iconCount, Stream cacheStream)
         {
-            CachedTag bitmap = CacheContext.TagCacheGenHO.GetTag(gen2BitmapRef.ToString());
+            CachedTag bitmap = CacheContext.TagCacheEldorado.GetTag(gen2BitmapRef.ToString());
 
             BitmapGen3 bitmapInstance = CacheContext.Deserialize<BitmapGen3>(cacheStream, bitmap);
 
@@ -1289,7 +1289,7 @@ namespace TagTool.Porting.Gen2
             switch (unit)
             {
                 case "masterchief":
-                    CachedTag hudGlobalsTag = CacheContext.TagCacheGenHO.GetTag("ui\\chud\\globals.chud_globals_definition");
+                    CachedTag hudGlobalsTag = CacheContext.TagCacheEldorado.GetTag("ui\\chud\\globals.chud_globals_definition");
                     ChudGlobalsDefinition hudGlobals = CacheContext.Deserialize<ChudGlobalsDefinition>(cacheStream, hudGlobalsTag);
                     hudGlobals.HudGlobals[0].HudAttributes[0].WarpSourceFovY = Angle.FromDegrees(1f);
                     hudGlobals.HudGlobals[0].HudAttributes[0].WarpSourceAspect = 1;
@@ -1300,7 +1300,7 @@ namespace TagTool.Porting.Gen2
                     CacheContext.Serialize(cacheStream, hudGlobalsTag, hudGlobals);
                     break;
                 case "dervish":
-                    CachedTag hudGlobalsTagElite = CacheContext.TagCacheGenHO.GetTag("objects\\characters\\elite\\mp_elite\\chud\\globals.chud_globals_definition");
+                    CachedTag hudGlobalsTagElite = CacheContext.TagCacheEldorado.GetTag("objects\\characters\\elite\\mp_elite\\chud\\globals.chud_globals_definition");
                     ChudGlobalsDefinition hudGlobalsElite = CacheContext.Deserialize<ChudGlobalsDefinition>(cacheStream, hudGlobalsTagElite);
                     hudGlobalsElite.HudGlobals[0].HudAttributes[0].WarpSourceFovY = Angle.FromDegrees(1f);
                     hudGlobalsElite.HudGlobals[0].HudAttributes[0].WarpSourceAspect = 1;

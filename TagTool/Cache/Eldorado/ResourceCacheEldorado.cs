@@ -8,10 +8,10 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
     // Class for .dat files containing resources
-    public class ResourceCacheHaloOnline
+    public class ResourceCacheEldorado
     {
         public CacheVersion Version;
         public CachePlatform CachePlatform;
@@ -27,7 +27,7 @@ namespace TagTool.Cache.HaloOnline
             get { return Resources.Count; }
         }
 
-        public ResourceCacheHaloOnline(CacheVersion version, CachePlatform cachePlatform, Stream stream)
+        public ResourceCacheEldorado(CacheVersion version, CachePlatform cachePlatform, Stream stream)
         {
             Version = version;
             CachePlatform = cachePlatform;
@@ -38,7 +38,7 @@ namespace TagTool.Cache.HaloOnline
                 Read(stream);
         }
 
-        public ResourceCacheHaloOnline(CacheVersion version, CachePlatform platform)
+        public ResourceCacheEldorado(CacheVersion version, CachePlatform platform)
         {
             Version = version;
             Resources = new List<Resource>();

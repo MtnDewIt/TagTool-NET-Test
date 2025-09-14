@@ -7,7 +7,7 @@ using TagTool.Commands.Porting.Gen4;
 using TagTool.Commands.Tags;
 using TagTool.Porting;
 using TagTool.Porting.Gen3;
-using TagTool.Porting.HaloOnline;
+using TagTool.Porting.Eldorado;
 using TagTool.Scripting.CSharp;
 using TagTool.Tags.Definitions;
 
@@ -49,7 +49,7 @@ namespace TagTool.Commands.Porting
         {
             context.ScriptGlobals.Add(nameof(ScriptEvaluationContext.PortingCache), portingCache);
 
-            if (currentCache is GameCacheHaloOnlineBase hoCache)
+            if (currentCache is GameCacheEldoradoBase hoCache)
             {
                 if (portingCache is GameCacheGen3 || portingCache is GameCacheMonolithic)
                 {
@@ -72,9 +72,9 @@ namespace TagTool.Commands.Porting
                     var portTagCommand = new PortTagGen1Command(hoCache, gen1cache);
                     context.AddCommand(portTagCommand);
                 }
-                else if (portingCache is GameCacheHaloOnlineBase hoPortingCache)
+                else if (portingCache is GameCacheEldoradoBase hoPortingCache)
                 {
-                    var portingContext = (PortingContextHO)PortingContext.Create(hoCache, portingCache);
+                    var portingContext = (PortingContextEldorado)PortingContext.Create(hoCache, portingCache);
                     PopulatePortingCommands(context, portingCache, hoCache, portingContext);
                 }
             }
@@ -85,7 +85,7 @@ namespace TagTool.Commands.Porting
             context.AddCommand(new ListBlamTagsCommand(portingCache));
         }
 
-        private static void PopulatePortingCommands(CommandContext context, GameCache portingCache, GameCacheHaloOnlineBase hoCache, PortingContext portingContext)
+        private static void PopulatePortingCommands(CommandContext context, GameCache portingCache, GameCacheEldoradoBase hoCache, PortingContext portingContext)
         {
             // Temporary method until the other contexts are implemented
 

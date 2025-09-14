@@ -10,7 +10,7 @@ namespace TagTool.Tags.Definitions
 	{
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public GameVariantParametersH3 ParameterH3;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED)]
         public GameVariantParameters Parameter;
         public StringId Name;
         public StringId Description;

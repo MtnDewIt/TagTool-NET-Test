@@ -106,13 +106,13 @@ namespace TagTool.Havok
         User,
     };
 
-    [TagStructure(Size = 0xC, Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0xC, Platform = CachePlatform.Original, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x30, Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloReach)]
     [TagStructure(Size = 0x18, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x50, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
     public class HkpMoppBvTreeShape : HkpShape
     {
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public HkpSingleShapeContainer Child;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -136,7 +136,7 @@ namespace TagTool.Havok
         public byte[] HkpMoppReachPad;
     }
 
-    [TagStructure(Size = 0x4, Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x4, Platform = CachePlatform.Original, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x8, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach)]
     public class CMoppBvTreeShape : HkpMoppBvTreeShape
@@ -243,8 +243,8 @@ namespace TagTool.Havok
         public float Radius;
     }
 
-    [TagStructure(Size = 0x60, Align = 16, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x80, Align = 16, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.MCC)]
+    [TagStructure(Size = 0x60, Align = 16, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x80, Align = 16, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x70, Align = 16, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x90, Align = 16, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class HkConvexVerticesShape : TagStructure

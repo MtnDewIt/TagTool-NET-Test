@@ -19,10 +19,10 @@ namespace TagTool.Commands.Tags
 {
     class ConvertTagCommand : Command
     {
-        private GameCacheContextHaloOnline CacheContext { get; }
+        private GameCacheContextEldorado CacheContext { get; }
         private bool IsDecalShader { get; set; } = false;
 
-        public ConvertTagCommand(GameCacheContextHaloOnline info)
+        public ConvertTagCommand(GameCacheContextEldorado info)
             : base(false,
 
                   "ConvertTag",
@@ -59,7 +59,7 @@ namespace TagTool.Commands.Tags
                 tagMap = TagVersionMap.ParseTagVersionMap(reader);
 
             // Load destination cache files
-            var destCacheContext = new GameCacheContextHaloOnline(new DirectoryInfo(targetDir));
+            var destCacheContext = new GameCacheContextEldorado(new DirectoryInfo(targetDir));
             using (var stream = destCacheContext.OpenTagCacheRead())
                 destCacheContext.TagCache = new TagCache(stream, destCacheContext.LoadTagNames());
             
@@ -67,7 +67,7 @@ namespace TagTool.Commands.Tags
             Console.WriteLine("CONVERTING FROM VERSION {0} TO {1}", CacheVersionDetection.GetBuildName(CacheContext.Version), CacheVersionDetection.GetBuildName(destCacheContext.Version));
             Console.WriteLine();
             
-            CachedTagHaloOnline resultTag;
+            CachedTagEldorado resultTag;
             using (Stream srcStream = CacheContext.TagCache.OpenTagCacheRead(), destStream = destCacheContext.OpenTagCacheReadWrite())
                 resultTag = ConvertTag(srcTag, CacheContext, srcStream, destCacheContext, destStream, tagMap);
 
@@ -102,7 +102,7 @@ namespace TagTool.Commands.Tags
             return true;
         }
 
-        private CachedTagHaloOnline ConvertTag(CachedTagHaloOnline srcTag, GameCacheContextHaloOnline srcCacheContext, Stream srcStream, GameCacheContextHaloOnline destCacheContext, Stream destStream, TagVersionMap tagMap)
+        private CachedTagEldorado ConvertTag(CachedTagEldorado srcTag, GameCacheContextEldorado srcCacheContext, Stream srcStream, GameCacheContextEldorado destCacheContext, Stream destStream, TagVersionMap tagMap)
         {
             TagPrinter.PrintTagShort(srcTag);
 
@@ -134,7 +134,7 @@ namespace TagTool.Commands.Tags
 
             // Allocate a new tag and create a mapping for it
 
-            CachedTagHaloOnline instance = null;
+            CachedTagEldorado instance = null;
 
             if (srcCacheContext.Version != destCacheContext.Version)
             {
@@ -142,7 +142,7 @@ namespace TagTool.Commands.Tags
                 {
                     if (destCacheContext.TagCache.Index[i] == null)
                     {
-                        destCacheContext.TagCache.Index[i] = instance = new CachedTagHaloOnline(i, TagGroup.Instances[srcTag.Group.Tag]);
+                        destCacheContext.TagCache.Index[i] = instance = new CachedTagEldorado(i, TagGroup.Instances[srcTag.Group.Tag]);
                         break;
                     }
                 }
@@ -156,7 +156,7 @@ namespace TagTool.Commands.Tags
                 }
                 else
                 {
-                    destCacheContext.TagCache.Index[srcTag.Index] = instance = new CachedTagHaloOnline(srcTag.Index, TagGroup.Instances[srcTag.Group.Tag], srcTag.Name);
+                    destCacheContext.TagCache.Index[srcTag.Index] = instance = new CachedTagEldorado(srcTag.Index, TagGroup.Instances[srcTag.Group.Tag], srcTag.Name);
                 }
             }
 
@@ -179,7 +179,7 @@ namespace TagTool.Commands.Tags
             return instance;
         }
 
-        private object Convert(object data, GameCacheContextHaloOnline srcCacheContext, Stream srcStream, GameCacheContextHaloOnline destCacheContext, Stream destStream, TagVersionMap tagMap)
+        private object Convert(object data, GameCacheContextEldorado srcCacheContext, Stream srcStream, GameCacheContextEldorado destCacheContext, Stream destStream, TagVersionMap tagMap)
         {
 			switch (data)
 			{
@@ -189,8 +189,8 @@ namespace TagTool.Commands.Tags
 				case string _:
 				case ValueType _:
 					return data;
-				case CachedTagHaloOnline CachedTagHaloOnline:
-					return ConvertTag(CachedTagHaloOnline, srcCacheContext, srcStream, destCacheContext, destStream, tagMap);
+				case CachedTagEldorado CachedTagEldorado:
+					return ConvertTag(CachedTagEldorado, srcCacheContext, srcStream, destCacheContext, destStream, tagMap);
 				case PageableResource pageableResource:
 					return ConvertResource(pageableResource, srcCacheContext, destCacheContext);
 				case RenderGeometry renderGeometry:
@@ -210,16 +210,16 @@ namespace TagTool.Commands.Tags
 			return data;
 		}
 
-        private ObjectTypeFlags ConvertObjectTypeFlags(ObjectTypeFlags data, GameCacheContextHaloOnline srcCacheContext, GameCacheContextHaloOnline destCacheContext)
+        private ObjectTypeFlags ConvertObjectTypeFlags(ObjectTypeFlags data, GameCacheContextEldorado srcCacheContext, GameCacheContextEldorado destCacheContext)
         {
-            if (destCacheContext.Version < CacheVersion.HaloOnline449175)
-                if (!Enum.TryParse(data.HaloOnline.ToString(), out data.Halo3ODST))
+            if (destCacheContext.Version < CacheVersion.Eldorado449175)
+                if (!Enum.TryParse(data.Eldorado.ToString(), out data.Halo3ODST))
                     throw new FormatException(destCacheContext.Version.ToString());
 
             return data;
         }
 
-        private Array ConvertArray(Array array, GameCacheContextHaloOnline srcCacheContext, Stream srcStream, GameCacheContextHaloOnline destCacheContext, Stream destStream, TagVersionMap tagMap)
+        private Array ConvertArray(Array array, GameCacheContextEldorado srcCacheContext, Stream srcStream, GameCacheContextEldorado destCacheContext, Stream destStream, TagVersionMap tagMap)
         {
             if (array.GetType().GetElementType().IsPrimitive)
                 return array;
@@ -232,7 +232,7 @@ namespace TagTool.Commands.Tags
             return array;
         }
 
-        private object ConvertList(object list, Type type, GameCacheContextHaloOnline srcCacheContext, Stream srcStream, GameCacheContextHaloOnline destCacheContext, Stream destStream, TagVersionMap tagMap)
+        private object ConvertList(object list, Type type, GameCacheContextEldorado srcCacheContext, Stream srcStream, GameCacheContextEldorado destCacheContext, Stream destStream, TagVersionMap tagMap)
         {
             if (type.GenericTypeArguments[0].IsPrimitive)
                 return list;
@@ -248,7 +248,7 @@ namespace TagTool.Commands.Tags
             return list;
         }
 
-		private IList ConvertCollection(IList collection, GameCacheContextHaloOnline srcCacheContext, Stream srcStream, GameCacheContextHaloOnline destCacheContext, Stream destStream, TagVersionMap tagMap)
+		private IList ConvertCollection(IList collection, GameCacheContextEldorado srcCacheContext, Stream srcStream, GameCacheContextEldorado destCacheContext, Stream destStream, TagVersionMap tagMap)
 		{
 			if (collection.Count == 0 || collection[0].GetType().IsPrimitive)
 				return collection;
@@ -262,7 +262,7 @@ namespace TagTool.Commands.Tags
 			return collection;
 		}
 
-		private T ConvertStructure<T>(T data, GameCacheContextHaloOnline srcCacheContext, Stream srcStream, GameCacheContextHaloOnline destCacheContext, Stream destStream, TagVersionMap tagMap) where T : TagStructure
+		private T ConvertStructure<T>(T data, GameCacheContextEldorado srcCacheContext, Stream srcStream, GameCacheContextEldorado destCacheContext, Stream destStream, TagVersionMap tagMap) where T : TagStructure
         {
 			// Convert each field
 			foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), destCacheContext.Version))
@@ -282,7 +282,7 @@ namespace TagTool.Commands.Tags
             return data;
         }
 
-        private StringId ConvertStringID(StringId stringId, GameCacheContextHaloOnline srcCacheContext, GameCacheContextHaloOnline destCacheContext)
+        private StringId ConvertStringID(StringId stringId, GameCacheContextEldorado srcCacheContext, GameCacheContextEldorado destCacheContext)
         {
             if (stringId == StringId.Invalid)
                 return stringId;
@@ -295,7 +295,7 @@ namespace TagTool.Commands.Tags
             return destStringID;
         }
 
-        private PageableResource ConvertResource(PageableResource resource, GameCacheContextHaloOnline srcCacheContext, GameCacheContextHaloOnline destCacheContext)
+        private PageableResource ConvertResource(PageableResource resource, GameCacheContextEldorado srcCacheContext, GameCacheContextEldorado destCacheContext)
         {
             if (resource == null || resource.Page.Index < 0 || !resource.GetLocation(out var location))
                 return null;
@@ -313,7 +313,7 @@ namespace TagTool.Commands.Tags
 
         private ResourceLocation FixResourceLocation(ResourceLocation location, CacheVersion srcVersion, CacheVersion destVersion)
         {
-            if (CacheVersionDetection.Compare(destVersion, CacheVersion.HaloOnline235640) >= 0)
+            if (CacheVersionDetection.Compare(destVersion, CacheVersion.Eldorado235640) >= 0)
                 return location;
             switch (location)
             {
@@ -325,25 +325,25 @@ namespace TagTool.Commands.Tags
             return location;
         }
 
-        private RenderGeometry ConvertGeometry(RenderGeometry geometry, GameCacheContextHaloOnline srcCacheContext, GameCacheContextHaloOnline destCacheContext)
+        private RenderGeometry ConvertGeometry(RenderGeometry geometry, GameCacheContextEldorado srcCacheContext, GameCacheContextEldorado destCacheContext)
         {
-            if (geometry == null || geometry.Resource.HaloOnlinePageableResource == null || geometry.Resource.HaloOnlinePageableResource.Page.Index < 0 || !geometry.Resource.HaloOnlinePageableResource.GetLocation(out var location))
+            if (geometry == null || geometry.Resource.EldoradoPageableResource == null || geometry.Resource.EldoradoPageableResource.Page.Index < 0 || !geometry.Resource.EldoradoPageableResource.GetLocation(out var location))
                 return geometry;
 
             // The format changed starting with version 1.235640, so if both versions are on the same side then they can be converted normally
-            var srcCompare = CacheVersionDetection.Compare(srcCacheContext.Version, CacheVersion.HaloOnline235640);
-            var destCompare = CacheVersionDetection.Compare(destCacheContext.Version, CacheVersion.HaloOnline235640);
+            var srcCompare = CacheVersionDetection.Compare(srcCacheContext.Version, CacheVersion.Eldorado235640);
+            var destCompare = CacheVersionDetection.Compare(destCacheContext.Version, CacheVersion.Eldorado235640);
             if ((srcCompare < 0 && destCompare < 0) || (srcCompare >= 0 && destCompare >= 0))
             {
-                geometry.Resource.HaloOnlinePageableResource = ConvertResource(geometry.Resource.HaloOnlinePageableResource, srcCacheContext, destCacheContext);
+                geometry.Resource.EldoradoPageableResource = ConvertResource(geometry.Resource.EldoradoPageableResource, srcCacheContext, destCacheContext);
                 return geometry;
             }
 
-            Console.WriteLine("- Rebuilding geometry resource {0} in {1}...", geometry.Resource.HaloOnlinePageableResource.Page.Index, location);
+            Console.WriteLine("- Rebuilding geometry resource {0} in {1}...", geometry.Resource.EldoradoPageableResource.Page.Index, location);
             using (MemoryStream inStream = new MemoryStream(), outStream = new MemoryStream())
             {
                 // First extract the model data
-                srcCacheContext.ExtractResource(geometry.Resource.HaloOnlinePageableResource, inStream);
+                srcCacheContext.ExtractResource(geometry.Resource.EldoradoPageableResource, inStream);
 
                 // Now open source and destination vertex streams
                 inStream.Position = 0;
@@ -351,7 +351,7 @@ namespace TagTool.Commands.Tags
                 var outVertexStream = VertexStreamFactory.Create(destCacheContext.Version, outStream);
 
                 // Deserialize the definition data
-                var resourceContext = new ResourceSerializationContext(CacheContext, geometry.Resource.HaloOnlinePageableResource);
+                var resourceContext = new ResourceSerializationContext(CacheContext, geometry.Resource.EldoradoPageableResource);
                 var definition = srcCacheContext.Deserializer.Deserialize<RenderGeometryApiResourceDefinition>(resourceContext);
 
                 // Convert each vertex buffer
@@ -378,14 +378,14 @@ namespace TagTool.Commands.Tags
                 var newLocation = FixResourceLocation(location, srcCacheContext.Version, destCacheContext.Version);
 
                 outStream.Position = 0;
-                geometry.Resource.HaloOnlinePageableResource.ChangeLocation(newLocation);
-                destCacheContext.AddResource(geometry.Resource.HaloOnlinePageableResource, outStream);
+                geometry.Resource.EldoradoPageableResource.ChangeLocation(newLocation);
+                destCacheContext.AddResource(geometry.Resource.EldoradoPageableResource, outStream);
             }
 
             return geometry;
         }
 
-        private void ConvertVertexBuffer(GameCacheContextHaloOnline srcCacheContext, GameCacheContextHaloOnline destCacheContext, VertexBufferDefinition buffer, MemoryStream inStream, IVertexStream inVertexStream, MemoryStream outStream, IVertexStream outVertexStream)
+        private void ConvertVertexBuffer(GameCacheContextEldorado srcCacheContext, GameCacheContextEldorado destCacheContext, VertexBufferDefinition buffer, MemoryStream inStream, IVertexStream inVertexStream, MemoryStream outStream, IVertexStream outVertexStream)
         {
             if (buffer.Data.Size == 0)
                 return;
@@ -398,7 +398,7 @@ namespace TagTool.Commands.Tags
                 case VertexBufferFormat.World:
                     ConvertVertices(count, inVertexStream.ReadWorldVertex, v =>
                     {
-                        if (srcCacheContext.Version > CacheVersion.HaloOnline235640)
+                        if (srcCacheContext.Version > CacheVersion.Eldorado235640)
                             v.Binormal = new RealVector3d(v.Position.W, v.Tangent.W, 0); // Converted shaders use this
 
                         outVertexStream.WriteWorldVertex(v);
@@ -407,7 +407,7 @@ namespace TagTool.Commands.Tags
                 case VertexBufferFormat.Rigid:
                     ConvertVertices(count, inVertexStream.ReadRigidVertex, v =>
                     {
-                        if (srcCacheContext.Version > CacheVersion.HaloOnline235640)
+                        if (srcCacheContext.Version > CacheVersion.Eldorado235640)
                             v.Binormal = new RealVector3d(v.Position.W, v.Tangent.W, 0); // Converted shaders use this
 
                         outVertexStream.WriteRigidVertex(v);
@@ -416,7 +416,7 @@ namespace TagTool.Commands.Tags
                 case VertexBufferFormat.Skinned:
                     ConvertVertices(count, inVertexStream.ReadSkinnedVertex, v =>
                     {
-                        if (srcCacheContext.Version > CacheVersion.HaloOnline235640)
+                        if (srcCacheContext.Version > CacheVersion.Eldorado235640)
                             v.Binormal = new RealVector3d(v.Position.W, v.Tangent.W, 0); // Converted shaders use this
 
                         outVertexStream.WriteSkinnedVertex(v);
@@ -463,19 +463,19 @@ namespace TagTool.Commands.Tags
                 writeFunc(readFunc());
         }
 
-        private GameObjectType ConvertGameObjectType(GameObjectType objectType, GameCacheContextHaloOnline srcCacheContext, GameCacheContextHaloOnline destCacheContext)
+        private GameObjectType ConvertGameObjectType(GameObjectType objectType, GameCacheContextEldorado srcCacheContext, GameCacheContextEldorado destCacheContext)
         {
-            if (srcCacheContext.Version >= CacheVersion.HaloOnline498295)
-                if (Enum.TryParse<GameObjectTypeHalo3ODST>(objectType.HaloOnline.ToString(), out var result))
+            if (srcCacheContext.Version >= CacheVersion.Eldorado498295)
+                if (Enum.TryParse<GameObjectTypeHalo3ODST>(objectType.Eldorado.ToString(), out var result))
                     objectType.Halo3ODST = result;
 
             return objectType;
         }
 
-        private ScenarioObjectType ConvertScenarioObjectType(ScenarioObjectType objectType, GameCacheContextHaloOnline srcCacheContext, GameCacheContextHaloOnline destCacheContext)
+        private ScenarioObjectType ConvertScenarioObjectType(ScenarioObjectType objectType, GameCacheContextEldorado srcCacheContext, GameCacheContextEldorado destCacheContext)
         {
-            if (srcCacheContext.Version >= CacheVersion.HaloOnline498295)
-                if (Enum.TryParse<GameObjectTypeHalo3ODST>(objectType.HaloOnline.ToString(), out var result))
+            if (srcCacheContext.Version >= CacheVersion.Eldorado498295)
+                if (Enum.TryParse<GameObjectTypeHalo3ODST>(objectType.Eldorado.ToString(), out var result))
                     objectType.Halo3ODST = result;
 
             return objectType;
@@ -506,7 +506,7 @@ namespace TagTool.Commands.Tags
         {
             foreach (var expr in data.ScriptExpressions)
             {
-                if (expr.Flags == HsSyntaxNodeFlags.Group || (expr.Flags == HsSyntaxNodeFlags.Expression && expr.ValueType.HaloOnline == HsType.FunctionName))
+                if (expr.Flags == HsSyntaxNodeFlags.Group || (expr.Flags == HsSyntaxNodeFlags.Expression && expr.ValueType.Eldorado == HsType.FunctionName))
                 {
                     // Either a function call or a function_name
                     expr.Opcode = FixOpcode(expr.Opcode);
@@ -543,7 +543,7 @@ namespace TagTool.Commands.Tags
 
         private void FixShaders(object data)
         {
-            if (CacheContext.Version <= CacheVersion.HaloOnline235640)
+            if (CacheContext.Version <= CacheVersion.Eldorado235640)
                 return;
 
             if (data is RenderMethodTemplate template)
@@ -687,7 +687,7 @@ namespace TagTool.Commands.Tags
                 modes.RemoveAt(2);
         }
         
-        private void FixDecalSystems(GameCacheContextHaloOnline destCacheContext, int firstNewIndex)
+        private void FixDecalSystems(GameCacheContextEldorado destCacheContext, int firstNewIndex)
         {
             // decs tags need to be updated to use the old rmdf for decals,
             // because the decal planes seem to be generated by the engine and

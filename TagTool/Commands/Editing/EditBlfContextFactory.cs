@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using TagTool.BlamFile;
-using TagTool.BlamFile.HaloOnline;
+using TagTool.BlamFile.Eldorado;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Tags;
@@ -15,7 +15,7 @@ namespace TagTool.Commands.Editing
 
             commandContext.AddCommand(new ExecuteCSharpCommand(contextStack));
 
-            var blfDefinition = new HaloOnlineBlf(blf);
+            var blfDefinition = new EldoradoBlf(blf);
 
             var structure = TagStructure.GetTagStructureInfo(blfDefinition.GetType(), blf.Version, blf.CachePlatform);
 

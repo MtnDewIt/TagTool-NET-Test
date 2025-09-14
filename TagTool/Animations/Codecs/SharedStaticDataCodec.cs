@@ -63,6 +63,6 @@ namespace TagTool.Animations.Codecs
             }
         }
 
-        public override byte[] Write(GameCacheHaloOnlineBase CacheContext) => throw new NotImplementedException();
+        public override byte[] Write(GameCacheEldoradoBase CacheContext) => throw new NotImplementedException();
     }
 }

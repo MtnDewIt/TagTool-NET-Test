@@ -6,7 +6,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.IO;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.BlamFile;
 using TagTool.Cache.Resources;
 using TagTool.Extensions;
@@ -16,13 +16,13 @@ namespace TagTool.Commands.Modding
 {
     class ExportModPackageCommand : Command
     {
-        private GameCacheHaloOnlineBase CacheContext { get; }
+        private GameCacheEldoradoBase CacheContext { get; }
 
         private ExportOptions Options = ExportOptions.None;
 
         private ModPackage ModPackage = null;
 
-        public ExportModPackageCommand(GameCacheHaloOnlineBase cacheContext) :
+        public ExportModPackageCommand(GameCacheEldoradoBase cacheContext) :
             base(false,
 
                 "ExportModPackage",
@@ -104,8 +104,8 @@ namespace TagTool.Commands.Modding
             ModPackage.CacheNames.Add("default");
 
             // temporary cache for holding tags and resources
-            TagCacheHaloOnline modPackTagCache = new TagCacheHaloOnline(CacheContext.Version, tagStream.Stream, ModPackage.StringTable, new Dictionary<int, string>());
-            ResourceCacheHaloOnline modPackResourceCache = new ResourceCacheHaloOnline(CacheContext.Version, CacheContext.Platform, ModPackage.ResourcesStream.Stream);
+            TagCacheEldorado modPackTagCache = new TagCacheEldorado(CacheContext.Version, tagStream.Stream, ModPackage.StringTable, new Dictionary<int, string>());
+            ResourceCacheEldorado modPackResourceCache = new ResourceCacheEldorado(CacheContext.Version, CacheContext.Platform, ModPackage.ResourcesStream.Stream);
 
             CreateDescription();
 
@@ -297,7 +297,7 @@ namespace TagTool.Commands.Modding
             ModPackage.Metadata.BuildDateHigh = (int)((DateTime.Now.ToFileTime() & 0x7FFFFFFF00000000) >> 32);
         }
 
-        private void AddTags(HashSet<int> tagIndices, TagCacheHaloOnline modTagCache, ResourceCacheHaloOnline modPackResourceCache)
+        private void AddTags(HashSet<int> tagIndices, TagCacheEldorado modTagCache, ResourceCacheEldorado modPackResourceCache)
         {
             // define current cache tags, names
             var modTagNames = ModPackage.TagCacheNames[0];
@@ -317,12 +317,12 @@ namespace TagTool.Commands.Modding
                     [ResourceLocation.TexturesB] = new Dictionary<int, PageableResource>()
                 };
 
-                var srcResourceCaches = new Dictionary<ResourceLocation, ResourceCacheHaloOnline>();
+                var srcResourceCaches = new Dictionary<ResourceLocation, ResourceCacheEldorado>();
                 var srcResourceStreams = new Dictionary<ResourceLocation, Stream>();
 
                 foreach (var value in Enum.GetValues(typeof(ResourceLocation)))
                 {
-                    ResourceCacheHaloOnline resourceCache = null;
+                    ResourceCacheEldorado resourceCache = null;
                     var location = (ResourceLocation)value;
 
                     if (location == ResourceLocation.None || location == ResourceLocation.RenderModels || location == ResourceLocation.Lightmaps || location == ResourceLocation.Mods)
@@ -357,19 +357,19 @@ namespace TagTool.Commands.Modding
                         var cachedTagData = new CachedTagData();
                         cachedTagData.Data = new byte[0];
                         cachedTagData.Group = (TagGroupGen3)emptyTag.Group;
-                        modTagCache.SetTagData(modTagStream.Stream, (CachedTagHaloOnline)emptyTag, cachedTagData);
+                        modTagCache.SetTagData(modTagStream.Stream, (CachedTagEldorado)emptyTag, cachedTagData);
                         continue;
                     }
                     
                     var destTag = modTagCache.AllocateTag(srcTag.Group, srcTag.Name);
 
-                    using (var tagDataStream = new MemoryStream(CacheContext.TagCacheGenHO.ExtractTagRaw(srcTagStream, (CachedTagHaloOnline)srcTag)))
+                    using (var tagDataStream = new MemoryStream(CacheContext.TagCacheEldorado.ExtractTagRaw(srcTagStream, (CachedTagEldorado)srcTag)))
                     using (var tagDataReader = new EndianReader(tagDataStream, leaveOpen: true))
                     using (var tagDataWriter = new EndianWriter(tagDataStream, leaveOpen: true))
                     {
                         var resourcePointerOffsets = new HashSet<uint>();
 
-                        foreach (var resourcePointerOffset in ((CachedTagHaloOnline)srcTag).ResourcePointerOffsets)
+                        foreach (var resourcePointerOffset in ((CachedTagEldorado)srcTag).ResourcePointerOffsets)
                         {
                             if (resourcePointerOffset == 0 || resourcePointerOffsets.Contains(resourcePointerOffset))
                                 continue;
@@ -382,7 +382,7 @@ namespace TagTool.Commands.Modding
                             if (resourcePointer == 0)
                                 continue;
 
-                            var resourceOffset = ((CachedTagHaloOnline)srcTag).PointerToOffset(resourcePointer);
+                            var resourceOffset = ((CachedTagEldorado)srcTag).PointerToOffset(resourcePointer);
 
                             tagDataReader.BaseStream.Position = resourceOffset + 2;
                             var locationFlags = (OldRawPageFlags)tagDataReader.ReadByte();
@@ -439,7 +439,7 @@ namespace TagTool.Commands.Modding
                             tagDataWriter.Write(pageable.Page.Index);
                         }
 
-                        modTagCache.SetTagDataRaw(modTagStream.Stream, (CachedTagHaloOnline)destTag, tagDataStream.ToArray());
+                        modTagCache.SetTagDataRaw(modTagStream.Stream, (CachedTagEldorado)destTag, tagDataStream.ToArray());
                     }
                 }
 
@@ -474,7 +474,7 @@ namespace TagTool.Commands.Modding
                     MapFile map = new MapFile();
                     map.Read(reader);
                     // TODO: specify cache per map
-                    ModPackage.AddMap(cacheStream, ((CacheFileHeaderGenHaloOnline)map.Header).MapId , 0);
+                    ModPackage.AddMap(cacheStream, ((CacheFileHeaderEldorado)map.Header).MapId , 0);
 
                 }
             }
@@ -491,7 +491,7 @@ namespace TagTool.Commands.Modding
 
         private void AddStringIds()
         {
-            ModPackage.StringTable = CacheContext.StringTableHaloOnline;
+            ModPackage.StringTable = CacheContext.StringTableEldorado;
         }
 
         private void AddFontPackage()

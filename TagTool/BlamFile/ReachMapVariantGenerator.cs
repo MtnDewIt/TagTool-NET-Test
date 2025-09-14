@@ -174,7 +174,7 @@ namespace TagTool.BlamFile
 
         private static Blf GenerateBlf(MapVariant mapVariant, List<string> tagnames)
         {
-            var blf = new Blf(CacheVersion.HaloOnlineED, CachePlatform.Original);
+            var blf = new Blf(CacheVersion.EldoradoED, CachePlatform.Original);
 
             blf.StartOfFile = new BlfChunkStartOfFile()
             {

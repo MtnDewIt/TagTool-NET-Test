@@ -95,7 +95,7 @@ namespace TagTool.Scripting
         PlayerColor,
         [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
         PlayerModelChoice,
-        [TagEnumMember(MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagEnumMember(MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Eldorado700123)]
         PlayerCharacterType,
         [TagEnumMember(MinVersion = CacheVersion.Halo3Beta)]
         VoiceOutputSetting,
@@ -113,9 +113,9 @@ namespace TagTool.Scripting
         Event,
         [TagEnumMember(MinVersion = CacheVersion.Halo3Beta)]
         CharacterPhysics,
-        [TagEnumMember(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagEnumMember(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         PrimarySkull,
-        [TagEnumMember(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagEnumMember(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         SecondarySkull,
         [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
         Skull,

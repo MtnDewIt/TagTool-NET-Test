@@ -7,7 +7,7 @@ using System.IO;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "render_method_definition", Size = 0x5C, Tag = "rmdf", MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "render_method_definition", Size = 0x5C, Tag = "rmdf", MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "render_method_definition", Size = 0x15C, Tag = "rmdf", MinVersion = CacheVersion.HaloReach)]
     public class RenderMethodDefinition : TagStructure
 	{
@@ -45,10 +45,10 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x10)]
         public class EntryPointBlock : TagStructure
         {
-            [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.Eldorado235640, Platform = CachePlatform.Original)]
             [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
             public EntryPoint_32 EntryPoint;
-            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+            [TagField(MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
             public EntryPointMs30_32 EntryPointHO;
             [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             public EntryPointMCC_32 EntryPointMCC;
@@ -59,7 +59,7 @@ namespace TagTool.Tags.Definitions
 
             public List<PassBlock> Passes;
 
-            [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Eldorado700123)]
             [TagStructure(Size = 0x1C, MinVersion = CacheVersion.HaloReach)]
             public class PassBlock : TagStructure
             {
@@ -85,17 +85,17 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x4, MinVersion = CacheVersion.HaloReach)]
         public class VertexBlock : TagStructure
         {
-            [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.Eldorado700123)]
             public VertexTypeValue VertexType;
             [TagField(Flags = TagFieldFlags.Label, MinVersion = CacheVersion.HaloReach)]
             public VertexTypeValueReach VertexTypeReach;
             [TagField(Flags = TagFieldFlags.Padding, Length = 0x2)]
             public byte[] Padding;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public List<EntryPointDependency> Dependencies;
 
             public enum VertexTypeValue : ushort
@@ -164,10 +164,10 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x10)]
             public class EntryPointDependency : TagStructure
             {
-                [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
+                [TagField(MaxVersion = CacheVersion.Eldorado235640, Platform = CachePlatform.Original)]
                 [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
                 public EntryPoint_32 EntryPoint;
-                [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+                [TagField(MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
                 public EntryPointMs30_32 EntryPointHO;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
                 public EntryPointMCC_32 EntryPointMCC;

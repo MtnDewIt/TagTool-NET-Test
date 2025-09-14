@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
 using TagTool.Commands.Common;
@@ -51,7 +51,7 @@ namespace TagTool.Commands.Mod
                 .ToList();
 
             var tags = Cache.TagCache.TagTable
-                .OfType<CachedTagHaloOnline>()
+                .OfType<CachedTagEldorado>()
                 .Where(t => !t.IsEmpty() && t.Group.ToString().Equals("bitmap", StringComparison.OrdinalIgnoreCase))
                 .ToList();
 

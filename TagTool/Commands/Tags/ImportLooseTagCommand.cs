@@ -22,12 +22,12 @@ namespace TagTool.Commands.Tags
 {
     public class ImportLooseTagCommand : Command
     {
-        public GameCacheHaloOnlineBase Cache { get; set; }
+        public GameCacheEldoradoBase Cache { get; set; }
         private EndianFormat TagEndianness { get; set; }
         private CacheVersion TagCache { get; set; }
         private CachePlatform TagPlatform { get; set; }
 
-        public ImportLooseTagCommand(GameCacheHaloOnlineBase cache) : base(
+        public ImportLooseTagCommand(GameCacheEldoradoBase cache) : base(
             false,
 
             "ImportLooseTag",
@@ -86,7 +86,7 @@ namespace TagTool.Commands.Tags
             var layout = singleFileTagReader.ReadLayout(TagEndianness);
 
             // read and fixup the data
-            var FixupContext = new HaloOnlinePersistContext(Cache);
+            var FixupContext = new EldoradoPersistContext(Cache);
             var newTagData = singleFileTagReader.ReadAndFixupData(0, layout, FixupContext, out uint mainStructOffset);
 
             var newTagDataReader = new EndianReader(new MemoryStream(newTagData), TagEndianness);
@@ -142,7 +142,7 @@ namespace TagTool.Commands.Tags
             return true;
         }
 
-        private void FixupTag(object tagDef, HaloOnlinePersistContext FixupContext, TagLayout layout, Type looseTagType)
+        private void FixupTag(object tagDef, EldoradoPersistContext FixupContext, TagLayout layout, Type looseTagType)
         {         
             switch (looseTagType.Name)
             {
@@ -387,11 +387,11 @@ namespace TagTool.Commands.Tags
             return new RealVector2d(point.X, point.Y);
         }
 
-        public class HaloOnlinePersistContext : ISingleTagFilePersistContext
+        public class EldoradoPersistContext : ISingleTagFilePersistContext
         {
             public GameCache Cache;
             public List<byte[]> TagResourceData = new List<byte[]>();
-            public HaloOnlinePersistContext(GameCache cache)
+            public EldoradoPersistContext(GameCache cache)
             {
                 Cache = cache;
             }

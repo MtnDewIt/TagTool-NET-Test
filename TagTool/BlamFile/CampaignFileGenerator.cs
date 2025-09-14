@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile.MCC;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.Common.Logging;
 using TagTool.IO;
@@ -38,7 +38,7 @@ namespace TagTool.BlamFile
                 return;
             }
 
-            if (cache is GameCacheHaloOnline)
+            if (cache is GameCacheEldorado)
             {
                 WriteBlf(cache, campaignBlf, fileName);
             }
@@ -100,7 +100,7 @@ namespace TagTool.BlamFile
 
                     foreach (var mapInfo in mapInfoList)
                     {
-                        if (cache is GameCacheHaloOnline)
+                        if (cache is GameCacheEldorado)
                         {
                             foreach (var scenario in cache.TagCache.FindAllInGroup("scnr"))
                             {

@@ -56,8 +56,8 @@ namespace TagTool.Commands.Bitmaps
 
             BitmapTextureInteropResource newResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(resultBitmap);
             var resourceRef = Bitmap.HardwareTextures[imageIndex];
-            var hoCache = (GameCacheHaloOnlineBase)Cache;
-            hoCache.ResourceCaches.ReplaceResource(resourceRef.HaloOnlinePageableResource, newResourceDefinition);
+            var hoCache = (GameCacheEldoradoBase)Cache;
+            hoCache.ResourceCaches.ReplaceResource(resourceRef.EldoradoPageableResource, newResourceDefinition);
             return true;
         }
 

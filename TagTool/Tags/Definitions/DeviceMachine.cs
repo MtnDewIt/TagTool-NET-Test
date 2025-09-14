@@ -7,7 +7,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x18, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x14, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x24, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x24, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "device_machine", Tag = "mach", Size = 0x20, MinVersion = CacheVersion.HaloReach)]
     public class DeviceMachine : Device
     {
@@ -27,7 +27,7 @@ namespace TagTool.Tags.Definitions
         [TagField(Length = 2, Flags = Padding, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public byte[] Padding4;
 
-        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Padding5;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]

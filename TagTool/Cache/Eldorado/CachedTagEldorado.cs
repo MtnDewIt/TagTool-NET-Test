@@ -5,15 +5,15 @@ using TagTool.Cache.Gen3;
 using TagTool.Common;
 using TagTool.Tags;
 
-namespace TagTool.Cache.HaloOnline
+namespace TagTool.Cache.Eldorado
 {
-    public class CachedTagHaloOnline : CachedTag
+    public class CachedTagEldorado : CachedTag
     {
-        public CachedTagHaloOnline() : base() { }
+        public CachedTagEldorado() : base() { }
 
-        public CachedTagHaloOnline(int index, string name = null) : base(index, name) { }
+        public CachedTagEldorado(int index, string name = null) : base(index, name) { }
 
-        public CachedTagHaloOnline(int index, TagGroup group, string name = null) : base(index, group, name) { }
+        public CachedTagEldorado(int index, TagGroup group, string name = null) : base(index, group, name) { }
 
         public override uint DefinitionOffset => Offset;
 

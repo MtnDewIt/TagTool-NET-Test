@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using TagTool.BlamFile;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.Commands.ScenarioStructureBSPs;
 using TagTool.Common;
@@ -27,7 +27,7 @@ namespace TagTool.Porting.Gen2
         private StructureAutoConverter AutoConverter;
         private LocalizedLevelDataStruct LevelData;
 
-        public PortingContextGen2(GameCacheHaloOnlineBase cache, GameCache BlamCache) : base(cache, BlamCache)
+        public PortingContextGen2(GameCacheEldoradoBase cache, GameCache BlamCache) : base(cache, BlamCache)
         { 
             AutoConverter = new StructureAutoConverter(BlamCache, CacheContext);
         }
@@ -105,7 +105,7 @@ namespace TagTool.Porting.Gen2
         }
         protected override bool GroupIsValid(CachedTag blamTag, out CachedTag resultTag)
         {
-            resultTag = new CachedTagHaloOnline
+            resultTag = new CachedTagEldorado
             {
                 Group = new TagGroup(blamTag.Group.Tag),
                 Index = blamTag.Index,
@@ -343,10 +343,10 @@ namespace TagTool.Porting.Gen2
         {
             string value = damageReportingType.Halo2Retail.ToString();
 
-            if (value == null || !Enum.TryParse(value, out damageReportingType.HaloOnline))
+            if (value == null || !Enum.TryParse(value, out damageReportingType.Eldorado))
             {
                 Log.Warning($"Unsupported Damage reporting type '{value}'. Using default.");
-                damageReportingType.HaloOnline = Damage.DamageReportingType.HaloOnlineValue.GuardiansUnknown;
+                damageReportingType.Eldorado = Damage.DamageReportingType.EldoradoValue.GuardiansUnknown;
             }
 
             return damageReportingType;

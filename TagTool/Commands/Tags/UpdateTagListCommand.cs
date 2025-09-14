@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.JSON;
 
@@ -41,9 +41,9 @@ namespace TagTool.Commands.Tags
 
             TagNameTable = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
 
-            if (Cache is GameCacheHaloOnline)
+            if (Cache is GameCacheEldorado)
             {
-                var cache = Cache as GameCacheHaloOnline;
+                var cache = Cache as GameCacheEldorado;
 
                 foreach (var tag in cache.TagCache.NonNull())
                 {

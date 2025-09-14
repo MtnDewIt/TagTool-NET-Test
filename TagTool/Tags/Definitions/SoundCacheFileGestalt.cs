@@ -35,7 +35,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<Unknown6C> UnknownReach1;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<CustomPlayback> CustomPlaybacks;
 
         public List<LanguageBlock> Languages;

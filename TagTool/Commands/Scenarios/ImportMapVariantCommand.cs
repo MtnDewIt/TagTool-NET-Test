@@ -22,7 +22,7 @@ namespace TagTool.Commands.Scenarios
         private CachedTag Tag;
         private Scenario Definition;
 
-        public ImportMapVariantCommand(GameCacheHaloOnlineBase cache, CachedTag tag, Scenario definition) :
+        public ImportMapVariantCommand(GameCacheEldoradoBase cache, CachedTag tag, Scenario definition) :
             base(false,
 
                 "ImportMapVariant",

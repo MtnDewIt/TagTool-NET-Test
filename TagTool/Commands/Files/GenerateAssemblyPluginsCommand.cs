@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using static TagTool.Tags.TagFieldFlags;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache.Gen3;
 using TagTool.Commands.Common;
 
@@ -746,7 +746,7 @@ namespace TagTool.Commands.Files
                     else if (fieldType == typeof(DatumHandle))
                     {
                         assemblyPluginFields.AddRange(
-                            cacheVersion > CacheVersion.Halo2PC && cacheVersion < CacheVersion.HaloOnlineED ?
+                            cacheVersion > CacheVersion.Halo2PC && cacheVersion < CacheVersion.EldoradoED ?
                             new[]
                             {
                                 new AssemblyPluginField(AssemblyPluginFieldTypes.uint16, fieldName + " Identifier", ref offset),
@@ -1027,8 +1027,8 @@ namespace TagTool.Commands.Files
         /// </summary>
         static readonly Dictionary<CacheVersion, string> assemblyCacheVersions = new Dictionary<CacheVersion, string>()
         {
-            {CacheVersion.HaloOnlineED, "ElDewrito" },
-            {CacheVersion.HaloOnline106708, "HaloOnline" },
+            {CacheVersion.EldoradoED, "ElDewrito" },
+            {CacheVersion.Eldorado106708, "HaloOnline" },
             {CacheVersion.Halo3Retail, "Halo3" },
             {CacheVersion.Halo3ODST, "ODST" },
         };

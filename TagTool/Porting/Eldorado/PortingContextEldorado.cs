@@ -6,16 +6,16 @@ using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Porting.HaloOnline
+namespace TagTool.Porting.Eldorado
 {
-    public partial class PortingContextHO : PortingContext
+    public partial class PortingContextEldorado : PortingContext
     {
         private readonly record struct ResourceDesc(ResourceLocation Location, int Index);
         private readonly Dictionary<ResourceDesc, ResourceDesc> ConvertedResources = [];
 
-        private GameCacheHaloOnlineBase BlamCacheHO => (GameCacheHaloOnlineBase)BlamCache;
+        private GameCacheEldoradoBase BlamCacheHO => (GameCacheEldoradoBase)BlamCache;
 
-        public PortingContextHO(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
+        public PortingContextEldorado(GameCacheEldoradoBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
         {
         }
 

@@ -4,7 +4,7 @@ using System.IO;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.BlamFile;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 
 namespace TagTool.Commands.Files

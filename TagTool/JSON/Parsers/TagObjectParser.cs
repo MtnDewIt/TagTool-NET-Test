@@ -18,13 +18,13 @@ namespace TagTool.JSON.Parsers
     public class TagObjectParser
     {
         private GameCache Cache;
-        private GameCacheHaloOnlineBase CacheContext;
+        private GameCacheEldoradoBase CacheContext;
         private Stream CacheStream;
         private TagObjectHandler TagHandler;
         private MapObjectParser MapParser;
         private string InputPath;
 
-        public TagObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, string inputPath)
+        public TagObjectParser(GameCache cache, GameCacheEldoradoBase cacheContext, Stream cacheStream, string inputPath)
         {
             Cache = cache;
             CacheContext = cacheContext;

@@ -37,9 +37,9 @@ namespace TagTool.BlamFile
             var serializer = new TagSerializer(Version, CachePlatform, EndianFormat);
             serializer.Serialize(dataContext, Header);
 
-            if (MapVersion == CacheFileVersion.HaloOnline) 
+            if (MapVersion == CacheFileVersion.Eldorado) 
             {
-                if (Version == CacheVersion.HaloOnlineED)
+                if (Version == CacheVersion.EldoradoED)
                 {
                     if (MapFileBlf != null)
                         MapFileBlf.Write(writer);
@@ -69,9 +69,9 @@ namespace TagTool.BlamFile
             }
 
             // temporary code until map file format cleanup
-            if (MapVersion == CacheFileVersion.HaloOnline)
+            if (MapVersion == CacheFileVersion.Eldorado)
             {
-                if (Version == CacheVersion.HaloOnlineED)
+                if (Version == CacheVersion.EldoradoED)
                 {
                     var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, CachePlatform).TotalSize;
 
@@ -84,7 +84,7 @@ namespace TagTool.BlamFile
                 }
                 else 
                 {
-                    var header = Header as CacheFileHeaderGenHaloOnline;
+                    var header = Header as CacheFileHeaderEldorado;
 
                     reader.SeekTo(header.Reports.Offset);
 
@@ -164,7 +164,7 @@ namespace TagTool.BlamFile
 
                 case CacheFileVersion.Halo3Beta:
                 case CacheFileVersion.Halo3:
-                case CacheFileVersion.HaloOnline:
+                case CacheFileVersion.Eldorado:
                         reader.SeekTo(0x11C);
                     break;
                 case CacheFileVersion.HaloMCCUniversal:

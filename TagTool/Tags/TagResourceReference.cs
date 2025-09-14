@@ -22,8 +22,8 @@ namespace TagTool.Tags
         /// <summary>
         /// PageableResource structure (as a pointer)
         /// </summary>
-        [TagField(Gen = CacheGeneration.HaloOnline, Flags = TagFieldFlags.Pointer)]
-        public PageableResource HaloOnlinePageableResource;
+        [TagField(Gen = CacheGeneration.Eldorado, Flags = TagFieldFlags.Pointer)]
+        public PageableResource EldoradoPageableResource;
 
         [TagField(MinVersion = CacheVersion.Halo3Beta)]
         public int DefinitionAddress;

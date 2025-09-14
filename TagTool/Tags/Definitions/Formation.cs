@@ -7,14 +7,14 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "formation", Tag = "form", Size = 0x10, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "formation", Tag = "form", Size = 0x18, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "formation", Tag = "form", Size = 0x18, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "formation", Tag = "form", Size = 0x10, MinVersion = CacheVersion.HaloReach)]
     public class Formation : TagStructure
 	{
         public StringId Name;
         public List<Primitive> Primitives;
 
-        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Unused;
         
         [TagStructure(Size = 0x24)]

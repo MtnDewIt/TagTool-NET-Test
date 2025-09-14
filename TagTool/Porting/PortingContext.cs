@@ -6,14 +6,14 @@ using System.IO;
 using System.Linq;
 using TagTool.BlamFile;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
 using TagTool.Porting.Gen2;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Porting.Gen3;
-using TagTool.Porting.HaloOnline;
+using TagTool.Porting.Eldorado;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -21,7 +21,7 @@ namespace TagTool.Porting
 {
     public abstract partial class PortingContext : IDisposable
     {
-        public readonly GameCacheHaloOnlineBase CacheContext;
+        public readonly GameCacheEldoradoBase CacheContext;
         public readonly GameCache BlamCache;
         protected readonly TagDefinitionCache TagDefinitionCache = new();
         protected readonly BlockingCollection<Action> DeferredActions = [];
@@ -35,7 +35,7 @@ namespace TagTool.Porting
         public List<Tag> DoNotReplaceGroups = [];
         public PortingOptions Options = new();
 
-        protected PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache)
+        protected PortingContext(GameCacheEldoradoBase cacheContext, GameCache blamCache)
         {
             CacheContext = cacheContext;
             BlamCache = blamCache;
@@ -50,12 +50,12 @@ namespace TagTool.Porting
         /// <param name="sourceCache">Source cache</param>
         /// <returns>PortingContext</returns>
         /// <exception cref="NotSupportedException">Thrown if the cache is not supported</exception>
-        public static PortingContext Create(GameCacheHaloOnlineBase destCache, GameCache sourceCache)
+        public static PortingContext Create(GameCacheEldoradoBase destCache, GameCache sourceCache)
         {
             switch (sourceCache)
             {
-                case GameCacheHaloOnlineBase:
-                    return new PortingContextHO(destCache, sourceCache);
+                case GameCacheEldoradoBase:
+                    return new PortingContextEldorado(destCache, sourceCache);
                 case GameCacheGen3:
                     return new PortingContextGen3(destCache, sourceCache);
                 case GameCacheGen2:
@@ -195,10 +195,10 @@ namespace TagTool.Porting
             if (blamDefinition == null)
             {
                 // TODO: remove edTag from ConvertDefinition so that we don't have this problem
-                if (edTag.Index < CacheContext.TagCacheGenHO.Tags.Count - 1)
-                    CacheContext.TagCacheGenHO.Tags[edTag.Index] = null;
+                if (edTag.Index < CacheContext.TagCacheEldorado.Tags.Count - 1)
+                    CacheContext.TagCacheEldorado.Tags[edTag.Index] = null;
                 else
-                    CacheContext.TagCacheGenHO.Tags.RemoveAt(edTag.Index);
+                    CacheContext.TagCacheEldorado.Tags.RemoveAt(edTag.Index);
 
                 CachedTag fallback = GetFallbackTag(blamTag);
                 Log.Error($"Failed to convert tag '{blamTag}', using fallback tag: {fallback}");
@@ -258,7 +258,7 @@ namespace TagTool.Porting
                 var i = CacheContext.TagCache.TagTable.ToList().FindIndex(n => n == null);
 
                 if (i >= 0)
-                    CacheContext.TagCacheGenHO.Tags[i] = (CachedTagHaloOnline)(edTag = (new CachedTagHaloOnline(i, blamTag.Group)));
+                    CacheContext.TagCacheEldorado.Tags[i] = (CachedTagEldorado)(edTag = (new CachedTagEldorado(i, blamTag.Group)));
             }
             else
             {

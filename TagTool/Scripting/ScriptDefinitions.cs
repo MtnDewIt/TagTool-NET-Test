@@ -66,8 +66,8 @@ namespace TagTool.Scripting
                 case CacheVersion.HaloReach:
                     return "halo_reach";
 
-                case CacheVersion.HaloOnline106708:
-                case CacheVersion.HaloOnlineED:
+                case CacheVersion.Eldorado106708:
+                case CacheVersion.EldoradoED:
                     return "halo_online_ed";
             }
 

@@ -19,7 +19,7 @@ namespace TagTool.Commands.Files
 {
     public class ConvertReachMapVariantCommand : Command
     {
-        private readonly GameCacheHaloOnlineBase Cache;
+        private readonly GameCacheEldoradoBase Cache;
 
         private string OutputPath = "";
 
@@ -63,7 +63,7 @@ namespace TagTool.Commands.Files
             [ContentItemMetadata.ContentItemType.Usermap] = ".map",
         };
 
-        public ConvertReachMapVariantCommand(GameCacheHaloOnlineBase cache)
+        public ConvertReachMapVariantCommand(GameCacheEldoradoBase cache)
             : base(true,
 
                   "ConvertReachMapVariant",

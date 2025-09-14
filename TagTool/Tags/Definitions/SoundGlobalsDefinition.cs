@@ -6,7 +6,7 @@ namespace TagTool.Tags.Definitions
 
     [TagStructure(Size = 0x50, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x50, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x60, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x6C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class SoundGlobalsDefinition : TagStructure
@@ -32,7 +32,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<FireTeamSound> FireTeamSounds;
 
-        [TagField(ValidTags = new[] { "sus!" }, Gen = CacheGeneration.HaloOnline)]
+        [TagField(ValidTags = new[] { "sus!" }, Gen = CacheGeneration.Eldorado)]
         public CachedTag GfxUiSounds;
 
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach)]

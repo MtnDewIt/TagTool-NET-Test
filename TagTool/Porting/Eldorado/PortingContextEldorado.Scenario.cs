@@ -4,9 +4,9 @@ using TagTool.Cache;
 using TagTool.Scripting;
 using TagTool.Tags.Definitions;
 
-namespace TagTool.Porting.HaloOnline
+namespace TagTool.Porting.Eldorado
 {
-    public partial class PortingContextHO
+    public partial class PortingContextEldorado
     {
         private Scenario ConvertScenario(Stream cacheStream, Stream blamCacheStream, Scenario scnr)
         {
@@ -21,7 +21,7 @@ namespace TagTool.Porting.HaloOnline
                     int destTagIndex = -1;
                     if (srcTagIndex != -1)
                     {
-                        CachedTag srcTag = BlamCacheHO.TagCacheGenHO.Tags[srcTagIndex];
+                        CachedTag srcTag = BlamCacheHO.TagCacheEldorado.Tags[srcTagIndex];
                         CachedTag destTag = ConvertTag(cacheStream, blamCacheStream, srcTag);
                         if (destTag != null)
                             destTagIndex = destTag.Index;

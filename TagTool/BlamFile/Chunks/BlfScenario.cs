@@ -7,7 +7,7 @@ using TagTool.Tags;
 namespace TagTool.BlamFile.Chunks
 {
     [TagStructure(Size = 0x4D44, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x98B4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x98B4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0xCC8C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
     [TagStructure(Size = 0x11DCC, MinVersion = CacheVersion.Halo4)]
     public class BlfScenario : BlfChunkHeader
@@ -30,19 +30,19 @@ namespace TagTool.BlamFile.Chunks
         public string ScenarioPath;
 
         public int PresenceContextId;
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public int SortOrder;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public byte MinimumDesiredPlayers;
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public byte MaximumDesiredPlayers;
 
         public GameEngineTeams GameEngineTeamCounts;
 
         public bool AllowSavedFilms;
 
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Padding1;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
@@ -52,7 +52,7 @@ namespace TagTool.BlamFile.Chunks
         public uint[] MultiplayerObjects; // bit vector
 
         [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         [TagField(Length = 0xC, MinVersion = CacheVersion.HaloReach)]
         public BlfScenarioInsertion[] Insertions;
 
@@ -109,7 +109,7 @@ namespace TagTool.BlamFile.Chunks
         }
 
         [TagStructure(Size = 0xF08, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0xF10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0xF10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0xF88, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
         [TagStructure(Size = 0x15C8, MinVersion = CacheVersion.Halo4)]
         public class BlfScenarioInsertion : TagStructure
@@ -117,7 +117,7 @@ namespace TagTool.BlamFile.Chunks
             public bool Visible;
             public BlfScenarioInsertionFlags Flags;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public short ZoneSetIndex;
 
             [TagField(Length = 0x2, MinVersion = CacheVersion.HaloReach)]
@@ -126,9 +126,9 @@ namespace TagTool.BlamFile.Chunks
             [TagField(Length = 128, MinVersion = CacheVersion.HaloReach)]
             public string ZoneSetName;
 
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
             public int ReturnFromMapId;
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
             public int SurvivalPresenceContextId;
 
             [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]

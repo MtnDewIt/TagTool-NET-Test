@@ -3,8 +3,8 @@ using TagTool.Tags;
 
 namespace TagTool.Cache
 {
-    [TagStructure(Size = 0x3390, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-    public class CacheFileHeaderGenHaloOnline : CacheFileHeader
+    [TagStructure(Size = 0x3390, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    public class CacheFileHeaderEldorado : CacheFileHeader
     {
         //
         // Header definition
@@ -46,8 +46,8 @@ namespace TagTool.Cache
 
         public LastModificationDate CreationDate;
 
-        [TagField(Length = (int)CacheFileSharedFileTypeMS23.Count, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline155080)]
-        [TagField(Length = (int)CacheFileSharedFileTypeHO.Count, MinVersion = CacheVersion.HaloOnline235640)]
+        [TagField(Length = (int)CacheFileSharedFileTypeMS23.Count, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080)]
+        [TagField(Length = (int)CacheFileSharedFileTypeHO.Count, MinVersion = CacheVersion.Eldorado235640)]
         public SharedModificationDate[] SharedCreationDate;
 
         [TagField(Length = 32)]
@@ -97,8 +97,8 @@ namespace TagTool.Cache
 
         public int CacheFileResourceGestaltIndex;
 
-        [TagField(Length = 0x594, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline155080, Flags = TagFieldFlags.Padding)]
-        [TagField(Length = 0x584, MinVersion = CacheVersion.HaloOnline235640, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x594, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080, Flags = TagFieldFlags.Padding)]
+        [TagField(Length = 0x584, MinVersion = CacheVersion.Eldorado235640, Flags = TagFieldFlags.Padding)]
         public byte[] Padding2;
 
         public Tag FooterSignature;

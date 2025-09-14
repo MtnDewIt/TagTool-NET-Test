@@ -39,7 +39,7 @@ namespace TagTool.BlamFile
             Version = version;
             CachePlatform = CachePlatform.Original;
 
-            if (!CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline106708))
+            if (!CacheVersionDetection.IsBetween(Version, CacheVersion.EldoradoED, CacheVersion.Eldorado106708))
                 throw new ArgumentOutOfRangeException(nameof(Version), "Cache File version not supported");
         }
 
@@ -53,7 +53,7 @@ namespace TagTool.BlamFile
             map.Version = Version;
             map.CachePlatform = CachePlatform;
             map.EndianFormat = EndianFormat.LittleEndian;
-            map.MapVersion = CacheFileVersion.HaloOnline;
+            map.MapVersion = CacheFileVersion.Eldorado;
             map.Header = GenerateCacheFileHeader(scnrTag, scnr, scenarioName);
             map.MapFileBlf = GenerateMapBlf(scnr, scenarioName);
             return map;
@@ -96,12 +96,12 @@ namespace TagTool.BlamFile
             }
         }
 
-        private CacheFileHeaderGenHaloOnline GenerateCacheFileHeader(CachedTag scnrTag, Scenario scnr, string scenarioName)
+        private CacheFileHeaderEldorado GenerateCacheFileHeader(CachedTag scnrTag, Scenario scnr, string scenarioName)
         {
-            var header = new CacheFileHeaderGenHaloOnline();
+            var header = new CacheFileHeaderEldorado();
             header.HeaderSignature = new Tag("head");
             header.FooterSignature = new Tag("foot");
-            header.FileVersion = CacheFileVersion.HaloOnline;
+            header.FileVersion = CacheFileVersion.Eldorado;
             header.Build = CacheVersionDetection.GetBuildName(Version, CachePlatform);
 
             switch (scnr.MapType)
@@ -117,7 +117,7 @@ namespace TagTool.BlamFile
                     break;
             }
 
-            header.FileLength = (int)TagStructure.GetStructureSize(typeof(CacheFileHeaderGenHaloOnline), Version, CachePlatform);
+            header.FileLength = (int)TagStructure.GetStructureSize(typeof(CacheFileHeaderEldorado), Version, CachePlatform);
             header.SharedCacheType = CacheFileSharedType.None;
             header.MapId = scnr.MapId;
             header.Name = scenarioName;

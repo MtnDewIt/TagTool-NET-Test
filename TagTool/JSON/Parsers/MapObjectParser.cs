@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -13,12 +13,12 @@ namespace TagTool.JSON.Parsers
     public class MapObjectParser
     {
         private GameCache Cache;
-        private GameCacheHaloOnlineBase CacheContext;
+        private GameCacheEldoradoBase CacheContext;
         private Stream CacheStream;
         private MapObjectHandler Handler;
         private string InputPath;
 
-        public MapObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, string inputPath)
+        public MapObjectParser(GameCache cache, GameCacheEldoradoBase cacheContext, Stream cacheStream, string inputPath)
         {
             Cache = cache;
             CacheContext = cacheContext;
@@ -46,7 +46,7 @@ namespace TagTool.JSON.Parsers
                     Reports = mapObject.Reports,
                 };
 
-                var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
+                var headerData = mapData.Header as CacheFileHeaderEldorado;
                 var scnrTag = Cache.TagCache.GetTag<Scenario>(headerData.ScenarioPath);
                 var scnr = CacheContext.Deserialize<Scenario>(CacheStream, scnrTag);
 
@@ -65,7 +65,7 @@ namespace TagTool.JSON.Parsers
 
                 headerData.ScenarioTagIndex = scnrTag.Index;
 
-                if (mapData.Version == CacheVersion.HaloOnlineED)
+                if (mapData.Version == CacheVersion.EldoradoED)
                 {
                     if (mapData.MapFileBlf != null && mapData.MapFileBlf.MapVariant.MapVariant != null && mapData.MapFileBlf.MapVariantTagNames.Names != null)
                     {

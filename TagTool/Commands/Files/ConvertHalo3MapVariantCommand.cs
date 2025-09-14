@@ -20,7 +20,7 @@ namespace TagTool.Commands.Files
 {
     public class ConvertHalo3MapVariantCommand : Command
     {
-        private readonly GameCacheHaloOnlineBase Cache;
+        private readonly GameCacheEldoradoBase Cache;
 
         private string OutputPath = "";
 
@@ -91,7 +91,7 @@ namespace TagTool.Commands.Files
             [ContentItemMetadata.ContentItemType.Usermap] = ".map",
         };
 
-        public ConvertHalo3MapVariantCommand(GameCacheHaloOnlineBase cache)
+        public ConvertHalo3MapVariantCommand(GameCacheEldoradoBase cache)
             : base(true,
 
                   "ConvertHalo3MapVariant",
@@ -216,7 +216,7 @@ namespace TagTool.Commands.Files
                         blf.MapVariant.MapVariant.ObjectTypeStartIndex = newObjectIndexes;
                     }
 
-                    blf.Version = CacheVersion.HaloOnlineED;
+                    blf.Version = CacheVersion.EldoradoED;
                     blf.CachePlatform = CachePlatform.Original;
                     blf.Format = EndianFormat.LittleEndian;
 

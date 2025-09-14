@@ -15,9 +15,9 @@ namespace TagTool.Tags
 
         public float RuntimeMConstantValue;
 
-        [TagField(MaxVersion = Cache.CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = Cache.CacheVersion.Eldorado700123)]
         public EditablePropertiesFlags RuntimeMFlags;
-        [TagField(Flags = Padding, Length = 3, MaxVersion = Cache.CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 3, MaxVersion = Cache.CacheVersion.Eldorado700123)]
         public byte[] Padding1 = new byte[3];
 
         [TagField(MinVersion = Cache.CacheVersion.HaloReach)]

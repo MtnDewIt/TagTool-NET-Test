@@ -10,9 +10,9 @@ namespace TagTool.Commands.Tags
 {
     class ListMapsCommand : Command 
     {
-        private GameCacheHaloOnlineBase CacheContext { get; }
+        private GameCacheEldoradoBase CacheContext { get; }
 
-        public ListMapsCommand(GameCacheHaloOnlineBase cacheContext)
+        public ListMapsCommand(GameCacheEldoradoBase cacheContext)
             : base(true,
 
                 "ListMaps",
@@ -45,7 +45,7 @@ namespace TagTool.Commands.Tags
 
                     mapFile.Read(reader);
 
-                    var header = mapFile.Header as CacheFileHeaderGenHaloOnline;
+                    var header = mapFile.Header as CacheFileHeaderEldorado;
                     var mapVariant = mapFile.MapFileBlf?.MapVariant?.MapVariant;
                     var mapName = mapFile.MapFileBlf?.Scenario?.Names[0]?.Name;
 

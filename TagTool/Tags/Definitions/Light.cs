@@ -4,7 +4,7 @@ using System;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "light", Tag = "ligh", Size = 0x94, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "light", Tag = "ligh", Size = 0x94, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "light", Tag = "ligh", Size = 0xCC, MinVersion = CacheVersion.HaloReach)]
     public class Light : TagStructure
 	{
@@ -13,7 +13,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public sbyte Version;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public LightFlags Flags;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public LightFlagsReach ReachFlags;
@@ -56,12 +56,12 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "bitm" })]
         public CachedTag GelBitmap; // requires 'expensive light'
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float DistanceDiffusion; // [0.01 - 10.0+] approximately the physical size in world units of the light source itself.  small values cause the light to become very bright close to the light source, but quickly die off as you move away
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float AngularSmoothness; // [0.2 - 8.0] less than 1.0 for sharp edges, greater than 1.0 for smooth edges
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float PercentSpherical; // [0.0 - 1.0] percentage of ambient (spherical) light
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -72,10 +72,10 @@ namespace TagTool.Tags.Definitions
         public LightPriorityEnumeration NearPriority; // priority when the light is fullscreen in size
         public LightPriorityEnumeration FarPriority; // priority when the light is very far away
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public LightPriorityBiasEnumeration TransitionDistance; // specifies where the transition occurs between near and far priority
 
-        [TagField(Length = 1, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 1, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
         [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloReach)]
         public byte[] Padding1;
 

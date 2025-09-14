@@ -1,17 +1,17 @@
 ﻿using System.IO;
 using TagTool.Cache;
 using TagTool.Tags;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 
 namespace TagTool.Serialization
 {
-    class ModPackageTagSerializationContext : HaloOnlineSerializationContext
+    class ModPackageTagSerializationContext : EldoradoSerializationContext
     {
-        private TagCacheHaloOnline ModPackageTagCache;
+        private TagCacheEldorado ModPackageTagCache;
 
-        public ModPackageTagSerializationContext(Stream stream, GameCacheHaloOnlineBase context, CachedTagHaloOnline tag) : base(stream, context, tag)
+        public ModPackageTagSerializationContext(Stream stream, GameCacheEldoradoBase context, CachedTagEldorado tag) : base(stream, context, tag)
         {
-            ModPackageTagCache = context.TagCacheGenHO;
+            ModPackageTagCache = context.TagCacheEldorado;
         }
 
         public override CachedTag GetTagByIndex(int index)
@@ -24,7 +24,7 @@ namespace TagTool.Serialization
 
         public override CachedTag GetTagByName(TagGroup group, string name)
         {
-            foreach(var tag in Context.TagCacheGenHO.Tags)
+            foreach(var tag in Context.TagCacheEldorado.Tags)
             {
                 if (tag.Name == name && group == tag.Group)
                     return tag;

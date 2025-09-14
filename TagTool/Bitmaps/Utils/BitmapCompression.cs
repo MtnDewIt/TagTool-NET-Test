@@ -135,7 +135,7 @@ namespace TagTool.Bitmaps
                     // not ideal, but i'm not sure how else to handle it currently
                     if (platform == CachePlatform.MCC)
                         return DecompressDXNSNorm;
-                    else if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, version))
+                    else if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, version))
                         return DecompressATI2;
                     else
                         return DecompressDXNUNorm;
