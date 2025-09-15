@@ -1397,6 +1397,8 @@ namespace TagTool.Shaders.ShaderGenerator
             Dictionary<Task<ShaderGeneratorResult>, int> tasks = new Dictionary<Task<ShaderGeneratorResult>, int>(); // <task, entry point>
 
             TemplateGenerator generator = new TemplateGenerator();
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
+
             List<OptionInfo> optionInfo = BuildOptionInfo(cache, rmdf, options, shaderType);
 
             for (int i = 0; i < 20; i++)
@@ -1469,6 +1471,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 glps.EntryPoints.Add(new GlobalPixelShader.EntryPointBlock { DefaultCompiledShaderIndex = -1 });
 
             TemplateGenerator generator = new TemplateGenerator();
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
 
             foreach (var entryPoint in rmdf.EntryPoints)
             {
@@ -1548,6 +1551,7 @@ namespace TagTool.Shaders.ShaderGenerator
             }
 
             TemplateGenerator generator = new TemplateGenerator();
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
 
             foreach (var vertexTypeBlock in rmdf.VertexTypes)
             {
@@ -1590,7 +1594,8 @@ namespace TagTool.Shaders.ShaderGenerator
         public static void GenerateExplicitShader(GameCache cache, Stream stream, string explicitShader, out PixelShader pixl, out VertexShader vtsh)
         {
             ExplicitGenerator generator = new ExplicitGenerator();
-            
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
+
             HaloShaderGenerator.Globals.ExplicitShader eExplicitShader = generator.GetExplicitIndex(explicitShader);
             
             List<ShaderStage> supportedEntries = generator.ScrapeEntryPoints(eExplicitShader);

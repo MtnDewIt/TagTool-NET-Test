@@ -90,6 +90,8 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ExportTagModCommand(hoCache));
                 context.AddCommand(new GenerateShaderCommand(hoCache));
                 context.AddCommand(new RecompileShadersCommand(hoCache));
+                context.AddCommand(new DefineShaderMacroCommand());
+                context.AddCommand(new UndefineShaderMacroCommand());
                 context.AddCommand(new GenerateRenderMethodCommand(hoCache));
                 //context.AddCommand(new GenerateRmdfCommand(hoCache));
                 context.AddCommand(new GenerateBitmapCommand(hoCache));
