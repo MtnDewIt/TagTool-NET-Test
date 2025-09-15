@@ -467,7 +467,7 @@ namespace TagTool.Porting
         /// </remarks>
         /// <param name="stringId">String id to convert</param>
         /// <returns>The existing or newly allocated string id in the destination cache</returns>
-        protected StringId ConvertStringId(StringId stringId)
+        protected virtual StringId ConvertStringId(StringId stringId)
         {
             if (stringId == StringId.Invalid)
                 return stringId;

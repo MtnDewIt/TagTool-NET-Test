@@ -44,6 +44,8 @@ namespace TagTool.Commands.Forge
             {
                 foreach (var file in hoCache.Directory.GetFiles("*.map"))
                 {
+                    if (file.Name == "mainmenu.map")
+                        continue;
                     using (var mapFileStream = file.Open(FileMode.Open, FileAccess.ReadWrite))
                         MaximizeMapForgeBudget(mapFileStream);
                 }
