@@ -91,8 +91,8 @@ namespace TagTool.Pathfinding
         public short Vertex2;
         public FlagsValue LinkFlags;
         public short HintIndex;
-        public short ForwardLink;
-        public short ReverseLink;
+        public ushort ForwardLink;
+        public ushort ReverseLink;
         public short LeftSector;
         public short RightSector;
 
