@@ -60,13 +60,13 @@ namespace TagTool.Cache.Gen1
         {
             TagDefinitions = new TagDefinitionsGen1();
             Version = mapFile.Version;
-            CachePlatform = mapFile.CachePlatform;
+            CachePlatform = mapFile.Platform;
 
-            var tagDataSectionOffset = (uint)mapFile.Header.GetTagTableHeaderOffset();
+            var tagDataSectionOffset = (uint)mapFile.Header.GetTagsHeaderWhenLoaded();
             reader.SeekTo(tagDataSectionOffset);
 
             var dataContext = new DataSerializationContext(reader);
-            var deserializer = new TagDeserializer(mapFile.Version, mapFile.CachePlatform);
+            var deserializer = new TagDeserializer(mapFile.Version, mapFile.Platform);
             Header = deserializer.Deserialize<TagCacheGen1Header>(dataContext);
 
             switch (mapFile.Version) 
@@ -74,7 +74,7 @@ namespace TagTool.Cache.Gen1
                 case CacheVersion.HaloXbox:
                     BaseTagAddress = 0x803A6000;
                     break;
-                case CacheVersion.HaloCustomEdition when mapFile.CachePlatform == CachePlatform.MCC:
+                case CacheVersion.HaloCustomEdition when mapFile.Platform == CachePlatform.MCC:
                     BaseTagAddress = 0x50000000;
                     break;
                 default:
@@ -147,7 +147,7 @@ namespace TagTool.Cache.Gen1
 
         private void FixupStructureBsps(EndianReader reader, MapFile mapFile)
         {
-            uint AddressToOffset(uint address) => (address - BaseTagAddress) + (uint)mapFile.Header.GetTagTableHeaderOffset();
+            uint AddressToOffset(uint address) => (address - BaseTagAddress) + (uint)mapFile.Header.GetTagsHeaderWhenLoaded();
 
             var scnrTag = (CachedTagGen1)GetTag(Header.ScenarioTagID);
 

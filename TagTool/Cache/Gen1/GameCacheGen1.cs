@@ -36,7 +36,7 @@ namespace TagTool.Cache
             BaseMapFile = mapFile;
             CacheFile = file;
             Version = BaseMapFile.Version;
-            Platform = BaseMapFile.CachePlatform;
+            Platform = BaseMapFile.Platform;
             CacheFile = file;
             Deserializer = new TagDeserializer(Version, Platform);
             Serializer = new TagSerializer(Version, Platform);

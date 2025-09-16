@@ -39,31 +39,30 @@ namespace TagTool.JSON.Parsers
             {
                 var mapData = new MapFile()
                 {
-                    Version = mapObject.MapVersion,
-                    CachePlatform = CachePlatform.Original,
+                    Version = mapObject.Version,
+                    Platform = CachePlatform.Original,
                     Header = mapObject.Header,
                     MapFileBlf = mapObject.MapFileBlf,
                     Reports = mapObject.Reports,
                 };
 
-                var headerData = mapData.Header as CacheFileHeaderEldorado;
-                var scnrTag = Cache.TagCache.GetTag<Scenario>(headerData.ScenarioPath);
+                var scnrTag = Cache.TagCache.GetTag<Scenario>(mapData.Header.GetTagPath());
                 var scnr = CacheContext.Deserialize<Scenario>(CacheStream, scnrTag);
 
                 switch (scnr.MapType)
                 {
                     case ScenarioMapType.MainMenu:
-                        headerData.CacheType = CacheFileType.MainMenu;
+                        mapData.Header.SetScenarioType(CacheFileType.MainMenu);
                         break;
                     case ScenarioMapType.SinglePlayer:
-                        headerData.CacheType = CacheFileType.Campaign;
+                        mapData.Header.SetScenarioType(CacheFileType.Campaign);
                         break;
                     case ScenarioMapType.Multiplayer:
-                        headerData.CacheType = CacheFileType.Multiplayer;
+                        mapData.Header.SetScenarioType(CacheFileType.Multiplayer);
                         break;
                 }
 
-                headerData.ScenarioTagIndex = scnrTag.Index;
+                mapData.Header.SetScenarioIndex(scnrTag.Index);
 
                 if (mapData.Version == CacheVersion.EldoradoED)
                 {

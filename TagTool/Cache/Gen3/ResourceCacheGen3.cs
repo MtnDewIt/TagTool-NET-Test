@@ -32,13 +32,13 @@ namespace TagTool.Cache.Gen3
 
         public void LoadResourceCache()
         {
-            var gen3Header = (CacheFileHeaderGen3)Cache.BaseMapFile.Header;
+            var sectionTable = Cache.BaseMapFile.Header.GetSectionTable();
 
             // means no resources
-            if (Cache.Version > CacheVersion.Halo3Beta && gen3Header.SectionTable.Sections[(int)CacheFileSectionType.ResourceSection].Size == 0)
+            if (Cache.Version > CacheVersion.Halo3Beta && sectionTable.Sections[(int)CacheFileSectionType.ResourceSection].Size == 0)
                 return;
             // means resources but no tags, campaign.map for example. The resource section only contains pages for resources
-            else if (Cache.Version > CacheVersion.Halo3Beta && gen3Header.SectionTable.Sections[(int)CacheFileSectionType.TagSection].Size == 0)
+            else if (Cache.Version > CacheVersion.Halo3Beta && sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size == 0)
                 return;
             else
             {
@@ -433,7 +433,7 @@ namespace TagTool.Cache.Gen3
                 uint blockOffset = 0;
                 if (page.SharedCacheIndex < 0 || (ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].GlobalSharedSegmentOffset & 1) != 0)
                 {
-                    var sectionTable = ((CacheFileHeaderGen3)cache.BaseMapFile.Header).SectionTable;
+                    var sectionTable = cache.BaseMapFile.Header.GetSectionTable();
                     blockOffset = sectionTable.GetOffset(CacheFileSectionType.ResourceSection, page.BlockIndex);
                 }
                 else

@@ -474,7 +474,7 @@ namespace TagTool.Commands.Modding
                     MapFile map = new MapFile();
                     map.Read(reader);
                     // TODO: specify cache per map
-                    ModPackage.AddMap(cacheStream, ((CacheFileHeaderEldorado)map.Header).MapId , 0);
+                    ModPackage.AddMap(cacheStream, map.Header.GetMapId(), 0);
 
                 }
             }

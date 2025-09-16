@@ -47,12 +47,14 @@ namespace TagTool.Cache
 
         public uint TagAddressToOffset(uint address)
         {
-            var headerGen3 = (CacheFileHeaderGen3)BaseMapFile.Header;
+            var sectionTable = BaseMapFile.Header.GetSectionTable();
+            var tagsOffset = BaseMapFile.Header.GetTagsOffset();
+            var expectedBaseAddress = BaseMapFile.Header.GetExpectedBaseAddress();
 
             if (Version == CacheVersion.Halo3Beta)
-                return (uint)(address - (headerGen3.VirtualBaseAddress.Get32BitValue() - headerGen3.GetTagMemoryHeader().MemoryBufferOffset));
+                return (uint)(address - (expectedBaseAddress - tagsOffset));
 
-            ulong tagDataSectionOffset = headerGen3.SectionTable.GetSectionOffset(CacheFileSectionType.TagSection);
+            ulong tagDataSectionOffset = sectionTable.GetSectionOffset(CacheFileSectionType.TagSection);
 
             if(Platform == CachePlatform.MCC)
             {
@@ -60,11 +62,11 @@ namespace TagTool.Cache
                 if (Version >= CacheVersion.HaloReach)
                     bucketOffset = address >> 28 << 28;
 
-                return (uint)((address << 2) - headerGen3.VirtualBaseAddress.Value + tagDataSectionOffset + bucketOffset);
+                return (uint)((address << 2) - expectedBaseAddress + tagDataSectionOffset + bucketOffset);
             }
             else
             {
-                return (uint)(address - headerGen3.VirtualBaseAddress.Value + tagDataSectionOffset);
+                return (uint)(address - expectedBaseAddress + tagDataSectionOffset);
             }
         }
 
@@ -75,13 +77,13 @@ namespace TagTool.Cache
             BaseMapFile = mapFile;
             Version = BaseMapFile.Version;
             CacheFile = file;
-            Platform = BaseMapFile.CachePlatform;
+            Platform = BaseMapFile.Platform;
 
             Deserializer = new TagDeserializer(Version, Platform);
             Serializer = new TagSerializer(Version, Platform);
             Endianness = BaseMapFile.EndianFormat;
 
-            var headerGen3 = (CacheFileHeaderGen3)BaseMapFile.Header;
+            var sectionTable = BaseMapFile.Header.GetSectionTable();
 
             DisplayName = mapFile.Header.GetName() + ".map";
 
@@ -96,7 +98,7 @@ namespace TagTool.Cache
 
                 if (TagCacheGen3.Instances.Count > 0)
                 {
-                    if (Version == CacheVersion.Halo3Beta || headerGen3.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+                    if (Version == CacheVersion.Halo3Beta || sectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                         LocaleTables = new List<LocaleTable>();
                     else
                     {
@@ -212,7 +214,7 @@ namespace TagTool.Cache
 
         public void ResizeSection(CacheFileSectionType type, int requestedAdditionalSpace)
         {
-            var sectionTable = ((CacheFileHeaderGen3)BaseMapFile.Header).SectionTable;
+            var sectionTable = BaseMapFile.Header.GetSectionTable();
             var section = sectionTable.Sections[(int)type];
 
             var sectionFileOffset = sectionTable.GetSectionOffset(type);

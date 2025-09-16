@@ -102,9 +102,7 @@ namespace TagTool.Commands.Editing
                     mapFileData.Read(reader);
                     stream.Position = 0;
 
-                    var header = mapFileData.Header as CacheFileHeaderEldorado;
-
-                    if (header.Name == mapName) 
+                    if (mapFileData.Header.GetName() == mapName) 
                     {
                         result = mapFileData;
 

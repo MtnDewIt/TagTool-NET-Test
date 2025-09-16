@@ -3,6 +3,8 @@ using System.IO;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.BlamFile;
+using TagTool.Cache.Gen3.Resolvers;
+using TagTool.Cache.MCC.Resolvers;
 
 namespace TagTool.Cache.Gen3
 {
@@ -13,11 +15,17 @@ namespace TagTool.Cache.Gen3
         public StringTableGen3(EndianReader reader, MapFile baseMapFile) : base()
         {
             Version = baseMapFile.Version;
-            
-            var gen3Header = (CacheFileHeaderGen3)baseMapFile.Header;
-            var stringIDHeader = gen3Header.GetStringIDHeader();
-            var cachePlatform = baseMapFile.CachePlatform;
-            var sectionTable = gen3Header.SectionTable;
+
+            var gen3Header = baseMapFile.Header;
+            var cachePlatform = baseMapFile.Platform;
+            var sectionTable = gen3Header.GetSectionTable();
+
+            var stringCount = gen3Header.GetStringIdCount();
+            var dataCount = gen3Header.GetStringIdDataCount();
+            var indexOffset = gen3Header.GetStringIdIndexOffset();
+            var dataOffset = gen3Header.GetStringIdDataOffset();
+            var namespaceCount = gen3Header.GetStringIdNamespaceCount();
+            var namespaceOffset = gen3Header.GetStringIdNamespaceOffset();
 
             if (cachePlatform == CachePlatform.Original)
             {
@@ -45,23 +53,23 @@ namespace TagTool.Cache.Gen3
                 }
             }
             else if(cachePlatform == CachePlatform.MCC)
-                Resolver = new StringIdResolverMCC(reader, stringIDHeader, sectionTable);
+                Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
 
             // means no strings
             if (sectionTable != null && sectionTable.Sections[(int)CacheFileSectionType.StringSection].Size == 0)
                 return;
 
-            uint stringIdIndexTableOffset;
-            uint stringIdBufferOffset;
+            uint stringIdTableOffset;
+            uint stringIdDataOffset;
             if (Version > CacheVersion.Halo3Beta)
             {
-                stringIdIndexTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.IndicesOffset);
-                stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, baseMapFile.CachePlatform == CachePlatform.MCC ? stringIDHeader.BufferOffsetMCC : stringIDHeader.BufferOffset);
+                stringIdTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
+                stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
             }
             else
             {
-                stringIdIndexTableOffset = stringIDHeader.IndicesOffset;
-                stringIdBufferOffset = stringIDHeader.BufferOffset;
+                stringIdTableOffset = indexOffset;
+                stringIdDataOffset = dataOffset;
             }
             
 
@@ -69,23 +77,23 @@ namespace TagTool.Cache.Gen3
             // Read offsets
             //
 
-            reader.SeekTo(stringIdIndexTableOffset);
+            reader.SeekTo(stringIdTableOffset);
 
-            int[] stringOffset = new int[stringIDHeader.Count];
-            for (var i = 0; i < stringIDHeader.Count; i++)
+            int[] stringOffset = new int[stringCount];
+            for (var i = 0; i < stringCount; i++)
             {
                 stringOffset[i] = reader.ReadInt32();
                 Add("");
             }
 
-            reader.SeekTo(stringIdBufferOffset);
+            reader.SeekTo(stringIdDataOffset);
 
             EndianReader newReader;
 
             if (StringKey == "")
-                newReader = new EndianReader(new MemoryStream(reader.ReadBytes(stringIDHeader.BufferSize)), reader.Format);
+                newReader = new EndianReader(new MemoryStream(reader.ReadBytes(dataCount)), reader.Format);
             else
-                newReader = new EndianReader(reader.DecryptAesSegment(stringIDHeader.BufferSize, StringKey), reader.Format);
+                newReader = new EndianReader(reader.DecryptAesSegment(dataCount, StringKey), reader.Format);
 
             //
             // Read strings

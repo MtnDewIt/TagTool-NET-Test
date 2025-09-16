@@ -37,13 +37,15 @@ namespace TagTool.Serialization
             if (Tag.AddressToOffsetOverride != null)
                 return Tag.AddressToOffsetOverride(currentOffset, address);
 
-            uint tagDataSectionOffset = GameCache.BaseMapFile.Header.GetTagMemoryHeader().MemoryBufferOffset + (uint)GameCache.BaseMapFile.Header.GetTagTableHeaderOffset();
+            var tagsOffset = GameCache.BaseMapFile.Header.GetTagsOffset();
+
+            uint tagDataSectionOffset = tagsOffset + (uint)GameCache.BaseMapFile.Header.GetTagsHeaderWhenLoaded();
 
             uint tagDataOffset;
             if (GameCache.Version == CacheVersion.Halo2PC)
-                tagDataOffset = (address - GameCache.TagCacheGen2.VirtualAddress) - GameCache.BaseMapFile.Header.GetTagMemoryHeader().MemoryBufferOffset;
+                tagDataOffset = (address - GameCache.TagCacheGen2.TagsVirtualBase) - tagsOffset;
             else
-                tagDataOffset = (address - GameCache.TagCacheGen2.VirtualAddress);
+                tagDataOffset = (address - GameCache.TagCacheGen2.TagsVirtualBase);
 
             return tagDataSectionOffset + tagDataOffset;
         }

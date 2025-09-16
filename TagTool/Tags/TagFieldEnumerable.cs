@@ -131,7 +131,9 @@ namespace TagTool.Tags
 
             var fieldSize = TagFieldInfo.GetFieldSize(field.FieldType, attribute, targetVersion, cachePlatform);
 
-            if (fieldSize == 0 && !attribute.Flags.HasFlag(TagFieldFlags.Runtime))
+			var isAbstractTagStructure = field.FieldType.IsAbstract && field.FieldType.IsAssignableTo(typeof(TagStructure));
+
+            if (fieldSize == 0 && !attribute.Flags.HasFlag(TagFieldFlags.Runtime) && !isAbstractTagStructure)
                 throw new InvalidOperationException();
 
             uint align = TagFieldInfo.GetFieldAlignment(field.FieldType, attribute, targetVersion, cachePlatform);

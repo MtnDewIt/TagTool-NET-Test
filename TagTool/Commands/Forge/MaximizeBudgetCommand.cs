@@ -90,7 +90,7 @@ namespace TagTool.Commands.Forge
             }
             catch (Exception ex) 
             {
-                Log.Warning($@"Failed to maximize budget for {mapFile.Header.GetScenarioPath()}.scenario : {ex.Message}");
+                Log.Warning($@"Failed to maximize budget for {mapFile.Header.GetTagPath()}.scenario : {ex.Message}");
                 return;
             }
 
@@ -100,7 +100,7 @@ namespace TagTool.Commands.Forge
 
         private void MaximizeMapForgeBudget(MapFile mapFile)
         {
-            var scenarioTag = Cache.TagCache.GetTag<Scenario>(mapFile.Header.GetScenarioPath());
+            var scenarioTag = Cache.TagCache.GetTag<Scenario>(mapFile.Header.GetTagPath());
 
             Console.WriteLine($"Maximizing budget for scenario '{scenarioTag.Name}'...");
 

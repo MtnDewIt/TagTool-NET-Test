@@ -185,12 +185,12 @@ namespace TagTool.Commands
                     mapFile.Read(reader);
                 }
 
-                var header = mapFile.Header as CacheFileHeaderEldorado;
-                mapFile.Version = targetVersion;
-                header.CreationDate = LastModificationDate.CreateFromVersion(mapFile.Version);
-                header.Build = CacheVersionDetection.GetBuildName(mapFile.Version, mapFile.CachePlatform);
-                for (int i = 0; i < header.SharedCreationDate.Length; i++)
-                    header.SharedCreationDate[i].LastModificationDate = header.CreationDate;
+                //var header = mapFile.Header as CacheFileHeaderEldorado;
+                //mapFile.Version = targetVersion;
+                //header.CreationDate = LastModificationDate.CreateFromVersion(mapFile.Version);
+                //header.Build = CacheVersionDetection.GetBuildName(mapFile.Version, mapFile.Platform);
+                //for (int i = 0; i < header.SharedCreationDate.Length; i++)
+                //    header.SharedCreationDate[i].LastModificationDate = header.CreationDate;
 
                 using (var stream = file.Open(FileMode.Create, FileAccess.ReadWrite))
                 {

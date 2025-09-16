@@ -77,8 +77,7 @@ namespace TagTool.BlamFile
                 Blf mapInfo = LoadMapInfo(scnrTag, mapInfoFilePath, isExcessionData);
                 MapFile map = LoadOrBuildMapFile(scnrTag, _forceUpdate, scnr, mapInfo);
 
-                var header = (CacheFileHeaderEldorado)map.Header;
-                header.ScenarioTagIndex = scnrTag.Index;
+                map.Header.SetScenarioIndex(scnrTag.Index);
                 if (mapInfo != null && (_forceUpdate || map.MapFileBlf == null))
                     map.MapFileBlf = mapInfo;
 

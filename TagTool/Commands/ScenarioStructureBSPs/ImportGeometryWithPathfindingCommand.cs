@@ -606,11 +606,8 @@ namespace TagTool.Commands.ScenarioStructureBSPs
                         // Reset the stream position
                         stream.Position = 0;
 
-						// Get the header from the current map file
-						CacheFileHeaderEldorado header = mapFileData.Header as CacheFileHeaderEldorado;
-
 						// Check if the map file header name equals the specified map name
-						if (header.Name == mapName)
+						if (mapFileData.Header.GetName() == mapName)
 						{
 							// Update variant placement data
 							UpdateVariantPlacements(mapFileData.MapFileBlf);
@@ -663,9 +660,6 @@ namespace TagTool.Commands.ScenarioStructureBSPs
                         // Reset the stream position
                         mapStream.Position = 0;
 
-						// Get the header from the current map file
-						CacheFileHeaderEldorado header = mapFileData.Header as CacheFileHeaderEldorado;
-
                         // Create a new writer instance using the file stream
                         EndianWriter writer = new EndianWriter(mapStream);
 
@@ -676,7 +670,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
                         mapStream.Position = 0;
 
                         // Add the map file stream to the mod package
-                        modCache.AddMapFile(mapStream, header.MapId);
+                        modCache.AddMapFile(mapStream, mapFileData.Header.GetMapId());
                     }
 				}
 

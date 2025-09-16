@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -67,9 +67,6 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" PrivateAssets="all" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" PrivateAssets="all" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" PrivateAssets="all" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Cache\CacheFile\Headers\Eldorado\" />
   </ItemGroup>
   <ItemDefinitionGroup>
     <ReferenceCopyLocalPaths>

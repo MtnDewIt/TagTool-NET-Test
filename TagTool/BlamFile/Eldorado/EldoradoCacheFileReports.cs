@@ -1,4 +1,5 @@
 ﻿using TagTool.Cache;
+using TagTool.Cache.Eldorado;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.Eldorado

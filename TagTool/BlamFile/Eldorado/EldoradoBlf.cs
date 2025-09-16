@@ -62,17 +62,17 @@ namespace TagTool.BlamFile.Eldorado
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public BlfMapImage MapImage;
 
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
-        public BlfScreenshotCamera ScreenshotCamera;
-
-        [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
-        public BlfScreenshotData ScreenshotData;
-
-        [TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.Halo4)]
-        public BlfServerSignature ServerSignature;
-
-        [TagField(MinVersion = CacheVersion.HaloCustomEdition, MaxVersion = CacheVersion.Halo2AMP, Platform = CachePlatform.MCC)]
-        public BlfFileshareMetadata FileshareMetadata;
+        //[TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
+        //public BlfScreenshotCamera ScreenshotCamera;
+        //
+        //[TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
+        //public BlfScreenshotData ScreenshotData;
+        //
+        //[TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.Halo4)]
+        //public BlfServerSignature ServerSignature;
+        //
+        //[TagField(MinVersion = CacheVersion.HaloCustomEdition, MaxVersion = CacheVersion.Halo2AMP, Platform = CachePlatform.MCC)]
+        //public BlfFileshareMetadata FileshareMetadata;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo4)]
         public byte[] Buffer;
@@ -96,10 +96,10 @@ namespace TagTool.BlamFile.Eldorado
             GameVariant = blfData.GameVariant;
             ContentHeader = blfData.ContentHeader;
             MapImage = blfData.MapImage;
-            ScreenshotCamera = blfData.ScreenshotCamera;
-            ScreenshotData = blfData.ScreenshotData;
-            ServerSignature = blfData.ServerSignature;
-            FileshareMetadata = blfData.FileshareMetadata;
+            //ScreenshotCamera = blfData.ScreenshotCamera;
+            //ScreenshotData = blfData.ScreenshotData;
+            //ServerSignature = blfData.ServerSignature;
+            //FileshareMetadata = blfData.FileshareMetadata;
             Buffer = blfData.Buffer;
         }
     }

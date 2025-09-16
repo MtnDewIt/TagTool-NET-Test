@@ -145,15 +145,12 @@ namespace TagTool.Commands.JSON
 
                     mapData.Read(reader);
 
-                    var headerData = mapData.Header as CacheFileHeaderEldorado;
-
-                    headerData.ScenarioTagIndex = 0;
-
                     var mapObject = new MapObject()
                     {
                         MapName = mapName,
-                        MapVersion = mapData.Version,
-                        Header = headerData,
+                        Version = mapData.Version,
+                        Platform = mapData.Platform,
+                        Header = mapData.Header,
                         MapFileBlf = mapData.MapFileBlf,
                         Reports = mapData.Reports,
                     };
@@ -188,17 +185,14 @@ namespace TagTool.Commands.JSON
 
                 mapData.Read(reader);
 
-                var headerData = mapData.Header as CacheFileHeaderEldorado;
-
-                var mapName = headerData.Name;
-
-                headerData.ScenarioTagIndex = 0;
+                var mapName = mapData.Header.GetName();
 
                 var mapObject = new MapObject()
                 {
                     MapName = mapName,
-                    MapVersion = mapData.Version,
-                    Header = headerData,
+                    Version = mapData.Version,
+                    Platform = mapData.Platform,
+                    Header = mapData.Header,
                     MapFileBlf = mapData.MapFileBlf,
                     Reports = mapData.Reports,
                 };

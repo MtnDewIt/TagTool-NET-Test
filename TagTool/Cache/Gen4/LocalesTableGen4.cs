@@ -14,8 +14,8 @@ namespace TagTool.Cache.Gen4
         {
             
             List<LocaleTable> localesTable = new List<LocaleTable>();
-            string localesKey = baseMapFile.CachePlatform == CachePlatform.Original ? "BungieHaloReach!" : "";
-            var sectionTable = ((CacheFileHeaderGen4)baseMapFile.Header).SectionTable;
+            string localesKey = baseMapFile.Platform == CachePlatform.Original ? "BungieHaloReach!" : "";
+            var sectionTable = baseMapFile.Header.GetSectionTable();
 
             if (sectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                 return new List<LocaleTable>();
@@ -25,7 +25,7 @@ namespace TagTool.Cache.Gen4
                 LocaleTable table = new LocaleTable();
                 var languageIndex = (int)language;
 
-                var localeBlock = baseMapFile.CachePlatform == CachePlatform.Original
+                var localeBlock = baseMapFile.Platform == CachePlatform.Original
                     ? matg.LanguagePacks[languageIndex]
                     : matg.LanguagePacksMCC[languageIndex];
 

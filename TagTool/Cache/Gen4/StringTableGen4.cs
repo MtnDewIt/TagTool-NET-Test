@@ -3,6 +3,8 @@ using System.IO;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.BlamFile;
+using TagTool.Cache.MCC.Resolvers;
+using TagTool.Cache.Gen4.Resolvers;
 
 namespace TagTool.Cache.Gen4
 {
@@ -14,18 +16,24 @@ namespace TagTool.Cache.Gen4
         {
             Version = baseMapFile.Version;
 
-            var Gen4Header = (CacheFileHeaderGen4)baseMapFile.Header;
-            var stringIDHeader = Gen4Header.GetStringIDHeader();
-            var sectionTable = Gen4Header.SectionTable;
+            var gen4Header = baseMapFile.Header;
+            var sectionTable = gen4Header.GetSectionTable();
+
+            var stringCount = gen4Header.GetStringIdCount();
+            var dataCount = gen4Header.GetStringIdDataCount();
+            var indexOffset = gen4Header.GetStringIdIndexOffset();
+            var dataOffset = gen4Header.GetStringIdDataOffset();
+            var namespaceCount = gen4Header.GetStringIdNamespaceCount();
+            var namespaceOffset = gen4Header.GetStringIdNamespaceOffset();
 
             // means no strings
             if (sectionTable != null && sectionTable.Sections[(int)CacheFileSectionType.StringSection].Size == 0)
                 return;
 
-            switch (baseMapFile.CachePlatform)
+            switch (baseMapFile.Platform)
             {
                 case CachePlatform.MCC:
-                    Resolver = new StringIdResolverMCC(reader, stringIDHeader, sectionTable);
+                    Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
                     break;
                 default:
                     Resolver = new StringIdResolverHalo4();
@@ -33,30 +41,30 @@ namespace TagTool.Cache.Gen4
                     break;
             }
 
-            uint stringIdIndexTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, stringIDHeader.IndicesOffset);
-            uint stringIdBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, baseMapFile.CachePlatform == CachePlatform.MCC ? stringIDHeader.BufferOffsetMCC : stringIDHeader.BufferOffset);
+            uint stringIdIndexOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
+            uint stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
             
             //
             // Read offsets
             //
 
-            reader.SeekTo(stringIdIndexTableOffset);
+            reader.SeekTo(stringIdIndexOffset);
 
-            int[] stringOffset = new int[stringIDHeader.Count];
-            for (var i = 0; i < stringIDHeader.Count; i++)
+            int[] stringOffset = new int[stringCount];
+            for (var i = 0; i < stringCount; i++)
             {
                 stringOffset[i] = reader.ReadInt32();
                 Add("");
             }
 
-            reader.SeekTo(stringIdBufferOffset);
+            reader.SeekTo(stringIdDataOffset);
 
             EndianReader newReader;
 
             if (StringKey == "")
-                newReader = new EndianReader(new MemoryStream(reader.ReadBytes(stringIDHeader.BufferSize)), reader.Format);
+                newReader = new EndianReader(new MemoryStream(reader.ReadBytes(dataCount)), reader.Format);
             else
-                newReader = new EndianReader(reader.DecryptAesSegment(stringIDHeader.BufferSize, StringKey), reader.Format);
+                newReader = new EndianReader(reader.DecryptAesSegment(dataCount, StringKey), reader.Format);
 
             //
             // Read strings

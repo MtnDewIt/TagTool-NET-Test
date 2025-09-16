@@ -692,7 +692,7 @@ namespace TagTool.Cache
 
                     stream.Position = 0;
                     MapFileStreams.Add(stream);
-                    MapIds.Add(((CacheFileHeaderEldorado)mapFile.Header).MapId);
+                    MapIds.Add(mapFile.Header.GetMapId());
                     MapToCacheMapping.Add(i, tableEntry.CacheIndex);
                 }
                 catch
@@ -787,7 +787,7 @@ namespace TagTool.Cache
                 MapFile map = new MapFile();
                 map.Read(reader);
 
-                var type = ((CacheFileHeaderEldorado)map.Header).CacheType;
+                var type = map.Header.GetScenarioType();
 
                 if (type == CacheFileType.Campaign)
                     Header.MapFlags |= MapFlags.CampaignMaps;

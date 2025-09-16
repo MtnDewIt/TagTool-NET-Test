@@ -101,13 +101,12 @@ namespace TagTool.Commands.Modding
 
                         MapFile map = new MapFile();
                         map.Read(reader);
-                        var header = (CacheFileHeaderEldorado)map.Header;
-                        var modIndex = header.ScenarioTagIndex;
+                        var modIndex = map.Header.GetScenarioIndex();
                         TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                        header.ScenarioTagIndex = newScnrIndex;
+                        map.Header.SetScenarioIndex(newScnrIndex);
 
                         var modPackCache = BaseCache as GameCacheModPackage;
-                        modPackCache.AddMapFile(mapFile, header.MapId);
+                        modPackCache.AddMapFile(mapFile, map.Header.GetMapId());
                     }
                     else
                     {
@@ -115,11 +114,10 @@ namespace TagTool.Commands.Modding
                         {
                             MapFile map = new MapFile();
                             map.Read(reader);
-                            var header = (CacheFileHeaderEldorado)map.Header;
-                            var modIndex = header.ScenarioTagIndex;
+                            var modIndex = map.Header.GetScenarioIndex();
                             TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                            header.ScenarioTagIndex = newScnrIndex;
-                            var mapName = header.Name;
+                            map.Header.SetScenarioIndex(newScnrIndex);
+                            var mapName = map.Header.GetName();
 
                             var mapPath = $"{BaseCache.Directory.FullName}\\{mapName}.map";
                             var file = new FileInfo(mapPath);

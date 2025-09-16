@@ -17,19 +17,19 @@ namespace TagTool.Commands.Editing
 
             var mapDefinition = new EldoradoMapFile(mapFile);
 
-            var structure = TagStructure.GetTagStructureInfo(mapDefinition.GetType(), mapFile.Version, mapFile.CachePlatform);
+            var structure = TagStructure.GetTagStructureInfo(mapDefinition.GetType(), mapFile.Version, mapFile.Platform);
 
             commandContext.AddCommand(new ListFieldsCommand(cache, structure, mapDefinition));
-            commandContext.AddCommand(new SetFieldCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new EditBlockCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, mapDefinition));
+            commandContext.AddCommand(new SetFieldCommand(contextStack, cache, mapFile.Version, mapFile.Platform, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new EditBlockCommand(contextStack, cache, mapFile.Version, mapFile.Platform, mapDefinition, mapDefinition));
             //commandContext.AddCommand(new AddBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
             //commandContext.AddCommand(new RemoveBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new ForEachCommand(contextStack, cache, mapFile.Version, mapFile.CachePlatform, mapDefinition, structure, mapDefinition));
-            commandContext.AddCommand(new ExportCommandsCommand(cache, mapFile.Version, mapFile.CachePlatform, mapDefinition));
+            commandContext.AddCommand(new CopyBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.Platform, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new PasteBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.Platform, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new MoveBlockElementCommand(contextStack, cache, mapFile.Version, mapFile.Platform, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new SwapBlockElementsCommand(contextStack, cache, mapFile.Version, mapFile.Platform, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new ForEachCommand(contextStack, cache, mapFile.Version, mapFile.Platform, mapDefinition, structure, mapDefinition));
+            commandContext.AddCommand(new ExportCommandsCommand(cache, mapFile.Version, mapFile.Platform, mapDefinition));
             commandContext.AddCommand(new SaveMapChangesCommand(cache, mapDefinition));
             //commandContext.AddCommand(new FindValueCommand(cache, tag));
 

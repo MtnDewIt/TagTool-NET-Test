@@ -9,7 +9,7 @@ namespace TagTool.BlamFile.Eldorado
     public class EldoradoMapFile : TagStructure 
     {
         [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
-        public CacheFileHeaderEldorado Header;
+        public CacheFileHeader Header;
 
         [TagField(MaxVersion = CacheVersion.EldoradoED)]
         public EldoradoBlf Blf;
@@ -19,7 +19,7 @@ namespace TagTool.BlamFile.Eldorado
 
         public EldoradoMapFile(MapFile mapFileData) 
         {
-            Header = mapFileData.Header as CacheFileHeaderEldorado;
+            Header = mapFileData.Header;
             Blf = mapFileData.MapFileBlf != null ? new EldoradoBlf(mapFileData.MapFileBlf) : null;
             Reports = mapFileData.Reports != null ? new EldoradoCacheFileReports(mapFileData.Reports) : null;
         }
