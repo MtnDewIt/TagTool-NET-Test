@@ -1538,10 +1538,8 @@ namespace TagTool.Shaders.ShaderGenerator
             for (int i = 0; i < Enum.GetValues(typeof(VertexType)).Length; i++)
             {
                 var vertexTypeBlock = new GlobalVertexShader.VertexTypeShaders { EntryPoints = new List<GlobalVertexShader.VertexTypeShaders.GlobalShaderEntryPointBlock>() };
-
-                if (rmdf.VertexTypes.Any(x => x.VertexType == (VertexBlock.VertexTypeValue)i))
-                    for (int j = 0; j < Enum.GetValues(typeof(EntryPoint)).Length; j++)
-                        vertexTypeBlock.EntryPoints.Add(new GlobalVertexShader.VertexTypeShaders.GlobalShaderEntryPointBlock { ShaderIndex = -1 });
+                for (int j = 0; j < Enum.GetValues(typeof(EntryPoint)).Length; j++)
+                    vertexTypeBlock.EntryPoints.Add(new GlobalVertexShader.VertexTypeShaders.GlobalShaderEntryPointBlock { ShaderIndex = -1 });
                 glvs.VertexTypes.Add(vertexTypeBlock);
             }
 
