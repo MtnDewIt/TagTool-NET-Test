@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache;
 using TagTool.Common;
 

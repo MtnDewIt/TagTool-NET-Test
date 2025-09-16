@@ -3,7 +3,7 @@ using TagTool.Cache;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "chocolate_mountain_new", Tag = "chmt", Size = 0xC, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "chocolate_mountain_new", Tag = "chmt", Size = 0xC, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "chocolate_mountain_new", Tag = "chmt", Size = 0x10, MinVersion = CacheVersion.HaloReach)]
     public class ChocolateMountainNew : TagStructure
     {
@@ -14,7 +14,7 @@ namespace TagTool.Tags.Definitions
 
         public List<PerObjectTypeRelativeMinLuminanceBlock> PerObjectTypeSettings;
 
-        [TagStructure(Size = 0x4, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x4, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
         public class PerObjectTypeRelativeMinLuminanceBlock : TagStructure
 		{

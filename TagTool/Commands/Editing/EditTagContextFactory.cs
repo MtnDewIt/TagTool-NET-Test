@@ -23,7 +23,7 @@ using TagTool.Commands.Files;
 using TagTool.Commands.ScenarioStructureBSPs;
 using TagTool.Commands.Scenarios;
 using TagTool.Commands.StructureDesigns;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using DefinitionsGen2 = TagTool.Tags.Definitions.Gen2;
 using CommandsGen2 = TagTool.Commands.Gen2;
 using DefinitionsGen4 = TagTool.Tags.Definitions.Gen4;
@@ -54,7 +54,7 @@ namespace TagTool.Commands.Editing
             commandContext.ScriptGlobals.Add(nameof(ScriptEvaluationContext.Definition), definition);
 
             commandContext.AddCommand(new ExecuteCSharpCommand(contextStack));
-            if (CacheVersionDetection.IsInGen(CacheGeneration.Third, cache.Version) || CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, cache.Version))
+            if (CacheVersionDetection.IsInGen(CacheGeneration.Third, cache.Version) || CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, cache.Version))
             {
                 switch (tag.Group.Tag.ToString())
                 {
@@ -220,9 +220,9 @@ namespace TagTool.Commands.Editing
 
             commandContext.AddCommand(new ExitToCommand(contextStack));
 
-            if(CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, cache.Version))
+            if(CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, cache.Version))
             {
-                commandContext.AddCommand(new PokeTagChangesCommand(cache as GameCacheHaloOnlineBase, tag as CachedTagHaloOnline, definition));
+                commandContext.AddCommand(new PokeTagChangesCommand(cache as GameCacheEldoradoBase, tag as CachedTagEldorado, definition));
             }
 
             return commandContext;

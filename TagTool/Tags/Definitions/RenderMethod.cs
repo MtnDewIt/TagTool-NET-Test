@@ -9,7 +9,7 @@ using static TagTool.Tags.Definitions.RenderMethodTemplate;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "render_method", Tag = "rm  ", Size = 0x40, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "render_method", Tag = "rm  ", Size = 0x40, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "render_method", Tag = "rm  ", Size = 0x64, MinVersion = CacheVersion.HaloReach)]
     public class RenderMethod : TagStructure
     {
@@ -105,7 +105,7 @@ namespace TagTool.Tags.Definitions
             public List<RenderMethodAnimatedParameterBlock> AnimatedParameters;
         }
 
-        [TagStructure(Size = 0x84, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x84, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xAC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x84, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0x8C, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3ODST)]
@@ -128,7 +128,7 @@ namespace TagTool.Tags.Definitions
             public int ImSoFiredPad;
 
             // Indices of constants. TODO: create an enum
-            [TagField(Length = 8, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Length = 8, MaxVersion = CacheVersion.Eldorado700123)]
             public short[] QueryableProperties; 
             [TagField(Length = 0x1C, MinVersion = CacheVersion.HaloReach)]
             public short[] QueryablePropertiesReach;
@@ -179,7 +179,7 @@ namespace TagTool.Tags.Definitions
                 public PackedSamplerAddressMode SamplerAddressMode;
 
                 [TagField(MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Retail)]
-                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
                 public SamplerFilterMode FilterMode;
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
                 [TagField(MinVersion = CacheVersion.HaloReach)]

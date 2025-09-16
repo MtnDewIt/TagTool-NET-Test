@@ -66,6 +66,6 @@ namespace TagTool.Animations.Codecs
             this.CompressionRate = reader.ReadSingle() * 100f;
         }
 
-        public virtual byte[] Write(GameCacheHaloOnlineBase CacheContext) => throw new NotImplementedException();
+        public virtual byte[] Write(GameCacheEldoradoBase CacheContext) => throw new NotImplementedException();
     }
 }

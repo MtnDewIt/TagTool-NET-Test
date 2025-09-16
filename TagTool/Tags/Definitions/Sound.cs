@@ -6,81 +6,81 @@ using TagTool.Cache;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0x20, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "sound", Tag = "snd!", Size = 0xD4, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0x24, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.ReleaseBuild)]
     [TagStructure(Name = "sound", Tag = "snd!", Size = 0xE0, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
     public class Sound : TagStructure
 	{    
         [TagField(EnumType = typeof(ushort), MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(EnumType = typeof(uint), MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(EnumType = typeof(uint), MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public FlagsValue Flags;
 
         [TagField(EnumType = typeof(ushort), Version = CacheVersion.HaloReach)]
         [TagField(EnumType = typeof(uint), Version = CacheVersion.HaloReach11883)]
         public FlagsValueReach FlagsReach;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public SoundImportFlags ImportFlags;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public SoundXsyncFlags XSyncFlags;
         
         public SoundClass SoundClass;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public SampleRate SampleRate;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild)]
         public SoundCacheFileGestaltReference SoundReference;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public sbyte OverrideXmaCompression;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public ImportType ImportType;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public PlaybackParameter Playback;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public Scale Scale;
 
         [TagField(MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
         public float SubPriority;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public PlatformCodec PlatformCodec;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public Promotion Promotion;
 
         [TagField(Length = 4, Flags = TagFieldFlags.Padding, Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public byte[] Padding2;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public List<PitchRange> PitchRanges;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public List<CustomPlayback> CustomPlaybacks;
 
         [TagField(MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
         public TagResourceReference ResourceReachTagsBuild;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public List<ExtraInfo> ExtraInfo;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public List<LanguageBlock> Languages;
 
@@ -156,7 +156,7 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x9, MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2PC)]
-        [TagStructure(Size = 0x15, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x15, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x19, MinVersion = CacheVersion.HaloReach)]
         public class SoundCacheFileGestaltReference : TagStructure
 		{

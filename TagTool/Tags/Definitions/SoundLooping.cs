@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace TagTool.Tags.Definitions
 {
-	[TagStructure(Name = "sound_looping", Tag = "lsnd", Size = 0x40, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+	[TagStructure(Name = "sound_looping", Tag = "lsnd", Size = 0x40, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
 	[TagStructure(Name = "sound_looping", Tag = "lsnd", Size = 0x38, MinVersion = CacheVersion.HaloReach)]
 	public class SoundLooping : TagStructure
 	{
@@ -13,7 +13,7 @@ namespace TagTool.Tags.Definitions
 		public Bounds<float> MartySMusicTime;
 		public Bounds<float> DistanceBounds;
 
-		[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+		[TagField(MaxVersion = CacheVersion.Eldorado700123)]
 		public CachedTag Unused;
 
 		[TagField(MinVersion = CacheVersion.HaloReach)]
@@ -120,13 +120,13 @@ namespace TagTool.Tags.Definitions
 		}
 		
 		[TagStructure(Size = 0x90, MaxVersion = CacheVersion.Halo3Retail)]
-		[TagStructure(Size = 0xA0, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+		[TagStructure(Size = 0xA0, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
 		[TagStructure(Size = 0xB0, MinVersion = CacheVersion.HaloReach)]
 		public class Track : TagStructure
 		{
 			public StringId Name;
 
-			[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MaxVersion = CacheVersion.Eldorado700123)]
 			public LsndTrackFlags Flags;
 
 			[TagField(MinVersion = CacheVersion.HaloReach)]
@@ -137,22 +137,22 @@ namespace TagTool.Tags.Definitions
 
 			public float Gain; // (decibels)
 
-			[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MaxVersion = CacheVersion.Eldorado700123)]
 			public float FadeInDuration; // seconds
 
-			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
 			public SoundFadeMode FadeInMode;
 			
-			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Length = 2)]
+			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Length = 2)]
 			public byte[] Padding1;
 
-			[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MaxVersion = CacheVersion.Eldorado700123)]
 			public float FadeOutDuration; // seconds
 
-			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
 			public SoundFadeMode FadeOutMode;
 			
-			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Length = 2)]
+			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Length = 2)]
 			public byte[] Padding2;
 			
 			[TagField(ValidTags = new [] { "snd!" })]
@@ -166,10 +166,10 @@ namespace TagTool.Tags.Definitions
             [TagField(ValidTags = new [] { "snd!" })]
             public CachedTag AlternateOut;
 
-			[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MaxVersion = CacheVersion.Eldorado700123)]
 			public OutputEffectValue OutputEffect;
 
-			[TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
 			public byte[] Padding3;
 
             [TagField(ValidTags = new[] { "snd!" })]
@@ -188,24 +188,24 @@ namespace TagTool.Tags.Definitions
 
 			public float AlternateCrossfadeDuration; // seconds
 
-			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
 			public SoundFadeMode AlternateCrossfadeMode;
 
 			[TagField(MinVersion = CacheVersion.HaloReach)]
 			public SoundFadeModeReach AlternateCrossfadeModeReach; // seconds
 
-			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Length = 2)]
+			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Length = 2)]
 			public byte[] Padding4;
 			
 			public float AlternateFadeOutDuration; // seconds
 
-			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+			[TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
 			public SoundFadeMode AlternateFadeOutMode;
 
 			[TagField(MinVersion = CacheVersion.HaloReach)]
 			public SoundFadeModeReach AlternateFadeOutModeReach; // seconds
 
-			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Length = 2)]
+			[TagField(Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Length = 2)]
 			public byte[] Padding5;
 
 			// Reach-only Layers section
@@ -276,7 +276,7 @@ namespace TagTool.Tags.Definitions
 			}
 		}
 		
-		[TagStructure(Size = 0x3C, MaxVersion = CacheVersion.HaloOnline700123)]
+		[TagStructure(Size = 0x3C, MaxVersion = CacheVersion.Eldorado700123)]
 		[TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloReach)]
 		public class DetailSound : TagStructure
 		{

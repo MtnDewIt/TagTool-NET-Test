@@ -8,7 +8,7 @@ using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -82,7 +82,7 @@ namespace TagTool.Commands.Modding
             if (mapFile.MapFileBlf == null)
                 return new TagToolError(CommandError.CustomError, "Invalid map map file. Missing blf data");
 
-            var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
+            var mapId = mapFile.Header.GetMapId();
 
             // handle optional sandbox.map argument
             if (args.Count > 1)
@@ -95,7 +95,7 @@ namespace TagTool.Commands.Modding
                         if (!mapVariantBlf.Read(new EndianReader(mapVariantStream, Cache.Endianness)))
                             return new TagToolError(CommandError.CustomError, "Failed to read map variant");
 
-                        if (mapVariantBlf.MapVariant.MapVariant.MapId != header.MapId)
+                        if (mapVariantBlf.MapVariant.MapVariant.MapId != mapId)
                             return new TagToolError(CommandError.CustomError, "Tried to import a map variant into a scenario with a different map id");
 
                         InjectMapVariantIntoMapFile(mapFile, mapVariantBlf);
@@ -109,7 +109,7 @@ namespace TagTool.Commands.Modding
                 }
             }
 
-            Cache.AddMapFile(mapStream, header.MapId);
+            Cache.AddMapFile(mapStream, mapId);
 
             Console.WriteLine($"Map added successfully.");
             return true;
@@ -149,11 +149,11 @@ namespace TagTool.Commands.Modding
                 mapFile.Read(new EndianReader(mapStream));
                 mapStream.Position = 0;
 
-                var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
+                var header = mapFile.Header;
                 var mapVariant = mapFile.MapFileBlf?.MapVariant?.MapVariant;
                 var mapName = mapFile.MapFileBlf?.Scenario?.Names[0]?.Name;
 
-                Console.WriteLine(columnFormat, header.MapId, header.Name, mapName == null ? "None" : mapName, header.ScenarioPath, mapVariant == null ? "None" : mapVariant.Metadata.Name);
+                Console.WriteLine(columnFormat, header.GetMapId(), header.GetName(), mapName == null ? "None" : mapName, header.GetTagPath(), mapVariant == null ? "None" : mapVariant.Metadata.Name);
             }
 
             return true;
@@ -161,9 +161,7 @@ namespace TagTool.Commands.Modding
 
         private void InjectMapVariantIntoMapFile(MapFile mapFile, Blf mapVariantBlf)
         {
-            var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
-
-            mapVariantBlf.MapVariant.MapVariant.MapId = header.MapId;
+            mapVariantBlf.MapVariant.MapVariant.MapId = mapFile.Header.GetMapId();
             if (mapFile.MapFileBlf.Scenario != null)
             {
                 UpdateMetadata(mapVariantBlf.ContentHeader.Metadata, mapFile.MapFileBlf.Scenario);

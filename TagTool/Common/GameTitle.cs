@@ -7,7 +7,7 @@
         Halo2,
         Halo3,
         Halo3ODST,
-        HaloOnline,
+        Eldorado,
         HaloReach,
         Halo4,
         Halo2AMP

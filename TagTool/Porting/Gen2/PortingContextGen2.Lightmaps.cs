@@ -493,7 +493,7 @@ namespace TagTool.Porting.Gen2
             return new Tuple<List<RealRgbColor[]>, List<float[]>>(coefficients, luminances);
         }
 
-        public void ImportIntoLbsp(CachedLightmap result, Bitmap linearSHBitmap, Bitmap intensityBitmap, GameCacheHaloOnlineBase cache, ScenarioLightmapBspData Lbsp, int imageindex)
+        public void ImportIntoLbsp(CachedLightmap result, Bitmap linearSHBitmap, Bitmap intensityBitmap, GameCacheEldoradoBase cache, ScenarioLightmapBspData Lbsp, int imageindex)
         {
             //compress each of the 8 layers and compile them together
             MemoryStream outStream = new MemoryStream();
@@ -548,7 +548,7 @@ namespace TagTool.Porting.Gen2
             ImportBitmap(cache, intensityBitmap, imageindex, intensity);
         }
 
-        private static void ImportBitmap(GameCacheHaloOnlineBase cache, Bitmap bitmap, int imageIndex, BaseBitmap bitmapImport)
+        private static void ImportBitmap(GameCacheEldoradoBase cache, Bitmap bitmap, int imageIndex, BaseBitmap bitmapImport)
         {
             BitmapTextureInteropResource resource = BitmapUtils.CreateEmptyBitmapTextureInteropResource();
             resource.Texture.Definition.PrimaryResourceData = new TagData(bitmapImport.Data);

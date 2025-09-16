@@ -53,7 +53,10 @@ namespace TagTool.BlamFile.Chunks
 
         public static BlfModPackageReference Decode(TagDeserializer deserializer, DataSerializationContext dataContext)
         {
-            var referenceHeader = (BlfChunkHeader)deserializer.Deserialize(dataContext, typeof(BlfChunkHeader));
+            long start = dataContext.Reader.Position;
+            dataContext.Reader.SeekTo(start - 0xC);
+
+            BlfChunkHeader referenceHeader = (BlfChunkHeader)deserializer.Deserialize(dataContext, typeof(BlfChunkHeader));
 
             if (referenceHeader.MajorVersion == (short)BlfModPackageReferenceVersion.Version1)
             {

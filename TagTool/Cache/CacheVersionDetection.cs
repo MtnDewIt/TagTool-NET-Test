@@ -14,7 +14,7 @@ namespace TagTool.Cache
         /// <param name="timestamp">The timestamp.</param>
         public static CacheVersion DetectFromTimestamp(string timestamp)
         {
-            if (HaloOnlineTimestampMapping.TryGetValue(timestamp, out CacheVersion version))
+            if (EldoradoTimestampMapping.TryGetValue(timestamp, out CacheVersion version))
                 return version;
             else
                 return CacheVersion.Unknown;
@@ -26,8 +26,8 @@ namespace TagTool.Cache
         /// <param name="version">The version.</param>
         public static string GetTimestamp(CacheVersion version)
         {
-            if (HaloOnlineTimestampMapping.ContainsValue(version))
-                return HaloOnlineTimestampMapping.First(x => x.Value == version).Key;
+            if (EldoradoTimestampMapping.ContainsValue(version))
+                return EldoradoTimestampMapping.First(x => x.Value == version).Key;
             else 
                 return null;
         }
@@ -88,75 +88,75 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "eldewrito":
-                    version = CacheVersion.HaloOnlineED;
+                    version = CacheVersion.EldoradoED;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "1.106708 cert_ms23":
-                    version = CacheVersion.HaloOnline106708;
+                    version = CacheVersion.Eldorado106708;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "1.155080 cert_ms23":
-                    version = CacheVersion.HaloOnline155080;
+                    version = CacheVersion.Eldorado155080;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "1.235640 cert_ms25":
-                    version = CacheVersion.HaloOnline235640;
+                    version = CacheVersion.Eldorado235640;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "Jun 12 2015 13:02:50":
-                    version = CacheVersion.HaloOnline301003;
+                    version = CacheVersion.Eldorado301003;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "0.4.1.327043 cert_MS26_new":
-                    version = CacheVersion.HaloOnline327043;
+                    version = CacheVersion.Eldorado327043;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "8.1.372731 Live":
-                    version = CacheVersion.HaloOnline372731;
+                    version = CacheVersion.Eldorado372731;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "0.0.416097 Live":
-                    version = CacheVersion.HaloOnline416097;
+                    version = CacheVersion.Eldorado416097;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "10.1.430475 Live":
-                    version = CacheVersion.HaloOnline430475;
+                    version = CacheVersion.Eldorado430475;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "10.1.454665 Live":
-                    version = CacheVersion.HaloOnline454665;
+                    version = CacheVersion.Eldorado454665;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "10.1.449175 Live":
-                    version = CacheVersion.HaloOnline449175;
+                    version = CacheVersion.Eldorado449175;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "11.1.498295 Live":
-                    version = CacheVersion.HaloOnline498295;
+                    version = CacheVersion.Eldorado498295;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "11.1.530605 Live":
-                    version = CacheVersion.HaloOnline530605;
+                    version = CacheVersion.Eldorado530605;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "11.1.532911 Live":
-                    version = CacheVersion.HaloOnline532911;
+                    version = CacheVersion.Eldorado532911;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "11.1.554482 Live":
-                    version = CacheVersion.HaloOnline554482;
+                    version = CacheVersion.Eldorado554482;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "11.1.571627 Live":
-                    version = CacheVersion.HaloOnline571627;
+                    version = CacheVersion.Eldorado571627;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "11.1.601838 Live":
-                    version = CacheVersion.HaloOnline604673;
+                    version = CacheVersion.Eldorado604673;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "12.1.700123 cert_ms30_oct19":
-                    version = CacheVersion.HaloOnline700123;
+                    version = CacheVersion.Eldorado700123;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "11860.10.07.24.0147.omaha_relea":
@@ -272,41 +272,41 @@ namespace TagTool.Cache
                         return "11855.07.08.20.2317.halo3_ship";
                     case CacheVersion.Halo3ODST:
                         return "13895.09.04.27.2201.atlas_relea";
-                    case CacheVersion.HaloOnlineED:
+                    case CacheVersion.EldoradoED:
                         return "eldewrito";
-                    case CacheVersion.HaloOnline106708:
+                    case CacheVersion.Eldorado106708:
                         return "1.106708 cert_ms23";
-                    case CacheVersion.HaloOnline155080:
+                    case CacheVersion.Eldorado155080:
                         return "1.155080 cert_ms23";
-                    case CacheVersion.HaloOnline235640:
+                    case CacheVersion.Eldorado235640:
                         return "1.235640 cert_ms25";
-                    case CacheVersion.HaloOnline301003:
+                    case CacheVersion.Eldorado301003:
                         return "Jun 12 2015 13:02:50";
-                    case CacheVersion.HaloOnline327043:
+                    case CacheVersion.Eldorado327043:
                         return "0.4.1.327043 cert_MS26_new";
-                    case CacheVersion.HaloOnline372731:
+                    case CacheVersion.Eldorado372731:
                         return "8.1.372731 Live";
-                    case CacheVersion.HaloOnline416097:
+                    case CacheVersion.Eldorado416097:
                         return "0.0.416097 Live";
-                    case CacheVersion.HaloOnline430475:
+                    case CacheVersion.Eldorado430475:
                         return "10.1.430475 Live";
-                    case CacheVersion.HaloOnline454665:
+                    case CacheVersion.Eldorado454665:
                         return "10.1.454665 Live";
-                    case CacheVersion.HaloOnline449175:
+                    case CacheVersion.Eldorado449175:
                         return "10.1.449175 Live";
-                    case CacheVersion.HaloOnline498295:
+                    case CacheVersion.Eldorado498295:
                         return "11.1.498295 Live";
-                    case CacheVersion.HaloOnline530605:
+                    case CacheVersion.Eldorado530605:
                         return "11.1.530605 Live";
-                    case CacheVersion.HaloOnline532911:
+                    case CacheVersion.Eldorado532911:
                         return "11.1.532911 Live";
-                    case CacheVersion.HaloOnline554482:
+                    case CacheVersion.Eldorado554482:
                         return "11.1.554482 Live";
-                    case CacheVersion.HaloOnline571627:
+                    case CacheVersion.Eldorado571627:
                         return "11.1.571627 Live";
-                    case CacheVersion.HaloOnline604673:
+                    case CacheVersion.Eldorado604673:
                         return "11.1.601838 Live";
-                    case CacheVersion.HaloOnline700123:
+                    case CacheVersion.Eldorado700123:
                         return "12.1.700123 cert_ms30_oct19";
                     case CacheVersion.HaloReach:
                         return "11860.10.07.24.0147.omaha_relea";
@@ -348,24 +348,24 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Beta:
 				case CacheVersion.Halo2Xbox:
 				case CacheVersion.Halo2PC:
-				case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                case CacheVersion.HaloOnline155080:
-                case CacheVersion.HaloOnline235640:
-				case CacheVersion.HaloOnline301003:
-				case CacheVersion.HaloOnline327043:
-				case CacheVersion.HaloOnline372731:
-				case CacheVersion.HaloOnline416097:
-				case CacheVersion.HaloOnline430475:
-				case CacheVersion.HaloOnline454665:
-				case CacheVersion.HaloOnline449175:
-				case CacheVersion.HaloOnline498295:
-				case CacheVersion.HaloOnline530605:
-				case CacheVersion.HaloOnline532911:
-				case CacheVersion.HaloOnline554482:
-                case CacheVersion.HaloOnline571627:
-                case CacheVersion.HaloOnline604673:
-                case CacheVersion.HaloOnline700123:
+				case CacheVersion.EldoradoED:
+                case CacheVersion.Eldorado106708:
+                case CacheVersion.Eldorado155080:
+                case CacheVersion.Eldorado235640:
+				case CacheVersion.Eldorado301003:
+				case CacheVersion.Eldorado327043:
+				case CacheVersion.Eldorado372731:
+				case CacheVersion.Eldorado416097:
+				case CacheVersion.Eldorado430475:
+				case CacheVersion.Eldorado454665:
+				case CacheVersion.Eldorado449175:
+				case CacheVersion.Eldorado498295:
+				case CacheVersion.Eldorado530605:
+				case CacheVersion.Eldorado532911:
+				case CacheVersion.Eldorado554482:
+                case CacheVersion.Eldorado571627:
+                case CacheVersion.Eldorado604673:
+                case CacheVersion.Eldorado700123:
                     return true;
 
 				default:
@@ -584,25 +584,25 @@ namespace TagTool.Cache
                 case CacheVersion.HaloReach11883:
                     return CacheGeneration.Third;
 
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                case CacheVersion.HaloOnline155080:
-                case CacheVersion.HaloOnline235640:
-                case CacheVersion.HaloOnline301003:
-                case CacheVersion.HaloOnline327043:
-                case CacheVersion.HaloOnline372731:
-                case CacheVersion.HaloOnline416097:
-                case CacheVersion.HaloOnline430475:
-                case CacheVersion.HaloOnline454665:
-                case CacheVersion.HaloOnline449175:
-                case CacheVersion.HaloOnline498295:
-                case CacheVersion.HaloOnline530605:
-                case CacheVersion.HaloOnline532911:
-                case CacheVersion.HaloOnline554482:
-                case CacheVersion.HaloOnline571627:
-                case CacheVersion.HaloOnline604673:
-                case CacheVersion.HaloOnline700123:
-                    return CacheGeneration.HaloOnline;
+                case CacheVersion.EldoradoED:
+                case CacheVersion.Eldorado106708:
+                case CacheVersion.Eldorado155080:
+                case CacheVersion.Eldorado235640:
+                case CacheVersion.Eldorado301003:
+                case CacheVersion.Eldorado327043:
+                case CacheVersion.Eldorado372731:
+                case CacheVersion.Eldorado416097:
+                case CacheVersion.Eldorado430475:
+                case CacheVersion.Eldorado454665:
+                case CacheVersion.Eldorado449175:
+                case CacheVersion.Eldorado498295:
+                case CacheVersion.Eldorado530605:
+                case CacheVersion.Eldorado532911:
+                case CacheVersion.Eldorado554482:
+                case CacheVersion.Eldorado571627:
+                case CacheVersion.Eldorado604673:
+                case CacheVersion.Eldorado700123:
+                    return CacheGeneration.Eldorado;
 
                 case CacheVersion.Halo4:
                 case CacheVersion.Halo2AMP:
@@ -644,25 +644,25 @@ namespace TagTool.Cache
                     return GameTitle.Halo3;
                 case CacheVersion.Halo3ODST:
                     return GameTitle.Halo3ODST;
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                case CacheVersion.HaloOnline155080:
-                case CacheVersion.HaloOnline235640:
-                case CacheVersion.HaloOnline301003:
-                case CacheVersion.HaloOnline327043:
-                case CacheVersion.HaloOnline372731:
-                case CacheVersion.HaloOnline416097:
-                case CacheVersion.HaloOnline430475:
-                case CacheVersion.HaloOnline454665:
-                case CacheVersion.HaloOnline449175:
-                case CacheVersion.HaloOnline498295:
-                case CacheVersion.HaloOnline530605:
-                case CacheVersion.HaloOnline532911:
-                case CacheVersion.HaloOnline554482:
-                case CacheVersion.HaloOnline571627:
-                case CacheVersion.HaloOnline604673:
-                case CacheVersion.HaloOnline700123:
-                    return GameTitle.HaloOnline;
+                case CacheVersion.EldoradoED:
+                case CacheVersion.Eldorado106708:
+                case CacheVersion.Eldorado155080:
+                case CacheVersion.Eldorado235640:
+                case CacheVersion.Eldorado301003:
+                case CacheVersion.Eldorado327043:
+                case CacheVersion.Eldorado372731:
+                case CacheVersion.Eldorado416097:
+                case CacheVersion.Eldorado430475:
+                case CacheVersion.Eldorado454665:
+                case CacheVersion.Eldorado449175:
+                case CacheVersion.Eldorado498295:
+                case CacheVersion.Eldorado530605:
+                case CacheVersion.Eldorado532911:
+                case CacheVersion.Eldorado554482:
+                case CacheVersion.Eldorado571627:
+                case CacheVersion.Eldorado604673:
+                case CacheVersion.Eldorado700123:
+                    return GameTitle.Eldorado;
                 case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
                     return GameTitle.HaloReach;
@@ -679,26 +679,26 @@ namespace TagTool.Cache
         /// tags.dat timestamps for each halo online game version.
         /// Timestamps in here map directly to a <see cref="CacheVersion"/> value.
         /// </summary>
-        private static readonly Dictionary<string, CacheVersion> HaloOnlineTimestampMapping = new Dictionary<string, CacheVersion>
+        private static readonly Dictionary<string, CacheVersion> EldoradoTimestampMapping = new Dictionary<string, CacheVersion>
         {
-            ["2021-07-05 14:06:23.1101597"] = CacheVersion.HaloOnlineED,
-            ["2015-03-20 14:40:23.9499012"] = CacheVersion.HaloOnline106708,
-            ["2015-04-10 11:37:39.234805"] = CacheVersion.HaloOnline155080,
-            ["2015-05-28 13:28:06.2346058"] = CacheVersion.HaloOnline235640,
-            ["2015-06-12 13:42:28.6445524"] = CacheVersion.HaloOnline301003,
-            ["2015-06-29 09:41:56.0458507"] = CacheVersion.HaloOnline327043,
-            ["2015-07-15 11:03:59.6118255"] = CacheVersion.HaloOnline372731,
-            ["2015-08-01 14:19:18.9114103"] = CacheVersion.HaloOnline416097,
-            ["2015-08-07 13:56:43.4159845"] = CacheVersion.HaloOnline430475,
-            ["2015-08-19 09:47:11.625466"] = CacheVersion.HaloOnline454665,
-            ["2015-08-27 15:51:04.5809862"] = CacheVersion.HaloOnline449175,
-            ["2015-09-04 13:36:11.6879375"] = CacheVersion.HaloOnline498295,
-            ["2015-09-16 14:59:54.5946004"] = CacheVersion.HaloOnline530605,
-            ["2015-09-17 11:53:39.8634503"] = CacheVersion.HaloOnline532911,
-            ["2015-09-29 10:14:31.9550501"] = CacheVersion.HaloOnline554482,
-            ["2015-10-01 16:02:13.0693956"] = CacheVersion.HaloOnline571627,
-            ["2015-10-15 10:57:15.1772672"] = CacheVersion.HaloOnline604673,
-            ["2015-11-26 10:26:02.8935939"] = CacheVersion.HaloOnline700123
+            ["2021-07-05 14:06:23.1101597"] = CacheVersion.EldoradoED,
+            ["2015-03-20 14:40:23.9499012"] = CacheVersion.Eldorado106708,
+            ["2015-04-10 11:37:39.234805"] = CacheVersion.Eldorado155080,
+            ["2015-05-28 13:28:06.2346058"] = CacheVersion.Eldorado235640,
+            ["2015-06-12 13:42:28.6445524"] = CacheVersion.Eldorado301003,
+            ["2015-06-29 09:41:56.0458507"] = CacheVersion.Eldorado327043,
+            ["2015-07-15 11:03:59.6118255"] = CacheVersion.Eldorado372731,
+            ["2015-08-01 14:19:18.9114103"] = CacheVersion.Eldorado416097,
+            ["2015-08-07 13:56:43.4159845"] = CacheVersion.Eldorado430475,
+            ["2015-08-19 09:47:11.625466"] = CacheVersion.Eldorado454665,
+            ["2015-08-27 15:51:04.5809862"] = CacheVersion.Eldorado449175,
+            ["2015-09-04 13:36:11.6879375"] = CacheVersion.Eldorado498295,
+            ["2015-09-16 14:59:54.5946004"] = CacheVersion.Eldorado530605,
+            ["2015-09-17 11:53:39.8634503"] = CacheVersion.Eldorado532911,
+            ["2015-09-29 10:14:31.9550501"] = CacheVersion.Eldorado554482,
+            ["2015-10-01 16:02:13.0693956"] = CacheVersion.Eldorado571627,
+            ["2015-10-15 10:57:15.1772672"] = CacheVersion.Eldorado604673,
+            ["2015-11-26 10:26:02.8935939"] = CacheVersion.Eldorado700123
         };
     }
 
@@ -715,24 +715,24 @@ namespace TagTool.Cache
         Halo3Beta,
         Halo3Retail,
         Halo3ODST,
-        HaloOnlineED,
-        HaloOnline106708,
-        HaloOnline155080,
-        HaloOnline235640,
-        HaloOnline301003,
-        HaloOnline327043,
-        HaloOnline372731,
-        HaloOnline416097,
-        HaloOnline430475,
-        HaloOnline454665,
-        HaloOnline449175,
-        HaloOnline498295,
-        HaloOnline530605,
-        HaloOnline532911,
-        HaloOnline554482,
-        HaloOnline571627,
-        HaloOnline604673,
-        HaloOnline700123,
+        EldoradoED,
+        Eldorado106708,
+        Eldorado155080,
+        Eldorado235640,
+        Eldorado301003,
+        Eldorado327043,
+        Eldorado372731,
+        Eldorado416097,
+        Eldorado430475,
+        Eldorado454665,
+        Eldorado449175,
+        Eldorado498295,
+        Eldorado530605,
+        Eldorado532911,
+        Eldorado554482,
+        Eldorado571627,
+        Eldorado604673,
+        Eldorado700123,
         HaloReach,
         HaloReach11883,
         Halo4,
@@ -745,7 +745,7 @@ namespace TagTool.Cache
         First = 1,
         Second = 2,
         Third = 3,
-        HaloOnline = 4,
+        Eldorado = 4,
         Fourth = 5
     }
 

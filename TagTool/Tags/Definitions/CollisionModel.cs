@@ -8,7 +8,7 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "collision_model", Tag = "coll", Size = 0x44, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "collision_model", Tag = "coll", Size = 0x44, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "collision_model", Tag = "coll", Size = 0x50, MinVersion = CacheVersion.HaloReach)]
     public class CollisionModel : TagStructure
 	{
@@ -54,7 +54,7 @@ namespace TagTool.Tags.Definitions
                 public List<CollisionBspPhysicsDefinition> BspPhysics;
                 public List<TagHkpMoppCode> BspMoppCodes;
 
-                [TagStructure(Size = 0x64, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagStructure(Size = 0x64, MaxVersion = CacheVersion.Eldorado700123)]
                 [TagStructure(Size = 0x70, MinVersion = CacheVersion.HaloReach)]
                 public class Bsp : TagStructure
 				{

@@ -1,133 +1,180 @@
-﻿using TagTool.Common;
+﻿using System;
+using TagTool.Cache.Eldorado.Headers;
+using TagTool.Cache.Gen1.Headers;
+using TagTool.Cache.Gen2.Headers;
+using TagTool.Cache.Gen3.Headers;
+using TagTool.Cache.Gen4.Headers;
+using TagTool.Cache.MCC.Headers;
+using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 
 namespace TagTool.Cache
 {
+    [TagStructure]
     public abstract class CacheFileHeader : TagStructure
     {
         public virtual bool IsValid()
         {
-            if (GetHeadTag() == "head" && GetFootTag() == "foot")
+            if (GetHeaderSignature() == "head" && GetFooterSignature() == "foot")
                 return true;
             else
                 return false;
         }
 
-        public static CacheFileHeader Read(CacheVersion version, CachePlatform cachePlatform, EndianReader reader)
+        public static CacheFileHeader Read(CacheVersion version, CachePlatform platform, EndianReader reader)
         {
-            var deserializer = new TagDeserializer(version, cachePlatform);
             reader.SeekTo(0);
+            var deserializer = new TagDeserializer(version, platform);
             var dataContext = new DataSerializationContext(reader);
 
-            switch (version)
+            if (platform == CachePlatform.MCC)
             {
-                case CacheVersion.HaloPC:
-                case CacheVersion.HaloXbox:
-                case CacheVersion.HaloCustomEdition:
-                    return deserializer.Deserialize<CacheFileHeaderGen1>(dataContext);
-                case CacheVersion.Halo2Alpha:
-                case CacheVersion.Halo2Beta:
-                case CacheVersion.Halo2Xbox:
-                case CacheVersion.Halo2PC:
-                    return deserializer.Deserialize<CacheFileHeaderGen2>(dataContext);
-                case CacheVersion.Halo3Beta:
-                case CacheVersion.Halo3Retail:
-                case CacheVersion.Halo3ODST:
-                case CacheVersion.HaloReach:
-                    return deserializer.Deserialize<CacheFileHeaderGen3>(dataContext);
-                case CacheVersion.HaloOnlineED:
-                case CacheVersion.HaloOnline106708:
-                case CacheVersion.HaloOnline155080:
-                case CacheVersion.HaloOnline235640:
-                case CacheVersion.HaloOnline301003:
-                case CacheVersion.HaloOnline327043:
-                case CacheVersion.HaloOnline372731:
-                case CacheVersion.HaloOnline416097:
-                case CacheVersion.HaloOnline430475:
-                case CacheVersion.HaloOnline454665:
-                case CacheVersion.HaloOnline449175:
-                case CacheVersion.HaloOnline498295:
-                case CacheVersion.HaloOnline530605:
-                case CacheVersion.HaloOnline532911:
-                case CacheVersion.HaloOnline554482:
-                case CacheVersion.HaloOnline571627:
-                case CacheVersion.HaloOnline604673:
-                case CacheVersion.HaloOnline700123:
-                    return deserializer.Deserialize<CacheFileHeaderGenHaloOnline>(dataContext);
-                case CacheVersion.Halo4:
-                case CacheVersion.Halo2AMP:
-                    return deserializer.Deserialize<CacheFileHeaderGen4>(dataContext);
+                return version switch
+                {
+                    CacheVersion.HaloCustomEdition => deserializer.Deserialize<CacheFileHeaderHalo1MCC>(dataContext),
+                    CacheVersion.Halo2PC => deserializer.Deserialize<CacheFileHeaderHalo2MCC>(dataContext),
+                    CacheVersion.Halo3Retail => deserializer.Deserialize<CacheFileHeaderHalo3MCC>(dataContext),
+                    CacheVersion.Halo3ODST => deserializer.Deserialize<CacheFileHeaderHalo3ODSTMCC>(dataContext),
+                    CacheVersion.HaloReach => deserializer.Deserialize<CacheFileHeaderHaloReachMCC>(dataContext),
+                    CacheVersion.Halo4 => deserializer.Deserialize<CacheFileHeaderHalo4MCC>(dataContext),
+                    CacheVersion.Halo2AMP => deserializer.Deserialize<CacheFileHeaderHalo2AMPMCC>(dataContext),
+                    _ => null,
+                };
             }
-            return null;
+            else
+            {
+                return version switch
+                {
+                    CacheVersion.HaloPC => deserializer.Deserialize<CacheFileHeaderHaloPC>(dataContext),
+                    CacheVersion.HaloXbox => deserializer.Deserialize<CacheFileHeaderHaloXbox>(dataContext),
+                    CacheVersion.HaloCustomEdition => deserializer.Deserialize<CacheFileHeaderHaloCustomEdition>(dataContext),
+                    CacheVersion.Halo2Alpha => deserializer.Deserialize<CacheFileHeaderHalo2Alpha>(dataContext),
+                    CacheVersion.Halo2Beta => deserializer.Deserialize<CacheFileHeaderHalo2Beta>(dataContext),
+                    CacheVersion.Halo2Xbox => deserializer.Deserialize<CacheFileHeaderHalo2Xbox>(dataContext),
+                    CacheVersion.Halo2PC => deserializer.Deserialize<CacheFileHeaderHalo2Vista>(dataContext),
+                    CacheVersion.Halo3Beta => deserializer.Deserialize<CacheFileHeaderHalo3Beta>(dataContext),
+                    CacheVersion.Halo3Retail => deserializer.Deserialize<CacheFileHeaderHalo3>(dataContext),
+                    CacheVersion.Halo3ODST => deserializer.Deserialize<CacheFileHeaderHalo3ODST>(dataContext),
+                    CacheVersion.HaloReach => deserializer.Deserialize<CacheFileHeaderHaloReach>(dataContext),
+                    CacheVersion.EldoradoED => deserializer.Deserialize<CacheFileHeaderEldoradoED>(dataContext),
+                    CacheVersion.Eldorado106708 => deserializer.Deserialize<CacheFileHeaderEldorado106708>(dataContext),
+                    CacheVersion.Eldorado155080 => deserializer.Deserialize<CacheFileHeaderEldorado155080>(dataContext),
+                    CacheVersion.Eldorado235640 => deserializer.Deserialize<CacheFileHeaderEldorado235640>(dataContext),
+                    CacheVersion.Eldorado301003 => deserializer.Deserialize<CacheFileHeaderEldorado301003>(dataContext),
+                    CacheVersion.Eldorado327043 => deserializer.Deserialize<CacheFileHeaderEldorado327043>(dataContext),
+                    CacheVersion.Eldorado372731 => deserializer.Deserialize<CacheFileHeaderEldorado372731>(dataContext),
+                    CacheVersion.Eldorado416097 => deserializer.Deserialize<CacheFileHeaderEldorado416097>(dataContext),
+                    CacheVersion.Eldorado430475 => deserializer.Deserialize<CacheFileHeaderEldorado430475>(dataContext),
+                    CacheVersion.Eldorado454665 => deserializer.Deserialize<CacheFileHeaderEldorado454665>(dataContext),
+                    CacheVersion.Eldorado449175 => deserializer.Deserialize<CacheFileHeaderEldorado449175>(dataContext),
+                    CacheVersion.Eldorado498295 => deserializer.Deserialize<CacheFileHeaderEldorado498295>(dataContext),
+                    CacheVersion.Eldorado530605 => deserializer.Deserialize<CacheFileHeaderEldorado530605>(dataContext),
+                    CacheVersion.Eldorado532911 => deserializer.Deserialize<CacheFileHeaderEldorado532911>(dataContext),
+                    CacheVersion.Eldorado554482 => deserializer.Deserialize<CacheFileHeaderEldorado554482>(dataContext),
+                    CacheVersion.Eldorado571627 => deserializer.Deserialize<CacheFileHeaderEldorado571627>(dataContext),
+                    CacheVersion.Eldorado604673 => deserializer.Deserialize<CacheFileHeaderEldorado604673>(dataContext),
+                    CacheVersion.Eldorado700123 => deserializer.Deserialize<CacheFileHeaderEldorado700123>(dataContext),
+                    CacheVersion.Halo4 => deserializer.Deserialize<CacheFileHeaderHalo4>(dataContext),
+                    _ => null,
+                };
+            }
         }
 
-        public abstract Tag GetHeadTag();
-        public abstract Tag GetFootTag();
-        public abstract ulong GetTagTableHeaderOffset();
+        public static Type GetHeaderType(CacheVersion version, CachePlatform platform)
+        {
+            if (platform == CachePlatform.MCC)
+            {
+                return version switch
+                {
+                    CacheVersion.HaloCustomEdition => typeof(CacheFileHeaderHalo1MCC),
+                    CacheVersion.Halo2PC => typeof(CacheFileHeaderHalo2MCC),
+                    CacheVersion.Halo3Retail => typeof(CacheFileHeaderHalo3MCC),
+                    CacheVersion.Halo3ODST => typeof(CacheFileHeaderHalo3ODSTMCC),
+                    CacheVersion.HaloReach => typeof(CacheFileHeaderHaloReachMCC),
+                    CacheVersion.Halo4 => typeof(CacheFileHeaderHalo4MCC),
+                    CacheVersion.Halo2AMP => typeof(CacheFileHeaderHalo2AMPMCC),
+                    _ => null,
+                };
+            }
+            else
+            {
+                return version switch
+                {
+                    CacheVersion.HaloPC => typeof(CacheFileHeaderHaloPC),
+                    CacheVersion.HaloXbox => typeof(CacheFileHeaderHaloXbox),
+                    CacheVersion.HaloCustomEdition => typeof(CacheFileHeaderHaloCustomEdition),
+                    CacheVersion.Halo2Alpha => typeof(CacheFileHeaderHalo2Alpha),
+                    CacheVersion.Halo2Beta => typeof(CacheFileHeaderHalo2Beta),
+                    CacheVersion.Halo2Xbox => typeof(CacheFileHeaderHalo2Xbox),
+                    CacheVersion.Halo2PC => typeof(CacheFileHeaderHalo2Vista),
+                    CacheVersion.Halo3Beta => typeof(CacheFileHeaderHalo3Beta),
+                    CacheVersion.Halo3Retail => typeof(CacheFileHeaderHalo3),
+                    CacheVersion.Halo3ODST => typeof(CacheFileHeaderHalo3ODST),
+                    CacheVersion.HaloReach => typeof(CacheFileHeaderHaloReach),
+                    CacheVersion.EldoradoED => typeof(CacheFileHeaderEldoradoED),
+                    CacheVersion.Eldorado106708 => typeof(CacheFileHeaderEldorado106708),
+                    CacheVersion.Eldorado155080 => typeof(CacheFileHeaderEldorado155080),
+                    CacheVersion.Eldorado235640 => typeof(CacheFileHeaderEldorado235640),
+                    CacheVersion.Eldorado301003 => typeof(CacheFileHeaderEldorado301003),
+                    CacheVersion.Eldorado327043 => typeof(CacheFileHeaderEldorado327043),
+                    CacheVersion.Eldorado372731 => typeof(CacheFileHeaderEldorado372731),
+                    CacheVersion.Eldorado416097 => typeof(CacheFileHeaderEldorado416097),
+                    CacheVersion.Eldorado430475 => typeof(CacheFileHeaderEldorado430475),
+                    CacheVersion.Eldorado454665 => typeof(CacheFileHeaderEldorado454665),
+                    CacheVersion.Eldorado449175 => typeof(CacheFileHeaderEldorado449175),
+                    CacheVersion.Eldorado498295 => typeof(CacheFileHeaderEldorado498295),
+                    CacheVersion.Eldorado530605 => typeof(CacheFileHeaderEldorado530605),
+                    CacheVersion.Eldorado532911 => typeof(CacheFileHeaderEldorado532911),
+                    CacheVersion.Eldorado554482 => typeof(CacheFileHeaderEldorado554482),
+                    CacheVersion.Eldorado571627 => typeof(CacheFileHeaderEldorado571627),
+                    CacheVersion.Eldorado604673 => typeof(CacheFileHeaderEldorado604673),
+                    CacheVersion.Eldorado700123 => typeof(CacheFileHeaderEldorado700123),
+                    CacheVersion.Halo4 => typeof(CacheFileHeaderHalo4),
+                    _ => null,
+                };
+            }
+        }
+
+        public abstract Tag GetHeaderSignature();
+        public abstract Tag GetFooterSignature();
+        public abstract ulong GetTagsHeaderWhenLoaded();
+        public abstract ulong GetExpectedBaseAddress();
         public abstract string GetName();
-        public abstract string GetBuild();
-        public abstract string GetScenarioPath();
-        public abstract int GetScenarioTagIndex();
-        public abstract CacheFileType GetCacheType();
-        public abstract CacheFileSharedType GetSharedCacheType();
-        public abstract StringIDHeader GetStringIDHeader();
-        public abstract TagNameHeader GetTagNameHeader();
-        public abstract TagMemoryHeader GetTagMemoryHeader();
-    }
+        public abstract string GetBuildNumber();
+        public abstract string GetTagPath();
+        public abstract int GetMapId();
+        public abstract int GetScenarioIndex();
+        public abstract CacheFileType GetScenarioType();
+        public abstract CacheFileSharedType GetSharedCacheFileType();
 
-    [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
-    public class StringIDHeader : TagStructure
-    {
-        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
-        public uint BufferAlignedOffset;
+        public abstract int GetStringIdCount();
+        public abstract int GetStringIdDataCount();
+        public abstract uint GetStringIdIndexOffset();
+        public abstract uint GetStringIdDataOffset();
+        public abstract int GetStringIdNamespaceCount();
+        public abstract uint GetStringIdNamespaceOffset();
 
-        public int Count;
+        public abstract int GetDebugTagNameCount();
+        public abstract uint GetDebugTagNameDataOffset();
+        public abstract int GetDebugTagNameDataSize();
+        public abstract uint GetDebugTagNameIndexOffset();
 
-        [TagField(Platform = CachePlatform.MCC)]
-        public uint BufferOffsetMCC;
+        public abstract uint GetTagsOffset();
+        public abstract uint GetTagsVirtualBase();
 
-        public int BufferSize;
-        public uint IndicesOffset;
+        public abstract CacheFileFlags GetFlags();
+        public abstract int GetCompressedDataChunkSize();
+        public abstract int GetCompressedDataOffset();
+        public abstract int GetCompressedChunkTableOffset();
+        public abstract int GetCompressedChunkCount();
 
-        [TagField(Platform = CachePlatform.Original)]
-        public uint BufferOffset;
-
-        [TagField(Platform = CachePlatform.MCC)]
-        public int NamespacesCount;
-        [TagField(Platform = CachePlatform.MCC)]
-        public uint NamespacesOffset;
-    }
-
-    [TagStructure(Size = 0x10)]
-    public class TagNameHeader : TagStructure
-    {
-        public int TagNamesCount;
-        public uint TagNamesBufferOffset;
-        public int TagNamesBufferSize;
-        public uint TagNameIndicesOffset;
-    }
-
-    [TagStructure(Size = 0xC, MaxVersion = CacheVersion.HaloCustomEdition)]
-    [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Xbox)]
-    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
-    [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3Beta)]
-    public class TagMemoryHeader : TagStructure
-    {
-        [TagField(MaxVersion = CacheVersion.HaloCustomEdition)]
-        public int TagDataSize;
-
-        public uint MemoryBufferOffset;
-        public int MemoryBufferSize;
-
-        [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
-        public int MemoryBufferCapacity;
-
-        [TagField(MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
-        public uint VirtualAddress;
+        public abstract CacheFileSectionTable GetSectionTable();
+        public abstract CacheFileSectionFileBounds GetReports();
+        
+        // TODO: Figure out a better way of handling this
+        public virtual void SetScenarioIndex(int index) { return; }
+        public virtual void SetScenarioType(CacheFileType scenarioType) { return; }
     }
 }

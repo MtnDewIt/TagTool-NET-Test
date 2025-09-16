@@ -17,7 +17,7 @@ namespace TagTool.Commands.Scenarios
 {
     class ConvertInstancedGeometryCommand : Command
     {
-        private GameCacheHaloOnlineBase HoCache { get; }
+        private GameCacheEldoradoBase HoCache { get; }
         private Scenario Scnr { get; }
         private bool centergeometry = true;
 
@@ -31,7 +31,7 @@ namespace TagTool.Commands.Scenarios
 
                 "Convert Instanced Geometry in Halo Online maps to forge objects")
         {
-            HoCache = (GameCacheHaloOnlineBase)cacheContext;
+            HoCache = (GameCacheEldoradoBase)cacheContext;
             Scnr = scnr;
         }
 

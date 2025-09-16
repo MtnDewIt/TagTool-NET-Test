@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache.ModPackages;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
@@ -12,10 +12,10 @@ namespace TagTool.Commands.Modding
 {
     public class CreateModPackageCommand : Command
     {
-        private readonly GameCacheHaloOnline Cache;
+        private readonly GameCacheEldorado Cache;
         private CommandContextStack ContextStack { get; }
 
-        public CreateModPackageCommand(CommandContextStack contextStack, GameCacheHaloOnline cache) :
+        public CreateModPackageCommand(CommandContextStack contextStack, GameCacheEldorado cache) :
             base(true,
 
                 "CreateModPackage",

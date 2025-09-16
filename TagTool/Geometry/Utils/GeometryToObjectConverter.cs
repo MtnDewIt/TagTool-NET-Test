@@ -42,7 +42,7 @@ namespace TagTool.Geometry.Utils
         public PortingContext PortContext { get; private set; }
 
         public GeometryToObjectConverter(
-            GameCacheHaloOnlineBase destCache, Stream destStream, GameCache sourceCache,
+            GameCacheEldoradoBase destCache, Stream destStream, GameCache sourceCache,
             Stream sourceStream, Scenario scenario, int structureBspIndex, PortingContext portContext)
         {
             DestCache = destCache;

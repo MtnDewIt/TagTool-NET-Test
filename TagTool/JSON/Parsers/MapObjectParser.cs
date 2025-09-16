@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
@@ -13,12 +13,12 @@ namespace TagTool.JSON.Parsers
     public class MapObjectParser
     {
         private GameCache Cache;
-        private GameCacheHaloOnlineBase CacheContext;
+        private GameCacheEldoradoBase CacheContext;
         private Stream CacheStream;
         private MapObjectHandler Handler;
         private string InputPath;
 
-        public MapObjectParser(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, string inputPath)
+        public MapObjectParser(GameCache cache, GameCacheEldoradoBase cacheContext, Stream cacheStream, string inputPath)
         {
             Cache = cache;
             CacheContext = cacheContext;
@@ -39,33 +39,32 @@ namespace TagTool.JSON.Parsers
             {
                 var mapData = new MapFile()
                 {
-                    Version = mapObject.MapVersion,
-                    CachePlatform = CachePlatform.Original,
+                    Version = mapObject.Version,
+                    Platform = CachePlatform.Original,
                     Header = mapObject.Header,
                     MapFileBlf = mapObject.MapFileBlf,
                     Reports = mapObject.Reports,
                 };
 
-                var headerData = mapData.Header as CacheFileHeaderGenHaloOnline;
-                var scnrTag = Cache.TagCache.GetTag<Scenario>(headerData.ScenarioPath);
+                var scnrTag = Cache.TagCache.GetTag<Scenario>(mapData.Header.GetTagPath());
                 var scnr = CacheContext.Deserialize<Scenario>(CacheStream, scnrTag);
 
                 switch (scnr.MapType)
                 {
                     case ScenarioMapType.MainMenu:
-                        headerData.CacheType = CacheFileType.MainMenu;
+                        mapData.Header.SetScenarioType(CacheFileType.MainMenu);
                         break;
                     case ScenarioMapType.SinglePlayer:
-                        headerData.CacheType = CacheFileType.Campaign;
+                        mapData.Header.SetScenarioType(CacheFileType.Campaign);
                         break;
                     case ScenarioMapType.Multiplayer:
-                        headerData.CacheType = CacheFileType.Multiplayer;
+                        mapData.Header.SetScenarioType(CacheFileType.Multiplayer);
                         break;
                 }
 
-                headerData.ScenarioTagIndex = scnrTag.Index;
+                mapData.Header.SetScenarioIndex(scnrTag.Index);
 
-                if (mapData.Version == CacheVersion.HaloOnlineED)
+                if (mapData.Version == CacheVersion.EldoradoED)
                 {
                     if (mapData.MapFileBlf != null && mapData.MapFileBlf.MapVariant.MapVariant != null && mapData.MapFileBlf.MapVariantTagNames.Names != null)
                     {

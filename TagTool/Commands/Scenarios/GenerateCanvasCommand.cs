@@ -20,9 +20,9 @@ namespace TagTool.Commands.Scenarios
 {
     public class GenerateCanvasCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache;
+        private GameCacheEldoradoBase Cache;
 
-        public GenerateCanvasCommand(GameCacheHaloOnlineBase cache) :
+        public GenerateCanvasCommand(GameCacheEldoradoBase cache) :
             base(false,
 
                 "GenerateCanvas",
@@ -751,7 +751,7 @@ namespace TagTool.Commands.Scenarios
         {
             using (var outputStream = new MemoryStream())
             {
-                var vertexBufferStream = VertexStreamFactory.Create(CacheVersion.HaloOnlineED, CachePlatform.Original, outputStream);
+                var vertexBufferStream = VertexStreamFactory.Create(CacheVersion.EldoradoED, CachePlatform.Original, outputStream);
                 foreach (var vertex in vertices)
                     vertexBufferStream.WriteWorldVertex(vertex);
 
@@ -766,7 +766,7 @@ namespace TagTool.Commands.Scenarios
         {
             using (var outputStream = new MemoryStream())
             {
-                var vertexBufferStream = VertexStreamFactory.Create(CacheVersion.HaloOnlineED, CachePlatform.Original, outputStream);
+                var vertexBufferStream = VertexStreamFactory.Create(CacheVersion.EldoradoED, CachePlatform.Original, outputStream);
                 foreach (var vertex in vertices)
                     vertexBufferStream.WriteWorldWaterVertex(vertex);
 
@@ -781,7 +781,7 @@ namespace TagTool.Commands.Scenarios
         {
             using (var outputStream = new MemoryStream())
             {
-                var vertexBufferStream = VertexStreamFactory.Create(CacheVersion.HaloOnline106708, CachePlatform.Original, outputStream);
+                var vertexBufferStream = VertexStreamFactory.Create(CacheVersion.Eldorado106708, CachePlatform.Original, outputStream);
 
                 foreach (var vertex in vertices)
                     vertexBufferStream.WriteWaterTesselatedParameters(vertex);

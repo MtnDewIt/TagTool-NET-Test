@@ -7,7 +7,7 @@ using System;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "damage_response_definition", Tag = "drdf", Size = 0xC, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "damage_response_definition", Tag = "drdf", Size = 0x18, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "damage_response_definition", Tag = "drdf", Size = 0x18, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "damage_response_definition", Tag = "drdf", Size = 0x18, MinVersion = CacheVersion.HaloReach)]
     public class DamageResponseDefinition : TagStructure
     {
@@ -15,20 +15,20 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<AreaControlBlockStruct> AreaControl;
 
-        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Unused;
 
         [TagStructure(Size = 0xAC, MaxVersion = CacheVersion.Halo3Beta)]
-        [TagStructure(Size = 0xC0, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0xC0, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x84, MinVersion = CacheVersion.HaloReach)]
         public class DamageResponseClass : TagStructure
         {
             public DamageResponseClassTypeEnum Type;
             public DamageResponseClassFlags Flags;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public DamageResponseScreenFlashStruct ScreenFlash;
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
             public DamageResponseMotionBlurStruct MotionBlur;
 
             public DamageResponseDirectionalFlashStruct DirectionalFlash;
@@ -42,9 +42,9 @@ namespace TagTool.Tags.Definitions
             [TagField(ValidTags = new[] { "sidt" }, MinVersion = CacheVersion.HaloReach)]
             public CachedTag SimulatedInput;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Rumble Rumble;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public CameraShake CameraShake;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -138,7 +138,7 @@ namespace TagTool.Tags.Definitions
                 }
             }
 
-            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Eldorado700123)]
             [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloReach)]
             public class DamageResponseDirectionalFlashStruct : TagStructure
             {
@@ -148,7 +148,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(Length = 2, Flags = Padding)]
                 public byte[] Padding0;
 
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float Size;
 
                 [TagField(MinVersion = CacheVersion.HaloReach)]

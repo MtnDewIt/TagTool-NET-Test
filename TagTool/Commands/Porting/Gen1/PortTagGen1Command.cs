@@ -16,10 +16,10 @@ namespace TagTool.Commands.Porting
 {
     public partial class PortTagGen1Command : Command
     {
-        public readonly GameCacheHaloOnlineBase Cache;
+        public readonly GameCacheEldoradoBase Cache;
         public readonly GameCacheGen1 Gen1Cache;
 
-        public PortTagGen1Command(GameCacheHaloOnlineBase cache, GameCacheGen1 gen1Cache) : base(false, "PortTag", "", "", "")
+        public PortTagGen1Command(GameCacheEldoradoBase cache, GameCacheGen1 gen1Cache) : base(false, "PortTag", "", "", "")
         {
             Cache = cache;
             Gen1Cache = gen1Cache;

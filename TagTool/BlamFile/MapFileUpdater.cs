@@ -5,7 +5,7 @@ using System.Linq;
 using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.MCC;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.Common.Logging;
 using TagTool.IO;
@@ -30,7 +30,7 @@ namespace TagTool.BlamFile
             foreach (CachedTag scnrTag in cache.TagCache.FindAllInGroup<Scenario>())
             {
                 // ignore base cache references for mod paks
-                if ((scnrTag as CachedTagHaloOnline).IsEmpty())
+                if ((scnrTag as CachedTagEldorado).IsEmpty())
                     continue;
 
                 var scnr = cache.Deserialize<Scenario>(cacheStream, scnrTag);
@@ -77,8 +77,7 @@ namespace TagTool.BlamFile
                 Blf mapInfo = LoadMapInfo(scnrTag, mapInfoFilePath, isExcessionData);
                 MapFile map = LoadOrBuildMapFile(scnrTag, _forceUpdate, scnr, mapInfo);
 
-                var header = (CacheFileHeaderGenHaloOnline)map.Header;
-                header.ScenarioTagIndex = scnrTag.Index;
+                map.Header.SetScenarioIndex(scnrTag.Index);
                 if (mapInfo != null && (_forceUpdate || map.MapFileBlf == null))
                     map.MapFileBlf = mapInfo;
 
@@ -96,7 +95,7 @@ namespace TagTool.BlamFile
                 {
                     return _cache switch
                     {
-                        GameCacheHaloOnline hoCache => LoadMapFile(Path.Combine(_cache.Directory.FullName, $"{scnrTag.Name.Split('\\').Last()}.map")),
+                        GameCacheEldorado hoCache => LoadMapFile(Path.Combine(_cache.Directory.FullName, $"{scnrTag.Name.Split('\\').Last()}.map")),
                         GameCacheModPackage modCache => LoadMapFile(modCache.BaseModPackage.MapFileStreams[modCache.BaseModPackage.MapIds.IndexOf(scnr.MapId)]),
                         _ => throw new NotSupportedException("Unsupported cache"),
                     };
@@ -119,7 +118,7 @@ namespace TagTool.BlamFile
                         }
                         break;
 
-                    case GameCacheHaloOnline hoCache:
+                    case GameCacheEldorado hoCache:
                         {
                             string mapFilePath = Path.Combine(_cache.Directory.FullName, $"{mapName}.map");
                             SaveMapFile(map, mapFilePath);

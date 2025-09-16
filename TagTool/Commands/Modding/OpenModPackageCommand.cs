@@ -9,12 +9,12 @@ namespace TagTool.Commands.Modding
 {
     class OpenModPackageCommand : Command
     {
-        private readonly GameCacheHaloOnlineBase Cache;
+        private readonly GameCacheEldoradoBase Cache;
         private CommandContextStack ContextStack { get; }
         private GameCacheModPackage ModCache;
         private CommandContext Context;
 
-        public OpenModPackageCommand(CommandContextStack contextStack, GameCacheHaloOnlineBase cache) :
+        public OpenModPackageCommand(CommandContextStack contextStack, GameCacheEldoradoBase cache) :
             base(true,
 
                 "OpenModPackage",

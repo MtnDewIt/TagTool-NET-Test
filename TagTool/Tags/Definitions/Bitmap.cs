@@ -8,8 +8,8 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xA4, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xB8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
-    [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xAC, MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xB8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+    [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xAC, MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xC0, MinVersion = CacheVersion.HaloReach)]
     public class Bitmap : TagStructure
 	{
@@ -33,10 +33,10 @@ namespace TagTool.Tags.Definitions
         public BitmapCurveMode CurveMode; // Automatic chooses FAST if your bitmap is bright, and PRETTY if your bitmap has dark bits
         public byte MaxMipMapLevel; // 0 = use default defined by usage
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED)]
         public short MaxResolution; // 0 = do not downsample source image
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED)]
         public short AtlasIndex; // Index into global atlas if the texture is missing its required resources and has been atlased
 
         [TagField(EnumType = typeof(short))]
@@ -45,7 +45,7 @@ namespace TagTool.Tags.Definitions
         [TagField(Format = "[0,1]", MinVersion = CacheVersion.HaloReach)]
         public float TightBoundsThreshold; // This is the level cutoff for tight bounds. 0.0 is monochrome black, 1.0 is monochrome white
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public List<TightBinding> TightBoundsOld;
 
         public List<UsageOverride> UsageOverrides;
@@ -63,11 +63,11 @@ namespace TagTool.Tags.Definitions
 
         public List<TagResourceReference> HardwareTextures;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(MaxVersion = CacheVersion.Eldorado106708)]
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<TagResourceReference> InterleavedHardwareTextures;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public int UnknownB4;
 
         [TagEnum(IsVersioned = true)]
@@ -111,9 +111,9 @@ namespace TagTool.Tags.Definitions
             InterfaceSprite,
             InterfaceGradient,
 
-            [TagEnumMember(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagEnumMember(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
             ScaleformSprite,
-            [TagEnumMember(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagEnumMember(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
             ScaleformGradient,
 
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
@@ -276,13 +276,13 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x38, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class Image : TagStructure
         {
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Tag Signature = "bitm"; // The group tag signature of the image.
 
             public short Width; // Pixels; DO NOT CHANGE
@@ -290,7 +290,7 @@ namespace TagTool.Tags.Definitions
             public sbyte Depth; // Pixels; DO NOT CHANGE
             public BitmapFlagsXbox XboxFlags; // The xbox 360 flags of the bitmap image. DO NOT CHANGE
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123, EnumType = typeof(short))]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123, EnumType = typeof(short))]
             [TagField(MinVersion = CacheVersion.HaloReach, EnumType = typeof(sbyte))]
             public BitmapType Type; // The type of the bitmap image. DO NOT CHANGE
 
@@ -300,7 +300,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3Beta, EnumType = typeof(short))]
             public BitmapFormat Format; // The format of the bitmap image. DO NOT CHANGE
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123, EnumType = typeof(ushort))]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123, EnumType = typeof(ushort))]
             [TagField(MinVersion = CacheVersion.HaloReach, EnumType = typeof(byte))]
             public BitmapFlags Flags; // The flags of the bitmap image. DO NOT CHANGE
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -370,7 +370,7 @@ namespace TagTool.Tags.Definitions
             HalfMonochrome,
             Compressed4BitMonochrome,
             CompressedInterpolatedMonochrome,
-            [TagEnumMember(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagEnumMember(MaxVersion = CacheVersion.Eldorado700123)]
             Unused12,
             [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
             Dxt5Red,

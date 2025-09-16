@@ -12,23 +12,23 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Resources;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache.ModPackages;
 using System.Collections;
 using TagTool.Common.Logging;
 
 namespace TagTool.Cache
 {
-    public class GameCacheModPackage : GameCacheHaloOnlineBase
+    public class GameCacheModPackage : GameCacheEldoradoBase
     {
         public FileInfo ModPackageFile;
         public ModPackage BaseModPackage;
 
         private int CurrentTagCacheIndex = 0;
 
-        public GameCacheHaloOnlineBase BaseCacheReference;
+        public GameCacheEldoradoBase BaseCacheReference;
 
-        public GameCacheModPackage(GameCacheHaloOnlineBase baseCache, FileInfo file)
+        public GameCacheModPackage(GameCacheEldoradoBase baseCache, FileInfo file)
         {
             ModPackageFile = file;
             Directory = file.Directory;
@@ -38,22 +38,22 @@ namespace TagTool.Cache
             Init(baseCache, modPackage);
         }
 
-        public GameCacheModPackage(GameCacheHaloOnline baseCache, ModPackage modPackage)
+        public GameCacheModPackage(GameCacheEldorado baseCache, ModPackage modPackage)
         {
             Init(baseCache, modPackage);
         }
 
-        private void Init(GameCacheHaloOnlineBase baseCache, ModPackage modPackage)
+        private void Init(GameCacheEldoradoBase baseCache, ModPackage modPackage)
         {
             BaseCacheReference = baseCache;
             BaseModPackage = modPackage;
-            Version = CacheVersion.HaloOnlineED;
+            Version = CacheVersion.EldoradoED;
             Platform = CachePlatform.Original;
             Endianness = EndianFormat.LittleEndian;
             Deserializer = new TagDeserializer(Version, Platform);
             Serializer = new TagSerializer(Version, Platform);
             ResourceCaches = new ResourceCachesModPackage(this, BaseModPackage);
-            StringTableHaloOnline = BaseModPackage.StringTable;
+            StringTableEldorado = BaseModPackage.StringTable;
 
             SetActiveTagCache(0);
         }
@@ -63,7 +63,7 @@ namespace TagTool.Cache
             var modStream = (ModPackageStream)stream;
 
             var definitionType = TagCache.TagDefinitions.GetTagDefinitionType(instance.Group);
-            var modCachedTag = TagCache.GetTag(instance.Index) as CachedTagHaloOnline;
+            var modCachedTag = TagCache.GetTag(instance.Index) as CachedTagEldorado;
             // deserialization can happen in the base cache if the tag in the mod pack is only a reference
             if (modCachedTag.IsEmpty())
             {
@@ -81,7 +81,7 @@ namespace TagTool.Cache
         {
             var modStream = (ModPackageStream)stream;
 
-            var modCachedTag = TagCache.GetTag(instance.Index) as CachedTagHaloOnline;
+            var modCachedTag = TagCache.GetTag(instance.Index) as CachedTagEldorado;
             if (modCachedTag.IsEmpty())
             {
                 var baseInstance = BaseCacheReference.TagCache.GetTag(instance.Index);
@@ -99,7 +99,7 @@ namespace TagTool.Cache
 
         private ISerializationContext CreateTagSerializationContext(Stream stream, CachedTag instance)
         {
-            return new ModPackageTagSerializationContext(stream, this, (CachedTagHaloOnline)instance);
+            return new ModPackageTagSerializationContext(stream, this, (CachedTagEldorado)instance);
         }
 
         public override Stream OpenCacheRead() => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, BaseCacheReference.OpenCacheRead());
@@ -132,7 +132,7 @@ namespace TagTool.Cache
                 throw new ArgumentOutOfRangeException(nameof(index), index, "Invalid tag cache index");
 
             CurrentTagCacheIndex = index;
-            TagCacheGenHO = new TagCacheHaloOnline(Version, BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, StringTableHaloOnline, BaseModPackage.TagCacheNames[CurrentTagCacheIndex]);
+            TagCacheEldorado = new TagCacheEldorado(Version, BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, StringTableEldorado, BaseModPackage.TagCacheNames[CurrentTagCacheIndex]);
             if (GetTagCacheCount() > 1)
                 DisplayName = BaseModPackage.Metadata.Name + $" {BaseModPackage.CacheNames[CurrentTagCacheIndex]}" + ".pak";
             else

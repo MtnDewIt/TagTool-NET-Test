@@ -16,11 +16,11 @@ namespace TagTool.Commands.Porting
 
     class PortClusterGeometryObjectCommand : Command
     {
-        private readonly GameCacheHaloOnlineBase HoCache;
+        private readonly GameCacheEldoradoBase HoCache;
         private readonly GameCache BlamCache;
         private readonly PortingContext PortContext;
 
-        public PortClusterGeometryObjectCommand(GameCacheHaloOnlineBase cache, GameCache blamCache, PortingContext portContext) :
+        public PortClusterGeometryObjectCommand(GameCacheEldoradoBase cache, GameCache blamCache, PortingContext portContext) :
             base(true,
 
                 "PortClusterGeometryObject",

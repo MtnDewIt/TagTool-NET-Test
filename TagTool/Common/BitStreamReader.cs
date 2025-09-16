@@ -38,7 +38,7 @@ namespace TagTool.Common
             AngleToAxesInternal(up, forwardAngle, out forward);
         }
 
-        public void ReadAxisReach(int forwardBits, int upBits, out RealVector3d forward, out RealVector3d up)
+        public void ReadAxis(int forwardBits, int upBits, out RealVector3d forward, out RealVector3d up)
         {
             if (ReadBool())
             {
@@ -46,8 +46,8 @@ namespace TagTool.Common
             }
             else
             {
-                int quantized = ReadSignedInteger(upBits);
-                RealMath.DequantizeUnitVector3dReach(quantized, out up, 20);
+                int quantized = (int)ReadUnsigned(upBits);
+                RealMath.DequantizeUnitVector3d(quantized, out up, upBits);
             }
 
             float forwardAngle = ReadQuantizedReal(-RealMath.REAL_PI, RealMath.REAL_PI, forwardBits, false, false);

@@ -11,9 +11,9 @@ namespace TagTool.Commands.CollisionModels
 {
     class CollisionModelTestCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache { get; }
+        private GameCacheEldoradoBase Cache { get; }
 
-        public CollisionModelTestCommand(GameCacheHaloOnlineBase cache)
+        public CollisionModelTestCommand(GameCacheEldoradoBase cache)
             : base(false,
                   
                   "CollisionModelTest",
@@ -43,7 +43,7 @@ namespace TagTool.Commands.CollisionModels
 
             if (args[1].ToLower().Equals("new"))
             {
-                tag = Cache.TagCacheGenHO.AllocateTag(Cache.TagCache.TagDefinitions.GetTagDefinitionType("coll"));
+                tag = Cache.TagCacheEldorado.AllocateTag(Cache.TagCache.TagDefinitions.GetTagDefinitionType("coll"));
             }
             else
             {

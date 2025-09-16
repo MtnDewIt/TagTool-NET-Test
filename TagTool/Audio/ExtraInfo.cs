@@ -10,25 +10,25 @@ namespace TagTool.Audio
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x14C, MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2PC, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x28, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.ReleaseBuild)]
     [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
     public class ExtraInfo : TagStructure
 	{
         [TagField(BuildType = CacheBuildType.TagsBuild)]
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public List<LanguagePermutation> LanguagePermutations;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<EncodedPermutationSection> EncodedPermutationSections;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown1;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown2;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown3;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown4;
 
         [TagField(MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.ReleaseBuild)]
@@ -49,15 +49,15 @@ namespace TagTool.Audio
 		{
             public List<RawInfoBlock> RawInfo;
 
-            [TagStructure(Size = 0x7C, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x7C, MaxVersion = CacheVersion.Eldorado700123)]
             [TagStructure(Size = 0x4C, MinVersion = CacheVersion.HaloReach)]
             public class RawInfoBlock : TagStructure
 			{
                 public StringId SkipFractionName;
                 public byte[] Samples;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public byte[] MouthData;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public byte[] LipsyncData;
                 public List<SoundPermutationMarkerBlock> Markers;
                 [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -70,15 +70,15 @@ namespace TagTool.Audio
                 public uint SampleCount;
                 public uint ResourceSampleOffset;
                 public uint ResourceSampleSize;
-                [TagField(Gen = CacheGeneration.HaloOnline)]
+                [TagField(Gen = CacheGeneration.Eldorado)]
                 public uint Unknown20;
-                [TagField(Gen = CacheGeneration.HaloOnline)]
+                [TagField(Gen = CacheGeneration.Eldorado)]
                 public uint Unknown21;
-                [TagField(Gen = CacheGeneration.HaloOnline)]
+                [TagField(Gen = CacheGeneration.Eldorado)]
                 public uint Unknown22;
-                [TagField(Gen = CacheGeneration.HaloOnline)]
+                [TagField(Gen = CacheGeneration.Eldorado)]
                 public uint Unknown23;
-                [TagField(Gen = CacheGeneration.HaloOnline)]
+                [TagField(Gen = CacheGeneration.Eldorado)]
                 public int Unknown24;
 
                 [TagStructure(Size = 0xC)]

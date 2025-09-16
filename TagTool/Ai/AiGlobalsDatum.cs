@@ -9,7 +9,7 @@ namespace TagTool.Ai
 {
     [TagStructure(Size = 0x1B0, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0xE4, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-    [TagStructure(Size = 0x144, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x144, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x1B0, MinVersion = CacheVersion.HaloReach)]
     public class AiGlobalsDatum : TagStructure
     {
@@ -108,10 +108,10 @@ namespace TagTool.Ai
         public float ConverSearchDuration;
         public float TaskSearchDuration;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float Unknown7;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<TagReferenceBlock> Styles;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST)]
@@ -182,11 +182,11 @@ namespace TagTool.Ai
             public float MaximumRetreatTime;
         }
 
-        [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x1C, MinVersion = CacheVersion.HaloReach)]
         public class SquadTemplate : TagStructure
         {
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public CachedTag Template;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]

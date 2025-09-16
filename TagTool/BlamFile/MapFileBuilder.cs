@@ -2,6 +2,7 @@
 using System.Linq;
 using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
+using TagTool.Cache.Eldorado.Headers;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags;
@@ -39,7 +40,7 @@ namespace TagTool.BlamFile
             Version = version;
             CachePlatform = CachePlatform.Original;
 
-            if (!CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline106708))
+            if (!CacheVersionDetection.IsBetween(Version, CacheVersion.EldoradoED, CacheVersion.Eldorado106708))
                 throw new ArgumentOutOfRangeException(nameof(Version), "Cache File version not supported");
         }
 
@@ -51,9 +52,9 @@ namespace TagTool.BlamFile
 
             var map = new MapFile();
             map.Version = Version;
-            map.CachePlatform = CachePlatform;
+            map.Platform = CachePlatform;
             map.EndianFormat = EndianFormat.LittleEndian;
-            map.MapVersion = CacheFileVersion.HaloOnline;
+            map.MapVersion = CacheFileVersion.Eldorado;
             map.Header = GenerateCacheFileHeader(scnrTag, scnr, scenarioName);
             map.MapFileBlf = GenerateMapBlf(scnr, scenarioName);
             return map;
@@ -96,33 +97,35 @@ namespace TagTool.BlamFile
             }
         }
 
-        private CacheFileHeaderGenHaloOnline GenerateCacheFileHeader(CachedTag scnrTag, Scenario scnr, string scenarioName)
+        private CacheFileHeaderEldoradoED GenerateCacheFileHeader(CachedTag scnrTag, Scenario scnr, string scenarioName)
         {
-            var header = new CacheFileHeaderGenHaloOnline();
+            // TODO: Add dynamic versioning somehow :/
+            var header = new CacheFileHeaderEldoradoED();
+
             header.HeaderSignature = new Tag("head");
             header.FooterSignature = new Tag("foot");
-            header.FileVersion = CacheFileVersion.HaloOnline;
-            header.Build = CacheVersionDetection.GetBuildName(Version, CachePlatform);
+            header.Version = CacheFileVersion.Eldorado;
+            header.BuildNumber = CacheVersionDetection.GetBuildName(Version, CachePlatform);
 
             switch (scnr.MapType)
             {
                 case ScenarioMapType.MainMenu:
-                    header.CacheType = CacheFileType.MainMenu;
+                    header.ScenarioType = CacheFileType.MainMenu;
                     break;
                 case ScenarioMapType.SinglePlayer:
-                    header.CacheType = CacheFileType.Campaign;
+                    header.ScenarioType = CacheFileType.Campaign;
                     break;
                 case ScenarioMapType.Multiplayer:
-                    header.CacheType = CacheFileType.Multiplayer;
+                    header.ScenarioType = CacheFileType.Multiplayer;
                     break;
             }
 
-            header.FileLength = (int)TagStructure.GetStructureSize(typeof(CacheFileHeaderGenHaloOnline), Version, CachePlatform);
-            header.SharedCacheType = CacheFileSharedType.None;
+            header.Size = TagStructure.GetStructureSize(typeof(CacheFileHeaderEldoradoED), Version, CachePlatform);
+            header.SharedCacheFileType = CacheFileSharedType.None;
             header.MapId = scnr.MapId;
             header.Name = scenarioName;
-            header.ScenarioPath = scnrTag.Name;
-            header.ScenarioTagIndex = scnrTag.Index;
+            header.TagPath = scnrTag.Name;
+            header.ScenarioIndex = scnrTag.Index;
             return header;
         }
 

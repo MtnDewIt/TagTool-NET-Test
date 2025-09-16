@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using TagTool.IO;
 using TagTool.Serialization;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.BlamFile;
 using TagTool.Tags;
 using System.Runtime.InteropServices;
@@ -41,7 +41,7 @@ namespace TagTool.Cache
 
         public List<string> CacheNames { get; set; } = new List<string>();
 
-        public StringTableHaloOnline StringTable { get; set; }
+        public StringTableEldorado StringTable { get; set; }
 
         public Stream FontPackage;
 
@@ -51,7 +51,7 @@ namespace TagTool.Cache
 
         public int GetTagCacheCount() => TagCacheCount;
 
-        public CacheVersion PackageVersion = CacheVersion.HaloOnlineED;
+        public CacheVersion PackageVersion = CacheVersion.EldoradoED;
         public CachePlatform PackagePlatform = CachePlatform.Original;
 
         public void Dispose()
@@ -89,7 +89,7 @@ namespace TagTool.Cache
                 TagCacheNames.Add(names);
                 CacheNames.Add("default");
                 Files = new Dictionary<string, Stream>();
-                StringTable = new StringTableHaloOnline(CacheVersion.HaloOnlineED, null);
+                StringTable = new StringTableEldorado(CacheVersion.EldoradoED, null);
                 Header.SectionTable = new ModPackageSectionTable();
                 unsafe
                 {
@@ -624,7 +624,7 @@ namespace TagTool.Cache
             reader.Read(data, 0, size);
             stringIdCacheStream.Write(data, 0, size);
             stringIdCacheStream.Position = 0;
-            StringTable = new StringTableHaloOnline(CacheVersion.HaloOnlineED, stringIdCacheStream);
+            StringTable = new StringTableEldorado(CacheVersion.EldoradoED, stringIdCacheStream);
         }
 
         private void ReadFontSection(EndianReader reader)
@@ -692,7 +692,7 @@ namespace TagTool.Cache
 
                     stream.Position = 0;
                     MapFileStreams.Add(stream);
-                    MapIds.Add(((CacheFileHeaderGenHaloOnline)mapFile.Header).MapId);
+                    MapIds.Add(mapFile.Header.GetMapId());
                     MapToCacheMapping.Add(i, tableEntry.CacheIndex);
                 }
                 catch
@@ -787,7 +787,7 @@ namespace TagTool.Cache
                 MapFile map = new MapFile();
                 map.Read(reader);
 
-                var type = ((CacheFileHeaderGenHaloOnline)map.Header).CacheType;
+                var type = map.Header.GetScenarioType();
 
                 if (type == CacheFileType.Campaign)
                     Header.MapFlags |= MapFlags.CampaignMaps;

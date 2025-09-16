@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache.Monolithic;
 using System.Linq;
 
@@ -43,11 +43,11 @@ namespace TagTool.Commands.Tags
                 file.Directory.Create();
 
             
-            if(Cache is GameCacheHaloOnlineBase hoCache)
+            if(Cache is GameCacheEldoradoBase hoCache)
             {
                 byte[] data;
                 using (var stream = Cache.OpenCacheRead())
-                    data = hoCache.TagCacheGenHO.ExtractTagRaw(stream, (CachedTagHaloOnline)instance);
+                    data = hoCache.TagCacheEldorado.ExtractTagRaw(stream, (CachedTagEldorado)instance);
 
                 using (var outStream = file.Create())
                 {

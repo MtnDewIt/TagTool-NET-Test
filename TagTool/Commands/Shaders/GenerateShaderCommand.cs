@@ -186,7 +186,7 @@ namespace TagTool.Commands.Shaders
                 Cache.Serialize(stream, pixlTag, pixl);
 
                 Cache.SaveStrings();
-                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
+                (Cache as GameCacheEldoradoBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated explicit shaders for \"{value}\"");
@@ -231,7 +231,7 @@ namespace TagTool.Commands.Shaders
                 Cache.Serialize(stream, pixlTag, pixl);
 
                 Cache.SaveStrings();
-                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
+                (Cache as GameCacheEldoradoBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated chud shader for {value}");
@@ -272,7 +272,7 @@ namespace TagTool.Commands.Shaders
                     Cache.Serialize(stream, glvsTag, glvs);
                 }
                 Cache.SaveStrings();
-                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
+                (Cache as GameCacheEldoradoBase).SaveTagNames();
             }
 
             Console.WriteLine($"Generated global {(pixel ? "pixel" : "vertex")} shader for {shaderType}");
@@ -290,7 +290,7 @@ namespace TagTool.Commands.Shaders
             if (cache.TagCache.TryGetTag(rmt2Name + ".rmt2", out var rmt2Tag))
             {
                 var origRmt2 = cache.Deserialize<RenderMethodTemplate>(stream, rmt2Tag);
-                var dependents = (cache as GameCacheHaloOnlineBase).TagCacheGenHO.NonNull().Where(t => ((Cache.HaloOnline.CachedTagHaloOnline)t).Dependencies.Contains(rmt2Tag.Index));
+                var dependents = (cache as GameCacheEldoradoBase).TagCacheEldorado.NonNull().Where(t => ((Cache.Eldorado.CachedTagEldorado)t).Dependencies.Contains(rmt2Tag.Index));
 
                 foreach (var dependent in dependents)
                 {
@@ -356,7 +356,7 @@ namespace TagTool.Commands.Shaders
 
             cache.Serialize(stream, rmt2Tag, rmt2);
             cache.SaveStrings();
-            (cache as GameCacheHaloOnlineBase).SaveTagNames();
+            (cache as GameCacheEldoradoBase).SaveTagNames();
 
             if (!suppressCli)
                 Console.WriteLine($"Generated shader template \"{rmt2Name}\"");
@@ -627,7 +627,7 @@ namespace TagTool.Commands.Shaders
             if (cache.TagCache.TryGetTag(rmt2Name + ".rmt2", out var rmt2Tag))
             {
                 RenderMethodTemplate originalRmt2 = cache.Deserialize<RenderMethodTemplate>(stream, rmt2Tag);
-                var dependents = (cache as GameCacheHaloOnlineBase).TagCacheGenHO.NonNull().Where(t => ((Cache.HaloOnline.CachedTagHaloOnline)t).Dependencies.Contains(rmt2Tag.Index));
+                var dependents = (cache as GameCacheEldoradoBase).TagCacheEldorado.NonNull().Where(t => ((Cache.Eldorado.CachedTagEldorado)t).Dependencies.Contains(rmt2Tag.Index));
 
                 foreach (var dependent in dependents)
                 {

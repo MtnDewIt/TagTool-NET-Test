@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache.Resources;
 using TagTool.Common;
 using TagTool.Extensions;
@@ -13,13 +13,13 @@ using TagTool.Tags;
 
 namespace TagTool.Cache.ModPackages
 {
-    public class ResourceCachesModPackage : ResourceCachesHaloOnlineBase
+    public class ResourceCachesModPackage : ResourceCachesEldoradoBase
     {
         private ModPackage Package;
 
         private Dictionary<string, ResourcePage> ExistingResources;
 
-        private ResourceCacheHaloOnline ResourceCache;
+        private ResourceCacheEldorado ResourceCache;
 
         private GameCacheModPackage ModCache => (GameCacheModPackage)Cache;
 
@@ -28,12 +28,12 @@ namespace TagTool.Cache.ModPackages
             Package = package;
             Cache = cache;
             ExistingResources = new Dictionary<string, ResourcePage>();
-            ResourceCache = new ResourceCacheHaloOnline(package.PackageVersion, package.PackagePlatform, package.ResourcesStream.Stream);
+            ResourceCache = new ResourceCacheEldorado(package.PackageVersion, package.PackagePlatform, package.ResourcesStream.Stream);
             Serializer = new ResourceSerializer(Cache.Version, Cache.Platform);
             Deserializer = new ResourceDeserializer(Cache.Version, Cache.Platform);
         }
 
-        public override ResourceCacheHaloOnline GetResourceCache(ResourceLocation location)
+        public override ResourceCacheEldorado GetResourceCache(ResourceLocation location)
         {
             if (location == ResourceLocation.Mods)
                 return ResourceCache;

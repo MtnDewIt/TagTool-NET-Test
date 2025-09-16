@@ -10,9 +10,9 @@ namespace TagTool.Commands.Tags
 {
     class ListMapsCommand : Command 
     {
-        private GameCacheHaloOnlineBase CacheContext { get; }
+        private GameCacheEldoradoBase CacheContext { get; }
 
-        public ListMapsCommand(GameCacheHaloOnlineBase cacheContext)
+        public ListMapsCommand(GameCacheEldoradoBase cacheContext)
             : base(true,
 
                 "ListMaps",
@@ -45,11 +45,11 @@ namespace TagTool.Commands.Tags
 
                     mapFile.Read(reader);
 
-                    var header = mapFile.Header as CacheFileHeaderGenHaloOnline;
+                    var header = mapFile.Header;
                     var mapVariant = mapFile.MapFileBlf?.MapVariant?.MapVariant;
                     var mapName = mapFile.MapFileBlf?.Scenario?.Names[0]?.Name;
 
-                    Console.WriteLine(columnFormat, header.MapId, header.Name, mapName == null ? "None" : mapName, header.ScenarioPath, mapVariant == null ? "None" : mapVariant.Metadata.Name);
+                    Console.WriteLine(columnFormat, header.GetMapId(), header.GetName(), mapName == null ? "None" : mapName, header.GetTagPath(), mapVariant == null ? "None" : mapVariant.Metadata.Name);
                 }
             }
 

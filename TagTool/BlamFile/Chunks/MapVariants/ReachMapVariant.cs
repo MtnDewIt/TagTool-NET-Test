@@ -140,7 +140,7 @@ namespace TagTool.BlamFile.Chunks.MapVariants
                 objectDatum.QuotaIndex = stream.ReadIndex(8, 256);
                 objectDatum.VariantIndex = stream.ReadIndex(5, 32);
                 SimulationEncoding.SimulationReadPosition(stream, out objectDatum.Position, 21, false, true, worldBounds);
-                stream.ReadAxisReach(14, 20, out objectDatum.Forward, out objectDatum.Up);
+                stream.ReadAxis(14, 20, out objectDatum.Forward, out objectDatum.Up);
                 objectDatum.SpawnRelativeToIndex = (int)stream.ReadUnsigned(10) - 1;
                 objectDatum.Properties = ReachVariantMultiplayerObjectProperties.Decode(stream);
             }

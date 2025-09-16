@@ -5,8 +5,8 @@ namespace TagTool.Cache.Resources
 {
     [TagStructure(Size = 0x58, Align = 0x8, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x58, Align = 0x8, MinVersion = CacheVersion.HaloReach)]
-    [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
-    [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x24, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+    [TagStructure(Size = 0x28, MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
     public class ResourcePage : TagStructure
 	{
         public short HeaderSaltAtRuntime;
@@ -17,13 +17,13 @@ namespace TagTool.Cache.Resources
         /// <summary>
         /// Gets or sets flags containing information about where the resource is located.
         /// </summary>
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
         public OldRawPageFlags OldFlags;
 
         /// <summary>
         /// Gets or sets flags containing information about where the resource is located.
         /// </summary>
-        [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
         public NewRawPageFlags NewFlags;
 
         public CompressionCodec CodecIndex;
@@ -34,10 +34,10 @@ namespace TagTool.Cache.Resources
         [TagField(Gen = CacheGeneration.Third)]
         public short SharedCacheLocationIndex;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
         public int Unknown;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public int Index;
 
         [TagField(Gen = CacheGeneration.Third)]
@@ -48,7 +48,7 @@ namespace TagTool.Cache.Resources
 
         public ResourceChecksum Checksum;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public ResourceSubpageTable StreamingSublocationTable;
 
         [Flags]
@@ -70,7 +70,7 @@ namespace TagTool.Cache.Resources
         }
 
         [TagStructure(Size = 0x40, Gen = CacheGeneration.Third)]
-        [TagStructure(Size = 0x4, Gen = CacheGeneration.HaloOnline)]
+        [TagStructure(Size = 0x4, Gen = CacheGeneration.Eldorado)]
         public class ResourceChecksum : TagStructure
         {
             public int CRC32Value;

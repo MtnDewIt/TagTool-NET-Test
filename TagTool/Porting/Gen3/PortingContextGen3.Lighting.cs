@@ -40,7 +40,7 @@ namespace TagTool.Porting.Gen3
 
                 // only H3MCC and HO have tint modulation factor after tint color
                 if (!((BlamCache.Version == CacheVersion.Halo3Retail && BlamCache.Platform == CachePlatform.MCC)
-                    || (BlamCache.Version > CacheVersion.HaloOnlineED && BlamCache.Version <= CacheVersion.HaloOnline700123)))
+                    || (BlamCache.Version > CacheVersion.EldoradoED && BlamCache.Version <= CacheVersion.Eldorado700123)))
                 {
                     reflection.TintModulationFactor = reflection.TintModulationFactorGen3;
                 }
@@ -49,7 +49,7 @@ namespace TagTool.Porting.Gen3
                 //reflection.BitmapOverride = null; // only H3MCC and HO have this cachedtag
 
                 // not necessary to convert HO reflection functions
-                if (BlamCache.Version >= CacheVersion.HaloOnlineED && BlamCache.Version < CacheVersion.HaloReach)
+                if (BlamCache.Version >= CacheVersion.EldoradoED && BlamCache.Version < CacheVersion.HaloReach)
                     continue;
                 // not necessary to convert H3MCC reflection functions
                 if (BlamCache.Platform == CachePlatform.MCC && BlamCache.Version == CacheVersion.Halo3Retail)
@@ -208,7 +208,7 @@ namespace TagTool.Porting.Gen3
 
                 string tagName = (scenarioLightmap.Lightmaps.Count != 1 ? $"{blamTagName}_{i}_data" : $"{blamTagName}_data") + ".Lbsp";
                 if (!CacheContext.TagCache.TryGetCachedTag(tagName, out CachedTag edTag))
-                    edTag = CacheContext.TagCacheGenHO.AllocateTag(CacheContext.TagCache.TagDefinitions.GetTagGroupFromTag("Lbsp"), tagName);
+                    edTag = CacheContext.TagCacheEldorado.AllocateTag(CacheContext.TagCache.TagDefinitions.GetTagGroupFromTag("Lbsp"), tagName);
 
                 CacheContext.Serialize(cacheStream, edTag, Lbsp);
                 scenarioLightmap.PerPixelLightmapDataReferences.Add(new ScenarioLightmap.DataReferenceBlock() { LightmapBspData = edTag });
@@ -277,7 +277,7 @@ namespace TagTool.Porting.Gen3
                 Lbsp.BspIndex = (short)i;
                 Lbsp = ConvertScenarioLightmapBspDataReach(cacheStream, blamCacheStream,  lbspTag.Name, lbspTag, Lbsp);
 
-                CachedTag edTag = CacheContext.TagCacheGenHO.AllocateTag<ScenarioLightmapBspData>(scenarioLightmap.PerPixelLightmapDataReferences[i].LightmapBspData.Name);
+                CachedTag edTag = CacheContext.TagCacheEldorado.AllocateTag<ScenarioLightmapBspData>(scenarioLightmap.PerPixelLightmapDataReferences[i].LightmapBspData.Name);
                 CacheContext.Serialize(cacheStream, edTag, Lbsp);
             }
 

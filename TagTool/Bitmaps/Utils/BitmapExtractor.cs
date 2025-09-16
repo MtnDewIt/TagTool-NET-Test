@@ -14,7 +14,7 @@ namespace TagTool.Bitmaps
         {
             var resourceReference = bitmap.HardwareTextures[imageIndex];
             var resourceDefinition = cache.ResourceCache.GetBitmapTextureInteropResource(resourceReference);
-            if (cache is GameCacheHaloOnlineBase)
+            if (cache is GameCacheEldoradoBase)
             {
                 if(resourceDefinition != null)
                 {
@@ -60,7 +60,7 @@ namespace TagTool.Bitmaps
 
         public static BaseBitmap ExtractBitmap(GameCache cache, Bitmap bitmap, int imageIndex, string tagName, bool forDDS = true)
         {
-            if (cache is GameCacheHaloOnlineBase)
+            if (cache is GameCacheEldoradoBase)
             {
                 var image = bitmap.Images[imageIndex].DeepCloneV2();
                 return new BaseBitmap(image, ExtractBitmapData(cache, bitmap, imageIndex, ref image));

@@ -10,13 +10,13 @@ using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Commands.Common;
 using System.IO;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 
 namespace TagTool.Commands.Tags
 {
     public class TestSerializerCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache { get; }
+        private GameCacheEldoradoBase Cache { get; }
         public TestSerializerCommand(GameCache cachecontext)
             : base(false,
 
@@ -27,14 +27,14 @@ namespace TagTool.Commands.Tags
 
                   "")
         {
-            Cache = (GameCacheHaloOnlineBase)cachecontext;
+            Cache = (GameCacheEldoradoBase)cachecontext;
         }
 
         public override object Execute(List<string> args)
         {
             foreach (var tag in Cache.TagCache.TagTable)
             {
-                CachedTagHaloOnline CacheTag = (CachedTagHaloOnline)Cache.TagCacheGenHO.GetTag(tag.Index);
+                CachedTagEldorado CacheTag = (CachedTagEldorado)Cache.TagCacheEldorado.GetTag(tag.Index);
 
                 int headersize = (int)CacheTag.CalculateHeaderSize();
 
@@ -59,7 +59,7 @@ namespace TagTool.Commands.Tags
                     /*
                     using (var stream = Cache.OpenCacheReadWrite())
                     {
-                        var dataContext = new HaloOnlineSerializationContext(stream, Cache, CacheTag);
+                        var dataContext = new EldoradoSerializationContext(stream, Cache, CacheTag);
                         Cache.Serializer.Serialize(dataContext, cachedef);
                     }
                     */

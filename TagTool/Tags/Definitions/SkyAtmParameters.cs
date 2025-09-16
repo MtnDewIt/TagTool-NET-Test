@@ -6,21 +6,21 @@ using System;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "sky_atm_parameters", Tag = "skya", Size = 0x4C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline235640)]
-    [TagStructure(Name = "sky_atm_parameters", Tag = "skya", Size = 0x54, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "sky_atm_parameters", Tag = "skya", Size = 0x4C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado235640)]
+    [TagStructure(Name = "sky_atm_parameters", Tag = "skya", Size = 0x54, MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "sky_atm_parameters", Tag = "skya", Size = 0x44, MinVersion = CacheVersion.HaloReach)]
     public class SkyAtmParameters : TagStructure
     {
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public SkyAtmFlags Flags;
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Padding;
 
         public CachedTag FogBitmap;
         public float TextureRepeatRate;
         public float DistanceBetweenSheets;
         public float DepthFadeFactor;
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float ClusterSearchRadius;
         public float FalloffStartDistance;
         public float DistanceFalloffPower;
@@ -30,12 +30,12 @@ namespace TagTool.Tags.Definitions
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x3)]
         public byte[] Padding1;
 
-        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123)]
         public float Unknown10;
-        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123)]
         public float Unknown11;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<AtmosphereProperty> AtmosphereSettings;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<AtmospherePropertyReach> AtmosphereSettingsReach;

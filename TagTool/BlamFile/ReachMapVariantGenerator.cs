@@ -152,7 +152,7 @@ namespace TagTool.BlamFile
                 result.Quotas[i].MaximumCount = (byte)quotaBuilder[i].MaximumCount;
                 result.Quotas[i].PlacedOnMap = (byte)quotaBuilder[i].PlacedOnMap;
                 result.Quotas[i].MaxAllowed = (sbyte)quotaBuilder[i].MaxAllowed;
-                // result.PlaceableQuotaCount++;
+                result.PlaceableQuotaCount++;
             }
 
             destTagNames = new List<string>();
@@ -172,9 +172,9 @@ namespace TagTool.BlamFile
             return result;
         }
 
-        private static Blf GenerateBlf(MapVariant mapVariant, IList<string> tagnames)
+        private static Blf GenerateBlf(MapVariant mapVariant, List<string> tagnames)
         {
-            var blf = new Blf(CacheVersion.HaloOnlineED, CachePlatform.Original);
+            var blf = new Blf(CacheVersion.EldoradoED, CachePlatform.Original);
 
             blf.StartOfFile = new BlfChunkStartOfFile()
             {
@@ -432,8 +432,8 @@ namespace TagTool.BlamFile
 
             public short[] CalculateObjetTypeStartIndices()
             {
-                var indices = new short[16];
-                for (int i = 0; i < 16; i++)
+                var indices = new short[15];
+                for (int i = 0; i < 15; i++)
                     indices[i] = -1;
 
                 int placementCount = 0;

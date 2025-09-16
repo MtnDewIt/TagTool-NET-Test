@@ -5,16 +5,16 @@ using TagTool.Cache;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "gui_widget_sprite_animation_definition", Tag = "wspr", Size = 0x24, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "gui_widget_sprite_animation_definition", Tag = "wspr", Size = 0x2C, MinVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Name = "gui_widget_sprite_animation_definition", Tag = "wspr", Size = 0x2C, MinVersion = CacheVersion.EldoradoED)]
     public class GuiWidgetSpriteAnimationDefinition : TagStructure
     {
         public WidgetComponentAnimationFlags Flags;
         public List<WidgetSpriteAnimationKeyframeBlock> Keyframes;
         public TagFunction DefaultFunction;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED)]
         public uint Unknown;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED)]
         public uint Unknown2;
 
         [Flags]

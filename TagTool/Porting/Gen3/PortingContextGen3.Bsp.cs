@@ -38,8 +38,8 @@ namespace TagTool.Porting.Gen3
                     foreach (var grid in cluster.DecoratorGrids)
                     {
                         VertexBufferDefinition buffer = null;
-                        if(CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
-                            buffer = blamDecoratorResourceDefinition.VertexBuffers[grid.HaloOnlineInfo.VertexBufferIndex].Definition;
+                        if(CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, BlamCache.Version))
+                            buffer = blamDecoratorResourceDefinition.VertexBuffers[grid.EldoradoInfo.VertexBufferIndex].Definition;
                         else
                             buffer = blamDecoratorResourceDefinition.VertexBuffers[grid.Gen3Info.VertexBufferIndex].Definition;
                         
@@ -69,7 +69,7 @@ namespace TagTool.Porting.Gen3
                     cluster.DecoratorGrids = newDecoratorGrids;
                 }
                 
-                if(CacheContext.Version == CacheVersion.HaloOnlineED && BlamCache.Version < CacheVersion.HaloReach)
+                if(CacheContext.Version == CacheVersion.EldoradoED && BlamCache.Version < CacheVersion.HaloReach)
                 {
                     foreach (var cubemap in cluster.ClusterCubemaps)
                     {
@@ -85,7 +85,7 @@ namespace TagTool.Porting.Gen3
             // conversion already completed for halo online generation caches
             if (blamDecoratorResourceDefinition != null)
             {
-                if (!CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
+                if (!CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, BlamCache.Version))
                 {
                     for (var bufferindex = 0; bufferindex < blamDecoratorResourceDefinition.VertexBuffers.Count; bufferindex++)
                     {
@@ -226,21 +226,21 @@ namespace TagTool.Porting.Gen3
             {
                 var newGrid = grid.DeepClone();
 
-                newGrid.HaloOnlineInfo = new ScenarioStructureBsp.Cluster.DecoratorGrid.HaloOnlineDecoratorInfo();
+                newGrid.EldoradoInfo = new ScenarioStructureBsp.Cluster.DecoratorGrid.EldoradoDecoratorInfo();
                 newGrid.Amount = data.Amount;
                 newGrid.VertexBufferOffset = grid.VertexBufferOffset + data.GeometryOffset;
 
-                newGrid.HaloOnlineInfo.Variant = data.Variant;
-                if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
+                newGrid.EldoradoInfo.Variant = data.Variant;
+                if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, BlamCache.Version))
                 {
-                    newGrid.HaloOnlineInfo.PaletteIndex = grid.HaloOnlineInfo.PaletteIndex;
-                    newGrid.HaloOnlineInfo.VertexBufferIndex = grid.HaloOnlineInfo.VertexBufferIndex;
-                    newGrid.HaloOnlineInfo.Variant = grid.HaloOnlineInfo.Variant;
+                    newGrid.EldoradoInfo.PaletteIndex = grid.EldoradoInfo.PaletteIndex;
+                    newGrid.EldoradoInfo.VertexBufferIndex = grid.EldoradoInfo.VertexBufferIndex;
+                    newGrid.EldoradoInfo.Variant = grid.EldoradoInfo.Variant;
                 }
                 else
                 {
-                    newGrid.HaloOnlineInfo.PaletteIndex = grid.Gen3Info.PaletteIndex;
-                    newGrid.HaloOnlineInfo.VertexBufferIndex = grid.Gen3Info.VertexBufferIndex; // this doesn't change as each vertex buffer corresponds to the palette index
+                    newGrid.EldoradoInfo.PaletteIndex = grid.Gen3Info.PaletteIndex;
+                    newGrid.EldoradoInfo.VertexBufferIndex = grid.Gen3Info.VertexBufferIndex; // this doesn't change as each vertex buffer corresponds to the palette index
                 }            
 
                 if(BlamCache.Version >= CacheVersion.HaloReach)

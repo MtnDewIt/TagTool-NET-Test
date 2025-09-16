@@ -47,17 +47,17 @@ namespace TagTool.Commands.Tags
             {
                 CacheGeneration = 3;
                 var cacheGen3 = (GameCacheGen3)Cache;
-                var headerGen3 = (CacheFileHeaderGen3)cacheGen3.BaseMapFile.Header;
-                TagSectionMin = headerGen3.SectionTable.Sections[(int)CacheFileSectionType.TagSection].Offset;
-                TagSectionMax = TagSectionMin + headerGen3.SectionTable.Sections[(int)CacheFileSectionType.TagSection].Size;
+                var sectionTable = cacheGen3.BaseMapFile.Header.GetSectionTable();
+                TagSectionMin = sectionTable.Sections[(int)CacheFileSectionType.TagSection].Offset;
+                TagSectionMax = TagSectionMin + sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size;
             }
             else if (CacheVersionDetection.IsInGen(TagTool.Cache.CacheGeneration.Fourth, Cache.Version))
             {
                 CacheGeneration = 4;
                 var cacheGen4 = (GameCacheGen4)Cache;
-                var headerGen4 = (CacheFileHeaderGen4)cacheGen4.BaseMapFile.Header;
-                TagSectionMin = headerGen4.SectionTable.Sections[(int)CacheFileSectionType.TagSection].Offset;
-                TagSectionMax = TagSectionMin + headerGen4.SectionTable.Sections[(int)CacheFileSectionType.TagSection].Size;
+                var sectionTable = cacheGen4.BaseMapFile.Header.GetSectionTable();
+                TagSectionMin = sectionTable.Sections[(int)CacheFileSectionType.TagSection].Offset;
+                TagSectionMax = TagSectionMin + sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size;
             }
             else if(CacheVersionDetection.IsInGen(TagTool.Cache.CacheGeneration.Second, Cache.Version))
             {

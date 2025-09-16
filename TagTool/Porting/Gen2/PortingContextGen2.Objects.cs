@@ -154,7 +154,7 @@ namespace TagTool.Porting.Gen2
             if (gen2Tag.FirstPersonWeaponOffset.K != 0) { newweapon.FirstPersonWeaponOffset.K = ((float)gen2Tag.FirstPersonWeaponOffset.K * -2); }
 
             if (gen2Tag.PlayerInterface.NewHudInterface != null) {
-                newweapon.HudInterface = CacheContext.TagCacheGenHO.GetTag(gen2Tag.PlayerInterface.NewHudInterface.ToString());
+                newweapon.HudInterface = CacheContext.TagCacheEldorado.GetTag(gen2Tag.PlayerInterface.NewHudInterface.ToString());
             }
 
             AutoConverter.TranslateEnum(gen2Tag.WeaponFlags, out newweapon.WeaponFlags.NewFlags, newweapon.WeaponFlags.NewFlags.GetType());
@@ -486,11 +486,11 @@ namespace TagTool.Porting.Gen2
         {
             if (weapon.Model != null)
             {
-                CacheContext.TagCacheGenHO.TryGetTag(weapon.Model.ToString(), out CachedTag weaponModel);
+                CacheContext.TagCacheEldorado.TryGetTag(weapon.Model.ToString(), out CachedTag weaponModel);
                 Model weaponModelInstance = CacheContext.Deserialize<Model>(cacheStream, weaponModel);
                 if (weaponModelInstance.CollisionModel != null && weaponModelInstance.PhysicsModel == null)
                 {
-                    CacheContext.TagCacheGenHO.TryGetTag(weaponModelInstance.CollisionModel.ToString(), out CachedTag weaponCollisionModel);
+                    CacheContext.TagCacheEldorado.TryGetTag(weaponModelInstance.CollisionModel.ToString(), out CachedTag weaponCollisionModel);
                     CollisionModel weaponCollisionModelInstance = CacheContext.Deserialize<CollisionModel>(cacheStream, weaponCollisionModel);
 
                     ObjConvexHullProcessor generator = new ObjConvexHullProcessor();

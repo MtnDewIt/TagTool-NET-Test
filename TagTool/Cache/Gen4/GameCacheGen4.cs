@@ -43,20 +43,21 @@ namespace TagTool.Cache
 
         public uint TagAddressToOffset(uint address)
         {
-            var headerGen4 = (CacheFileHeaderGen4)BaseMapFile.Header;
+            var sectionTable = BaseMapFile.Header.GetSectionTable();
+            var expectedBaseAddress = BaseMapFile.Header.GetExpectedBaseAddress();
 
             var unpackedAddress = Platform == CachePlatform.MCC ?
                 (((ulong)address << 2) + Expand) :
                 (ulong)address;
 
-            return (uint)(unpackedAddress - (headerGen4.VirtualBaseAddress.Value - (ulong)headerGen4.SectionTable.GetSectionOffset(CacheFileSectionType.TagSection)));
+            return (uint)(unpackedAddress - (expectedBaseAddress - sectionTable.GetSectionOffset(CacheFileSectionType.TagSection)));
         }
 
         public Dictionary<string, GameCacheGen4> SharedCacheFiles { get; } = new Dictionary<string, GameCacheGen4>();
 
         public GameCacheGen4(MapFile mapFile, FileInfo file)
         {
-            Platform = mapFile.CachePlatform;
+            Platform = mapFile.Platform;
             BaseMapFile = mapFile;
             Version = BaseMapFile.Version;
             CacheFile = file;
@@ -64,7 +65,7 @@ namespace TagTool.Cache
             Serializer = new TagSerializer(Version, Platform);
             Endianness = BaseMapFile.EndianFormat;
 
-            var headerGen4 = (CacheFileHeaderGen4)BaseMapFile.Header;
+            var sectionTable = BaseMapFile.Header.GetSectionTable();
 
             DisplayName = mapFile.Header.GetName() + ".map";
 
@@ -83,7 +84,7 @@ namespace TagTool.Cache
                 if (TagCacheGen4.Instances.Count > 0)
                 {
 
-                    if (headerGen4.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+                    if (sectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                         LocaleTables = new List<LocaleTable>();
                     else
                     {
@@ -156,7 +157,7 @@ namespace TagTool.Cache
 
         public void ResizeSection(CacheFileSectionType type, int requestedAdditionalSpace)
         {
-            var sectionTable = ((CacheFileHeaderGen4)BaseMapFile.Header).SectionTable;
+            var sectionTable = BaseMapFile.Header.GetSectionTable();
             var section = sectionTable.Sections[(int)type];
 
             var sectionFileOffset = sectionTable.GetSectionOffset(type);

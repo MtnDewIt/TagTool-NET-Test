@@ -78,7 +78,7 @@ namespace TagTool.Commands.Files
             ErrorLog.Clear();
             UniqueIdTable.Clear();
 
-            if (Cache.Version != CacheVersion.HaloOnlineED) 
+            if (Cache.Version != CacheVersion.EldoradoED) 
             {
                 return new TagToolError(CommandError.CacheUnsupported, $"Unsupported Cache Version: {Cache.Version}");
             }
@@ -182,8 +182,8 @@ namespace TagTool.Commands.Files
 
             using (var memoryStream = new MemoryStream(buffer)) 
             {
-                var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
-                var serializer = new TagSerializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+                var deserializer = new TagDeserializer(CacheVersion.EldoradoED, CachePlatform.Original);
+                var serializer = new TagSerializer(CacheVersion.EldoradoED, CachePlatform.Original);
 
                 var reader = new EndianReader(memoryStream, EndianFormat.BigEndian);
                 var writer = new EndianWriter(memoryStream, EndianFormat.LittleEndian);

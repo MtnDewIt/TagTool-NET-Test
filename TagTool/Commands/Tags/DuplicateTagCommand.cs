@@ -66,9 +66,9 @@ namespace TagTool.Commands.Tags
                 var originalDefinition = Cache.Deserialize(stream, originalTag);
                 Cache.Serialize(stream, newTag, originalDefinition);
 
-                if (Cache is GameCacheHaloOnlineBase)
+                if (Cache is GameCacheEldoradoBase)
                 {
-                    var hoCache = Cache as GameCacheHaloOnlineBase;
+                    var hoCache = Cache as GameCacheEldoradoBase;
                     hoCache.SaveTagNames();
                 }
             }

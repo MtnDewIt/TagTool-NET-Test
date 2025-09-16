@@ -18,22 +18,22 @@ namespace TagTool.BlamFile.Chunks
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public NetworkRequestHash Hash;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public GameEngineType GameVariantType;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public uint VTablePointer;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public uint VariantChecksum;
 
-        [TagField(Length = 32, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public string VariantName;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public ContentItemMetadata Metadata;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public GameVariantBase Variant;
 
         public static BlfGameVariant Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext, bool packed) 
@@ -63,7 +63,7 @@ namespace TagTool.BlamFile.Chunks
 
                 Log.Warning("Gen 4 Game Variants Not Supported. Skipping...");
             }
-            else if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline700123))
+            else if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.Halo3Retail, CacheVersion.Eldorado700123))
             {
                 if (!packed)
                 {
@@ -71,7 +71,7 @@ namespace TagTool.BlamFile.Chunks
                     gameVariant.VTablePointer = reader.ReadUInt32();
                     gameVariant.VariantChecksum = reader.ReadUInt32();
 
-                    if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
+                    if (CacheVersionDetection.IsBetween(deserializer.Version, CacheVersion.EldoradoED, CacheVersion.Eldorado700123))
                         gameVariant.VariantName = reader.ReadString(32);
 
                     gameVariant.Metadata = deserializer.Deserialize<ContentItemMetadata>(dataContext);
@@ -123,7 +123,7 @@ namespace TagTool.BlamFile.Chunks
 
         public static void Encode(EndianWriter writer, TagSerializer serializer, DataSerializationContext dataContext, BlfGameVariant gameVariant, bool packed) 
         {
-            if (!packed && CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline700123)) 
+            if (!packed && CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.Eldorado700123)) 
             {
                 gameVariant.Variant = gameVariant.GameVariantType switch
                 {
@@ -176,7 +176,7 @@ namespace TagTool.BlamFile.Chunks
 
                 writer.Write(buffer);
             }
-            else if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline700123)) 
+            else if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.Eldorado700123)) 
             {
                 var buffer = new byte[gameVariant.Length - 0xC];
 

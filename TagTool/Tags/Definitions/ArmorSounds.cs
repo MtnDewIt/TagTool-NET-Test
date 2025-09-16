@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "armor_sounds", Tag = "arms", Size = 0x10, MinVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Name = "armor_sounds", Tag = "arms", Size = 0x10, MinVersion = CacheVersion.EldoradoED)]
     public class ArmorSounds : TagStructure
 	{
         public List<ArmorSound> ArmorSounds2;

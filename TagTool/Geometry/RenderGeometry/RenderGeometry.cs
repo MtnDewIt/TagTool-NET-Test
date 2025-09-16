@@ -9,7 +9,7 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Geometry
 {
-    [TagStructure(Name = "render_geometry", Size = 0x84, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "render_geometry", Size = 0x84, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "render_geometry", Size = 0x9C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "render_geometry", Size = 0xA8, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class RenderGeometry : TagStructure
@@ -159,16 +159,16 @@ namespace TagTool.Geometry
             public RealPoint3d PositionBoundUpper;
         }
 
-        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x2, MinVersion = CacheVersion.HaloReach)]
         public class StaticPerPixelLighting : TagStructure
 		{
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public List<int> UnusedVertexBuffer;
 
             public short VertexBufferIndex;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public short Unknown1;
 
             [TagField(Flags = Runtime)]

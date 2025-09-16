@@ -13,7 +13,7 @@ namespace TagTool.BlamFile.Game
 {
     [TagStructure(Size = 0xF810, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0xEFC8, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x24B48, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+    [TagStructure(Size = 0x24B48, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
     public class GameOptions : TagStructure
     {
         public GameModeType GameMode;
@@ -53,21 +53,21 @@ namespace TagTool.BlamFile.Game
         public GameMetagameScoring CampaignMetagameScoring;
         public bool CampaignMetagameEnabled;
         
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
         public bool SurvivalEnabled;
         
         public bool CampaignAllowPersistentStorage;
         
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
         public bool CampaignCustomizationEnabled;
         
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
         public CampaignArmaments CampaignArmaments;
         
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
         public byte[] Padding3;
         
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
         public CampaignGameProgression GameProgression;
         
         public GamePrimarySkullFlags32 CampaignActivePrimarySkulls;
@@ -76,7 +76,7 @@ namespace TagTool.BlamFile.Game
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         public CampaignArmaments CampaignArmamentsH3;
         
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
         public CampaignHubProgression HubProgression;
         
         public bool MatchmadeGame;
@@ -90,7 +90,7 @@ namespace TagTool.BlamFile.Game
         public uint VTablePointer;
         public uint VariantChecksum;
         
-        [TagField(Length = 0x20, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(Length = 0x20, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
         public string VariantName;
         
         public ContentItemMetadata Metadata;
@@ -107,7 +107,7 @@ namespace TagTool.BlamFile.Game
         
         [TagField(Length = 0x10, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Length = 0x10, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
+        [TagField(Length = 0x10, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
         public GamePlayerOptions[] Players;
 
         public static GameOptions Decode(EndianReader reader, TagDeserializer deserializer, DataSerializationContext dataContext) 
@@ -142,14 +142,14 @@ namespace TagTool.BlamFile.Game
             options.CampaignMetagameScoring = (GameMetagameScoring)reader.ReadInt16();
             options.CampaignMetagameEnabled = reader.ReadBoolean();
             
-            if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.HaloOnline106708) 
+            if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.Eldorado106708) 
             {
                 options.SurvivalEnabled = reader.ReadBoolean();
             }
             
             options.CampaignAllowPersistentStorage = reader.ReadBoolean();
             
-            if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.HaloOnline106708) 
+            if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.Eldorado106708) 
             {
                 options.CampaignCustomizationEnabled = reader.ReadBoolean();
                 options.CampaignArmaments = deserializer.Deserialize<CampaignArmaments>(dataContext);
@@ -164,7 +164,7 @@ namespace TagTool.BlamFile.Game
             {
                 options.CampaignArmamentsH3 = deserializer.Deserialize<CampaignArmaments>(dataContext);
             }
-            else if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.HaloOnline106708)
+            else if (deserializer.Version == CacheVersion.Halo3ODST || deserializer.Version == CacheVersion.Eldorado106708)
             {
                 options.HubProgression = deserializer.Deserialize<CampaignHubProgression>(dataContext);
             }
@@ -177,7 +177,7 @@ namespace TagTool.BlamFile.Game
             options.VTablePointer = reader.ReadUInt32();
             options.VariantChecksum = reader.ReadUInt32();
             
-            if (deserializer.Version == CacheVersion.HaloOnline106708) 
+            if (deserializer.Version == CacheVersion.Eldorado106708) 
             {
                 options.VariantName = reader.ReadString(0x20);
             }
@@ -234,7 +234,7 @@ namespace TagTool.BlamFile.Game
                 options.Padding6 = reader.ReadBytes(0x4);
             }
 
-            if (deserializer.Version == CacheVersion.Halo3Retail || deserializer.Version == CacheVersion.HaloOnline106708)
+            if (deserializer.Version == CacheVersion.Halo3Retail || deserializer.Version == CacheVersion.Eldorado106708)
             {
                 options.Players = new GamePlayerOptions[0x10];
                 for (int i = 0; i < 0x10; i++)

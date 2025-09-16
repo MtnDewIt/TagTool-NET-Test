@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
-using TagTool.BlamFile.HaloOnline;
+using TagTool.BlamFile.Eldorado;
 using TagTool.Cache;
+using TagTool.Cache.Eldorado;
 using TagTool.IO;
 
 namespace TagTool.Commands.Editing
@@ -10,9 +11,9 @@ namespace TagTool.Commands.Editing
     public class SaveMapChangesCommand : Command 
     {
         private GameCache Cache { get; }
-        private HaloOnlineMapFile MapFile { get; }
+        private EldoradoMapFile MapFile { get; }
 
-        public SaveMapChangesCommand(GameCache cache, HaloOnlineMapFile mapFile)
+        public SaveMapChangesCommand(GameCache cache, EldoradoMapFile mapFile)
             : base(true,
                   "SaveMapChanges",
                   $"Saves changes made to the current {mapFile.Header.GetName()}.map file instance.",
@@ -27,12 +28,13 @@ namespace TagTool.Commands.Editing
         {
             var mapData = new MapFile
             {
+                MapVersion = CacheFileVersion.Eldorado,
                 Version = Cache.Version,
-                CachePlatform = Cache.Platform,
+                Platform = Cache.Platform,
                 Header = MapFile.Header,
             };
 
-            if (Cache.Version == CacheVersion.HaloOnlineED)
+            if (Cache.Version == CacheVersion.EldoradoED)
             {
                 mapData.MapFileBlf = new Blf(Cache.Version, Cache.Platform)
                 {
@@ -77,9 +79,7 @@ namespace TagTool.Commands.Editing
                     baseMapData.Read(reader);
                     stream.Position = 0;
 
-                    var baseHeader = baseMapData.Header as CacheFileHeaderGenHaloOnline;
-
-                    if (mapData.Header.GetName() == baseHeader.Name) 
+                    if (mapData.Header.GetName() == baseMapData.Header.GetName()) 
                     {
                         var writer = new EndianWriter(stream);
                         mapData.Write(writer);

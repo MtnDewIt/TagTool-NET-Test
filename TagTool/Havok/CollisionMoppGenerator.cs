@@ -26,7 +26,7 @@ namespace TagTool.Havok
 
         private static TagHkpMoppCode BuildTagHkpMoppCode(byte[] code)
         {
-            var deserializer = new TagDeserializer(CacheVersion.HaloOnlineED, CachePlatform.Original);
+            var deserializer = new TagDeserializer(CacheVersion.EldoradoED, CachePlatform.Original);
             var reader = new EndianReader(new MemoryStream(code));
             var context = new DataSerializationContext(reader);
             var header = deserializer.Deserialize<HkpMoppCode>(context);

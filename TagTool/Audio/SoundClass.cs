@@ -19,8 +19,8 @@ namespace TagTool.Audio
         [TagField(Version = CacheVersion.Halo3ODST)]
         public SoundClassHalo3ODST Halo3ODST;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public SoundClassHaloOnline HaloOnline;
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        public SoundClassEldorado Eldorado;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public SoundClassHaloReach HaloReach;
@@ -209,7 +209,7 @@ namespace TagTool.Audio
             UiPda
         }
 
-        public enum SoundClassHaloOnline : sbyte
+        public enum SoundClassEldorado : sbyte
         {
             ProjectileImpact,
             ProjectileDetonation,
@@ -439,8 +439,8 @@ namespace TagTool.Audio
                     break;
             }
 
-            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, from))
-                value = HaloOnline.ToString();
+            if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, from))
+                value = Eldorado.ToString();
 
             // Fix class to match to equivalent ones
 
@@ -499,7 +499,7 @@ namespace TagTool.Audio
             else if (value.Equals("FirstPersonOutside"))
                 value = "OutsideSurroundTail";
 
-            if (value == null || !Enum.TryParse(value, out HaloOnline))
+            if (value == null || !Enum.TryParse(value, out Eldorado))
             {
                 throw new NotImplementedException($"Failed to parse sound class {value}");
             }

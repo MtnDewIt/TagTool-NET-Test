@@ -8,7 +8,7 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0x104, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0x104, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0x1B8, MinVersion = CacheVersion.HaloReach)]
     public class ModelAnimationGraph : TagStructure
 	{
@@ -107,7 +107,7 @@ namespace TagTool.Tags.Definitions
             ReadyForUse = 1 << 6
         }
 
-        [TagStructure(Size = 0x20, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
         public class SkeletonNode : TagStructure
 		{
@@ -196,7 +196,7 @@ namespace TagTool.Tags.Definitions
             [TagField(ValidTags = new[] { "effe", "scmb", "snd!" })]
             public CachedTag Reference;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public AnimationTagReferenceFlags Flags;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -256,7 +256,7 @@ namespace TagTool.Tags.Definitions
             Replacement
         }
 
-        [TagStructure(Size = 0x88, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x88, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloReach)]
         public class Animation : TagStructure
 		{
@@ -288,20 +288,20 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach, Flags = Padding, Length = 2)]
             public byte[] Padding2;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public SharedAnimationData AnimationData; //this block is inline up until Reach
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public List<SharedAnimationData> AnimationDataBlock;
 
             [TagStructure(Size = 0xD4, MinVersion = CacheVersion.HaloReach)]
-            [TagStructure(Size = 0x7C, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x7C, MaxVersion = CacheVersion.Eldorado700123)]
             public class SharedAnimationData : TagStructure
             {
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public sbyte BlendScreen;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public CompressionValue DesiredCompression;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public CompressionValue CurrentCompression;
 
                 public sbyte NodeCount;
@@ -311,7 +311,7 @@ namespace TagTool.Tags.Definitions
 
                 public short FrameCount;
 
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public FrameType AnimationType;
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public FrameTypeReach AnimationTypeReach;
@@ -322,7 +322,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public CompressionValue CurrentCompressionReach;
 
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public ProductionFlagsValue ProductionFlags;
 
                 [TagField(MinVersion = CacheVersion.HaloReach, Length = 0x2, Flags = Padding)]
@@ -340,9 +340,9 @@ namespace TagTool.Tags.Definitions
                 public short ImporterVersion;
                 public short CompressorVersion;
 
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public short ParentAnimation;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public short NextAnimation;
 
                 public short ResourceGroupIndex;
@@ -378,11 +378,11 @@ namespace TagTool.Tags.Definitions
                 public byte[] AnimationObjectFunctions = new byte[0xC];
 
                 //First float is usually 1
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public RealVector3d Heading;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float AverageTranslationMagnitude;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float AveragePivotYaw;
 
             }
@@ -528,9 +528,9 @@ namespace TagTool.Tags.Definitions
 			{
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
                 public FrameEventType Type;
-                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+                [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.EldoradoED)]
                 public FrameEventTypeED TypeED;
-                [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
                 public FrameEventTypeHO TypeHO;
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public FrameEventTypeReach ReachType;
@@ -558,7 +558,7 @@ namespace TagTool.Tags.Definitions
 
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Flags = Padding, Length = 3)]
                 [TagField(MinVersion = CacheVersion.HaloReach, Flags = Padding, Length = 3)]
-                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Flags = Padding, Length = 2)]
+                [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123, Flags = Padding, Length = 2)]
                 public byte[] Padding3;
             }
 
@@ -631,7 +631,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x28, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloReach)]
         public class Mode : TagStructure
 		{
@@ -650,7 +650,7 @@ namespace TagTool.Tags.Definitions
             public List<FootTrackingDefaultsBlock> FootDefaults;
 
             [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Halo3ODST)]
-            [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x28, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
             [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach)]
             public class WeaponClassBlock : TagStructure
 			{
@@ -668,10 +668,10 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloReach, Length = 0xC)]
                 public byte[] RangedActions = new byte[0xC];
 
-                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+                [TagField(MinVersion = CacheVersion.EldoradoED)]
                 public List<SyncActionGroup> SyncActionGroups;
 
-                [TagStructure(Size = 0x34, MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagStructure(Size = 0x34, MaxVersion = CacheVersion.Eldorado700123)]
                 [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
                 public class WeaponTypeBlock : TagStructure
 				{
@@ -685,11 +685,11 @@ namespace TagTool.Tags.Definitions
                     [TagField(MinVersion = CacheVersion.HaloReach)]
                     public List<AnimationSet> AnimationSetsReach;
 
-                    [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                    [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                     public AnimationSet Set; //block is inlined up until Reach
 
                     [TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloReach)]
-                    [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
+                    [TagStructure(Size = 0x30, MaxVersion = CacheVersion.Eldorado700123)]
                     public class AnimationSet : TagStructure
                     {
                         [TagField(MinVersion = CacheVersion.HaloReach, Flags = TagFieldFlags.Label)]
@@ -711,7 +711,7 @@ namespace TagTool.Tags.Definitions
                         public byte[] VelocityBoundaries = new byte[0xC];
                     }
 
-                    [TagStructure(Size = 0x8, MaxVersion = CacheVersion.HaloOnline700123)]
+                    [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Eldorado700123)]
                     [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
                     public class Entry : TagStructure
 					{
@@ -747,43 +747,43 @@ namespace TagTool.Tags.Definitions
                         }
                     }
 
-                    [TagStructure(Size = 0x18, MaxVersion = CacheVersion.HaloOnline700123)]
+                    [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Eldorado700123)]
                     [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach)]
                     public class Transition : TagStructure
 					{
-                        [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.HaloOnline700123)]
+                        [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.Eldorado700123)]
                         public StringId FullName;
                         public StringId StateName;
 
-                        [TagField(MaxVersion = CacheVersion.HaloOnline700123, Flags = Padding, Length = 2)]
+                        [TagField(MaxVersion = CacheVersion.Eldorado700123, Flags = Padding, Length = 2)]
                         public byte[] Padding0;
 
-                        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                         public sbyte IndexA;
-                        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                         public sbyte IndexB;
 
                         public List<Destination> Destinations;
 
-                        [TagStructure(Size = 0x14, MaxVersion = CacheVersion.HaloOnline700123)]
+                        [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Eldorado700123)]
                         [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
                         public class Destination : TagStructure
 						{
-                            [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.HaloOnline700123)]
+                            [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.Eldorado700123)]
                             public StringId FullName;
 
                             public StringId ModeName;
                             public StringId StateName;
 
-                            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                             public FrameEventLinkValue FrameEventLink;
 
-                            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Flags = Padding, Length = 1)]
+                            [TagField(MaxVersion = CacheVersion.Eldorado700123, Flags = Padding, Length = 1)]
                             public byte[] Padding1;
 
-                            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                             public sbyte IndexA;
-                            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                             public sbyte IndexB;
 
                             public short GraphIndex;
@@ -878,7 +878,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x28, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloReach)]
         public class VehicleSuspensionBlock : TagStructure
 		{
@@ -934,7 +934,7 @@ namespace TagTool.Tags.Definitions
             Bit2 = 1 << 2
         }
 
-        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
         public class Inheritance : TagStructure
 		{
@@ -943,7 +943,7 @@ namespace TagTool.Tags.Definitions
             public List<NodeMapBlock> NodeMap;
             public List<NodeMapFlag> NodeMapFlags;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float RootZOffset;
 
             public InheritanceListFlags Flags;

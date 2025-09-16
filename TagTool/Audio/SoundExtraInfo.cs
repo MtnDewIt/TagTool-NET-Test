@@ -8,23 +8,23 @@ namespace TagTool.Audio
 {
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2PC)]
     [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x28, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloReach)]
     public class SoundExtraInfo : TagStructure
 	{
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public List<LanguagePermutation> LanguagePermutations;
 
-        [TagField(MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Eldorado700123)]
         public List<FacialAnimationInfoBlock> FacialAnimationInfo;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown1;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown2;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown3;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown4;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]

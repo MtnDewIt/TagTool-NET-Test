@@ -6,7 +6,7 @@ namespace TagTool.Cache.Resources
 {
     [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloReach)]
-    [TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x48, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     public class ResourceData : TagStructure
 	{
         public CachedTag ParentTag;
@@ -14,7 +14,7 @@ namespace TagTool.Cache.Resources
 
         [TagField(Gen = CacheGeneration.Third)]
         public sbyte ResourceTypeIndex;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public TagResourceTypeGen3 ResourceType;
 
         public byte DefinitionAlignmentBits;
@@ -34,7 +34,7 @@ namespace TagTool.Cache.Resources
         [TagField(Gen = CacheGeneration.Third)]
         public short SegmentIndex;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] DefinitionData;
 
         public CacheAddress DefinitionAddress;
@@ -42,7 +42,7 @@ namespace TagTool.Cache.Resources
         public List<ResourceFixupLocation> FixupLocations = new List<ResourceFixupLocation>();
         public List<ResourceInteropLocation> InteropLocations = new List<ResourceInteropLocation>();
 
-        [TagField(EnumType = typeof(int), MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(EnumType = typeof(int), MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public DataFlags FlagsHO = DataFlags.HasPageableData;
 
         [Flags]

@@ -18,7 +18,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
 {
     public class ImportAnimationCommand : Command
     {
-        private GameCacheHaloOnlineBase CacheContext { get; }
+        private GameCacheEldoradoBase CacheContext { get; }
         private ModelAnimationGraph Animation { get; set; }
         private ModelAnimationGraph.FrameType AnimationType = ModelAnimationGraph.FrameType.Base;
         private ModelAnimationTagResource.GroupMemberMovementDataType FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.None;
@@ -27,7 +27,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
         bool NodesBuilt = false;
         private bool ScaleFix = false;
 
-        public ImportAnimationCommand(GameCacheHaloOnlineBase cachecontext)
+        public ImportAnimationCommand(GameCacheEldoradoBase cachecontext)
             : base(false,
 
                   "ImportAnimation",
@@ -159,10 +159,10 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 }
 
                 //process node data in advance of serialization
-                importer.ProcessNodeFrames((GameCacheHaloOnlineBase)CacheContext, Animation, AnimationType, FrameInfoType);
+                importer.ProcessNodeFrames((GameCacheEldoradoBase)CacheContext, Animation, AnimationType, FrameInfoType);
 
                 //Check the nodes to verify that this animation can be imported to this jmad
-                //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheHaloOnlineBase)CacheContext))
+                //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheEldoradoBase)CacheContext))
                 //    return false;
 
                 //build a new resource 
@@ -171,7 +171,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     GroupMembers = new TagTool.Tags.TagBlock<ModelAnimationTagResource.GroupMember>()
                 };
 
-                newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheHaloOnlineBase)CacheContext));
+                newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheEldoradoBase)CacheContext));
                 newResource.GroupMembers.AddressType = CacheAddressType.Definition;
 
                 //serialize the new resource into the cache
@@ -215,7 +215,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 Console.WriteLine($"Added {file_name} successfully!");
             }
 
-            tag = CacheContext.TagCacheGenHO.AllocateTag(CacheContext.TagCache.TagDefinitions.GetTagDefinitionType("jmad"), tagName);
+            tag = CacheContext.TagCacheEldorado.AllocateTag(CacheContext.TagCache.TagDefinitions.GetTagDefinitionType("jmad"), tagName);
 
             //write out the tag
             using (var stream = CacheContext.OpenCacheReadWrite())

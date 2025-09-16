@@ -230,7 +230,7 @@ namespace TagTool.Commands.Tags
             if (!Cache.TagCache.TagDefinitions.TagDefinitionExists(tag.Group.Tag))
                 return false;
 
-            if (!(Cache is GameCacheHaloOnlineBase))
+            if (!(Cache is GameCacheEldoradoBase))
                 return Cache.TagCache.IsTagIndexValid((int)(tag.ID & 0xffff));
 
             return true;

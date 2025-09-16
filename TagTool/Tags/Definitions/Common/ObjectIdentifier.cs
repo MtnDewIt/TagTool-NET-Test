@@ -5,10 +5,10 @@ namespace TagTool.Tags.Definitions.Common
     [TagStructure(Size = 0x8)]
     public class ObjectIdentifier : TagStructure
     {
-        public DatumHandle UniqueId;
-        public short OriginBspIndex;
+        public DatumHandle UniqueId = DatumHandle.None;
+        public short OriginBspIndex = -1;
         public GameObjectType8 Type;
-        public SourceValue Source;
+        public SourceValue Source = SourceValue.None;
 
         public enum SourceValue : sbyte
         {

@@ -110,19 +110,22 @@ namespace TagTool.Cache.Gen3
         public TagCacheGen3(EndianReader reader, MapFile baseMapFile, StringTableGen3 stringTable, CachePlatform platform)
         {
             Version = baseMapFile.Version;
-            CachePlatform = baseMapFile.CachePlatform;
+            CachePlatform = baseMapFile.Platform;
 
             TagDefinitions = new TagDefinitionsGen3();
             Groups = new List<TagGroupGen3>();
             Instances = new List<CachedTagGen3>();
             GlobalInstances = new Dictionary<Tag, CachedTagGen3>();
 
-            var gen3Header = (CacheFileHeaderGen3)baseMapFile.Header;
-            var tagNamesHeader = gen3Header.GetTagNameHeader();
-            var tagMemoryHeader = gen3Header.GetTagMemoryHeader();
+            var indexOffset = baseMapFile.Header.GetDebugTagNameIndexOffset();
+            var dataOffset = baseMapFile.Header.GetDebugTagNameDataOffset();
+            var dataSize = baseMapFile.Header.GetDebugTagNameDataSize();
+            var tagsOffset = baseMapFile.Header.GetTagsOffset();
 
+            var sectionTable = baseMapFile.Header.GetSectionTable();
+            var expectedBaseAddress = baseMapFile.Header.GetExpectedBaseAddress();
 
-            if(CachePlatform == CachePlatform.Original)
+            if (CachePlatform == CachePlatform.Original)
             {
                 switch (Version)
                 {
@@ -139,32 +142,31 @@ namespace TagTool.Cache.Gen3
 
             uint sectionOffset;
 
-            uint tagNamesOffsetsTableOffset;
-            uint tagNamesBufferOffset;
+            uint debugTagNameIndexOffset;
+            uint debugTagNameDataOffset;
             ulong tagDataSectionOffset;
 
             if (Version > CacheVersion.Halo3Beta)
             {
-                var sectionTable = gen3Header.SectionTable;
                 sectionOffset = sectionTable.GetSectionOffset(CacheFileSectionType.TagSection);
 
                 // means no tags
                 if (sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size == 0)
                     return;
 
-                tagNamesOffsetsTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, tagNamesHeader.TagNameIndicesOffset);
-                tagNamesBufferOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, tagNamesHeader.TagNamesBufferOffset);
+                debugTagNameIndexOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
+                debugTagNameDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
 
-                tagDataSectionOffset = gen3Header.VirtualBaseAddress.Value - sectionOffset;
+                tagDataSectionOffset = expectedBaseAddress - sectionOffset;
             }
             else
             {
-                tagNamesOffsetsTableOffset = tagNamesHeader.TagNameIndicesOffset;
-                tagNamesBufferOffset = tagNamesHeader.TagNamesBufferOffset;
-                tagDataSectionOffset = gen3Header.VirtualBaseAddress.Get32BitValue() - tagMemoryHeader.MemoryBufferOffset;
+                debugTagNameIndexOffset = indexOffset;
+                debugTagNameDataOffset = dataOffset;
+                tagDataSectionOffset = expectedBaseAddress - tagsOffset;
             }
 
-            var tagTableHeaderOffset = (CachePlatform == CachePlatform.MCC ? gen3Header.TagTableHeaderOffsetMCC : gen3Header.TagTableHeaderOffset).Value - tagDataSectionOffset;
+            var tagTableHeaderOffset = baseMapFile.Header.GetTagsHeaderWhenLoaded() - tagDataSectionOffset;
 
             reader.SeekTo((long)tagTableHeaderOffset);
 
@@ -233,7 +235,7 @@ namespace TagTool.Cache.Gen3
 
             #region Read Indices
 
-            reader.SeekTo(tagNamesOffsetsTableOffset);
+            reader.SeekTo(debugTagNameIndexOffset);
 
             var stringOffsets = new int[Header.TagInstancesCount];
 
@@ -244,11 +246,11 @@ namespace TagTool.Cache.Gen3
 
             #region Read Names
 
-            reader.SeekTo(tagNamesBufferOffset);
+            reader.SeekTo(debugTagNameDataOffset);
 
             using (var newReader = (TagsKey == "" || TagsKey == null) ?
-                new EndianReader(new MemoryStream(reader.ReadBytes(tagNamesHeader.TagNamesBufferSize)), EndianFormat.BigEndian) :
-                new EndianReader(reader.DecryptAesSegment(tagNamesHeader.TagNamesBufferSize, TagsKey), EndianFormat.BigEndian))
+                new EndianReader(new MemoryStream(reader.ReadBytes(dataSize)), EndianFormat.BigEndian) :
+                new EndianReader(reader.DecryptAesSegment(dataSize, TagsKey), EndianFormat.BigEndian))
             {
                 for (int i = 0; i < stringOffsets.Length; i++)
                 {

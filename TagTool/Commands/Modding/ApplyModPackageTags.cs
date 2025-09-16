@@ -10,7 +10,7 @@ using TagTool.IO;
 using TagTool.Scripting;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.BlamFile;
 using TagTool.Cache.Resources;
 
@@ -18,7 +18,7 @@ namespace TagTool.Commands.Modding
 {
 	class ApplyModPackageTagsCommand : Command
 	{
-		private GameCacheHaloOnlineBase BaseCache { get; }
+		private GameCacheEldoradoBase BaseCache { get; }
 
 		private GameCacheModPackage ModCache { get; }
 
@@ -156,23 +156,21 @@ namespace TagTool.Commands.Modding
 
 						MapFile map = new MapFile();
 						map.Read(reader);
-						var header = (CacheFileHeaderGenHaloOnline)map.Header;
-						var modIndex = header.ScenarioTagIndex;
-						TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-						header.ScenarioTagIndex = newScnrIndex;
+                        var modIndex = map.Header.GetScenarioIndex();
+                        TagMapping.TryGetValue(modIndex, out int newScnrIndex);
+                        map.Header.SetScenarioIndex(newScnrIndex);	
 
 						var modPackCache = BaseCache as GameCacheModPackage;
-						modPackCache.AddMapFile(mapFile, header.MapId);
+						modPackCache.AddMapFile(mapFile, map.Header.GetMapId());
 					}
 					else {
 						using (var reader = new EndianReader(mapFile)) {
 							MapFile map = new MapFile();
 							map.Read(reader);
-							var header = (CacheFileHeaderGenHaloOnline)map.Header;
-							var modIndex = header.ScenarioTagIndex;
+							var modIndex = map.Header.GetScenarioIndex();
 							TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-							header.ScenarioTagIndex = newScnrIndex;
-							var mapName = header.Name;
+                            map.Header.SetScenarioIndex(newScnrIndex);
+							var mapName = map.Header.GetName();
 
 							var mapPath = $"{BaseCache.Directory.FullName}\\{mapName}.map";
 							var file = new FileInfo(mapPath);
@@ -210,7 +208,7 @@ namespace TagTool.Commands.Modding
 				// apply mod files
 				if (ModCache.BaseModPackage.Files != null && ModCache.BaseModPackage.Files.Count > 0) {
 
-					if (BaseCache is GameCacheHaloOnline) {
+					if (BaseCache is GameCacheEldorado) {
 						Console.WriteLine("Mod Files exist in package. Overwrite in BaseCache? (y/n)");
 						string response = Console.ReadLine();
 						if (response.ToLower().StartsWith("y")) {
@@ -311,7 +309,7 @@ namespace TagTool.Commands.Modding
 				return BaseCache.TagCache.GetTag(TagMapping[modTag.Index]);
 
 			// Proceed with normal tag conversion if it's not blacklisted or applied
-			if (((CachedTagHaloOnline)modTag).IsEmpty())
+			if (((CachedTagEldorado)modTag).IsEmpty())
 			{
 				// Tag references a base tag. Look it up in the base cache.
 				if (CacheTagsByName.TryGetValue($"{modTag.Name}.{modTag.Group}", out CachedTag cacheTag))
@@ -351,9 +349,9 @@ namespace TagTool.Commands.Modding
 
 				BaseCache.Serialize(CacheStream, newTag, tagDefinition);
 
-				foreach (var resourcePointer in ((CachedTagHaloOnline)modTag).ResourcePointerOffsets)
+				foreach (var resourcePointer in ((CachedTagEldorado)modTag).ResourcePointerOffsets)
 				{
-					var newTagHo = newTag as CachedTagHaloOnline;
+					var newTagHo = newTag as CachedTagEldorado;
 					newTagHo.AddResourceOffset(resourcePointer);
 				}
 				return newTag;
@@ -592,13 +590,13 @@ namespace TagTool.Commands.Modding
 			if (tagIndex == -1)
 				return;
 
-			if (tagIndex < 0 || tagIndex >= ModCache.TagCacheGenHO.Tags.Count)
+			if (tagIndex < 0 || tagIndex >= ModCache.TagCacheEldorado.Tags.Count)
 			{
 			    Console.Error.WriteLine($"Invalid tag index {tagIndex}");
 			    return;
 			}
 
-			var tag = ConvertCachedTagInstance(modPack, ModCache.TagCacheGenHO.Tags[tagIndex]);
+			var tag = ConvertCachedTagInstance(modPack, ModCache.TagCacheEldorado.Tags[tagIndex]);
 
 			if (tag == null)
 			{

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "new_cinematic_lighting", Tag = "nclt", Size = 0x1C, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "new_cinematic_lighting", Tag = "nclt", Size = 0x1C, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "new_cinematic_lighting", Tag = "nclt", Size = 0x60, MinVersion = CacheVersion.HaloReach)]
     public class NewCinematicLighting : TagStructure
     {
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<CinematicShLightBlock> ShLights;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -45,7 +45,7 @@ namespace TagTool.Tags.Definitions
 
         public List<CinematicDynamicLightBlock> DynamicLights;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public float EnvironmentalLightingScale;
 
         [TagStructure(Size = 0x20)]

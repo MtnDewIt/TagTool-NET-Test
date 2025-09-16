@@ -22,7 +22,7 @@ namespace TagTool.Commands.Scenarios
         private CachedTag Tag;
         private Scenario Definition;
 
-        public ImportMapVariantCommand(GameCacheHaloOnlineBase cache, CachedTag tag, Scenario definition) :
+        public ImportMapVariantCommand(GameCacheEldoradoBase cache, CachedTag tag, Scenario definition) :
             base(false,
 
                 "ImportMapVariant",
@@ -347,7 +347,7 @@ namespace TagTool.Commands.Scenarios
                     case MultiplayerObjectType.TeleporterTwoWay:
                     case MultiplayerObjectType.TeleporterReceiver:
                     case MultiplayerObjectType.TeleporterSender:
-                        multiplayer.TeleporterChannel = (sbyte)placement.Properties.SharedStorage;
+                        multiplayer.TeleporterChannel = (MultiplayerTeleporterChannel)placement.Properties.SharedStorage;
                         break;
                     default:
                         multiplayer.SpawnOrder = (sbyte)placement.Properties.SharedStorage;

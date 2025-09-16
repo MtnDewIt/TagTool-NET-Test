@@ -8,17 +8,17 @@ using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Serialization;
 using System.Runtime.InteropServices;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 
 namespace TagTool.Commands.Editing
 {
     class PokeTagChangesCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache { get; }
-        private CachedTagHaloOnline Tag { get; }
+        private GameCacheEldoradoBase Cache { get; }
+        private CachedTagEldorado Tag { get; }
         private object Value { get; }
 
-        public PokeTagChangesCommand(GameCacheHaloOnlineBase cache, CachedTagHaloOnline tag, object value)
+        public PokeTagChangesCommand(GameCacheEldoradoBase cache, CachedTagEldorado tag, object value)
             : base(true,
 
                   "PokeTagChanges",

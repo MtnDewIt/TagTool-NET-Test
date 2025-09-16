@@ -8,7 +8,7 @@ using TagTool.Havok;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "vehicle", Tag = "vehi", Size = 0x140, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "vehicle", Tag = "vehi", Size = 0x148, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "vehicle", Tag = "vehi", Size = 0x148, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "vehicle", Tag = "vehi", Size = 0x17C, MinVersion = CacheVersion.HaloReach)]
     public class Vehicle : Unit
     {
@@ -26,7 +26,7 @@ namespace TagTool.Tags.Definitions
 
         public VehicleSizeValue VehicleSize;
 
-        [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Unused4 = new byte[2];
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -60,7 +60,7 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "jpt!", "drdf" })]
         public CachedTag RiderBoostDamageResponse;
 
-        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] PaddingHO;
 
         [Flags]
@@ -110,7 +110,7 @@ namespace TagTool.Tags.Definitions
             SentinelEnforcer
         }
 
-        [TagStructure(Size = 0x78, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x78, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0xB4, MinVersion = CacheVersion.HaloReach)]
         public class VehiclePhysicsTypes : TagStructure
         {
@@ -139,7 +139,7 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x4)]
         public class HavokVehiclePhysicsFlags : TagStructure
         {
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
             public Halo3Bits Halo3;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -161,7 +161,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x54, MinVersion = CacheVersion.HaloReach)]
         public class HavokVehiclePhysicsBlock : TagStructure
         {
@@ -181,13 +181,13 @@ namespace TagTool.Tags.Definitions
             public float SteeringBankReactionScale; // how quickly we bank when we steer
             public float GravityScale; // value of 0 defaults to 1.  .5 is half gravity
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float Radius; // generated from the radius of the hkConvexShape for this vehicle
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
             public float MaximumUpdateDistance; // WU.  if a friciton point moves more than this distance it must update
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
             public float MaximumUpdatePeriod;  // Seconds. a friction point of this vehicle must update a least this often when controlled by a local player.
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
             public float MaximumRemoteUpdatePeriod; // Seconds. a friction point of this vehicle must update a least this often when controlled by an ai or remote player.
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -201,7 +201,7 @@ namespace TagTool.Tags.Definitions
 
             public List<AntiGravityPoint> AntiGravityPoints;
             public List<FrictionPoint> FrictionPoints;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public List<PhantomShape> PhantomShapes;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float GroundVerticalExtrusion;  // for hull surfaces that drive on ground this is how far we pretend the water is above everything physical
@@ -227,7 +227,7 @@ namespace TagTool.Tags.Definitions
             public int AttachmentIndex;
         }
 
-        [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloReach)]
         public class EnginePhysics : TagStructure
         {
@@ -242,7 +242,7 @@ namespace TagTool.Tags.Definitions
             public List<LoadAndCruiseBlock> LoadAndCruiseSound;
         }
 
-        [TagStructure(Size = 0x58, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x58, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x70, MinVersion = CacheVersion.HaloReach)]
         public class HumanTankPhysics : TagStructure
         {
@@ -272,7 +272,7 @@ namespace TagTool.Tags.Definitions
             public float GravityAdjust;  // 0-1 fraction by which we scale gravity that is not along the ground plane
         }
 
-        [TagStructure(Size = 0x40, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x58, MinVersion = CacheVersion.HaloReach)]
         public class HumanJeepPhysics : TagStructure
         {
@@ -319,7 +319,7 @@ namespace TagTool.Tags.Definitions
             public float DeployedCameraYawScale;
         }
 
-        [TagStructure(Size = 0x70, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x70, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x74, MinVersion = CacheVersion.HaloReach)]
         public class AlienScoutPhysics : TagStructure
         {
@@ -379,11 +379,11 @@ namespace TagTool.Tags.Definitions
             public float DiveSpeedScale;
         }
 
-        [TagStructure(Size = 0x4, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x4, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
         public class TurretPhysics : TagStructure
         {
-            [TagField(Length = 4, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Length = 4, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
             public byte[] Unused;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -415,7 +415,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x74, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x74, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0xD0, MinVersion = CacheVersion.HaloReach)]
         public class VtolPhysics : TagStructure
         {
@@ -432,22 +432,22 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float MaxDownwardSpeed; // wu/s
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Angle PitchUpRangeMin;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Angle PitchUpRangeMax;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Angle PitchDownRangeMin;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public Angle PitchDownRangeMax;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float MinimumRiseTargetLag;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float MaximumRiseTargetLag;
 
             public float MinimumUpAcceleration;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float MaximumUpAcceleration;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float MaximumDownAcceleration;
@@ -459,7 +459,7 @@ namespace TagTool.Tags.Definitions
             public float MaximumTurnAcceleration;
             public float TurnAccelerationGain;
 
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public SpeedParametersStruct SpeedParameters;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public InterpolationParametersStruct InterpolationParameters;
@@ -498,7 +498,7 @@ namespace TagTool.Tags.Definitions
                 public List<SpeedParametersStruct> SpeedInterpolated;
             }
 
-            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Eldorado700123)]
             [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
             public class SpeedParametersStruct : TagStructure
             {
@@ -506,7 +506,7 @@ namespace TagTool.Tags.Definitions
                 public float RotorDamping;
                 public float MaximumLeftAcceleration;
                 public float MaximumForwardAcceleration;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float LiftArmPivotLength;
                 public float DragCoeficient;
                 public float ConstantDeceleration; // magic force that torques vehicle back towards up
@@ -516,7 +516,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x70, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x70, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x7C, MinVersion = CacheVersion.HaloReach)]
         public class ChopperPhysics : TagStructure
         {
@@ -766,7 +766,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloReach)]
         public class AntiGravityPoint : TagStructure
         {
@@ -783,7 +783,7 @@ namespace TagTool.Tags.Definitions
             public float AntigravNormalK0;
             public float Radius;
 
-            [TagField(Flags = Padding, Length = 12, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Flags = Padding, Length = 12, MaxVersion = CacheVersion.Eldorado700123)]
             public byte[] Unused1 = new byte[12];
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -791,7 +791,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public short RuntimeGlobalMaterialIndex;
 
-            [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.Eldorado700123)]
             public byte[] Unused2 = new byte[2];
 
             public short DamageSourceRegionIndex;
@@ -820,7 +820,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x34, MinVersion = CacheVersion.HaloReach)]
         public class FrictionPoint : TagStructure
         {
@@ -829,15 +829,15 @@ namespace TagTool.Tags.Definitions
             public float FractionOfTotalMass;  // (0.0-1.0) fraction of total vehicle mass
             public float Radius;
             public float DamagedRadius; // radius when the tire is blown off.
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public FrictionTypeValue FrictionType;
-            [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
             public byte[] Padding1;
             public float MovingFrictionVelocityDiff;
             public float EBrakeMovingFriction;
             public float EBrakeFriction;
             public float EBrakeMovingFrictionVelocityDiff;
-            [TagField(Length = 20, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(Length = 20, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
             public byte[] Padding2;
             [TagField(Flags = TagFieldFlags.GlobalMaterial)]
             public StringId CollisionMaterialName;
@@ -912,7 +912,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x44, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x44, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class Gear : TagStructure
@@ -931,22 +931,22 @@ namespace TagTool.Tags.Definitions
                     Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
             public byte[] ReachMCCPadding;
 
-            [TagStructure(Size = 0x18, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Eldorado700123)]
             [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
             public class TorqueCurveStruct : TagStructure
             {
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float MinTorque;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float MaxTorque;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float PeakTorqueScale;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float PastPeakTorqueExponent;
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float TorqueAtMaxAngularVelocity; // generally 0 for loading torque and something less than max torque for cruising torque
-                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
                 public float TorqueAt2xMaxAngularVelocity;
 
                 [TagField(MinVersion = CacheVersion.HaloReach)]

@@ -5,7 +5,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Tags;
 using System.Collections;
 using TagTool.Cache.Gen3;
@@ -14,9 +14,9 @@ namespace TagTool.Commands.Tags
 {
     class ExportTagModCommand : Command
     {
-        public GameCacheHaloOnlineBase Cache { get; }
+        public GameCacheEldoradoBase Cache { get; }
 
-        public ExportTagModCommand(GameCacheHaloOnlineBase cache) :
+        public ExportTagModCommand(GameCacheEldoradoBase cache) :
             base(false,
 
                 "ExportTagMod",
@@ -68,7 +68,7 @@ namespace TagTool.Commands.Tags
                         {
                             if (!tagIndices.Contains(entry))
                             {
-                                var instance = Cache.TagCacheGenHO.Tags[entry];
+                                var instance = Cache.TagCacheEldorado.Tags[entry];
 
                                 if (instance == null || instance.IsInGroup("rmt2") || instance.IsInGroup("rmdf") || instance.IsInGroup("vtsh") || instance.IsInGroup("pixl") || instance.IsInGroup("glvs") || instance.IsInGroup("glps"))
                                     continue;
@@ -136,7 +136,7 @@ namespace TagTool.Commands.Tags
                     if (importedTags.Contains(index))
                         continue;
 
-                    var instance = (CachedTagHaloOnline)Cache.TagCache.GetTag(index);
+                    var instance = (CachedTagEldorado)Cache.TagCache.GetTag(index);
 
                     if (instance == null)
                         continue;
@@ -149,7 +149,7 @@ namespace TagTool.Commands.Tags
                         continue;
 
                     var file = new FileInfo(Path.Combine(directory.FullName, $"tags\\{tagName}.{groupName}"));
-                    var data = Cache.TagCacheGenHO.ExtractTagRaw(cacheStream, instance);
+                    var data = Cache.TagCacheEldorado.ExtractTagRaw(cacheStream, instance);
 
                     var tagDefinition = Cache.Deserialize(cacheStream, instance);
 
@@ -177,7 +177,7 @@ namespace TagTool.Commands.Tags
                     if (completedTags.Contains(index))
                         continue;
 
-                    var instance = (CachedTagHaloOnline)Cache.TagCache.GetTag(index);
+                    var instance = (CachedTagEldorado)Cache.TagCache.GetTag(index);
 
                     if (instance == null)
                         continue;
@@ -219,7 +219,7 @@ namespace TagTool.Commands.Tags
                             {
                                 scriptWriter.WriteLine($"EditTag {tagName}.{instance.Group.Tag}");
 
-                                var resourceFile = ExportResource(bink.ResourceReference.HaloOnlinePageableResource, "bink_resource");
+                                var resourceFile = ExportResource(bink.ResourceReference.EldoradoPageableResource, "bink_resource");
 
                                 if (resourceFile == null)
                                 {
@@ -243,16 +243,16 @@ namespace TagTool.Commands.Tags
 
                                 for (var i = 0; i < bitm.HardwareTextures.Count; i++)
                                 {
-                                    var resourceFile = ExportResource(bitm.HardwareTextures[i].HaloOnlinePageableResource, "bitmap_texture_interop_resource", bitm.HardwareTextures.Count > 1 ? $"_image_{i}" : "_image");
+                                    var resourceFile = ExportResource(bitm.HardwareTextures[i].EldoradoPageableResource, "bitmap_texture_interop_resource", bitm.HardwareTextures.Count > 1 ? $"_image_{i}" : "_image");
 
                                     if (resourceFile == null)
                                     {
-                                        scriptWriter.WriteLine($"SetField HardwareTextures[{i}].HaloOnlinePageableResource null");
+                                        scriptWriter.WriteLine($"SetField HardwareTextures[{i}].EldoradoPageableResource null");
                                         continue;
                                     }
 
-                                    scriptWriter.WriteLine($"SetField HardwareTextures[{i}].HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField HardwareTextures[{i}].HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}{(bitm.HardwareTextures.Count > 1 ? $"_image_{i}" : "_image")}.bitmap_texture_interop_resource\"");
+                                    scriptWriter.WriteLine($"SetField HardwareTextures[{i}].EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField HardwareTextures[{i}].EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}{(bitm.HardwareTextures.Count > 1 ? $"_image_{i}" : "_image")}.bitmap_texture_interop_resource\"");
                                 }
 
                                 scriptWriter.WriteLine("SaveTagChanges");
@@ -265,16 +265,16 @@ namespace TagTool.Commands.Tags
                             {
                                 scriptWriter.WriteLine($"EditTag {tagName}.{instance.Group.Tag}");
 
-                                var resourceFile = ExportResource(mode.Geometry.Resource.HaloOnlinePageableResource, "render_geometry_api_resource_definition", "_geometry");
+                                var resourceFile = ExportResource(mode.Geometry.Resource.EldoradoPageableResource, "render_geometry_api_resource_definition", "_geometry");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField Geometry.Resource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField Geometry.Resource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_geometry.render_geometry_api_resource_definition\"");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_geometry.render_geometry_api_resource_definition\"");
                                 }
 
                                 scriptWriter.WriteLine("SaveTagChanges");
@@ -289,16 +289,16 @@ namespace TagTool.Commands.Tags
 
                                 for (var i = 0; i < jmad.ResourceGroups.Count; i++)
                                 {
-                                    var resourceFile = ExportResource(jmad.ResourceGroups[i].ResourceReference.HaloOnlinePageableResource, "model_animation_tag_resource", jmad.ResourceGroups.Count > 1 ? $"_group_{i}" : "_group");
+                                    var resourceFile = ExportResource(jmad.ResourceGroups[i].ResourceReference.EldoradoPageableResource, "model_animation_tag_resource", jmad.ResourceGroups.Count > 1 ? $"_group_{i}" : "_group");
 
                                     if (resourceFile == null)
                                     {
-                                        scriptWriter.WriteLine($"SetField ResourceGroups[{i}].ResourceReference.HaloOnlinePageableResource null");
+                                        scriptWriter.WriteLine($"SetField ResourceGroups[{i}].ResourceReference.EldoradoPageableResource null");
                                         continue;
                                     }
 
-                                    scriptWriter.WriteLine($"SetField ResourceGroups[{i}].ResourceReference.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField ResourceGroups[{i}].ResourceReference.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}{(jmad.ResourceGroups.Count > 1 ? $"_group_{i}" : "_group")}.model_animation_tag_resource\"");
+                                    scriptWriter.WriteLine($"SetField ResourceGroups[{i}].ResourceReference.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField ResourceGroups[{i}].ResourceReference.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}{(jmad.ResourceGroups.Count > 1 ? $"_group_{i}" : "_group")}.model_animation_tag_resource\"");
                                 }
 
                                 scriptWriter.WriteLine("SaveTagChanges");
@@ -311,52 +311,52 @@ namespace TagTool.Commands.Tags
                             {
                                 scriptWriter.WriteLine($"EditTag {tagName}.{instance.Group.Tag}");
 
-                                var resourceFile = ExportResource(sbsp.DecoratorGeometry.Resource.HaloOnlinePageableResource, "render_geometry_api_resource_definition", "_decorator_geometry");
+                                var resourceFile = ExportResource(sbsp.DecoratorGeometry.Resource.EldoradoPageableResource, "render_geometry_api_resource_definition", "_decorator_geometry");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField DecoratorGeometry.Resource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField DecoratorGeometry.Resource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField DecoratorGeometry.Resource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField DecoratorGeometry.Resource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_decorator_geometry.render_geometry_api_resource_definition\"");
+                                    scriptWriter.WriteLine($"SetField DecoratorGeometry.Resource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField DecoratorGeometry.Resource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_decorator_geometry.render_geometry_api_resource_definition\"");
                                 }
 
-                                resourceFile = ExportResource(sbsp.Geometry.Resource.HaloOnlinePageableResource, "render_geometry_api_resource_definition", "_bsp_geometry");
+                                resourceFile = ExportResource(sbsp.Geometry.Resource.EldoradoPageableResource, "render_geometry_api_resource_definition", "_bsp_geometry");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField Geometry.Resource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField Geometry.Resource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_bsp_geometry.render_geometry_api_resource_definition\"");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_bsp_geometry.render_geometry_api_resource_definition\"");
                                 }
 
-                                resourceFile = ExportResource(sbsp.CollisionBspResource.HaloOnlinePageableResource, "structure_bsp_tag_resources", "_collision");
+                                resourceFile = ExportResource(sbsp.CollisionBspResource.EldoradoPageableResource, "structure_bsp_tag_resources", "_collision");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField CollisionBspResource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField CollisionBspResource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField CollisionBspResource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField CollisionBspResource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_collision.structure_bsp_tag_resources\"");
+                                    scriptWriter.WriteLine($"SetField CollisionBspResource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField CollisionBspResource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_collision.structure_bsp_tag_resources\"");
                                 }
 
-                                resourceFile = ExportResource(sbsp.PathfindingResource.HaloOnlinePageableResource, "structure_bsp_cache_file_tag_resources", "_pathfinding");
+                                resourceFile = ExportResource(sbsp.PathfindingResource.EldoradoPageableResource, "structure_bsp_cache_file_tag_resources", "_pathfinding");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField PathfindingResource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField PathfindingResource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField PathfindingResource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField PathfindingResource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_pathfinding.structure_bsp_cache_file_tag_resources\"");
+                                    scriptWriter.WriteLine($"SetField PathfindingResource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField PathfindingResource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_pathfinding.structure_bsp_cache_file_tag_resources\"");
                                 }
 
                                 scriptWriter.WriteLine("SaveTagChanges");
@@ -369,16 +369,16 @@ namespace TagTool.Commands.Tags
                             {
                                 scriptWriter.WriteLine($"EditTag {tagName}.{instance.Group.Tag}");
 
-                                var resourceFile = ExportResource(sLdT.Geometry.Resource.HaloOnlinePageableResource, "render_geometry_api_resource_definition", "_lightmap_geometry");
+                                var resourceFile = ExportResource(sLdT.Geometry.Resource.EldoradoPageableResource, "render_geometry_api_resource_definition", "_lightmap_geometry");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField Geometry.Resource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField Geometry.Resource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_lightmap_geometry.render_geometry_api_resource_definition\"");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_lightmap_geometry.render_geometry_api_resource_definition\"");
                                 }
 
                                 scriptWriter.WriteLine("SaveTagChanges");
@@ -391,16 +391,16 @@ namespace TagTool.Commands.Tags
                             {
                                 scriptWriter.WriteLine($"EditTag {tagName}.{instance.Group.Tag}");
 
-                                var resourceFile = ExportResource(pmdf.Geometry.Resource.HaloOnlinePageableResource, "render_geometry_api_resource_definition", "_particle_geometry");
+                                var resourceFile = ExportResource(pmdf.Geometry.Resource.EldoradoPageableResource, "render_geometry_api_resource_definition", "_particle_geometry");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField Geometry.Resource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField Geometry.Resource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField Geometry.Resource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_particle_geometry.render_geometry_api_resource_definition\"");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField Geometry.Resource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}_particle_geometry.render_geometry_api_resource_definition\"");
                                 }
 
                                 scriptWriter.WriteLine("SaveTagChanges");
@@ -413,16 +413,16 @@ namespace TagTool.Commands.Tags
                             {
                                 scriptWriter.WriteLine($"EditTag {tagName}.{instance.Group.Tag}");
 
-                                var resourceFile = ExportResource(snd_.Resource.HaloOnlinePageableResource, "sound_resource");
+                                var resourceFile = ExportResource(snd_.Resource.EldoradoPageableResource, "sound_resource");
 
                                 if (resourceFile == null)
                                 {
-                                    scriptWriter.WriteLine("SetField Resource.HaloOnlinePageableResource null");
+                                    scriptWriter.WriteLine("SetField Resource.EldoradoPageableResource null");
                                 }
                                 else
                                 {
-                                    scriptWriter.WriteLine($"SetField Resource.HaloOnlinePageableResource.Page.Index -1");
-                                    scriptWriter.WriteLine($"SetField Resource.HaloOnlinePageableResource ResourcesB \"$TagFolderDirectory\\{tagName}.sound_resource\"");
+                                    scriptWriter.WriteLine($"SetField Resource.EldoradoPageableResource.Page.Index -1");
+                                    scriptWriter.WriteLine($"SetField Resource.EldoradoPageableResource ResourcesB \"$TagFolderDirectory\\{tagName}.sound_resource\"");
                                 }
 
                                 scriptWriter.WriteLine("SaveTagChanges");
@@ -442,7 +442,7 @@ namespace TagTool.Commands.Tags
                     if (completedTagReferenecs.Contains(index))
                         continue;
 
-                    var instance = (CachedTagHaloOnline)Cache.TagCache.GetTag(index);
+                    var instance = (CachedTagEldorado)Cache.TagCache.GetTag(index);
 
                     if (instance == null)
                         continue;
@@ -510,7 +510,7 @@ namespace TagTool.Commands.Tags
                     {
                         if (fieldValue.EndsWith("." + tagType.Key.ToString()))
                         {
-                            if (!fieldName.Contains("HaloOnlinePageableResource"))
+                            if (!fieldName.Contains("EldoradoPageableResource"))
                             {
                                 if(fieldValue.StartsWith("0x"))
                                 {

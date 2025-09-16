@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TagTool.BlamFile;
+using TagTool.Cache.Gen2.Resolvers;
 using TagTool.Common;
 using TagTool.IO;
 
@@ -20,20 +17,22 @@ namespace TagTool.Cache.Gen2
             // Read offsets
             //
 
-            var stringIDHeader = baseMapFile.Header.GetStringIDHeader();
+            var stringCount = baseMapFile.Header.GetStringIdCount();
+            var indexOffset = baseMapFile.Header.GetStringIdIndexOffset();
+            var dataOffset = baseMapFile.Header.GetStringIdDataOffset();
 
-            reader.SeekTo(stringIDHeader.IndicesOffset);
+            reader.SeekTo(indexOffset);
 
-            int[] stringOffset = new int[stringIDHeader.Count];
-            for (var i = 0; i < stringIDHeader.Count; i++)
+            int[] stringOffset = new int[stringCount];
+            for (var i = 0; i < stringCount; i++)
             {
                 stringOffset[i] = reader.ReadInt32();
                 Add("");
             }
 
-            reader.SeekTo(baseMapFile.CachePlatform == CachePlatform.MCC ? stringIDHeader.BufferOffsetMCC : stringIDHeader.BufferOffset);
+            reader.SeekTo(dataOffset);
 
-            EndianReader newReader = new EndianReader(new MemoryStream(reader.ReadBytes(stringIDHeader.BufferSize)), reader.Format);
+            EndianReader newReader = new EndianReader(new MemoryStream(reader.ReadBytes(stringCount)), reader.Format);
 
             //
             // Read strings

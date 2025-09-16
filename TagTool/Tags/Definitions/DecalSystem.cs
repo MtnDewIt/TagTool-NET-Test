@@ -6,7 +6,7 @@ using TagTool.Cache;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "decal_system", Tag = "decs", Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "decal_system", Tag = "decs", Size = 0x24, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "decal_system", Tag = "decs", Size = 0x3C, MinVersion = CacheVersion.HaloReach)]
     public class DecalSystem : TagStructure
 	{
@@ -59,7 +59,7 @@ namespace TagTool.Tags.Definitions
             RespectsNegativeVerticalScale = 1 << 11
         }
 
-        [TagStructure(Size = 0x74, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x74, MaxVersion = CacheVersion.Eldorado700123)]
         [TagStructure(Size = 0x98, MinVersion = CacheVersion.HaloReach)]
         public class DecalDefinitionBlock : TagStructure
 		{
@@ -91,7 +91,7 @@ namespace TagTool.Tags.Definitions
             public float CullAngle;
 
             public DecalPass Pass;
-            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
             public float RuntimeSpecularMultiplier;
             public float RuntimeBitmapAspect;
 

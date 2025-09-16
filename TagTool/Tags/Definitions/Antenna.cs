@@ -5,7 +5,7 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "antenna", Tag = "ant!", Size = 0x4C, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "antenna", Tag = "ant!", Size = 0x4C, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "antenna", Tag = "ant!", Size = 0x50, MinVersion = CacheVersion.HaloReach)]
     public class Antenna : TagStructure
 	{

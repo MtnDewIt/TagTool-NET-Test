@@ -8,7 +8,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "ai_dialogue_globals", Tag = "adlg", Size = 0x4C, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "ai_dialogue_globals", Tag = "adlg", Size = 0x50, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "ai_dialogue_globals", Tag = "adlg", Size = 0x5C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Name = "ai_dialogue_globals", Tag = "adlg", Size = 0x5C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "ai_dialogue_globals", Tag = "adlg", Size = 0x7C, MinVersion = CacheVersion.HaloReach)]
     public class AiDialogueGlobals : TagStructure
     {
@@ -16,7 +16,7 @@ namespace TagTool.Tags.Definitions
         public float RemindDelay;
         public float CoverCurseChance;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public float PlayerVocalizationStaminaThreshold;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -47,7 +47,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<PredictedDataBlock> PredictedVocalizations;
 
-        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Padding1;
         
         [TagStructure(Size = 0x4)]

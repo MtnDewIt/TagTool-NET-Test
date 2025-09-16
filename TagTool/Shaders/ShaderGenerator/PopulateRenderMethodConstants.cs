@@ -11,7 +11,7 @@ namespace TagTool.Shaders.ShaderGenerator
 {
     public class PopulateRenderMethodConstants
     {
-        public List<TextureConstant> SetupTextureConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheHaloOnlineBase Cache)
+        public List<TextureConstant> SetupTextureConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheEldoradoBase Cache)
         {
             List<TextureConstant> textureConstants = new List<TextureConstant>();
 
@@ -66,7 +66,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return textureConstants;
         }
 
-        public List<RealConstant> SetupRealConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheHaloOnlineBase Cache)
+        public List<RealConstant> SetupRealConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheEldoradoBase Cache)
         {
             List<RealConstant> realConstants = new List<RealConstant>();
 
@@ -123,7 +123,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return realConstants;
         }
 
-        public List<uint> SetupIntegerConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheHaloOnlineBase Cache)
+        public List<uint> SetupIntegerConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheEldoradoBase Cache)
         {
             List<uint> integerConstants = new List<uint>();
 
@@ -157,7 +157,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return integerConstants;
         }
 
-        public uint SetupBooleanConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheHaloOnlineBase Cache)
+        public uint SetupBooleanConstants(RenderMethodTemplate rmt2, List<RenderMethodOption> renderMethodOptions, GameCacheEldoradoBase Cache)
         {
             uint booleanConstants = 0;
 
@@ -202,7 +202,7 @@ namespace TagTool.Shaders.ShaderGenerator
             ["inv_alpha_blend"] = BlendModeValue.InverseAlphaBlend,
         };
 
-        public BlendModeValue GetAlphaBlendMode(byte[] options, RenderMethodDefinition rmdf, GameCacheHaloOnlineBase Cache)
+        public BlendModeValue GetAlphaBlendMode(byte[] options, RenderMethodDefinition rmdf, GameCacheEldoradoBase Cache)
         {
             for (int i = 0; i < rmdf.Categories.Count; i++)
             {
@@ -221,7 +221,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return BlendModeValue.Opaque;
         }
 
-        public BlendModeValue GetAlphaBlendMode(ShaderMatcherNew.Rmt2Descriptor rmt2Descriptor, RenderMethodDefinition rmdf, GameCacheHaloOnlineBase Cache)
+        public BlendModeValue GetAlphaBlendMode(ShaderMatcherNew.Rmt2Descriptor rmt2Descriptor, RenderMethodDefinition rmdf, GameCacheEldoradoBase Cache)
         {
             return GetAlphaBlendMode(rmt2Descriptor.Options, rmdf, Cache);
         }

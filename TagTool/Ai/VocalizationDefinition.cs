@@ -8,7 +8,7 @@ using System;
 namespace TagTool.Ai
 {
     [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+    [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Size = 0x64, MinVersion = CacheVersion.HaloReach)]
     public class VocalizationDefinition : TagStructure
 	{

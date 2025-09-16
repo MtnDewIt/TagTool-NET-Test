@@ -7,7 +7,7 @@ using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Common.Logging;
@@ -21,11 +21,11 @@ namespace TagTool.Commands.Forge
 {
     class MaximizeBudgetCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache;
+        private GameCacheEldoradoBase Cache;
         private ForgeGlobalsDefinition Definition;
         private HashSet<CachedTag> ForgePalette = new HashSet<CachedTag>();
 
-        public MaximizeBudgetCommand(GameCacheHaloOnlineBase cache, ForgeGlobalsDefinition definition) : base(true,
+        public MaximizeBudgetCommand(GameCacheEldoradoBase cache, ForgeGlobalsDefinition definition) : base(true,
             "MaximizeBudget",
             "Moves placements for objects that are in the global forge palette into a map variant to maximize the number of objects that can be placed",
 
@@ -61,7 +61,7 @@ namespace TagTool.Commands.Forge
                 foreach (var stream in modCache.BaseModPackage.MapFileStreams)
                     MaximizeMapForgeBudget(stream);
             }
-            else if (Cache is GameCacheHaloOnline hoCache)
+            else if (Cache is GameCacheEldorado hoCache)
             {
                 foreach (var file in hoCache.Directory.GetFiles("*.map"))
                 {
@@ -90,7 +90,7 @@ namespace TagTool.Commands.Forge
             }
             catch (Exception ex) 
             {
-                Log.Warning($@"Failed to maximize budget for {mapFile.Header.GetScenarioPath()}.scenario : {ex.Message}");
+                Log.Warning($@"Failed to maximize budget for {mapFile.Header.GetTagPath()}.scenario : {ex.Message}");
                 return;
             }
 
@@ -100,7 +100,7 @@ namespace TagTool.Commands.Forge
 
         private void MaximizeMapForgeBudget(MapFile mapFile)
         {
-            var scenarioTag = Cache.TagCache.GetTag<Scenario>(mapFile.Header.GetScenarioPath());
+            var scenarioTag = Cache.TagCache.GetTag<Scenario>(mapFile.Header.GetTagPath());
 
             Console.WriteLine($"Maximizing budget for scenario '{scenarioTag.Name}'...");
 

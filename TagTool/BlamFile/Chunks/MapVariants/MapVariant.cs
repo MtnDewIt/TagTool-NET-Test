@@ -32,11 +32,11 @@ namespace TagTool.BlamFile.Chunks.MapVariants
         public VariantObjectDatum[] Objects;
 
         [TagField(Length = 14, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 15, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
-        [TagField(Length = 16, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 15, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
+        [TagField(Length = 16, MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
         public short[] ObjectTypeStartIndex;
 
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
         public byte[] Padding2;
 
         [TagField(Length = 256)]
@@ -192,7 +192,6 @@ namespace TagTool.BlamFile.Chunks.MapVariants
             objectDatum.Flags = (VariantObjectPlacementFlags)stream.ReadUnsigned(16);
             objectDatum.QuotaIndex = stream.ReadSignedInteger(32);
 
-            // TODO: Set default values for ObjectIdentifier
             objectDatum.ParentObject = new ObjectIdentifier();
 
             if (stream.ReadBool())

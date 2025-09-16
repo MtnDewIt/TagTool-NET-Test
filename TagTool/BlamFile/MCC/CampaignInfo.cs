@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Cache;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
@@ -42,7 +42,7 @@ namespace TagTool.BlamFile.MCC
         {
             var scenarioTable = new Dictionary<string, Scenario>();
 
-            if (cache is GameCacheHaloOnline)
+            if (cache is GameCacheEldorado)
             {
                 foreach (var scenario in cache.TagCache.FindAllInGroup("scnr"))
                 {

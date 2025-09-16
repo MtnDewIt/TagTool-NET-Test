@@ -7,7 +7,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "user_interface_shared_globals_definition", Tag = "wigl", Size = 0x170, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "user_interface_shared_globals_definition", Tag = "wigl", Size = 0x160, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "user_interface_shared_globals_definition", Tag = "wigl", Size = 0x3CC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "user_interface_shared_globals_definition", Tag = "wigl", Size = 0x3CC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
     [TagStructure(Name = "user_interface_shared_globals_definition", Tag = "wigl", Size = 0x3DC, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "user_interface_shared_globals_definition", Tag = "wigl", Size = 0x164, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "user_interface_shared_globals_definition", Tag = "wigl", Size = 0x174, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
@@ -30,7 +30,7 @@ namespace TagTool.Tags.Definitions
         public CachedTag FireTeamMemberServiceTagStrings;
 
         [TagField(ValidTags = new[] { "unic" }, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        [TagField(ValidTags = new[] { "unic" }, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
+        [TagField(ValidTags = new[] { "unic" }, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
         public CachedTag InputStrings;
 
         [TagField(ValidTags = new[] { "lsnd" })]
@@ -53,30 +53,30 @@ namespace TagTool.Tags.Definitions
         public List<GuiAlertDescription> AlertDescriptions;
         public List<Dialog> DialogDescriptions;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<GlobalDataSource> GlobalDataSources;
 
         public RealPoint2d WidescreenBitmapScale;
         public RealPoint2d StandardBitmapScale;
         public RealPoint2d MenuBlurFactor;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public List<UiWidgetBiped> UiWidgetBipeds;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId Player0Flag;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId Player1Flag;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId Player2Flag;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId Player3Flag;
 
         //Spartan in H3
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId MCBipedName;
 
-        [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MaxVersion = CacheVersion.Eldorado700123)]
         public string McBipedName;
 
         [TagField(Length = 32)] public string McAiSquadName;
@@ -87,60 +87,60 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId EliteBipedNameReach;
 
-        [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MaxVersion = CacheVersion.Eldorado700123)]
         public string EliteBipedName;
 
         [TagField(Length = 32)] public string EliteAiSquadName;
 
         public StringId EliteAiStartPosition;
         
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiMickeyBipedName;
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiMickeyAiSquadName;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId UiMickeyAiLocationName;
 
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiRomeoBipedName;
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiRomeoAiSquadName;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId UiRomeoAiLocationName;
 
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiDutchBipedName;
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiDutchAiSquadName;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId UiDutchAiLocationName;
 
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiJohnsonBipedName;
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiJohnsonAiSquadName;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId UiJohnsonAiLocationName;
 
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiOdst2BipedName;
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiOdst2AiSquadName;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId UiOdst2AiLocationName;
 
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiOdst3BipedName;
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiOdst3AiSquadName;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId UiOdst3AiLocationName;
 
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiOdst4BipedName;
-        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Length = 32, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public string UiOdst4AiSquadName;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId UiOdst4AiLocationName;
         
         public int NavigationScrollInterval; //milliseconds
@@ -157,35 +157,35 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<PCGRPerPlayerTrackedIncident> PcgrPerPlayerTrackedIncidents;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public TagFunction PdaWaypointScaleFunction;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public float PdaCameraVelocity; // pixels per second
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public float CameraAutoMoveDelay;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public float PlayerOffscreenMarkerTolerance; // pixels
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public float PlayerOrientationDeadZone; // area around you where the PDA doesn't auto-orient you (pixels)
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public float PdaAiClumpCullDistance; // wu
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public CachedTag PdaScreenEffect;      
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public RealArgbColor PdaPlayedColor;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public RealArgbColor PdaUnplayedColor;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId PdaPoiWaypointPrefix;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public StringId PdaPoiWaypointSuffix;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public uint PdaBriefOpenThreshold;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public float PdaTextFadetime;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
         public List<ARGBlock> ARG;
 
         [TagStructure(Size = 0x24)]

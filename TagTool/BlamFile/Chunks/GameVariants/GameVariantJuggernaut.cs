@@ -10,7 +10,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
     {
         public short ScoreToWinRound;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public short ScoreToWinEarly;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 2)]
@@ -35,7 +35,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public byte[] Padding4;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x82, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public byte[] Alignment;
 
         public enum JuggernautInitialJuggernautSettings : byte

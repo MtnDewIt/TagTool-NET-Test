@@ -86,7 +86,7 @@ namespace TagTool.Porting.Gen2
             byte[] rmOptions = new byte[] { };
 
             newParticle.RenderMethod = CacheContext.Deserialize<Particle>(cacheStream, CacheContext.TagCache.GetTag("fx\\particles\\atmospheric\\fiery_smoke\\smoke_fiery_small.prt3")).RenderMethod;
-            // newParticle.RenderMethod = GenerateRenderMethodCommand.GenerateRenderMethod(, , (Cache as GameCacheHaloOnlineBase, cacheStream, rmOptions);
+            // newParticle.RenderMethod = GenerateRenderMethodCommand.GenerateRenderMethod(, , (Cache as GameCacheEldoradoBase, cacheStream, rmOptions);
 
             // TODO: appearance flags conversion
             // There are some auto flags spread out below, but there are still flags from gen2 that need converting.

@@ -6,7 +6,7 @@ using TagTool.Tags.Definitions;
 using System.IO;
 using System.Linq;
 using TagTool.Tags.Resources;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using ModelAnimationGraphGen2 = TagTool.Tags.Definitions.Gen2.ModelAnimationGraph;
 
 namespace TagTool.Porting.Gen2

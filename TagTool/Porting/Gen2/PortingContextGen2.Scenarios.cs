@@ -93,13 +93,13 @@ namespace TagTool.Porting.Gen2
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TeleporterSrc:
                             CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_sender\teleporter_sender", out objectiveItem);
-                            mpProperties.TeleporterChannel = (sbyte)netgameFlagsBlock.Identifier;
+                            mpProperties.TeleporterChannel = (MultiplayerTeleporterChannel)netgameFlagsBlock.Identifier;
                             mpProperties.Team = MultiplayerTeamDesignator.Neutral;
                             netgameFlagsBlock.Position.Z -= 0.35f;
                             break;
                         case Gen2Scenario.ScenarioNetpointsBlock.TypeValue.TeleporterDest:
                             CacheContext.TagCache.TryGetTag<Crate>(@"objects\multi\teleporter_reciever\teleporter_reciever", out objectiveItem);
-                            mpProperties.TeleporterChannel = (sbyte)netgameFlagsBlock.Identifier;
+                            mpProperties.TeleporterChannel = (MultiplayerTeleporterChannel)netgameFlagsBlock.Identifier;
                             mpProperties.Team = MultiplayerTeamDesignator.Neutral;
                             // hack: replacement (gen3) teleporters need to be offset from walls
                             // shift an arbitrary distance along the direction teleporter is facing

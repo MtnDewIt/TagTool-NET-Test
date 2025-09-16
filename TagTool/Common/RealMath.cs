@@ -92,7 +92,7 @@ namespace TagTool.Common
                 {
                     if (quantized < stepCount)
                     {
-                        dequantized = (((float)(stepCount - quantized) * minValue) + ((float)quantized * maxValue)) / (float)stepCount;
+                        dequantized = (((stepCount - quantized) * minValue) + (quantized * maxValue)) / stepCount;
                     }
                     else
                     {
@@ -117,6 +117,61 @@ namespace TagTool.Common
             }
 
             if (exactMidPoint && 2 * quantized == stepCount)
+            {
+                if (dequantized != (minValue + maxValue) / 2.0f)
+                {
+                    throw new InvalidOperationException("Dequantized value must be equal to the exact mid point of Minimum Value and Maximum Value");
+                }
+            }
+
+            return dequantized;
+        }
+
+        public static float DequantizeReal(int quantized, float minValue, float maxValue, uint quantizedValueCount, bool exactMidPoint, bool exactEndPoints)
+        {
+            if (quantizedValueCount <= 3) 
+            {
+                throw new ArgumentException("Quantized Value Count must be greater than 3");
+            }
+
+            if (maxValue <= minValue)
+            {
+                throw new ArgumentException("Maximum Value must be greater than Minimum Value");
+            }
+
+            float dequantized;
+
+            if (exactEndPoints)
+            {
+                if (quantized != 0)
+                {
+                    if (quantized < quantizedValueCount)
+                    {
+                        dequantized = (((quantizedValueCount - quantized) * minValue) + (quantized * maxValue)) / quantizedValueCount;
+                    }
+                    else
+                    {
+                        dequantized = maxValue;
+                    }
+                }
+                else
+                {
+                    dequantized = minValue;
+                }
+            }
+            else
+            {
+                float step = (maxValue - minValue) / quantizedValueCount;
+
+                if (step <= 0.0f)
+                {
+                    throw new ArgumentException("Step must be greater than zero");
+                }
+
+                dequantized = ((quantized * step) + minValue) + (step / 2.0f);
+            }
+
+            if (exactMidPoint && 2 * quantized == quantizedValueCount)
             {
                 if (dequantized != (minValue + maxValue) / 2.0f)
                 {
@@ -159,7 +214,7 @@ namespace TagTool.Common
             return result;
         }
 
-        public static void DequantizeUnitVector3dReach(int value, out RealVector3d vector, int bitCount) 
+        public static void DequantizeUnitVector3d(int value, out RealVector3d vector, int bitCount) 
         {
             UnitVectorQuantization.EncodingConstants encodingConstants = UnitVectorQuantization.GetUnitVectorEncodingConstants(bitCount);
 
@@ -167,8 +222,8 @@ namespace TagTool.Common
             float quantizedX = (float)(value % (int)encodingConstants.ActualPerAxisMaxCount) / encodingConstants.QuantizedValueCount;
             float quantizedY = (float)(value % (int)encodingConstants.ActualPerAxisMaxCount) % encodingConstants.QuantizedValueCount;
 
-            float x = DequantizeReal((int)quantizedX, -1.0f, 1.0f, bitCount, true, false);
-            float y = DequantizeReal((int)quantizedY, -1.0f, 1.0f, bitCount, true, false);
+            float x = DequantizeReal((int)quantizedX, -1.0f, 1.0f, encodingConstants.QuantizedValueCount - 1, false, false);
+            float y = DequantizeReal((int)quantizedY, -1.0f, 1.0f, encodingConstants.QuantizedValueCount - 1, false, false);
 
             vector = face switch
             {

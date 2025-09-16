@@ -35,7 +35,7 @@ namespace TagTool.Cache
             BaseMapFile = mapFile;
             CacheFile = file;
             Version = BaseMapFile.Version;
-            Platform = BaseMapFile.CachePlatform;
+            Platform = BaseMapFile.Platform;
             CacheFile = file;
             Deserializer = new TagDeserializer(Version, Platform);
             Serializer = new TagSerializer(Version, Platform);
@@ -43,7 +43,7 @@ namespace TagTool.Cache
             DisplayName = mapFile.Header.GetName() + ".map";
             Directory = file.Directory;
 
-            switch (BaseMapFile.Header.GetCacheType())
+            switch (BaseMapFile.Header.GetScenarioType())
             {
                 case CacheFileType.Campaign:
                     SharedCacheType = CacheFileType.SharedCampaign;
@@ -220,11 +220,15 @@ namespace TagTool.Cache
 
         public override Stream OpenCacheRead() 
         {
-            CacheFileHeaderGen2 gen2Header = BaseMapFile.Header as CacheFileHeaderGen2;
-
             Stream inputStream = null;
 
-            if (gen2Header.Flags.HasFlag(CacheFileFlags.Compressed))
+            var flags = BaseMapFile.Header.GetFlags();
+            var dataOffset = BaseMapFile.Header.GetCompressedDataOffset();
+            var chunkTableOffset = BaseMapFile.Header.GetCompressedChunkTableOffset();
+            var dataChunkSize = BaseMapFile.Header.GetCompressedDataChunkSize();
+            var chunkCount = BaseMapFile.Header.GetCompressedChunkCount();
+
+            if (flags.HasFlag(CacheFileFlags.Compressed))
             {
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
@@ -232,15 +236,15 @@ namespace TagTool.Cache
                     {
                         using (EndianReader reader = new EndianReader(stream, Endianness))
                         {
-                            byte[] header = reader.ReadBytes(gen2Header.CompressedDataOffset);
+                            byte[] header = reader.ReadBytes(dataOffset);
 
-                            memoryStream.Write(header, 0, gen2Header.CompressedDataOffset);
+                            memoryStream.Write(header, 0, dataOffset);
 
                             List<CompressedFileChunk> chunks = new List<CompressedFileChunk>();
 
-                            reader.SeekTo(gen2Header.CompressedChunkTableOffset);
+                            reader.SeekTo(chunkTableOffset);
 
-                            for (int i = 0; i < gen2Header.CompressedChunkCount; i++)
+                            for (int i = 0; i < chunkCount; i++)
                             {
                                 int chunkSize = reader.ReadInt32();
                                 int chunkOffset = reader.ReadInt32();
@@ -268,7 +272,7 @@ namespace TagTool.Cache
                                 {
                                     reader.SeekTo(chunks[i].Offset + 2);
 
-                                    int decompressedSize = gen2Header.CompressedDataChunkSize;
+                                    int decompressedSize = dataChunkSize;
                                     byte[] decompressedBuffer = new byte[decompressedSize];
 
                                     using (DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true))

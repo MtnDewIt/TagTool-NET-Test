@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
-using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Eldorado;
 using TagTool.Common;
 using TagTool.Geometry;
 using TagTool.IO;
@@ -74,22 +74,22 @@ namespace TagTool.Commands
             return data;
         }
 
-        private void SetCacheVersion(GameCacheHaloOnline cache, CacheVersion version)
+        private void SetCacheVersion(GameCacheEldorado cache, CacheVersion version)
         {
             cache.Version = version;
-            cache.TagCacheGenHO.Version = version;
-            cache.TagCacheGenHO.Header.CreationDate = LastModificationDate.CreateFromVersion(version);
-            cache.StringTableHaloOnline.Version = version;
+            cache.TagCacheEldorado.Version = version;
+            cache.TagCacheEldorado.Header.CreationDate = LastModificationDate.CreateFromVersion(version);
+            cache.StringTableEldorado.Version = version;
             cache.Serializer = new TagSerializer(version, CachePlatform.Original);
             cache.Deserializer = new TagDeserializer(version, CachePlatform.Original);
-            cache.ResourceCaches = new ResourceCachesHaloOnline(cache);
+            cache.ResourceCaches = new ResourceCachesEldorado(cache);
         }
 
-        private void UpgradeCacheForReach(GameCacheHaloOnline cache)
+        private void UpgradeCacheForReach(GameCacheEldorado cache)
         {
             Console.WriteLine("Upgrading to reach cache...");
 
-            SetCacheVersion(cache, CacheVersion.HaloOnline106708);
+            SetCacheVersion(cache, CacheVersion.Eldorado106708);
 
             using (var stream = cache.OpenCacheReadWrite())
             {
@@ -115,15 +115,15 @@ namespace TagTool.Commands
                     {
                         Console.WriteLine($"Upgrading {tag}...");
                         if (sbspTagResources != null)
-                            cache.ResourceCaches.ReplaceResource(sbsp.CollisionBspResource.HaloOnlinePageableResource, sbspTagResources);
+                            cache.ResourceCaches.ReplaceResource(sbsp.CollisionBspResource.EldoradoPageableResource, sbspTagResources);
                         if (sbspCacheFileTagResources != null)
-                            cache.ResourceCaches.ReplaceResource(sbsp.PathfindingResource.HaloOnlinePageableResource, sbspCacheFileTagResources);
+                            cache.ResourceCaches.ReplaceResource(sbsp.PathfindingResource.EldoradoPageableResource, sbspCacheFileTagResources);
 
                         cache.Serialize(stream, tag, sbsp);
                     });
                 }
 
-                SetCacheVersion(cache, CacheVersion.HaloOnlineED);
+                SetCacheVersion(cache, CacheVersion.EldoradoED);
 
                 foreach (var task in tasks)
                     task();
@@ -132,11 +132,11 @@ namespace TagTool.Commands
             }
         }
 
-        private void UpgradeM23Cache(GameCacheHaloOnline cache)
+        private void UpgradeM23Cache(GameCacheEldorado cache)
         {
             Console.WriteLine("Upgrading ms23 cache...");
 
-            var targetVersion = CacheVersion.HaloOnlineED;
+            var targetVersion = CacheVersion.EldoradoED;
 
             // tags.dat
             using (var stream = cache.TagsFile.Open(FileMode.Open, FileAccess.ReadWrite))
@@ -152,9 +152,9 @@ namespace TagTool.Commands
             }
             
             // resource caches
-            foreach(var cacheName in ResourceCachesHaloOnline.ResourceCacheNames.Values)
+            foreach(var cacheName in ResourceCachesEldorado.ResourceCacheNames.Values)
             {
-                var resourceCaches = (ResourceCachesHaloOnline)cache.ResourceCaches;
+                var resourceCaches = (ResourceCachesEldorado)cache.ResourceCaches;
                 var resourceCacheFile = new FileInfo(Path.Combine(resourceCaches.Directory.FullName, cacheName));
                 if (!resourceCacheFile.Exists)
                     continue;
@@ -185,12 +185,12 @@ namespace TagTool.Commands
                     mapFile.Read(reader);
                 }
 
-                var header = mapFile.Header as CacheFileHeaderGenHaloOnline;
-                mapFile.Version = targetVersion;
-                header.CreationDate = LastModificationDate.CreateFromVersion(mapFile.Version);
-                header.Build = CacheVersionDetection.GetBuildName(mapFile.Version, mapFile.CachePlatform);
-                for (int i = 0; i < header.SharedCreationDate.Length; i++)
-                    header.SharedCreationDate[i].LastModificationDate = header.CreationDate;
+                //var header = mapFile.Header as CacheFileHeaderEldorado;
+                //mapFile.Version = targetVersion;
+                //header.CreationDate = LastModificationDate.CreateFromVersion(mapFile.Version);
+                //header.Build = CacheVersionDetection.GetBuildName(mapFile.Version, mapFile.Platform);
+                //for (int i = 0; i < header.SharedCreationDate.Length; i++)
+                //    header.SharedCreationDate[i].LastModificationDate = header.CreationDate;
 
                 using (var stream = file.Open(FileMode.Create, FileAccess.ReadWrite))
                 {
@@ -202,8 +202,8 @@ namespace TagTool.Commands
 
         public override object Execute(List<string> args)
         {    
-            UpgradeM23Cache((GameCacheHaloOnline)Cache);
-            UpgradeCacheForReach((GameCacheHaloOnline)Cache);
+            UpgradeM23Cache((GameCacheEldorado)Cache);
+            UpgradeCacheForReach((GameCacheEldorado)Cache);
 
             return true;
 

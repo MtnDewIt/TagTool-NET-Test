@@ -33,11 +33,11 @@ namespace TagTool.Layouts
             writer.WriteLine("using System.Linq;");
             writer.WriteLine("using System.Text;");
             writer.WriteLine("using System.Threading.Tasks;");
-            writer.WriteLine("using HaloOnlineTagTool.Common;");
-            writer.WriteLine("using HaloOnlineTagTool.Resources;");
-            writer.WriteLine("using HaloOnlineTagTool.Serialization;");
+            writer.WriteLine("using TagTool.Common;");
+            writer.WriteLine("using TagTool.Cache");
+            writer.WriteLine("using TagTool.Serialization;");
             writer.WriteLine();
-            writer.WriteLine("namespace HaloOnlineTagTool.TagStructures");
+            writer.WriteLine("namespace TagTool.Tags.Definitions");
             writer.WriteLine("{");
         }
 

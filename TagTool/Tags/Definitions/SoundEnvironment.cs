@@ -3,17 +3,17 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
 {
-	[TagStructure(Name = "sound_environment", Tag = "snde", Size = 0x48, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+	[TagStructure(Name = "sound_environment", Tag = "snde", Size = 0x48, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
 	[TagStructure(Name = "sound_environment", Tag = "snde", Size = 0x38, MinVersion = CacheVersion.HaloReach)]
 	public class SoundEnvironment : TagStructure
 	{
-		[TagField(Length = 4, Flags = Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+		[TagField(Length = 4, Flags = Padding, MaxVersion = CacheVersion.Eldorado700123)]
 		public byte[] Padding0;
 
-		[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+		[TagField(MaxVersion = CacheVersion.Eldorado700123)]
 		public short Priority;
 
-		[TagField(Length = 2, Flags = Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+		[TagField(Length = 2, Flags = Padding, MaxVersion = CacheVersion.Eldorado700123)]
 		public byte[] Padding1;
 
 		public float RoomIntensity; // (decibels) intensity of the room effect
@@ -29,7 +29,7 @@ namespace TagTool.Tags.Definitions
 		public float Density;
 		public float HighFrequencyReference; // [20-20000] Hz
 
-		[TagField(Length = 16, Flags = Padding, MaxVersion = CacheVersion.HaloOnline700123)]
+		[TagField(Length = 16, Flags = Padding, MaxVersion = CacheVersion.Eldorado700123)]
 		public byte[] Padding2;
 
 		[TagField(MinVersion = CacheVersion.HaloReach)]
