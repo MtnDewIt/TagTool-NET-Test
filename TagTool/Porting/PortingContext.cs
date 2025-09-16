@@ -7,8 +7,6 @@ using System.Linq;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Commands.Common;
-using TagTool.Commands.Porting;
 using TagTool.Porting.Gen2;
 using TagTool.Common;
 using TagTool.Common.Logging;
@@ -33,6 +31,12 @@ namespace TagTool.Porting
 
         public PortingFlags Flags = PortingFlags.Default;
         public List<Tag> DoNotReplaceGroups = [];
+
+        /// <summary>
+        /// Set of blam tag indices to ignore when porting
+        /// </summary>
+        public HashSet<int> IgnoreBlamTags = [];
+
         public PortingOptions Options = new();
 
         protected PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache)
@@ -367,7 +371,7 @@ namespace TagTool.Porting
 
                 case CachedTag tag:
                     {
-                        if (IgnoreBlamTagCommand.UserDefinedIgnoredBlamTagsIndicies.Contains(tag.Index))
+                        if (IgnoreBlamTags.Contains(tag.Index))
                         {
                             //find equivalent in base cache otherwise use null
                             foreach (var instance in CacheContext.TagCache.FindAllInGroup(tag.Group.Tag))
