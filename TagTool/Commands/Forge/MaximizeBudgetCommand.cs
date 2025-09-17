@@ -245,6 +245,23 @@ namespace TagTool.Commands.Forge
                     newInstances.Add(instance);
                 }
 
+                if (pair.Key == GameObjectTypeHalo3ODST.Creature)
+                {
+                    foreach (var flock in scenario.Flocks)
+                    {
+                        if (flock.CreaturePaletteIndex == -1) continue;
+
+                        var paletteEntry = scenario.CreaturePalette[flock.CreaturePaletteIndex];
+                        var paletteIndex = newPalette.IndexOf(paletteEntry);
+                        if (paletteIndex == -1)
+                        {
+                            paletteIndex = newPalette.Count;
+                            newPalette.Add(paletteEntry);
+                        }
+                        flock.CreaturePaletteIndex = (short)paletteIndex;
+                    }
+                }
+
                 // Assign the new instances block
                 objectTypeDef.Instances.Clear();
                 foreach (var instance in newInstances)
