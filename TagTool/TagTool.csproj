@@ -23,24 +23,11 @@
     <Platforms>x86;x64</Platforms>
     <Configuration>Release</Configuration> <!--Default value-->
     <Platform>x64</Platform> <!--Default value-->
+	<!-- disabled for now as it does not respect DestinationSubDirectory -->
+	<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="TagTool.ico" />
-    <Compile Remove="Audio\PlatformCustomPlayback.cs" />
-    <Compile Remove="Audio\SoundConverter.cs" />
-    <None Include="Audio\PlatformCustomPlayback.cs" />
-    <Compile Remove="Audio\PlaybackParameterStruct.cs" />
-    <None Include="Audio\PlaybackParameterStruct.cs" />
-    <Compile Remove="Audio\SoundImportType.cs" />
-    <None Include="Audio\SoundImportType.cs" />
-    <Compile Remove="Audio\SoundPermutationLanguagesBlock.cs" />
-    <None Include="Audio\SoundPermutationLanguagesBlock.cs" />
-    <Compile Remove="Audio\SoundPromotionStruct.cs" />
-    <None Include="Audio\SoundPromotionStruct.cs" />
-    <Compile Remove="Audio\SoundSampleRate.cs" />
-    <None Include="Audio\SoundSampleRate.cs" />
-    <Compile Remove="Audio\SoundScaleModifier.cs" />
-    <None Include="Audio\SoundScaleModifier.cs" />
     <Compile Remove="Commands\Porting\PortArmorVariantCommand.cs" />
     <None Include="Commands\Porting\PortArmorVariantCommand.cs" />
     <Compile Remove="Commands\Tags\ConvertTagCommand.cs" />
