@@ -299,7 +299,7 @@ namespace TagTool.Porting.Gen3
                         {
                             new ExtraInfo.LanguagePermutation.RawInfoBlock
                             {
-                                SkipFractionName = StringId.Invalid,
+                                SkipFractionName = StringId.Empty,
                                 SeekTable = new List<ExtraInfo.LanguagePermutation.RawInfoBlock.SeekTableBlock>
                                 {
                                     new ExtraInfo.LanguagePermutation.RawInfoBlock.SeekTableBlock

@@ -33,6 +33,12 @@ namespace TagTool.Porting
 
         public PortingFlags Flags = PortingFlags.Default;
         public List<Tag> DoNotReplaceGroups = [];
+
+        /// <summary>
+        /// Set of blam tag indices to ignore when porting
+        /// </summary>
+        public HashSet<int> IgnoreBlamTags = [];
+
         public PortingOptions Options = new();
 
         protected PortingContext(GameCacheEldoradoBase cacheContext, GameCache blamCache)
@@ -367,7 +373,7 @@ namespace TagTool.Porting
 
                 case CachedTag tag:
                     {
-                        if (IgnoreBlamTagCommand.UserDefinedIgnoredBlamTagsIndicies.Contains(tag.Index))
+                        if (IgnoreBlamTags.Contains(tag.Index))
                         {
                             //find equivalent in base cache otherwise use null
                             foreach (var instance in CacheContext.TagCache.FindAllInGroup(tag.Group.Tag))
@@ -467,25 +473,25 @@ namespace TagTool.Porting
         /// </remarks>
         /// <param name="stringId">String id to convert</param>
         /// <returns>The existing or newly allocated string id in the destination cache</returns>
-        protected StringId ConvertStringId(StringId stringId)
+        protected virtual StringId ConvertStringId(StringId stringId)
         {
-            if (stringId == StringId.Invalid)
+            if (stringId == StringId.Invalid || stringId == StringId.Empty)
                 return stringId;
 
             if (PortedStringIds.ContainsKey(stringId.Value))
                 return PortedStringIds[stringId.Value];
 
-            var value = BlamCache.StringTable.GetString(stringId);
-            var edStringId = CacheContext.StringTable.GetStringId(value);
+            string value = BlamCache.StringTable.GetString(stringId);
+            if (value == null)
+            {
+                Log.Error($"Failed to resolve string while converting StringId {stringId}");
+                return StringId.Invalid;
+            }
 
+            StringId edStringId = CacheContext.StringTable.GetOrAddString(value);
 
-            if (edStringId != StringId.Invalid)
-                return PortedStringIds[stringId.Value] = edStringId;
-
-            if (edStringId == StringId.Invalid || !CacheContext.StringTable.Contains(value))
-                return PortedStringIds[stringId.Value] = CacheContext.StringTable.AddString(value);
-
-            return PortedStringIds[stringId.Value];
+            PortedStringIds[stringId.Value] = edStringId;
+            return edStringId;
         }
 
         /// <summary>

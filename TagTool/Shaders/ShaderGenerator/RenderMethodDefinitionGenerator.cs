@@ -40,7 +40,6 @@ namespace TagTool.Shaders.ShaderGenerator
             CategoryBlock.ShaderOption result = new CategoryBlock.ShaderOption();
 
             string optionName = FixupMethodOptionName(generator.GetMethodOptionNames((int)categoryIndex).GetValue(optionIndex).ToString().ToLower());
-
             result.Name = cache.StringTable.GetOrAddString(optionName);
 
             var parameters = generator.GetParametersInOption(categoryName, optionIndex, out string rmopName, out _);
@@ -64,8 +63,8 @@ namespace TagTool.Shaders.ShaderGenerator
 
             generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFunction, out string pixelFunction);
 
-            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
-            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
+            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Empty;
+            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Empty;
 
             return result;
         }
@@ -75,7 +74,6 @@ namespace TagTool.Shaders.ShaderGenerator
             CategoryBlock result = new CategoryBlock();
 
             string categoryName = FixupMethodOptionName(generator.GetMethodNames().GetValue(categoryIndex).ToString().ToLower());
-
             result.Name = cache.StringTable.GetOrAddString(categoryName);
 
             result.ShaderOptions = new List<CategoryBlock.ShaderOption>();
@@ -91,8 +89,8 @@ namespace TagTool.Shaders.ShaderGenerator
 
             generator.GetCategoryFunctions(categoryName, out string vertexFunction, out string pixelFunction);
 
-            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Invalid;
-            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Invalid;
+            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Empty;
+            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Empty;
 
             return result;
         }

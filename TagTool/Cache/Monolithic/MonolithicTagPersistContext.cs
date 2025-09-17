@@ -27,10 +27,7 @@ namespace TagTool.Cache.Monolithic
 
         public StringId AddStringId(string stringvalue)
         {
-            var stringId = Cache.StringTableMono.GetStringId(stringvalue);
-            if (stringId == StringId.Invalid)
-                stringId = Cache.StringTableMono.AddString(stringvalue);
-            return stringId;
+            return Cache.StringTableMono.GetOrAddString(stringvalue);
         }
 
         public CachedTag GetTag(Tag groupTag, string name)

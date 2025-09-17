@@ -142,11 +142,8 @@ namespace TagTool.Commands.RenderModels
 
                     Console.Write($"Enter a region name for '{mesh.Name}' (mesh index {meshIndex}): ");
                     var regionName = Console.ReadLine();
-                    var regionStringId = Cache.StringTable.GetStringId(regionName);
-
-                    if (regionStringId == StringId.Invalid)
-                        regionStringId = Cache.StringTable.AddString(regionName);
-
+                    StringId regionStringId = Cache.StringTable.GetOrAddString(regionName);
+        
                     // Begin building the default region and permutation
                     builder.BeginRegion(regionStringId);
                     builder.BeginPermutation(Cache.StringTable.GetStringId("default"));

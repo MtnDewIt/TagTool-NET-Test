@@ -358,7 +358,7 @@ namespace TagTool.Porting.Gen2
             var materialBlockGen2 = globalsGen2.Materials[globalMaterialIndexGen2];
 
             StringId gen3Name = CacheContext.StringTable.GetStringId(BlamCache.StringTable.GetString(materialBlockGen2.Name));
-            if (gen3Name == StringId.Invalid)
+            if (gen3Name == StringId.Invalid || gen3Name == StringId.Empty)
                 gen3Name = CacheContext.StringTable.GetStringId(BlamCache.StringTable.GetString(materialBlockGen2.ParentName));
 
             short newIndex = (short)globals.Materials.FindIndex(m => m.Name == gen3Name);

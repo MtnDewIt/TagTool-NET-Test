@@ -61,11 +61,11 @@ namespace TagTool.Shaders.ShaderGenerator
         }
 
         private static StringId AddStringSafe(GameCache cache, string str)
-        {
+        {   
+            // TODO: not thread safe
+
             var sTable = (StringTableEldorado)cache.StringTable;
 
-            if (str == "")
-                return StringId.Invalid;
             var stringId = sTable.GetStringId(str);
             if (stringId == StringId.Invalid)
                 stringId = sTable.AddStringBlocking(str);
@@ -122,11 +122,11 @@ namespace TagTool.Shaders.ShaderGenerator
                             Category = category,
                             PsMacro = "category_" + category,
                             //VsMacro = "category_" + category,
-                            VsMacro = "invalid",
+                            VsMacro = "",
                             Option = option,
                             PsMacroValue = "category_" + category + "_option_" + option,
                             //VsMacroValue = "category_" + category + "_option_" + option
-                            VsMacroValue = "invalid"
+                            VsMacroValue = ""
                         });
                     }
                     // definitions
@@ -137,11 +137,11 @@ namespace TagTool.Shaders.ShaderGenerator
                             Category = category,
                             PsMacro = "category_" + category + "_option_" + cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
                             //VsMacro = "category_" + category + "_option_" + cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
-                            VsMacro = "invalid",
+                            VsMacro = "",
                             Option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
                             PsMacroValue = j.ToString(),
                             //VsMacroValue = j.ToString()
-                            VsMacroValue = "invalid"
+                            VsMacroValue = ""
                         });
                     }
                 }
@@ -772,6 +772,8 @@ namespace TagTool.Shaders.ShaderGenerator
             Dictionary<Task<ShaderGeneratorResult>, int> tasks = new Dictionary<Task<ShaderGeneratorResult>, int>(); // <task, entry point>
 
             TemplateGenerator generator = new TemplateGenerator();
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
+
             List<OptionInfo> optionInfo = BuildOptionInfo(cache, rmdf, options, shaderType);
 
             for (int i = 0; i < Enum.GetValues(typeof(EntryPoint)).Length; i++)
@@ -844,6 +846,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 glps.EntryPoints.Add(new GlobalPixelShader.EntryPointBlock { DefaultCompiledShaderIndex = -1 });
 
             TemplateGenerator generator = new TemplateGenerator();
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
 
             foreach (var entryPoint in rmdf.EntryPoints)
             {
@@ -915,14 +918,13 @@ namespace TagTool.Shaders.ShaderGenerator
             for (int i = 0; i < Enum.GetValues(typeof(VertexType)).Length; i++)
             {
                 var vertexTypeBlock = new GlobalVertexShader.VertexTypeShaders { EntryPoints = new List<GlobalVertexShader.VertexTypeShaders.GlobalShaderEntryPointBlock>() };
-
-                if (rmdf.VertexTypes.Any(x => x.VertexType == (RenderMethodDefinition.VertexBlock.VertexTypeValue)i))
-                    for (int j = 0; j < Enum.GetValues(typeof(EntryPoint)).Length; j++)
-                        vertexTypeBlock.EntryPoints.Add(new GlobalVertexShader.VertexTypeShaders.GlobalShaderEntryPointBlock { ShaderIndex = -1 });
+                for (int j = 0; j < Enum.GetValues(typeof(EntryPoint)).Length; j++)
+                    vertexTypeBlock.EntryPoints.Add(new GlobalVertexShader.VertexTypeShaders.GlobalShaderEntryPointBlock { ShaderIndex = -1 });
                 glvs.VertexTypes.Add(vertexTypeBlock);
             }
 
             TemplateGenerator generator = new TemplateGenerator();
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
 
             foreach (var vertexTypeBlock in rmdf.VertexTypes)
             {
@@ -967,7 +969,8 @@ namespace TagTool.Shaders.ShaderGenerator
         public static void GenerateExplicitShader(GameCache cache, Stream stream, string explicitShader, bool applyFixes, out PixelShader pixl, out VertexShader vtsh)
         {
             ExplicitGenerator generator = new ExplicitGenerator();
-            
+            generator.SetUserMacros(GlobalMacroList.GetUserMacros());
+
             HaloShaderGenerator.Globals.ExplicitShader eExplicitShader = generator.GetExplicitIndex(explicitShader);
             
             List<ShaderStage> supportedEntries = generator.ScrapeEntryPoints(eExplicitShader);

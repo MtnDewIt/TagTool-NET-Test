@@ -97,7 +97,7 @@ namespace TagTool.Tags.Definitions
         /// <summary>
         /// The string's stringID.
         /// </summary>
-        public StringId StringID = StringId.Invalid;
+        public StringId StringID = StringId.Empty;
 
         /// <summary>
         /// The stringID's string value. Can be empty.

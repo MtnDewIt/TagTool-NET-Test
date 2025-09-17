@@ -79,7 +79,32 @@ namespace TagTool.BlamFile
 
                 map.Header.SetScenarioIndex(scnrTag.Index);
                 if (mapInfo != null && (_forceUpdate || map.MapFileBlf == null))
-                    map.MapFileBlf = mapInfo;
+                {
+                    if (map.MapFileBlf == null)
+                    {
+                        map.MapFileBlf = mapInfo;
+                    }
+                    else
+                    {
+                        string name = mapInfo.Scenario.Names[0].Name;
+                        string description = mapInfo.Scenario.Descriptions[0].Name;
+
+                        map.MapFileBlf.Scenario = mapInfo.Scenario;
+                        map.MapFileBlf.ContentFlags |= BlfFileContentFlags.Scenario;
+
+                        if (map.MapFileBlf.ContentHeader != null)
+                        {
+                            map.MapFileBlf.ContentHeader.Metadata.Name = name;
+                            map.MapFileBlf.ContentHeader.Metadata.Description = description;
+                        }
+
+                        if (map.MapFileBlf.MapVariant != null)
+                        {
+                            map.MapFileBlf.MapVariant.MapVariant.Metadata.Name = name;
+                            map.MapFileBlf.MapVariant.MapVariant.Metadata.Description = description;
+                        }           
+                    }
+                }
 
                 SaveMapFile(map, mapName, scnr.MapId);
 

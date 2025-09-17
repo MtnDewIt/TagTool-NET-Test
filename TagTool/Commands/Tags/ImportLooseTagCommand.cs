@@ -408,10 +408,7 @@ namespace TagTool.Commands.Tags
 
             public StringId AddStringId(string stringvalue)
             {
-                var stringId = Cache.StringTable.GetStringId(stringvalue);
-                if (stringId == StringId.Invalid)
-                    stringId = Cache.StringTable.AddString(stringvalue);
-                return stringId;
+                return Cache.StringTable.GetOrAddString(stringvalue);
             }
 
             public CachedTag GetTag(Tag groupTag, string name)

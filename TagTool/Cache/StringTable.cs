@@ -15,10 +15,10 @@ namespace TagTool.Cache
         public virtual string GetString(StringId id)
         {
             var index = Resolver.StringIDToIndex(id);
-            if (index > 0 && index < Count)
+            if (index >= 0 && index < Count)
                 return this[index];
             else
-                return "invalid";
+                return null;
         }
 
         public virtual StringId GetStringId(string str)

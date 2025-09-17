@@ -147,7 +147,7 @@ namespace TagTool.Porting.Gen3
                     {
                         var fireteam = squad.Fireteams[i];
 
-                        fireteam.Name = StringId.Invalid;
+                        fireteam.Name = StringId.Empty;
 
                         if (fireteam.CharacterTypeIndex != -1)
                         {

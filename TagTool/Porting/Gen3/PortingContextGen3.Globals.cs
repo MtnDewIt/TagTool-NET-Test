@@ -136,7 +136,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].GeneralEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -155,7 +155,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].FlavorEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -174,7 +174,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].SlayerEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -193,7 +193,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].CtfEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -212,7 +212,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].OddballEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -231,7 +231,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].KingOfTheHillEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -250,7 +250,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].VipEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -269,7 +269,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].JuggernautEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -288,7 +288,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].TerritoriesEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -307,7 +307,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].AssaultEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -326,7 +326,7 @@ namespace TagTool.Porting.Gen3
             {
                 var h3Event = h3Def.Runtime[0].InfectionEvents[i];
 
-                if (h3Event.DisplayString == StringId.Invalid)
+                if (h3Event.DisplayString == StringId.Empty)
                     continue;
 
                 var h3String = BlamCache.StringTable.GetString(h3Event.DisplayString);
@@ -362,7 +362,7 @@ namespace TagTool.Porting.Gen3
                 switch (val)
                 {
                     case StringId stringId:
-                        if (stringId != StringId.Invalid)
+                        if (stringId != StringId.Empty)
                             val = materials[FindMatchingMaterial(CacheContext.StringTable.GetString(stringId))].Name;
                         break;
                     case short index:
@@ -431,7 +431,7 @@ namespace TagTool.Porting.Gen3
 
                 // if it has a parent search for its name
                 StringId parentName = blamMaterials[blamIndex].ParentName;
-                if (parentName == StringId.Invalid)
+                if (parentName == StringId.Invalid || parentName == StringId.Empty)
                     return 0;
 
                 // recurse

@@ -1,45 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Common;
+using TagTool.Porting;
 
 namespace TagTool.Commands.Porting
 {
     class IgnoreBlamTagCommand : Command
     {
-        private GameCache PortingCache;
+        private readonly PortingContext PortContext;
 
-        public IgnoreBlamTagCommand(GameCache portingCache)
+        public IgnoreBlamTagCommand(PortingContext portContext)
                : base(true,
 
                      "IgnoreBlamTag",
-                     "Prevents the specified tags from being replaced when porting tags.",
+                     "Prevents the specified tags from being ported when porting tags.",
 
-                     "IgnoreBlamTag <tag name>",
+                     "IgnoreBlamTag <tag name> | regex: <pattern>",
 
-                     "Prevents the specified tag from being ported.\n" +
+                     "Prevents the specified tags from being ported.\n" +
                      "")
         {
-            UserDefinedIgnoredBlamTagsIndicies = new List<int>();
-            PortingCache = portingCache;
+            PortContext = portContext;
         }
-
-        public static List<int> UserDefinedIgnoredBlamTagsIndicies = new List<int>();
 
         public override object Execute(List<string> args)
         {
-            if (args.Count != 1)
+            if (args.Count < 1)
                 return new TagToolError(CommandError.ArgCount);
-            
-            if (PortingCache.TagCache.TryGetCachedTag(args[0], out var tagInstance))
+
+            switch (args[0].ToLower())
             {
-                UserDefinedIgnoredBlamTagsIndicies.Add(tagInstance.Index);
-                return true;
-            }else
-                return new TagToolError(CommandError.TagInvalid);
+                case "regex:":
+                    {
+                        if (args.Count < 2)
+                            return new TagToolError(CommandError.ArgCount);
+
+                        Regex regex;
+                        try
+                        {
+                            regex = new Regex(args[1]);
+                        }
+                        catch (Exception ex)
+                        {
+                            return new TagToolError(CommandError.ArgInvalid, ex.Message);
+                        }
+
+                        foreach (CachedTag tag in PortContext.BlamCache.TagCache.TagTable)
+                        {
+                            if (tag != null && regex.IsMatch(tag.ToString()))
+                                PortContext.IgnoreBlamTags.Add(tag.Index);
+                        }
+                    }
+                    break;
+                default:
+                    {
+                        if (!PortContext.BlamCache.TagCache.TryGetCachedTag(args[0], out CachedTag tagInstance))
+                            return new TagToolError(CommandError.TagInvalid);
+
+                        PortContext.IgnoreBlamTags.Add(tagInstance.Index);
+                    }
+                    break;
+            }
+
+            return true;
         }
     }
 }
-

@@ -1700,6 +1700,50 @@ namespace TagTool.Scripting.Compiler
 
                         return handle;
                     }
+
+                case "inspect":
+                    {
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
+
+                        var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                        var expr = ScriptExpressions[handle.Index];
+
+                        var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
+                        var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                        functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                        Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), expr.Data, 4);
+                        Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                        if (!(group.Tail is ScriptGroup tailGroup))
+                            throw new FormatException(group.ToString());
+
+                        functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Unparsed, tailGroup.Head);
+
+                        return handle;
+                    }
+
+                case "unit":
+                    {
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
+
+                        var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                        var expr = ScriptExpressions[handle.Index];
+
+                        var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
+                        var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                        functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                        Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), expr.Data, 4);
+                        Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                        if (!(group.Tail is ScriptGroup tailGroup))
+                            throw new FormatException(group.ToString());
+
+                        functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Object, tailGroup.Head);
+
+                        return handle;
+                    }
             }
 
             //

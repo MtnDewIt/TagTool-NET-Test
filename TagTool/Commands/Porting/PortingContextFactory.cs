@@ -65,7 +65,7 @@ namespace TagTool.Commands.Porting
                 else if (portingCache is GameCacheGen2 gen2cache)
                 {
                     var portingContext = (PortingContextGen2)PortingContext.Create(hoCache, portingCache);
-                    context.AddCommand(new PortTagCommand(hoCache, portingCache, portingContext));
+                    PopulatePortingCommands(context, portingCache, hoCache, portingContext);
                 }
                 else if (portingCache is GameCacheGen1 gen1cache)
                 {
@@ -81,7 +81,6 @@ namespace TagTool.Commands.Porting
 
             context.AddCommand(new DiffTagCommand(currentCache, portingCache));          
             context.AddCommand(new NameBlamTagCommand(portingCache));
-            context.AddCommand(new IgnoreBlamTagCommand(portingCache));
             context.AddCommand(new ListBlamTagsCommand(portingCache));
         }
 
@@ -97,6 +96,7 @@ namespace TagTool.Commands.Porting
             context.AddCommand(new PortClusterGeometryObjectCommand(hoCache, portingCache, portingContext));
             context.AddCommand(new DoNotReplaceGroupsCommand(portingContext));
             context.AddCommand(new SetPortingOptionCommand(portingContext));
+            context.AddCommand(new IgnoreBlamTagCommand(portingContext));
         }
     }
 }
