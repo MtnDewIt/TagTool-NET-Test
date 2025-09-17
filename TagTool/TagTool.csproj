@@ -27,6 +27,7 @@
   <ItemGroup>
     <Content Include="TagTool.ico" />
     <Compile Remove="Audio\PlatformCustomPlayback.cs" />
+    <Compile Remove="Audio\SoundConverter.cs" />
     <None Include="Audio\PlatformCustomPlayback.cs" />
     <Compile Remove="Audio\PlaybackParameterStruct.cs" />
     <None Include="Audio\PlaybackParameterStruct.cs" />

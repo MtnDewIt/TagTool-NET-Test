@@ -9,6 +9,7 @@ using TagTool.Audio.Converter;
 using TagTool.Audio;
 using TagTool.Commands.Porting;
 using TagTool.Common.Logging;
+using TagTool.Audio.Utils;
 
 namespace TagTool.Commands.Sounds
 {
@@ -78,20 +79,6 @@ namespace TagTool.Commands.Sounds
                     BlamSoundGestalt = PortingContextFactory.LoadSoundGestalt(Cache, stream);
             }
                 
-
-            var resourceDefinition = Cache.ResourceCache.GetSoundResourceDefinition(Sound.Resource);
-            var xmaFileSize = BlamSoundGestalt.GetFileSize(Sound.SoundReference.PitchRangeIndex, Sound.SoundReference.PitchRangeCount, Cache.Platform);
-            if (xmaFileSize < 0)
-                return;
-
-            var xmaData = resourceDefinition.Data.Data;
-
-            if (xmaData == null)
-            {
-                Log.Error("Failed to find sound data!");
-                return;
-            }
-
             var parts = Tag.Name.Split('\\');
             string baseName = parts[parts.Length - 1];
 
@@ -102,7 +89,7 @@ namespace TagTool.Commands.Sounds
 
                 for (int i = 0; i < permutationCount; i++)
                 {
-                    BlamSound blamSound = SoundConverter.GetXMA(Cache, BlamSoundGestalt, Sound, relativePitchRangeIndex, i, xmaData);
+                    BlamSound blamSound = SoundExtractorGen3.ExtractSound(Cache, BlamSoundGestalt, Sound, relativePitchRangeIndex, i);
                     string permutationName = $"{baseName}_{relativePitchRangeIndex}_{i}";
                     var fileName = $"{directory}\\{permutationName}.xma";
 

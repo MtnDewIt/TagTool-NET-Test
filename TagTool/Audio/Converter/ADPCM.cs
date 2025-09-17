@@ -16,7 +16,7 @@ namespace TagTool.Audio.Converter
 
         public XboxADPCM(BlamSound blamSound)
         {
-            InitFile(blamSound.Data, Encoding.GetChannelCount(blamSound.Encoding), blamSound.SampleRate.GetSampleRateHz());
+            InitFile(blamSound.Data, blamSound.ChannelCount, blamSound.SampleRate);
         }
 
         public XboxADPCM(EndianReader reader)
@@ -75,7 +75,7 @@ namespace TagTool.Audio.Converter
 
         public IMAADPCM(BlamSound blamSound)
         {
-            InitFile(blamSound.Data, Encoding.GetChannelCount(blamSound.Encoding), blamSound.SampleRate.GetSampleRateHz());
+            InitFile(blamSound.Data, blamSound.ChannelCount, blamSound.SampleRate);
         }
 
         public IMAADPCM(EndianReader reader)

@@ -14,6 +14,7 @@ using TagTool.Commands.Sounds;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Common.Logging;
+using TagTool.Audio.Utils;
 
 namespace TagTool.Porting.Gen3
 {
@@ -45,11 +46,9 @@ namespace TagTool.Porting.Gen3
             if (BlamSoundGestalt == null)
                 BlamSoundGestalt = PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
 
-            if (!File.Exists($@"{Program.TagToolDirectory}\Tools\ffmpeg.exe")
-            || !File.Exists($@"{Program.TagToolDirectory}\Tools\towav.exe")
-            || !File.Exists($@"{Program.TagToolDirectory}\Tools\xmadec.exe"))
+            if (!File.Exists($@"{Program.TagToolDirectory}\Tools\ffmpeg.exe"))
             {
-                Log.Error("Failed to locate sound conversion tools. Please install ffmpeg, towav and xmadec in the Tools folder.");
+                Log.Error("Failed to locate sound conversion tools. Please install ffmpeg in the Tools folder.");
                 return null;
             }
 
@@ -57,10 +56,7 @@ namespace TagTool.Porting.Gen3
                 onExecute: () =>
                 {
                     SoundConversionResult result;
-                    if (sound.SoundReference == null)
-                        result = ConvertSoundInternalTagsBuild(sound, blamTag_Name);
-                    else
-                        result = ConvertSoundInternal(sound, blamTag_Name);
+                    result = ConvertSoundInternal(sound, blamTag_Name);
 
                     return result;
                 },
@@ -75,64 +71,6 @@ namespace TagTool.Porting.Gen3
                 });
 
             return sound;
-        }
-
-        private SoundConversionResult ConvertSoundInternalTagsBuild(Sound sound, string blamTag_Name)
-        {
-            var newData = new MemoryStream();
-
-            var result = new SoundConversionResult();
-            result.Definition = sound;
-            var resourceReference = sound.GetResource(BlamCache.Version, BlamCache.Platform);
-            var soundResource = BlamCache.ResourceCache.GetSoundResourceDefinition(resourceReference);
-            if(soundResource == null)
-                return null;
-
-            var useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
-            var soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
-
-            byte[] xmaData = null;
-            if (soundResource != null)
-            {
-                xmaData = soundResource.Data.Data;
-                if (xmaData == null)
-                    return null;
-            }
-
-            var targetFormat = Options.AudioCodec;
-
-
-            for (int pitchRangeIndex = 0; pitchRangeIndex < sound.PitchRanges.Count; pitchRangeIndex++)
-            {
-                var pitchRange = sound.PitchRanges[pitchRangeIndex];
-                pitchRange.RuntimePermutationFlags = -1;
-                pitchRange.RuntimeDiscardedPermutationIndex = -1;
-                pitchRange.PermutationCount = (short)pitchRange.Permutations.Count;
-                pitchRange.RuntimeLastPermutationIndex = -1;
-
-                for (int permutationIndex = 0; permutationIndex < pitchRange.Permutations.Count; permutationIndex++)
-                {
-                    var permutation = pitchRange.Permutations[permutationIndex];
-
-                    BlamSound blamSound = SoundConverter.ConvertGen3Sound(BlamCache, null, sound, pitchRangeIndex, permutationIndex, xmaData, targetFormat, useCache, soundCachePath, blamTag_Name);
-                    byte[] permutationData = blamSound.Data;
-                    permutation.SampleCount = blamSound.SampleCount;
-                    permutation.FirstSample = blamSound.FirstSample;
-                    permutation.PermutationChunks = new List<PermutationChunk>();
-                    permutation.PermutationChunks.Add(new PermutationChunk((int)newData.Position, permutationData.Length, permutation.FirstSample + permutation.SampleCount, permutation.FirstSample));
-                    newData.Write(permutationData, 0, permutationData.Length);
-                }
-            }
-
-            if(CacheVersionDetection.GetGameTitle(BlamCache.Version) == GameTitle.HaloReach)
-            {
-                sound.Flags = sound.FlagsReach.ConvertLexical<Sound.FlagsValue>();
-                sound.Playback = ConvertPlaybackReach(sound.Playback);
-            }
-                
-            sound.PlatformCodec.Compression = targetFormat;
-            result.Data = newData.ToArray();
-            return result;
         }
 
         private SoundConversionResult ConvertSoundInternal(Sound sound, string blamTag_Name)
@@ -177,21 +115,6 @@ namespace TagTool.Porting.Gen3
             //
             // Process all the pitch ranges
             //
-
-            var xmaFileSize = BlamSoundGestalt.GetFileSize(sound.SoundReference.PitchRangeIndex, sound.SoundReference.PitchRangeCount, BlamCache.Platform);
-
-            if (xmaFileSize < 0)
-                return null;
-
-            var soundResource = BlamCache.ResourceCache.GetSoundResourceDefinition(sound.GetResource(BlamCache.Version, BlamCache.Platform));
-
-            byte[] xmaData = null;
-            if (soundResource != null)
-            {
-                xmaData = soundResource.Data.Data;
-                if (xmaData == null)
-                    return null;
-            }
 
             sound.PitchRanges = new List<PitchRange>(sound.SoundReference.PitchRangeCount);
 
@@ -243,8 +166,35 @@ namespace TagTool.Porting.Gen3
                 for (int i = 0; i < permutationCount; i++)
                 {
                     var permutationIndex = BlamSoundGestalt.GetFirstPermutationIndex(pitchRangeIndex, BlamCache.Platform) + i;
-
                     var permutation = BlamSoundGestalt.GetPermutation(permutationIndex).DeepClone();
+
+                    BlamSound blamSound = null;
+
+                    if (useCache)
+                    {
+                        int sampleRate = platformCodec.SampleRate.GetSampleRateHz();
+                        int channelCount = Encoding.GetChannelCount(platformCodec.Encoding);
+                        blamSound = AudioCache.Load(soundCachePath, BlamCache.Version, blamTag_Name, relativePitchRangeIndex, i, targetFormat, sampleRate, permutation.SampleCount, channelCount);
+                    }
+
+                    if (blamSound == null)
+                    {
+                        blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)BlamCache, BlamSoundGestalt, sound, relativePitchRangeIndex, i);
+                        blamSound = AudioConverter.Convert(blamSound, targetFormat);
+                        if (useCache)
+                        {
+                            AudioCache.Store(soundCachePath, BlamCache.Version, blamTag_Name, relativePitchRangeIndex, i, blamSound);
+                        }
+                    }
+
+                    byte[] permutationData = blamSound.Data;
+                    permutation.SampleCount = blamSound.SampleCount;
+
+                    if (targetFormat == Compression.PCM)
+                    {
+                        // FMOD requires that we add 16 bytes of padding on either side
+                        permutationData = AudioUtils.Pad(permutationData, 16);
+                    }
 
                     result.PostConversionOperations.Add(() => permutation.ImportName = ConvertStringId(BlamSoundGestalt.ImportNames[permutation.ImportNameIndex].Name));
                     permutation.SkipFraction = permutation.EncodedSkipFraction / 32767.0f;
@@ -252,12 +202,6 @@ namespace TagTool.Porting.Gen3
                     permutation.PermutationChunks = new List<PermutationChunk>();
                     permutation.PermutationNumber = (uint)permutationOrder[i];
                     permutation.IsNotFirstPermutation = (uint)(permutation.PermutationNumber == 0 ? 0 : 1);
-
-                    BlamSound blamSound = SoundConverter.ConvertGen3Sound(BlamCache, BlamSoundGestalt, sound, relativePitchRangeIndex, i, xmaData, targetFormat, useCache, soundCachePath, blamTag_Name);
-
-                    byte[] permutationData = blamSound.Data;
-                    permutation.SampleCount = blamSound.SampleCount;
-                    permutation.FirstSample = blamSound.FirstSample;
 
                     // fixup dialog indices, might need more work
                     var firstPermutationChunk = BlamSoundGestalt.GetFirstPermutationChunk(permutationIndex);
