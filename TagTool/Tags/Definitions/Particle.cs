@@ -66,7 +66,7 @@ namespace TagTool.Tags.Definitions
         public ParticlePropertyScalar Intensity;
         public ParticlePropertyScalar Alpha;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public AnimationFlagsValueHO AnimationFlagsHO;
 
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
@@ -209,7 +209,7 @@ namespace TagTool.Tags.Definitions
             None = 0,
             FrameAnimationOneShot = 1 << 0,
             CanAnimateBackwards = 1 << 1,
-            UnknownBit = 1 << 2 // not used in the shader
+            HasConstantFrameIndex = 1 << 2 // not used in the shader
         }
 
         [Flags]
@@ -219,7 +219,7 @@ namespace TagTool.Tags.Definitions
             FrameAnimationOneShot = 1 << 0,
             CanAnimateBackwards = 1 << 1,
             NoLoop = 1 << 2, // s3d
-            UnknownBit = 1 << 3 // not used in the shader
+            HasConstantFrameIndex = 1 << 3 // not used in the shader
         }
 
         [TagStructure(Size = 0x10)]
