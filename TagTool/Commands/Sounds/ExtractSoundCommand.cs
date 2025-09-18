@@ -116,8 +116,8 @@ namespace TagTool.Commands.Sounds
                 case CacheGeneration.Third:
                     ExportGen3Sound(outDirectory, targetFormat, converterOptions);
                     break;
-                case CacheGeneration.HaloOnline:
-                    ExportHaloOnlineSound(outDirectory, targetFormat, converterOptions);
+                case CacheGeneration.Eldorado:
+                    ExportEldoradoSound(outDirectory, targetFormat, converterOptions);
                     break;
                 default:
                     throw new NotSupportedException("Cache not supported");
@@ -170,7 +170,7 @@ namespace TagTool.Commands.Sounds
             }
         }
 
-        private void ExportHaloOnlineSound(string outDirectory, Compression? targetFormat, AudioConverter.ConverterOptions converterOptions)
+        private void ExportEldoradoSound(string outDirectory, Compression? targetFormat, AudioConverter.ConverterOptions converterOptions)
         {
             for (int pitchRangeIndex = 0; pitchRangeIndex < Definition.PitchRanges.Count; pitchRangeIndex++)
             {
@@ -178,7 +178,7 @@ namespace TagTool.Commands.Sounds
 
                 for (int permutationIndex = 0; permutationIndex < range.Permutations.Count; permutationIndex++)
                 {
-                    BlamSound blamSound = SoundExtractorHO.ExtractSound((GameCacheHaloOnlineBase)Cache, Definition, pitchRangeIndex, permutationIndex);
+                    BlamSound blamSound = SoundExtractorEldorado.ExtractSound((GameCacheEldoradoBase)Cache, Definition, pitchRangeIndex, permutationIndex);
                     if (targetFormat != null)
                         blamSound = AudioConverter.Convert(blamSound, targetFormat.Value, converterOptions);
 

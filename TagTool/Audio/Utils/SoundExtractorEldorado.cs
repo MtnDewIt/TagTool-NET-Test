@@ -4,12 +4,12 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Audio.Utils
 {
-    public static class SoundExtractorHO
+    public static class SoundExtractorEldorado
     {
         /// <summary>
         /// Extracts raw sound data for a given permutation
         /// </summary>
-        public static BlamSound ExtractSound(GameCacheHaloOnlineBase cache, Sound sound, int pitchRangeIndex, int permutationIndex)
+        public static BlamSound ExtractSound(GameCacheEldoradoBase cache, Sound sound, int pitchRangeIndex, int permutationIndex)
         {
             PitchRange pitchRange = sound.PitchRanges[pitchRangeIndex];
             Permutation permutation = pitchRange.Permutations[permutationIndex];

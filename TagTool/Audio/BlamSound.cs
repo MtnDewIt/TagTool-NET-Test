@@ -1,4 +1,6 @@
-﻿namespace TagTool.Audio
+﻿using System;
+
+namespace TagTool.Audio
 {
     public class BlamSound
     {
