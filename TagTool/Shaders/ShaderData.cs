@@ -9,9 +9,9 @@ namespace TagTool.Shaders
 	{
         public byte[] Unknown1;
         public byte[] PcCompiledShader;
-        public List<ShaderParameter> XboxParameters;
+        public List<RasterizerConstantBlock> XboxParameters;
         public uint Unknown2;
-        public List<ShaderParameter> PcParameters;
+        public List<RasterizerConstantBlock> PcParameters;
         public StringId Unknown3;
         public uint Unknown4;
         public uint XboxShaderAddress;

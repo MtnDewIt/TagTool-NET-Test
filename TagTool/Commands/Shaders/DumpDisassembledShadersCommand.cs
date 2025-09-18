@@ -152,16 +152,16 @@ namespace TagTool.Commands.Shaders
                             {
                                 CurrentEntryPointIndex = GetEntryPointIndex(entry, cache.Version);
 
-                                if (CurrentEntryPointIndex < pixl.EntryPointShaders.Count)
+                                if (CurrentEntryPointIndex < pixl.EntryPoints.Count)
                                 {
-                                    var entryShader = pixl.EntryPointShaders[CurrentEntryPointIndex].Offset;
+                                    var entryShader = pixl.EntryPoints[CurrentEntryPointIndex].StartIndex;
 
-                                    if (pixl.EntryPointShaders[CurrentEntryPointIndex].Count != 0)
+                                    if (pixl.EntryPoints[CurrentEntryPointIndex].Count != 0)
                                     {
                                         string entryName = entry.ToString().ToLower() + ".pixel_shader";
                                         string pixelShaderFilename = Path.Combine(tagName, entryName);
 
-                                        DisassembleShader(pixl, entryShader, pixelShaderFilename, cache, stream, pixl.Shaders[entryShader].GlobalCachePixelShaderIndex != -1 ? gpix : null);
+                                        DisassembleShader(pixl, entryShader, pixelShaderFilename, cache, stream, pixl.CompiledShaders[entryShader].CompiledShaderSplut.GlobalCachePixelShaderIndex != -1 ? gpix : null);
                                     }
                                 }
                             }
@@ -188,7 +188,7 @@ namespace TagTool.Commands.Shaders
                                 string entryName = entry.ToString().ToLower() + ".shared_pixel_shader";
                                 string pixelShaderFilename = Path.Combine(glpsTagName, entryName);
 
-                                DisassembleShader(glps, entryShader, pixelShaderFilename, cache, stream, glps.Shaders[entryShader].GlobalCachePixelShaderIndex != -1 ? gpix : null);
+                                DisassembleShader(glps, entryShader, pixelShaderFilename, cache, stream, glps.CompiledShaders[entryShader].CompiledShaderSplut.GlobalCachePixelShaderIndex != -1 ? gpix : null);
                             }
                             else if (glps.EntryPoints[CurrentEntryPointIndex].CategoryDependency.Count > 0)
                             {
@@ -200,7 +200,7 @@ namespace TagTool.Commands.Shaders
                                         var optionIndex = i;
                                         string glpsFilename = entry.ToString().ToLower() + $"_{methodIndex}_{optionIndex}" + ".shared_pixel_shader";
                                         glpsFilename = Path.Combine(glpsTagName, glpsFilename);
-                                        DisassembleShader(glps, option.OptionDependency[i].CompiledShaderIndex, glpsFilename, cache, stream, glps.Shaders[option.OptionDependency[i].CompiledShaderIndex].GlobalCachePixelShaderIndex != -1 ? gpix : null);
+                                        DisassembleShader(glps, option.OptionDependency[i].CompiledShaderIndex, glpsFilename, cache, stream, glps.CompiledShaders[option.OptionDependency[i].CompiledShaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex != -1 ? gpix : null);
                                     }
                                 }
                             }
@@ -289,16 +289,16 @@ namespace TagTool.Commands.Shaders
                             {
                                 CurrentEntryPointIndex = GetEntryPointIndex(entry, cache.Version);
 
-                                if (pixl.EntryPointShaders.Count <= CurrentEntryPointIndex)
+                                if (pixl.EntryPoints.Count <= CurrentEntryPointIndex)
                                     break;
 
-                                for (int j = 0; j < pixl.EntryPointShaders[CurrentEntryPointIndex].Count; j++)
+                                for (int j = 0; j < pixl.EntryPoints[CurrentEntryPointIndex].Count; j++)
                                 {
-                                    int shaderIndex = pixl.EntryPointShaders[CurrentEntryPointIndex].Offset + j;
+                                    int shaderIndex = pixl.EntryPoints[CurrentEntryPointIndex].StartIndex + j;
                                     string entryName = shaderIndex + "_" + entry.ToString().ToLower() + ".pixel_shader";
                                     string pixelShaderFilename = Path.Combine("explicit\\" + shaderName, entryName);
 
-                                    DisassembleShader(pixl, shaderIndex, pixelShaderFilename, cache, stream, pixl.Shaders[shaderIndex].GlobalCachePixelShaderIndex != -1 ? gpix : null);
+                                    DisassembleShader(pixl, shaderIndex, pixelShaderFilename, cache, stream, pixl.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex != -1 ? gpix : null);
                                 }
                             }
 
@@ -321,11 +321,11 @@ namespace TagTool.Commands.Shaders
                                 if (vtsh.EntryPoints.Count <= CurrentEntryPointIndex)
                                     break;
 
-                                for (int j = 0; j < vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes.Count; j++)
+                                for (int j = 0; j < vtsh.EntryPoints[CurrentEntryPointIndex].VertexTypes.Count; j++)
                                 {
-                                    for (int k = 0; k < vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes[j].Count; k++)
+                                    for (int k = 0; k < vtsh.EntryPoints[CurrentEntryPointIndex].VertexTypes[j].Count; k++)
                                     {
-                                        int shaderIndex = vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes[j].Offset + k;
+                                        int shaderIndex = vtsh.EntryPoints[CurrentEntryPointIndex].VertexTypes[j].StartIndex + k;
 
                                         var dirName = Path.Combine("explicit\\" + shaderName + "\\", ((VertexType)k).ToString().ToLower() + "\\");
 
@@ -372,16 +372,16 @@ namespace TagTool.Commands.Shaders
                                 {
                                     CurrentEntryPointIndex = GetEntryPointIndex(entry, cache.Version);
 
-                                    if (pixl.EntryPointShaders.Count <= CurrentEntryPointIndex)
+                                    if (pixl.EntryPoints.Count <= CurrentEntryPointIndex)
                                         break;
 
-                                    for (int j = 0; j < pixl.EntryPointShaders[CurrentEntryPointIndex].Count; j++)
+                                    for (int j = 0; j < pixl.EntryPoints[CurrentEntryPointIndex].Count; j++)
                                     {
-                                        int shaderIndex = pixl.EntryPointShaders[CurrentEntryPointIndex].Offset + j;
+                                        int shaderIndex = pixl.EntryPoints[CurrentEntryPointIndex].StartIndex + j;
                                         string entryName = shaderIndex + "_" + entry.ToString().ToLower() + ".pixel_shader";
                                         string pixelShaderFilename = Path.Combine("chud\\" + shaderName, entryName);
 
-                                        DisassembleShader(pixl, shaderIndex, pixelShaderFilename, cache, stream, pixl.Shaders[shaderIndex].GlobalCachePixelShaderIndex != -1 ? gpix : null);
+                                        DisassembleShader(pixl, shaderIndex, pixelShaderFilename, cache, stream, pixl.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex != -1 ? gpix : null);
                                     }
                                 }
 
@@ -404,11 +404,11 @@ namespace TagTool.Commands.Shaders
                                     if (vtsh.EntryPoints.Count <= CurrentEntryPointIndex)
                                         break;
 
-                                    for (int j = 0; j < vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes.Count; j++)
+                                    for (int j = 0; j < vtsh.EntryPoints[CurrentEntryPointIndex].VertexTypes.Count; j++)
                                     {
-                                        for (int k = 0; k < vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes[j].Count; k++)
+                                        for (int k = 0; k < vtsh.EntryPoints[CurrentEntryPointIndex].VertexTypes[j].Count; k++)
                                         {
-                                            int shaderIndex = vtsh.EntryPoints[CurrentEntryPointIndex].SupportedVertexTypes[j].Offset + k;
+                                            int shaderIndex = vtsh.EntryPoints[CurrentEntryPointIndex].VertexTypes[j].StartIndex + k;
 
                                             var dirName = Path.Combine("chud\\" + shaderName + "\\", ((VertexType)k).ToString().ToLower() + "\\");
 
@@ -440,21 +440,21 @@ namespace TagTool.Commands.Shaders
                 switch (definition)
                 {
                     case PixelShader pixl:
-                        if (pixl.Shaders[shaderIndex].XboxShaderReference != null ||
-                            (cache.Version >= CacheVersion.HaloReach && pixl.Shaders[shaderIndex].GlobalCachePixelShaderIndex != -1))
+                        if (pixl.CompiledShaders[shaderIndex].RuntimeShader != null ||
+                            (cache.Version >= CacheVersion.HaloReach && pixl.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex != -1))
                             break;
                         return "NO DATA";
                     case VertexShader vtsh:
-                        if (vtsh.Shaders[shaderIndex].XboxShaderReference != null)
+                        if (vtsh.CompiledShaders[shaderIndex].RuntimeShader != null)
                             break;
                         return "NO DATA";
                     case GlobalPixelShader glps:
-                        if (glps.Shaders[shaderIndex].XboxShaderReference != null ||
-                            (cache.Version >= CacheVersion.HaloReach && glps.Shaders[shaderIndex].GlobalCachePixelShaderIndex != -1))
+                        if (glps.CompiledShaders[shaderIndex].RuntimeShader != null ||
+                            (cache.Version >= CacheVersion.HaloReach && glps.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex != -1))
                             break;
                         return "NO DATA";
                     case GlobalVertexShader glvs:
-                        if (glvs.Shaders[shaderIndex].XboxShaderReference != null)
+                        if (glvs.CompiledShaders[shaderIndex].RuntimeShader != null)
                             break;
                         return "NO DATA";
                 }
@@ -561,47 +561,47 @@ namespace TagTool.Commands.Shaders
             switch (definition)
             {
                 case PixelShader pixl:
-                    if (gpix == null && shaderIndex < pixl.Shaders.Count)
+                    if (gpix == null && shaderIndex < pixl.CompiledShaders.Count)
                     {
-                        PixelShaderBlock shaderBlock = pixl.Shaders[shaderIndex];
-                        bool containsConstants = shaderBlock.PCConstantTable.Constants.Count > 0 || shaderBlock.XBoxConstantTable.Constants.Count > 0;
-                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.XboxShaderReference, isXbox ? shaderBlock.XBoxConstantTable.Constants : shaderBlock.PCConstantTable.Constants);
+                        CompiledPixelShaderBlock shaderBlock = pixl.CompiledShaders[shaderIndex];
+                        bool containsConstants = shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants.Count > 0 || shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants.Count > 0;
+                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.RuntimeShader, isXbox ? shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants : shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants);
                     }
                     else if (gpix != null)
                     {
-                        PixelShaderBlock shaderBlock = gpix.Shaders[pixl.Shaders[shaderIndex].GlobalCachePixelShaderIndex];
-                        bool containsConstants = shaderBlock.PCConstantTable.Constants.Count > 0 || shaderBlock.XBoxConstantTable.Constants.Count > 0;
-                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.XboxShaderReference, isXbox ? shaderBlock.XBoxConstantTable.Constants : shaderBlock.PCConstantTable.Constants);
+                        CompiledPixelShaderBlock shaderBlock = gpix.CompiledShaders[pixl.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex];
+                        bool containsConstants = shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants.Count > 0 || shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants.Count > 0;
+                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.RuntimeShader, isXbox ? shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants : shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants);
                     }
                     break;
                 case GlobalPixelShader glps:
-                    if (gpix == null && shaderIndex < glps.Shaders.Count)
+                    if (gpix == null && shaderIndex < glps.CompiledShaders.Count)
                     {
-                        PixelShaderBlock shaderBlock = glps.Shaders[shaderIndex];
-                        bool containsConstants = shaderBlock.PCConstantTable.Constants.Count > 0 || shaderBlock.XBoxConstantTable.Constants.Count > 0;
-                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.XboxShaderReference, isXbox ? shaderBlock.XBoxConstantTable.Constants : shaderBlock.PCConstantTable.Constants);
+                        CompiledPixelShaderBlock shaderBlock = glps.CompiledShaders[shaderIndex];
+                        bool containsConstants = shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants.Count > 0 || shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants.Count > 0;
+                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.RuntimeShader, isXbox ? shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants : shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants);
                     }
                     else if (gpix != null)
                     {
-                        PixelShaderBlock shaderBlock = gpix.Shaders[glps.Shaders[shaderIndex].GlobalCachePixelShaderIndex];
-                        bool containsConstants = shaderBlock.PCConstantTable.Constants.Count > 0 || shaderBlock.XBoxConstantTable.Constants.Count > 0;
-                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.XboxShaderReference, isXbox ? shaderBlock.XBoxConstantTable.Constants : shaderBlock.PCConstantTable.Constants);
+                        CompiledPixelShaderBlock shaderBlock = gpix.CompiledShaders[glps.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex];
+                        bool containsConstants = shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants.Count > 0 || shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants.Count > 0;
+                        return new CompiledShaderInfo(true, containsConstants, shaderBlock.RuntimeShader, isXbox ? shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants : shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants);
                     }
                     break;
                 case VertexShader vtsh:
-                    if (shaderIndex < vtsh.Shaders.Count)
+                    if (shaderIndex < vtsh.CompiledShaders.Count)
                     {
-                        VertexShaderBlock shaderBlock = vtsh.Shaders[shaderIndex];
-                        bool containsConstants = shaderBlock.PCConstantTable.Constants.Count > 0 || shaderBlock.XBoxConstantTable.Constants.Count > 0;
-                        return new CompiledShaderInfo(false, containsConstants, shaderBlock.XboxShaderReference, isXbox ? shaderBlock.XBoxConstantTable.Constants : shaderBlock.PCConstantTable.Constants);
+                        CompiledVertexShaderBlock shaderBlock = vtsh.CompiledShaders[shaderIndex];
+                        bool containsConstants = shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants.Count > 0 || shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants.Count > 0;
+                        return new CompiledShaderInfo(false, containsConstants, shaderBlock.RuntimeShader, isXbox ? shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants : shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants);
                     }
                     break;
                 case GlobalVertexShader glvs:
-                    if (shaderIndex < glvs.Shaders.Count)
+                    if (shaderIndex < glvs.CompiledShaders.Count)
                     {
-                        VertexShaderBlock shaderBlock = glvs.Shaders[shaderIndex];
-                        bool containsConstants = shaderBlock.PCConstantTable.Constants.Count > 0 || shaderBlock.XBoxConstantTable.Constants.Count > 0;
-                        return new CompiledShaderInfo(false, containsConstants, shaderBlock.XboxShaderReference, isXbox ? shaderBlock.XBoxConstantTable.Constants : shaderBlock.PCConstantTable.Constants);
+                        CompiledVertexShaderBlock shaderBlock = glvs.CompiledShaders[shaderIndex];
+                        bool containsConstants = shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants.Count > 0 || shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants.Count > 0;
+                        return new CompiledShaderInfo(false, containsConstants, shaderBlock.RuntimeShader, isXbox ? shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants : shaderBlock.CompiledShaderSplut.DX9ConstantTable.Constants);
                     }
                     break;
             }
@@ -616,8 +616,8 @@ namespace TagTool.Commands.Shaders
             if (!shaderInfo.ValidConstantTable && CurrentRmt2 != null)
                 shaderInfo.GenerateParametersFromTemplate(cache, stream, CurrentEntryPointIndex, CurrentRmt2, CurrentRmdf, CurrentOptionIndices);
 
-            List<ShaderParameter> parameters = shaderInfo.Parameters;
-            List<ShaderParameter> orderedParameters = shaderInfo.ReorderParameters();
+            List<RasterizerConstantBlock> parameters = shaderInfo.Parameters;
+            List<RasterizerConstantBlock> orderedParameters = shaderInfo.ReorderParameters();
             List<RealQuaternion> constants = shaderInfo.GetXboxShaderConstants();
 
             List<int> usedConstants = new List<int>();
@@ -636,8 +636,8 @@ namespace TagTool.Commands.Shaders
                 for (int i = 0; i < parameters.Count; i++)
                 {
                     var param = parameters[i];
-                    string paramName = cache.StringTable.GetString(parameters[i].ParameterName);
-                    WriteHeaderLine(writer, $"\t{GetTypeString(param.RegisterType, param.RegisterCount)} {paramName};");
+                    string paramName = cache.StringTable.GetString(parameters[i].ConstantName);
+                    WriteHeaderLine(writer, $"\t{GetTypeString(param.RegisterSet, param.RegisterCount)} {paramName};");
 
                     if (paramName.Length > regNameLength)
                         regNameLength = (uint)paramName.Length;
@@ -654,15 +654,15 @@ namespace TagTool.Commands.Shaders
                 {
                     var param = orderedParameters[i];
 
-                    if (param.RegisterType == ShaderParameter.RType.Vector)
+                    if (param.RegisterSet == RasterizerConstantBlock.RegisterSetValue.Float)
                     {
                         // store used registers to sort literal constants
                         for (int j = 0; j < param.RegisterCount; j++)
-                            usedConstants.Add(j + param.RegisterIndex);
+                            usedConstants.Add(j + param.RegisterStart);
                     }
 
-                    string name = cache.StringTable.GetString(orderedParameters[i].ParameterName).ToLength(regNameLength);
-                    string reg = GetRegisterString(param.RegisterType, param.RegisterIndex).ToLength(6);
+                    string name = cache.StringTable.GetString(orderedParameters[i].ConstantName).ToLength(regNameLength);
+                    string reg = GetRegisterString(param.RegisterSet, param.RegisterStart).ToLength(6);
                     string size = param.RegisterCount.ToString().ToLength(4);
 
                     WriteHeaderLine(writer, $"\t\t{name} {reg}{size}");
@@ -713,21 +713,21 @@ namespace TagTool.Commands.Shaders
             writer.WriteLine(result);
         }
 
-        private string GetRegisterString(ShaderParameter.RType type, int registerIndex)
+        private string GetRegisterString(RasterizerConstantBlock.RegisterSetValue type, int registerIndex)
         {
             string result = "";
             switch (type)
             {
-                case ShaderParameter.RType.Boolean:
+                case RasterizerConstantBlock.RegisterSetValue.Bool:
                     result = "b";
                     break;
-                case ShaderParameter.RType.Integer:
+                case RasterizerConstantBlock.RegisterSetValue.Int:
                     result = "i";
                     break;
-                case ShaderParameter.RType.Vector:
+                case RasterizerConstantBlock.RegisterSetValue.Float:
                     result = "c";
                     break;
-                case ShaderParameter.RType.Sampler:
+                case RasterizerConstantBlock.RegisterSetValue.Sampler:
                     result = "s";
                     break;
             }
@@ -735,23 +735,23 @@ namespace TagTool.Commands.Shaders
             return result;
         }
 
-        private string GetTypeString(ShaderParameter.RType type, int size)
+        private string GetTypeString(RasterizerConstantBlock.RegisterSetValue type, int size)
         {
             string result = "";
             switch (type)
             {
-                case ShaderParameter.RType.Boolean:
+                case RasterizerConstantBlock.RegisterSetValue.Bool:
                     result = "bool";
                     break;
-                case ShaderParameter.RType.Integer:
+                case RasterizerConstantBlock.RegisterSetValue.Int:
                     result = "integer";
                     break;
-                case ShaderParameter.RType.Vector:
+                case RasterizerConstantBlock.RegisterSetValue.Float:
                     result = "float4";
                     if (size > 1)
                         result += $"x{size}";
                     break;
-                case ShaderParameter.RType.Sampler:
+                case RasterizerConstantBlock.RegisterSetValue.Sampler:
                     result = "sampler2D";
                     break;
             }
@@ -764,12 +764,12 @@ namespace TagTool.Commands.Shaders
 
             if (definition.GetType() == typeof(PixelShader) || definition.GetType() == typeof(GlobalPixelShader))
             {
-                PixelShaderBlock shader_block = null;
+                CompiledPixelShaderBlock shader_block = null;
                 if (definition.GetType() == typeof(PixelShader))
                 {
                     var _definition = definition as PixelShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
@@ -777,13 +777,13 @@ namespace TagTool.Commands.Shaders
                 if (definition.GetType() == typeof(GlobalPixelShader))
                 {
                     var _definition = definition as GlobalPixelShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
 
-                var pc_shader = shader_block.PCShaderBytecode;
+                var pc_shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
                 disassembly = D3DCompiler.Disassemble(pc_shader);
                 if (pc_shader == null)
                     disassembly = null;
@@ -791,12 +791,12 @@ namespace TagTool.Commands.Shaders
 
             if (definition.GetType() == typeof(VertexShader) || definition.GetType() == typeof(GlobalVertexShader))
             {
-                VertexShaderBlock shader_block = null;
+                CompiledVertexShaderBlock shader_block = null;
                 if (definition.GetType() == typeof(VertexShader))
                 {
                     var _definition = definition as VertexShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
@@ -804,13 +804,13 @@ namespace TagTool.Commands.Shaders
                 if (definition.GetType() == typeof(GlobalVertexShader))
                 {
                     var _definition = definition as GlobalVertexShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
 
-                var pc_shader = shader_block.PCShaderBytecode;
+                var pc_shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
                 disassembly = D3DCompiler.Disassemble(pc_shader);
                 if (pc_shader == null)
                     disassembly = null;

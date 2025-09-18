@@ -88,64 +88,70 @@ namespace TagTool.Commands.Shaders
 
             if (typeof(T) == typeof(PixelShader) || typeof(T) == typeof(GlobalPixelShader))
             {
-                var shader_data_block = new PixelShaderBlock
+                var shader_data_block = new CompiledPixelShaderBlock
                 {
-                    PCShaderBytecode = bytecode
+                    CompiledShaderSplut = new RasterizerCompiledShader 
+                    {
+                        DX9CompiledShader = bytecode
+                    },
                 };
 
                 if (typeof(T) == typeof(PixelShader))
                 {
                     var _definition = Definition as PixelShader;
-                    var existing_block = _definition.Shaders[index];
-                    shader_data_block.PCConstantTable.Constants = existing_block.PCConstantTable.Constants;
+                    var existing_block = _definition.CompiledShaders[index];
+                    shader_data_block.CompiledShaderSplut.DX9ConstantTable.Constants = existing_block.CompiledShaderSplut.DX9ConstantTable.Constants;
 
-                    _definition.Shaders[index] = shader_data_block;
+                    _definition.CompiledShaders[index] = shader_data_block;
                 }
 
                 if (typeof(T) == typeof(GlobalPixelShader))
                 {
                     var _definition = Definition as GlobalPixelShader;
-                    var existing_block = _definition.Shaders[index];
-                    shader_data_block.PCConstantTable.Constants = existing_block.PCConstantTable.Constants;
+                    var existing_block = _definition.CompiledShaders[index];
+                    shader_data_block.CompiledShaderSplut.DX9ConstantTable.Constants = existing_block.CompiledShaderSplut.DX9ConstantTable.Constants;
 
-                    _definition.Shaders[index] = shader_data_block;
+                    _definition.CompiledShaders[index] = shader_data_block;
                 }
             }
 
             if (typeof(T) == typeof(VertexShader) || typeof(T) == typeof(GlobalVertexShader))
             {
                 
-                var shader_data_block = new VertexShaderBlock
+                var shader_data_block = new CompiledVertexShaderBlock
                 {
-                    PCShaderBytecode = bytecode
+                    CompiledShaderSplut = new RasterizerCompiledShader
+                    {
+                        DX9CompiledShader = bytecode
+                    },
                 };
 
                 if (typeof(T) == typeof(VertexShader))
                 {
                     var _definition = Definition as VertexShader;
-                    var existing_block = _definition.Shaders[index];
-                    shader_data_block.PCConstantTable.Constants = existing_block.PCConstantTable.Constants;
+                    var existing_block = _definition.CompiledShaders[index];
+                    shader_data_block.CompiledShaderSplut.DX9ConstantTable.Constants = existing_block.CompiledShaderSplut.DX9ConstantTable.Constants;
 
-                    _definition.Shaders[index] = shader_data_block;
+                    _definition.CompiledShaders[index] = shader_data_block;
                 }
 
                 if (typeof(T) == typeof(GlobalVertexShader))
                 {
                     var _definition = Definition as GlobalVertexShader;
-                    var existing_block = _definition.Shaders[index];
-                    shader_data_block.PCConstantTable = existing_block.PCConstantTable;
+                    var existing_block = _definition.CompiledShaders[index];
+                    shader_data_block.CompiledShaderSplut.DX9ConstantTable = existing_block.CompiledShaderSplut.DX9ConstantTable;
 
 
-                    _definition.Shaders[index] = shader_data_block;
+                    _definition.CompiledShaders[index] = shader_data_block;
                 }
             }
 
             return true;
 		}
 
-		public List<ShaderParameter> GetParamInfo(string assembly)
+		public List<RasterizerConstantBlock> GetParamInfo(string assembly)
 		{
-			var parameters = new List<ShaderParameter> { };
+			var parameters = new List<RasterizerConstantBlock> { };
 
 			using (StringReader reader = new StringReader(assembly))
 			{
@@ -167,11 +173,11 @@ namespace TagTool.Commands.Shaders
 					if (!string.IsNullOrEmpty(line))
 					{
 						var split = line.Split(' ');
-                        parameters.Add(new ShaderParameter
+                        parameters.Add(new RasterizerConstantBlock
                         {
-                            ParameterName = Cache.StringTable.GetStringId(split[0]),
-                            RegisterType = (ShaderParameter.RType)Enum.Parse(typeof(ShaderParameter.RType), split[1][0].ToString()),
-                            RegisterIndex = byte.Parse(split[1].Substring(1)),
+                            ConstantName = Cache.StringTable.GetStringId(split[0]),
+                            RegisterSet = (RasterizerConstantBlock.RegisterSetValue)Enum.Parse(typeof(RasterizerConstantBlock.RegisterSetValue), split[1][0].ToString()),
+                            RegisterStart = byte.Parse(split[1].Substring(1)),
                             RegisterCount = byte.Parse(split[2])
                         });
 					}

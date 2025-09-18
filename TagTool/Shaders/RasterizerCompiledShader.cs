@@ -6,28 +6,27 @@ namespace TagTool.Shaders
 {
     [TagStructure(Size = 0x90, Align = 0x8, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0x98, Align = 0x8, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)] // might not be correct
-    public class ComputeShaderBlock : TagStructure
+    [TagStructure(Size = 0x50, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x58, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+    public class RasterizerCompiledShader : TagStructure
     {
-        [TagField(MinVersion = Cache.CacheVersion.HaloReach)]
+        [TagField(MinVersion = CacheVersion.HaloReach)]
         public CompiledShaderFlags Flags;
 
-        // bytecode and constant tables are two separate arrays indexed by platform
-        public byte[] XboxShaderBytecode;
-        public byte[] PCShaderBytecode;
+        public byte[] XenonCompiledShader;
+        public byte[] DX9CompiledShader;
         [TagField(Platform = CachePlatform.MCC)]
-        public byte[] DurangoShaderBytecode;
+        public byte[] DurangoCompiledShader;
 
-        public ShaderConstantTable XBoxConstantTable;
-        public ShaderConstantTable PCConstantTable;
+        public GlobalRasterizerConstantTable XenonConstantTable;
+        public GlobalRasterizerConstantTable DX9ConstantTable;
         [TagField(Platform = CachePlatform.MCC)]
-        public ShaderConstantTable DurangoConstantTable;
+        public GlobalRasterizerConstantTable DurangoConstantTable;
 
         public uint Gprs;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public int GlobalCachePixelShaderIndex;
-
-        public ComputeShaderReference XboxShaderReference;
 
         [Flags]
         public enum CompiledShaderFlags : uint

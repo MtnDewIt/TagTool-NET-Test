@@ -8,7 +8,7 @@ namespace TagTool.Tags.Definitions
 	{
         public List<EntryPointBlock> EntryPoints;
         public uint Version;
-        public List<PixelShaderBlock> Shaders;
+        public List<CompiledPixelShaderBlock> CompiledShaders;
 
         [TagStructure(Size = 0x10, Platform = Cache.CachePlatform.Original)]
         [TagStructure(Size = 0x14, MaxVersion = Cache.CacheVersion.Halo3Retail, Platform = Cache.CachePlatform.MCC)]

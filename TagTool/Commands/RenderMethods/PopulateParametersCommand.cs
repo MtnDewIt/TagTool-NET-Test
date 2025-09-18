@@ -69,14 +69,14 @@ namespace TagTool.Commands.RenderMethods
                 if (pixelRegisterNames[0] != "none")
                     foreach (var pixelRegisterName in pixelRegisterNames)
                     {
-                        foreach (var shader in pixl.Shaders)
+                        foreach (var shader in pixl.CompiledShaders)
                         {
                             bool canBreak = false;
 
-                            foreach (var PCParameter in shader.PCConstantTable.Constants)
-                                if (PCParameter.RegisterType == TagTool.Shaders.ShaderParameter.RType.Vector && Cache.StringTable.GetString(PCParameter.ParameterName) == pixelRegisterName)
+                            foreach (var PCParameter in shader.CompiledShaderSplut.DX9ConstantTable.Constants)
+                                if (PCParameter.RegisterSet == TagTool.Shaders.RasterizerConstantBlock.RegisterSetValue.Float && Cache.StringTable.GetString(PCParameter.ConstantName) == pixelRegisterName)
                                 {
-                                    PixelRegisterPairings.Add(PCParameter.RegisterIndex, pixelRegisterName);
+                                    PixelRegisterPairings.Add(PCParameter.RegisterStart, pixelRegisterName);
                                     canBreak = true;
                                     break;
                                 }
@@ -89,14 +89,14 @@ namespace TagTool.Commands.RenderMethods
                 if (vertexRegisterNames[0] != "none")
                     foreach (var vertexRegisterName in vertexRegisterNames)
                     {
-                        foreach (var shader in glvs.Shaders)
+                        foreach (var shader in glvs.CompiledShaders)
                         {
                             bool canBreak = false;
 
-                            foreach (var PCParameter in shader.PCConstantTable.Constants)
-                                if (PCParameter.RegisterType == TagTool.Shaders.ShaderParameter.RType.Vector && Cache.StringTable.GetString(PCParameter.ParameterName) == vertexRegisterName)
+                            foreach (var PCParameter in shader.CompiledShaderSplut.DX9ConstantTable.Constants)
+                                if (PCParameter.RegisterSet == TagTool.Shaders.RasterizerConstantBlock.RegisterSetValue.Float && Cache.StringTable.GetString(PCParameter.ConstantName) == vertexRegisterName)
                                 {
-                                    VertexRegisterPairings.Add(PCParameter.RegisterIndex, vertexRegisterName);
+                                    VertexRegisterPairings.Add(PCParameter.RegisterStart, vertexRegisterName);
                                     canBreak = true;
                                     break;
                                 }

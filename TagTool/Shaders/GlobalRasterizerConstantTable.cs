@@ -6,15 +6,19 @@ namespace TagTool.Shaders
 {
     [TagStructure(Size = 0x10, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x18, Platform = CachePlatform.MCC)]
-    public class ShaderConstantTable : TagStructure
+    public class GlobalRasterizerConstantTable : TagStructure
     {
-        public List<ShaderParameter> Constants;
+        public List<RasterizerConstantBlock> Constants;
+
         [TagField(Platform = CachePlatform.MCC)]
         public uint ParameterBufferSize;
+
         [TagField(Platform = CachePlatform.MCC)]
         public uint ExternParameterBufferSize;
-        public ShaderType ShaderType;
+
+        public ShaderType Type;
+
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x3)]
-        public byte[] Padding0;
+        public byte[] Qersaui;
     }
 }

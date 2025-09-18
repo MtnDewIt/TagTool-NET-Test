@@ -267,18 +267,18 @@ namespace TagTool.Commands.Shaders
                 if (rmt2.PixelShader.Name == null || rmt2.PixelShader.Name == "")
                     Log.Warning($"pixel_shader {rmt2.PixelShader.Index:X16} has no name");
 
-                for (int i = 0; i < pixl.EntryPointShaders.Count; i++)
+                for (int i = 0; i < pixl.EntryPoints.Count; i++)
                 {
                     bool entryNeeded = rmdf.EntryPoints.Any(x => (int)x.EntryPoint == i) && 
                         (glps.EntryPoints[i].DefaultCompiledShaderIndex == -1 && glps.EntryPoints[i].CategoryDependency.Count == 0);
 
-                    if (pixl.EntryPointShaders[i].Count > 0 && !entryNeeded)
+                    if (pixl.EntryPoints[i].Count > 0 && !entryNeeded)
                         Log.Warning($"{rmt2.PixelShader.Name} has unneeded entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
-                    if (pixl.EntryPointShaders[i].Count == 0 && entryNeeded)
+                    if (pixl.EntryPoints[i].Count == 0 && entryNeeded)
                         Log.Warning($"{rmt2.PixelShader.Name} missing entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
-                    if (pixl.EntryPointShaders[i].Count > 0 && pixl.EntryPointShaders[i].Offset >= pixl.Shaders.Count)
+                    if (pixl.EntryPoints[i].Count > 0 && pixl.EntryPoints[i].StartIndex >= pixl.CompiledShaders.Count)
                         Log.Warning($"{rmt2.PixelShader.Name} has invalid compiled shader indices {i}");
                 }
             }

@@ -133,14 +133,14 @@ namespace TagTool.Commands.Shaders
                 if (typeof(T) == typeof(PixelShader) || typeof(T) == typeof(GlobalPixelShader))
                 {
                     xsdArguments = "/rawps" + xsdArguments;
-                    PixelShaderBlock shaderBlock = null;
+                    CompiledPixelShaderBlock shaderBlock = null;
                     if (typeof(T) == typeof(PixelShader))
                     {
                         var _definition = Definition as PixelShader;
-                        if (gpix == null && shaderIndex < _definition.Shaders.Count)
-                            shaderBlock = _definition.Shaders[shaderIndex];
+                        if (gpix == null && shaderIndex < _definition.CompiledShaders.Count)
+                            shaderBlock = _definition.CompiledShaders[shaderIndex];
                         else if (gpix != null)
-                            shaderBlock = gpix.Shaders[_definition.Shaders[shaderIndex].GlobalCachePixelShaderIndex];
+                            shaderBlock = gpix.CompiledShaders[_definition.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex];
                         else
                             return null;
                     }
@@ -148,26 +148,26 @@ namespace TagTool.Commands.Shaders
                     if (typeof(T) == typeof(GlobalPixelShader))
                     {
                         var _definition = Definition as GlobalPixelShader;
-                        if (shaderIndex < _definition.Shaders.Count)
-                            shaderBlock = _definition.Shaders[shaderIndex];
+                        if (shaderIndex < _definition.CompiledShaders.Count)
+                            shaderBlock = _definition.CompiledShaders[shaderIndex];
                         else
                             return null;
                     }
 
-                    microcode = shaderBlock.XboxShaderReference.ShaderData;
-                    debugData = shaderBlock.XboxShaderReference.DebugData;
-                    constantData = shaderBlock.XboxShaderReference.ConstantData;
+                    microcode = shaderBlock.RuntimeShader.ShaderData;
+                    debugData = shaderBlock.RuntimeShader.DebugData;
+                    constantData = shaderBlock.RuntimeShader.ConstantData;
                 }
 
                 if (typeof(T) == typeof(VertexShader) || typeof(T) == typeof(GlobalVertexShader))
                 {
                     xsdArguments = "/rawvs" + xsdArguments;
-                    VertexShaderBlock shaderBlock = null;
+                    CompiledVertexShaderBlock shaderBlock = null;
                     if (typeof(T) == typeof(VertexShader))
                     {
                         var _definition = Definition as VertexShader;
-                        if (shaderIndex < _definition.Shaders.Count)
-                            shaderBlock = _definition.Shaders[shaderIndex];
+                        if (shaderIndex < _definition.CompiledShaders.Count)
+                            shaderBlock = _definition.CompiledShaders[shaderIndex];
                         else
                             return null;
                     }
@@ -175,15 +175,15 @@ namespace TagTool.Commands.Shaders
                     if (typeof(T) == typeof(GlobalVertexShader))
                     {
                         var _definition = Definition as GlobalVertexShader;
-                        if (shaderIndex < _definition.Shaders.Count)
-                            shaderBlock = _definition.Shaders[shaderIndex];
+                        if (shaderIndex < _definition.CompiledShaders.Count)
+                            shaderBlock = _definition.CompiledShaders[shaderIndex];
                         else
                             return null;
                     }
 
-                    microcode = shaderBlock.XboxShaderReference.ShaderData;
-                    debugData = shaderBlock.XboxShaderReference.DebugData;
-                    constantData = shaderBlock.XboxShaderReference.ConstantData;
+                    microcode = shaderBlock.RuntimeShader.ShaderData;
+                    debugData = shaderBlock.RuntimeShader.DebugData;
+                    constantData = shaderBlock.RuntimeShader.ConstantData;
                 }
 
                 File.WriteAllBytes(tempFile, debugData);
@@ -222,12 +222,12 @@ namespace TagTool.Commands.Shaders
 
             if (typeof(T) == typeof(PixelShader) || typeof(T) == typeof(GlobalPixelShader))
             {
-                PixelShaderBlock shader_block = null;
+                CompiledPixelShaderBlock shader_block = null;
                 if (typeof(T) == typeof(PixelShader))
                 {
                     var _definition = Definition as PixelShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
@@ -235,13 +235,13 @@ namespace TagTool.Commands.Shaders
                 if (typeof(T) == typeof(GlobalPixelShader))
                 {
                     var _definition = Definition as GlobalPixelShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
 
-                var pc_shader = shader_block.PCShaderBytecode;
+                var pc_shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
                 disassembly = D3DCompiler.Disassemble(pc_shader);
                 if (pc_shader == null)
                     disassembly = null;
@@ -249,12 +249,12 @@ namespace TagTool.Commands.Shaders
 
             if (typeof(T) == typeof(VertexShader) || typeof(T) == typeof(GlobalVertexShader))
             {
-                VertexShaderBlock shader_block = null;
+                CompiledVertexShaderBlock shader_block = null;
                 if (typeof(T) == typeof(VertexShader))
                 {
                     var _definition = Definition as VertexShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
@@ -262,13 +262,13 @@ namespace TagTool.Commands.Shaders
                 if (typeof(T) == typeof(GlobalVertexShader))
                 {
                     var _definition = Definition as GlobalVertexShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return null;
                 }
 
-                var pc_shader = shader_block.PCShaderBytecode;
+                var pc_shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
                 disassembly = D3DCompiler.Disassemble(pc_shader);
                 if (pc_shader == null)
                     disassembly = null;
@@ -279,49 +279,49 @@ namespace TagTool.Commands.Shaders
 
         private void GenerateGen3ShaderHeader(int shaderIndex, StreamWriter writer, GlobalCacheFilePixelShaders gpix)
         {
-            List<ShaderParameter> parameters = null;
+            List<RasterizerConstantBlock> parameters = null;
             List<RealQuaternion> constants = new List<RealQuaternion>();
 
             if (typeof(T) == typeof(PixelShader) || typeof(T) == typeof(GlobalPixelShader))
             {
-                PixelShaderBlock shader_block = null;
+                CompiledPixelShaderBlock shader_block = null;
                 if (typeof(T) == typeof(PixelShader))
                 {
                     var _definition = Definition as PixelShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return;
 
-                    if (shader_block.XboxShaderReference == null && gpix != null)
-                        shader_block = gpix.Shaders[_definition.Shaders[shaderIndex].GlobalCachePixelShaderIndex];
+                    if (shader_block.RuntimeShader == null && gpix != null)
+                        shader_block = gpix.CompiledShaders[_definition.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex];
                 }
 
                 if (typeof(T) == typeof(GlobalPixelShader))
                 {
                     var _definition = Definition as GlobalPixelShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shader_block = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shader_block = _definition.CompiledShaders[shaderIndex];
                     else
                         return;
 
-                    if (shader_block.XboxShaderReference == null && gpix != null)
-                        shader_block = gpix.Shaders[_definition.Shaders[shaderIndex].GlobalCachePixelShaderIndex];
+                    if (shader_block.RuntimeShader == null && gpix != null)
+                        shader_block = gpix.CompiledShaders[_definition.CompiledShaders[shaderIndex].CompiledShaderSplut.GlobalCachePixelShaderIndex];
                 }
 
-                if (shader_block.XboxShaderReference != null)
-                    constants = GetShaderConstants(shader_block.XboxShaderReference.ConstantData);
-                parameters = shader_block.XBoxConstantTable.Constants;
+                if (shader_block.RuntimeShader != null)
+                    constants = GetShaderConstants(shader_block.RuntimeShader.ConstantData);
+                parameters = shader_block.CompiledShaderSplut.XenonConstantTable.Constants;
             }
 
             if (typeof(T) == typeof(VertexShader) || typeof(T) == typeof(GlobalVertexShader))
             {
-                VertexShaderBlock shaderBlock = null;
+                CompiledVertexShaderBlock shaderBlock = null;
                 if (typeof(T) == typeof(VertexShader))
                 {
                     var _definition = Definition as VertexShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shaderBlock = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shaderBlock = _definition.CompiledShaders[shaderIndex];
                     else
                         return;
                 }
@@ -329,21 +329,21 @@ namespace TagTool.Commands.Shaders
                 if (typeof(T) == typeof(GlobalVertexShader))
                 {
                     var _definition = Definition as GlobalVertexShader;
-                    if (shaderIndex < _definition.Shaders.Count)
-                        shaderBlock = _definition.Shaders[shaderIndex];
+                    if (shaderIndex < _definition.CompiledShaders.Count)
+                        shaderBlock = _definition.CompiledShaders[shaderIndex];
                     else
                         return;
                 }
 
-                if (shaderBlock.XboxShaderReference != null)
-                    constants = GetShaderConstants(shaderBlock.XboxShaderReference.ConstantData);
-                parameters = shaderBlock.XBoxConstantTable.Constants;
+                if (shaderBlock.RuntimeShader != null)
+                    constants = GetShaderConstants(shaderBlock.RuntimeShader.ConstantData);
+                parameters = shaderBlock.CompiledShaderSplut.XenonConstantTable.Constants;
             }
 
             List<string> parameterNames = new List<string>();
 
             for (int i = 0; i < parameters.Count; i++)
-                parameterNames.Add(Cache.StringTable.GetString(parameters[i].ParameterName));
+                parameterNames.Add(Cache.StringTable.GetString(parameters[i].ConstantName));
 
             WriteHeaderLine(writer);
             WriteHeaderLine(writer, "Generated by TagTool and Xbox Shader Disassembler");
@@ -353,7 +353,7 @@ namespace TagTool.Commands.Shaders
             for(int i = 0; i < parameters.Count; i++)
             {
                 var param = parameters[i];
-                WriteHeaderLine(writer, $"    {GetTypeString(param.RegisterType, param.RegisterCount)} {parameterNames[i]};");
+                WriteHeaderLine(writer, $"    {GetTypeString(param.RegisterSet, param.RegisterCount)} {parameterNames[i]};");
             }
             WriteHeaderLine(writer);
             WriteHeaderLine(writer);
@@ -363,7 +363,7 @@ namespace TagTool.Commands.Shaders
             for (int i = 0; i < parameters.Count; i++)
             {
                 var param = parameters[i];
-                WriteHeaderLine(writer, $"    {parameterNames[i]} {GetRegisterString(param.RegisterType, param.RegisterIndex)} {param.RegisterCount}");
+                WriteHeaderLine(writer, $"    {parameterNames[i]} {GetRegisterString(param.RegisterSet, param.RegisterStart)} {param.RegisterCount}");
             }
             WriteHeaderLine(writer);
             WriteHeaderLine(writer);
@@ -385,19 +385,19 @@ namespace TagTool.Commands.Shaders
             writer.WriteLine(result);
         }
 
-        private string GetRegisterString(ShaderParameter.RType type, int registerIndex)
+        private string GetRegisterString(RasterizerConstantBlock.RegisterSetValue type, int registerIndex)
         {
             string result = "";
             switch (type)
             {
-                case ShaderParameter.RType.Boolean:
+                case RasterizerConstantBlock.RegisterSetValue.Bool:
                     result = "b";
                     break;
-                case ShaderParameter.RType.Integer:
-                case ShaderParameter.RType.Vector:
+                case RasterizerConstantBlock.RegisterSetValue.Int:
+                case RasterizerConstantBlock.RegisterSetValue.Float:
                     result = "c";
                     break;
-                case ShaderParameter.RType.Sampler:
+                case RasterizerConstantBlock.RegisterSetValue.Sampler:
                     result = "s";
                     break;
             }
@@ -405,23 +405,23 @@ namespace TagTool.Commands.Shaders
             return result;
         }
 
-        private string GetTypeString(ShaderParameter.RType type, int size)
+        private string GetTypeString(RasterizerConstantBlock.RegisterSetValue type, int size)
         {
             string result = "";
             switch (type)
             {
-                case ShaderParameter.RType.Boolean:
+                case RasterizerConstantBlock.RegisterSetValue.Bool:
                     result = "bool";
                     break;
-                case ShaderParameter.RType.Integer:
+                case RasterizerConstantBlock.RegisterSetValue.Int:
                     result = "integer";
                     break;
-                case ShaderParameter.RType.Vector:
+                case RasterizerConstantBlock.RegisterSetValue.Float:
                     result = "float4";
                     if (size > 1)
                         result += $"x{size}";
                     break;
-                case ShaderParameter.RType.Sampler:
+                case RasterizerConstantBlock.RegisterSetValue.Sampler:
                     result = "sampler2D";
                     break;
             }

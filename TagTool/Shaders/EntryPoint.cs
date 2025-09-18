@@ -1,21 +1,22 @@
 ﻿using System;
+using TagTool.Cache;
 
 namespace TagTool.Shaders
 {
     public class EntryPointHelper
     {
-        static public uint GetEntryMask(Cache.CacheVersion version, Cache.CachePlatform platform, Tags.Definitions.RenderMethodTemplate template)
+        static public uint GetEntryMask(CacheVersion version, CachePlatform platform, Tags.Definitions.RenderMethodTemplate template)
         {
-            if (version <= Cache.CacheVersion.Eldorado235640 && platform == Cache.CachePlatform.Original || 
-                version <= Cache.CacheVersion.Halo3Retail && platform == Cache.CachePlatform.MCC)
+            if (version <= CacheVersion.Eldorado235640 && platform == CachePlatform.Original || 
+                version <= CacheVersion.Halo3Retail && platform == CachePlatform.MCC)
                 return (uint)template.ValidEntryPoints;
-            if (version >= Cache.CacheVersion.Eldorado301003 && version <= Cache.CacheVersion.Eldorado700123 && platform == Cache.CachePlatform.Original)
+            if (version >= CacheVersion.Eldorado301003 && version <= CacheVersion.Eldorado700123 && platform == CachePlatform.Original)
                 return (uint)template.ValidEntryPointsHO;
-            if (version == Cache.CacheVersion.Halo3ODST && platform == Cache.CachePlatform.MCC)
+            if (version == CacheVersion.Halo3ODST && platform == CachePlatform.MCC)
                 return (uint)template.ValidEntryPointsMCC;
-            if (version >= Cache.CacheVersion.HaloReach && platform == Cache.CachePlatform.Original)
+            if (version >= CacheVersion.HaloReach && platform == CachePlatform.Original)
                 return (uint)template.ValidEntryPointsReach;
-            if (version >= Cache.CacheVersion.HaloReach && platform == Cache.CachePlatform.MCC)
+            if (version >= CacheVersion.HaloReach && platform == CachePlatform.MCC)
                 return (uint)template.ValidEntryPointsReachMCC;
             return (uint)template.ValidEntryPointsReach;
         }
@@ -46,7 +47,7 @@ namespace TagTool.Shaders
     }
 
     [Flags]
-    public enum EntryPointBitMask : int
+    public enum EntryPointFlags : int
     {
         None = 0,
         Default = 1 << 0,
@@ -100,7 +101,7 @@ namespace TagTool.Shaders
     }
 
     [Flags]
-    public enum EntryPointBitMaskMs30 : int
+    public enum EntryPointFlagsMs30 : int
     {
         Default = 1 << 0,
         Albedo = 1 << 1,
@@ -152,7 +153,7 @@ namespace TagTool.Shaders
     }
 
     [Flags]
-    public enum EntryPointBitMaskMCC : int 
+    public enum EntryPointFlagsMCC : int 
     {
         Default = 1 << 0,
         Albedo = 1 << 1,
@@ -206,7 +207,7 @@ namespace TagTool.Shaders
     }
 
     [Flags]
-    public enum EntryPointBitMaskReach : int
+    public enum EntryPointFlagsReach : int
     {
         Default = 1 << 0,
         Albedo = 1 << 1,
@@ -271,7 +272,7 @@ namespace TagTool.Shaders
     }
 
     [Flags]
-    public enum EntryPointBitMaskReachMCC : int 
+    public enum EntryPointFlagsReachMCC : int 
     {
         Default = 1 << 0,
         Albedo = 1 << 1,

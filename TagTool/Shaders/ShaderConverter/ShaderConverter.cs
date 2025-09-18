@@ -42,7 +42,7 @@ namespace TagTool.Shaders.ShaderConverter
         private class ParameterMapping
         {
             public string Name;
-            public ShaderParameter.RType Type;
+            public RasterizerConstantBlock.RegisterSetValue Type;
             public int BlamIndex = -1;
             public int RealIndex = -1;
             public int BoolIndex = -1;
@@ -110,22 +110,22 @@ namespace TagTool.Shaders.ShaderConverter
         }
 
         // Not for use with textures (there is no possible overlap with textures)
-        private void AddConstantToParameterMapping(string name, ShaderParameter.RType type, int blamIndex)
+        private void AddConstantToParameterMapping(string name, RasterizerConstantBlock.RegisterSetValue type, int blamIndex)
         {
             int index = ParameterMappings.FindIndex(x => x.Name == name);
             if (index != -1)
             {
                 switch (type)
                 {
-                    case ShaderParameter.RType.Boolean:
+                    case RasterizerConstantBlock.RegisterSetValue.Bool:
                         Debug.Assert(ParameterMappings[index].BoolIndex == -1);
                         ParameterMappings[index].BoolIndex = blamIndex;
                         break;
-                    case ShaderParameter.RType.Vector:
+                    case RasterizerConstantBlock.RegisterSetValue.Float:
                         Debug.Assert(ParameterMappings[index].RealIndex == -1);
                         ParameterMappings[index].RealIndex = blamIndex;
                         break;
-                    case ShaderParameter.RType.Integer:
+                    case RasterizerConstantBlock.RegisterSetValue.Int:
                         Debug.Assert(ParameterMappings[index].IntIndex == -1);
                         ParameterMappings[index].IntIndex = blamIndex;
                         break;
@@ -142,13 +142,13 @@ namespace TagTool.Shaders.ShaderConverter
 
                 switch (type)
                 {
-                    case ShaderParameter.RType.Boolean:
+                    case RasterizerConstantBlock.RegisterSetValue.Bool:
                         ParameterMappings.Last().BoolIndex = blamIndex;
                         break;
-                    case ShaderParameter.RType.Vector:
+                    case RasterizerConstantBlock.RegisterSetValue.Float:
                         ParameterMappings.Last().RealIndex = blamIndex;
                         break;
-                    case ShaderParameter.RType.Integer:
+                    case RasterizerConstantBlock.RegisterSetValue.Int:
                         ParameterMappings.Last().IntIndex = blamIndex;
                         break;
                 }
@@ -162,7 +162,7 @@ namespace TagTool.Shaders.ShaderConverter
                 ParameterMappings.Add(new ParameterMapping
                 {
                     Name = BlamCache.StringTable.GetString(BlamRmt2.TextureParameterNames[i].Name),
-                    Type = ShaderParameter.RType.Sampler,
+                    Type = RasterizerConstantBlock.RegisterSetValue.Sampler,
                     BlamIndex = i
                 });
             }
@@ -170,7 +170,7 @@ namespace TagTool.Shaders.ShaderConverter
             for (int i = 0; i < Rmt2.TextureParameterNames.Count; i++)
             {
                 string name = Cache.StringTable.GetString(Rmt2.TextureParameterNames[i].Name);
-                int index = ParameterMappings.FindIndex(x => x.Type == ShaderParameter.RType.Sampler && x.Name == name);
+                int index = ParameterMappings.FindIndex(x => x.Type == RasterizerConstantBlock.RegisterSetValue.Sampler && x.Name == name);
 
                 if (index == -1)
                     Log.Warning($"Shader converter: could not match texture \"{name}\"");
@@ -183,17 +183,17 @@ namespace TagTool.Shaders.ShaderConverter
             for (int i = 0; i < BlamRmt2.RealParameterNames.Count; i++)
             {
                 AddConstantToParameterMapping(BlamCache.StringTable.GetString(BlamRmt2.RealParameterNames[i].Name),
-                    ShaderParameter.RType.Vector, i);
+                    RasterizerConstantBlock.RegisterSetValue.Float, i);
             }
             for (int i = 0; i < BlamRmt2.IntegerParameterNames.Count; i++)
             {
                 AddConstantToParameterMapping(BlamCache.StringTable.GetString(BlamRmt2.IntegerParameterNames[i].Name),
-                    ShaderParameter.RType.Integer, i);
+                    RasterizerConstantBlock.RegisterSetValue.Int, i);
             }
             for (int i = 0; i < BlamRmt2.BooleanParameterNames.Count; i++)
             {
                 AddConstantToParameterMapping(BlamCache.StringTable.GetString(BlamRmt2.BooleanParameterNames[i].Name),
-                    ShaderParameter.RType.Boolean, i);
+                    RasterizerConstantBlock.RegisterSetValue.Bool, i);
             }
         }
 
@@ -275,7 +275,7 @@ namespace TagTool.Shaders.ShaderConverter
             for (int i = 0; i < Rmt2.TextureParameterNames.Count; i++)
             {
                 string name = Cache.StringTable.GetString(Rmt2.TextureParameterNames[i].Name);
-                int parameterMappingIndex = ParameterMappings.FindIndex(x => x.Type == ShaderParameter.RType.Sampler && x.Name == name);
+                int parameterMappingIndex = ParameterMappings.FindIndex(x => x.Type == RasterizerConstantBlock.RegisterSetValue.Sampler && x.Name == name);
                 //int xformMappingIndex = ParameterMappings.FindIndex(x => x.Type == ShaderParameter.RType.Vector && x.Name == name);
 
                 if (parameterMappingIndex != -1)
@@ -328,7 +328,7 @@ namespace TagTool.Shaders.ShaderConverter
 
                 if (parameterMappingIndex != -1)
                 {
-                    if (ParameterMappings[parameterMappingIndex].Type == ShaderParameter.RType.Sampler && 
+                    if (ParameterMappings[parameterMappingIndex].Type == RasterizerConstantBlock.RegisterSetValue.Sampler && 
                         ParameterMappings[parameterMappingIndex].RealIndex == -1) // sampler with no xform
                     {
                         realConstants.Add(new RealConstant

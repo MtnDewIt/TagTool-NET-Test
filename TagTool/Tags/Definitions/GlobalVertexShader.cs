@@ -9,7 +9,7 @@ namespace TagTool.Tags.Definitions
 	{
         public List<VertexTypeShaders> VertexTypes;
         public uint Version;
-        public List<VertexShaderBlock> Shaders;
+        public List<CompiledVertexShaderBlock> CompiledShaders;
 
         [TagStructure(Size = 0xC)]
         public class VertexTypeShaders : TagStructure

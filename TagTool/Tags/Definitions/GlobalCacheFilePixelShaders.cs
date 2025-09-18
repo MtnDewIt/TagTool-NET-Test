@@ -10,6 +10,6 @@ namespace TagTool.Tags.Definitions
         public uint CachedShaderCount;
         public uint TotalMemorySize;
         public uint CachedMemorySize;
-        public List<PixelShaderBlock> Shaders;
+        public List<CompiledPixelShaderBlock> CompiledShaders;
     }
 }

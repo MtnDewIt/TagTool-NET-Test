@@ -18,9 +18,9 @@ namespace TagTool.Shaders
         public byte[] ShaderData;   //xbox
         public byte[] DebugData;    //xbox
         public byte[] ConstantData; //xbox
-        public List<ShaderParameter> Parameters;
+        public List<RasterizerConstantBlock> Parameters;
 
-        public CompiledShaderInfo(bool pixl, bool validConstantTable, byte[] shaderData, byte[] debugData, byte[] constantData, List<ShaderParameter> parameters)
+        public CompiledShaderInfo(bool pixl, bool validConstantTable, byte[] shaderData, byte[] debugData, byte[] constantData, List<RasterizerConstantBlock> parameters)
         {
             PixelShader = pixl;
             ShaderData = shaderData;
@@ -30,7 +30,7 @@ namespace TagTool.Shaders
             ValidConstantTable = validConstantTable;
         }
 
-        public CompiledShaderInfo(bool pixl, bool validConstantTable, PixelShaderReference shaderRef, List<ShaderParameter> parameters)
+        public CompiledShaderInfo(bool pixl, bool validConstantTable, PixelShaderReference shaderRef, List<RasterizerConstantBlock> parameters)
         {
             PixelShader = pixl;
             ShaderData = shaderRef.ShaderData;
@@ -40,7 +40,7 @@ namespace TagTool.Shaders
             ValidConstantTable = validConstantTable;
         }
 
-        public CompiledShaderInfo(bool pixl, bool validConstantTable, VertexShaderReference shaderRef, List<ShaderParameter> parameters)
+        public CompiledShaderInfo(bool pixl, bool validConstantTable, VertexShaderReference shaderRef, List<RasterizerConstantBlock> parameters)
         {
             PixelShader = pixl;
             ShaderData = shaderRef.ShaderData;
@@ -50,24 +50,24 @@ namespace TagTool.Shaders
             ValidConstantTable = validConstantTable;
         }
 
-        private void ReorderParameter(List<ShaderParameter> newParameters, ShaderParameter.RType rType, int rMax)
+        private void ReorderParameter(List<RasterizerConstantBlock> newParameters, RasterizerConstantBlock.RegisterSetValue rType, int rMax)
         {
-            var tempParams = Parameters.Where(x => x.RegisterType == rType);
+            var tempParams = Parameters.Where(x => x.RegisterSet == rType);
 
             for (int i = 0; i <= rMax; i++)
                 foreach (var param in tempParams)
-                    if (param.RegisterIndex == i)
+                    if (param.RegisterStart == i)
                         newParameters.Add(param);
         }
 
-        public List<ShaderParameter> ReorderParameters()
+        public List<RasterizerConstantBlock> ReorderParameters()
         {
-            List<ShaderParameter> newParameters = new List<ShaderParameter>();
+            List<RasterizerConstantBlock> newParameters = new List<RasterizerConstantBlock>();
 
-            ReorderParameter(newParameters, ShaderParameter.RType.Boolean, 128);
-            ReorderParameter(newParameters, ShaderParameter.RType.Integer, 16);
-            ReorderParameter(newParameters, ShaderParameter.RType.Vector, 256);
-            ReorderParameter(newParameters, ShaderParameter.RType.Sampler, 16);
+            ReorderParameter(newParameters, RasterizerConstantBlock.RegisterSetValue.Bool, 128);
+            ReorderParameter(newParameters, RasterizerConstantBlock.RegisterSetValue.Int, 16);
+            ReorderParameter(newParameters, RasterizerConstantBlock.RegisterSetValue.Float, 256);
+            ReorderParameter(newParameters, RasterizerConstantBlock.RegisterSetValue.Sampler, 16);
 
             return newParameters;
         }
@@ -139,43 +139,43 @@ namespace TagTool.Shaders
 
                 for (ParameterUsage j = ParameterUsage.Texture; j < ParameterUsage.Count; j++)
                 {
-                    ShaderParameter.RType rType = ShaderParameter.RType.Boolean;
+                    RasterizerConstantBlock.RegisterSetValue rType = RasterizerConstantBlock.RegisterSetValue.Bool;
 
                     switch (j)
                     {
                         case ParameterUsage.PS_Real when PixelShader:
-                            rType = ShaderParameter.RType.Vector;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Float;
                             break;
                         case ParameterUsage.PS_Integer when PixelShader:
-                            rType = ShaderParameter.RType.Integer;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Int;
                             break;
                         case ParameterUsage.PS_Boolean when PixelShader:
-                            rType = ShaderParameter.RType.Boolean;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Bool;
                             break;
                         case ParameterUsage.PS_RealExtern when PixelShader:
-                            rType = ShaderParameter.RType.Vector;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Float;
                             break;
                         case ParameterUsage.PS_IntegerExtern when PixelShader:
-                            rType = ShaderParameter.RType.Integer;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Int;
                             break;
                         case ParameterUsage.VS_Real when !PixelShader:
-                            rType = ShaderParameter.RType.Vector;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Float;
                             break;
                         case ParameterUsage.VS_Integer when !PixelShader:
-                            rType = ShaderParameter.RType.Integer;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Int;
                             break;
                         case ParameterUsage.VS_Boolean when !PixelShader:
-                            rType = ShaderParameter.RType.Boolean;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Bool;
                             break;
                         case ParameterUsage.VS_RealExtern when !PixelShader:
-                            rType = ShaderParameter.RType.Vector;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Float;
                             break;
                         case ParameterUsage.VS_IntegerExtern when !PixelShader:
-                            rType = ShaderParameter.RType.Integer;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Int;
                             break;
                         case ParameterUsage.Texture:
                         case ParameterUsage.TextureExtern:
-                            rType = ShaderParameter.RType.Sampler;
+                            rType = RasterizerConstantBlock.RegisterSetValue.Sampler;
                             break;
                         default:
                             continue;
@@ -221,18 +221,18 @@ namespace TagTool.Shaders
                             && register >= 16 && PixelShader)
                             continue;
 
-                        ShaderParameter shaderParameter = new ShaderParameter
+                        RasterizerConstantBlock shaderParameter = new RasterizerConstantBlock
                         {
-                            ParameterName = name,
+                            ConstantName = name,
                             RegisterCount = 1, // might cause issue, not sure how to determine for now.
-                            RegisterIndex = register,
-                            RegisterType = rType
+                            RegisterStart = register,
+                            RegisterSet = rType
                         };
 
                         bool dup = false;
                         foreach (var param in Parameters)
                         {
-                            if (param.ParameterName == name && param.RegisterType == rType)
+                            if (param.ConstantName == name && param.RegisterSet == rType)
                             {
                                 dup = true;
                                 break;
