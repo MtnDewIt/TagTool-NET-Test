@@ -16,7 +16,7 @@ namespace TagTool.Audio.Converter
 
         public WAVFile(BlamSound blamSound)
         {
-            InitWAVFile(blamSound.Data, Encoding.GetChannelCount(blamSound.Encoding), blamSound.SampleRate.GetSampleRateHz());
+            InitWAVFile(blamSound.Data, blamSound.ChannelCount, blamSound.SampleRate);
         }
 
         public WAVFile(EndianReader reader)

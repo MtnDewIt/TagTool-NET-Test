@@ -21,6 +21,8 @@
     <Platforms>x86;x64</Platforms>
     <Configuration>Release</Configuration> <!--Default value-->
     <Platform>x64</Platform> <!--Default value-->
+	<!-- disabled for now as it does not respect DestinationSubDirectory -->
+	<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="TagTool.ico" />

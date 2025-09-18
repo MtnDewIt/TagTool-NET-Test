@@ -113,7 +113,7 @@ namespace TagTool.Audio
         public sbyte PermutationInfoIndex;
         public short LanguageNeutralTime; // ms
         [TagField(Platform = CachePlatform.Original)]
-        public int SampleSize;
+        public uint SampleSize;
         [TagField(Platform = CachePlatform.Original)]
         public short FirstChunk;
         [TagField(Platform = CachePlatform.Original)]

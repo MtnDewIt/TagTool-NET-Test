@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Audio;
+using TagTool.Audio.Utils;
 using TagTool.Cache;
 using TagTool.Cache.Gen2;
 using TagTool.Commands.Common;
@@ -220,39 +221,17 @@ namespace TagTool.Porting.Gen2
                     permutation.PermutationNumber = (uint)i;
                     permutation.IsNotFirstPermutation = (uint)(i == 0 ? 0 : 1);
 
+                    BlamSound blamSound = SoundExtractorGen2.ExtractSound((GameCacheGen2)BlamCache, ugh, gen2Sound, relativePitchRangeIndex, i);
+                    blamSound = AudioConverter.Convert(blamSound, targetFormat);
 
-                    // build sound data[]
-
-                    var permutationSize = 0;
-
-                    // compute total size
-                    for (int k = 0; k < gen2Permutation.ChunkCount; k++)
-                    {
-                        var permutationChunkIndex = gen2Permutation.FirstChunk + k;
-                        var chunk = ugh.Chunks[permutationChunkIndex];
-                        permutationSize += chunk.GetSize();
-                    }
-
-                    byte[] permutationData = new byte[permutationSize];
-                    var currentOffset = 0;
-
-                    // move Data
-                    for (int k = 0; k < gen2Permutation.ChunkCount; k++)
-                    {
-                        var permutationChunkIndex = gen2Permutation.FirstChunk + k;
-                        var chunk = ugh.Chunks[permutationChunkIndex];
-                        var chunkSize = chunk.GetSize();
-                        GameCacheGen2 gen2Cache = (GameCacheGen2)BlamCache;
-                        byte[] chunkData = gen2Cache.GetCacheRawData((uint)chunk.ResourceReference.Gen2ResourceAddress, (int)chunkSize); 
-                        Array.Copy(chunkData, 0, permutationData, currentOffset, chunkSize);
-                        currentOffset += chunkSize;
-                    }
-
-                    BlamSound blamSound = SoundConverter.ConvertGen2Sound(BlamCache, ugh, gen2Sound, relativePitchRangeIndex, i, permutationData, targetFormat, useCache, soundCachePath, gen2Name);
-
-                    permutationData = blamSound.Data;
                     permutation.SampleCount = blamSound.SampleCount;
-                    permutation.FirstSample = blamSound.FirstSample;
+
+                    byte[] permutationData = blamSound.Data;
+                    if (targetFormat == Compression.PCM)
+                    {
+                        // FMOD requires that we add 16 bytes of padding on either side
+                        permutationData = AudioUtils.Pad(permutationData, 16);
+                    }
 
                     var newChunk = new PermutationChunk(currentSoundDataOffset, permutationData.Length, 0, 0);
                     permutation.PermutationChunks.Add(newChunk);
