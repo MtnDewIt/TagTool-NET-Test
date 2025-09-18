@@ -45,8 +45,8 @@ namespace TagTool.Effects
                 }
 
                 particle.AnimationFlags = hasSprite ? 
-                    particle.AnimationFlags & ~Particle.AnimationFlagsValue.DisableFrameBlending : 
-                    particle.AnimationFlags | Particle.AnimationFlagsValue.DisableFrameBlending;
+                    particle.AnimationFlags & ~Particle.AnimationFlagsValue.UnknownBit : 
+                    particle.AnimationFlags | Particle.AnimationFlagsValue.UnknownBit;
 
                 // TODO: frame index evaluate
                 float frameIndexInitial = 0.0f;

@@ -147,6 +147,8 @@ namespace TagTool.Porting.Gen3
             if (particle.Flags.HasFlag(Particle.FlagsValue.UseCheapShader))
                 particle.Flags &= ~Particle.FlagsValue.UseCheapShader;
 
+            particle.AnimationFlagsHO = particle.AnimationFlags.ConvertLexical<Particle.AnimationFlagsValueHO>();
+
             return particle;
         }
 
