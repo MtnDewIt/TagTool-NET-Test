@@ -5,7 +5,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "wave_template", Tag = "wave", Size = 0xC, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "wave_template", Tag = "wave", Size = 0xC, MaxVersion = CacheVersion.HaloReach11883)]
     public class WaveTemplate : TagStructure
     {
         public List<SquadSpecification> SquadSpecifications;

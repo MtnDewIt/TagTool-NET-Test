@@ -3,7 +3,7 @@ using TagTool.Cache;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "scenario_required_resource", Tag = "sdzg", Size = 0xC, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+    [TagStructure(Name = "scenario_required_resource", Tag = "sdzg", Size = 0xC, MaxVersion = CacheVersion.HaloReach11883)]
     public class ScenarioRequiredResource : TagStructure
     {
         public List<RequiredObject> RequiredObjects;
