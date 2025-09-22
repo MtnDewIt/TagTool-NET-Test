@@ -101,6 +101,7 @@ namespace TagTool.Cache.Gen2.Headers
         public override Tag GetFooterSignature() => FooterSignature;
         public override ulong GetTagsHeaderWhenLoaded() => TagsOffset;
         public override ulong GetExpectedBaseAddress() => 0;
+        public override uint GetSize() => Size;
         public override string GetName() => Name;
         public override string GetBuildNumber() => BuildNumber;
         public override string GetTagPath() => TagPath;

@@ -127,6 +127,7 @@ namespace TagTool.Cache.MCC.Headers
         public override Tag GetFooterSignature() => FooterSignature;
         public override ulong GetTagsHeaderWhenLoaded() => TagsHeaderWhenLoaded.Value;
         public override ulong GetExpectedBaseAddress() => ExpectedBaseAddress.Value;
+        public override uint GetSize() => Size;
         public override string GetName() => Name;
         public override string GetBuildNumber() => BuildNumber;
         public override string GetTagPath() => TagPath;

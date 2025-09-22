@@ -141,6 +141,7 @@ namespace TagTool.Cache
         public abstract Tag GetFooterSignature();
         public abstract ulong GetTagsHeaderWhenLoaded();
         public abstract ulong GetExpectedBaseAddress();
+        public abstract uint GetSize();
         public abstract string GetName();
         public abstract string GetBuildNumber();
         public abstract string GetTagPath();

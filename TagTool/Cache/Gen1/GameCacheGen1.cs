@@ -5,10 +5,12 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TagTool.Ai;
 using TagTool.BlamFile;
 using TagTool.Cache.Gen1;
 using TagTool.Cache.Resources;
 using TagTool.Common;
+using TagTool.Extensions;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -107,29 +109,43 @@ namespace TagTool.Cache
 
         public override Stream OpenCacheRead()
         {
+            Stream resultStream = null;
+
             if (Version == CacheVersion.HaloXbox)
             {
-                var resultStream = new MemoryStream();
-                using (var cacheStream = CacheFile.OpenRead())
-                using (var compressedStream = new MemoryStream())
-                using (var uncompressedStream = new MemoryStream())
+                using (MemoryStream memoryStream = new MemoryStream()) 
                 {
-                    var compressedSize = cacheStream.Length - 0x800 - 0x2; // remove zlib header
-                    StreamUtil.Copy(cacheStream, resultStream, 0x800);
-                    cacheStream.Position = 0x800 + 0x2;
-                    StreamUtil.Copy(cacheStream, compressedStream, compressedSize);
-                    compressedStream.Position = 0;
-                    using (var decompressionStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
+                    using (Stream stream = CacheFile.OpenRead()) 
                     {
-                        decompressionStream.CopyTo(uncompressedStream);
-                        uncompressedStream.Position = 0;
-                        StreamUtil.Copy(uncompressedStream, resultStream, uncompressedStream.Length);
+                        using (EndianReader reader = new EndianReader(stream, Endianness)) 
+                        {
+                            int fileSize = (int)(BaseMapFile.Header.GetSize() - 0x800);
+
+                            byte[] header = reader.ReadBytes(0x800);
+
+                            memoryStream.Write(header, 0, 0x800);
+
+                            reader.SeekTo(0x800 + 0x2);
+
+                            int decompressedSize = fileSize;
+                            byte[] decompressedBuffer = new byte[decompressedSize];
+
+                            using (DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true))
+                                decompressedSize = deflateStream.ReadAll(decompressedBuffer, 0, decompressedBuffer.Length);
+
+                            memoryStream.Write(decompressedBuffer, 0, decompressedBuffer.Length);
+                        }
                     }
+
+                    resultStream = new MemoryStream(memoryStream.ToArray());
                 }
-                return resultStream;
             }
-            else
-                return CacheFile.OpenRead(); 
+            else 
+            {
+                resultStream = CacheFile.OpenRead();
+            }
+
+            return resultStream;
         }
 
         public override Stream OpenCacheReadWrite()
