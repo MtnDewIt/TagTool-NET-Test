@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using TagTool.Audio.Converter;
 using TagTool.IO;
+using static TagTool.Audio.Utils.AudioLib;
 
 namespace TagTool.Audio.Utils
 {
@@ -37,136 +38,154 @@ namespace TagTool.Audio.Utils
 
         static readonly Dictionary<AudioQuality, int> VorbisQualityMap = new()
         {
-            { AudioQuality.Default, 7 }, // ~224 kbps
-            { AudioQuality.Best,    7 }, // ~224 kbps
-            { AudioQuality.Average, 4 }, // ~128 kbps
-            { AudioQuality.Low,     2 }  // ~96 kbps
+            { AudioQuality.Default, 3 }, // ~224 kbps
+            { AudioQuality.Best,    3 }, // ~224 kbps
+            { AudioQuality.Average, 6 }, // ~128 kbps
+            { AudioQuality.Low,     8 }  // ~96 kbps
         };
 
         public static BlamSound Convert(BlamSound blamSound, Compression targetFormat, ConverterOptions options = null)
         {
             options ??= ConverterOptions.Default;
 
-            if (blamSound.Compression == targetFormat)
-                return blamSound;
+            byte[] data = PrepareInput(blamSound);
 
-            string tempDir = Path.Combine(DirectoryPaths.Base, "temp");
+            GCHandle dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
+            nint dataPtr = dataHandle.AddrOfPinnedObject();
 
-            // Ensure the temp directory exists
-            Directory.CreateDirectory(tempDir);
-
-            // We use a guid for the filename as this may be called concurrently
-            string guid = Guid.NewGuid().ToString();
-            string inFilePath = Path.Combine(tempDir, $"{guid}.{AudioUtils.GetFormatFileExtension(blamSound.Compression)}");
-            string outFilePath = Path.Combine(tempDir, $"{guid}.{AudioUtils.GetFormatFileExtension(targetFormat)}");
+            nint input_stream = al_stream_new_from_buffer(dataPtr, data.Length);
+            nint output_stream = al_stream_new(0);
 
             try
             {
-                // Write input file
-                WriteToFile(inFilePath, blamSound);
+                var transcodeParams = new ALTranscodeParams();
+                GetTranscodeParams(ref transcodeParams, blamSound, targetFormat, options);
 
-                // Build the ffmpeg arguments
-                string args = BuildFFmpegArguments(blamSound, targetFormat, inFilePath, outFilePath, options);
-
-                // Run ffmpeg
-                int exitCode = RunTool(Path.Combine(DirectoryPaths.Tools, "ffmpeg.exe"), args);
-                if (exitCode != 0)
+                int ret = al_transcode(input_stream, output_stream, ref transcodeParams);
+                if (ret != 0)
                     return null;
 
-                // Read the output file
-                byte[] data = File.ReadAllBytes(outFilePath);
-                blamSound.UpdateFormat(targetFormat, data);
+                int size = al_stream_get_size(output_stream);
+                nint ptr = al_stream_get_buffer(output_stream);
 
-                return blamSound;
+                byte[] result = new byte[size];
+                Marshal.Copy(ptr, result, 0, size);
+
+                return new BlamSound(blamSound.SampleRate, blamSound.ChannelCount, blamSound.SampleCount, targetFormat, result);
             }
             finally
             {
-                // Delete the intermediate files
-                try { if (File.Exists(inFilePath)) File.Delete(inFilePath); } catch { }
-                try { if (File.Exists(outFilePath)) File.Delete(outFilePath); } catch { }
+                al_stream_delete(output_stream);
+                al_stream_delete(input_stream);
+                dataHandle.Free();
             }
         }
 
-        static string BuildFFmpegArguments(BlamSound blamSound, Compression targetFormat, string inFilePath, string outFilePath, ConverterOptions options)
+        private static ALTranscodeParams GetTranscodeParams(ref ALTranscodeParams transcodeParams, BlamSound blamSound, Compression targetFormat, ConverterOptions options)
         {
-            string args = $"-y";
-
-            if (blamSound.Compression == Compression.PCM)
-                args += $" -f s16le -ar {blamSound.SampleRate} -ac {blamSound.ChannelCount}";
-
-            args += $" -i \"{inFilePath}\"";
+            transcodeParams.output_format = GetFormatShortName(targetFormat);
+            transcodeParams.output_codec = GetOutputCodecName(targetFormat);
+            transcodeParams.input_format = GetFormatShortName(blamSound.Compression);
+            transcodeParams.input_codec = GetInputCodecName(blamSound.Compression);
+            transcodeParams.quality = -1; // default
 
             switch (targetFormat)
             {
-                case Compression.PCM:
-                    args += $" -f s16le -c:a pcm_s16le -ar {blamSound.SampleRate} -ac {blamSound.ChannelCount}";
+                case Compression.OGG:
+                    transcodeParams.quality = VorbisQualityMap[options.Quality];
                     break;
                 case Compression.MP3:
-                    args += $" -f mp3 -c:a libmp3lame -q:a {Mp3QualityMap[options.Quality]}";
+                    transcodeParams.quality = Mp3QualityMap[options.Quality];
                     break;
+            }
+
+            if (blamSound.Compression == Compression.PCM || blamSound.Compression == Compression.PCM_BigEndian)
+            {
+                transcodeParams.input_channels = blamSound.ChannelCount;
+                transcodeParams.input_sample_rate = blamSound.SampleRate;
+            }
+
+            return transcodeParams;
+        }
+
+        private static string GetOutputCodecName(Compression format)
+        {
+            switch (format)
+            {
                 case Compression.OGG:
-                    args += $" -f ogg -c:a libvorbis -q:a {VorbisQualityMap[options.Quality]}";
-                    break;
-            }
-
-            args += $" \"{outFilePath}\"";
-
-            return args;
-        }
-
-        static void WriteToFile(string filePath, BlamSound blamSound)
-        {
-            switch (blamSound.Compression)
-            {
+                    return "libvorbis";
+                case Compression.PCM:
+                case Compression.Tagtool_WAV:
+                    return "pcm_s16le";
+                case Compression.PCM_BigEndian:
+                    return "pcm_s16be";
+                case Compression.MP3:
+                    return "libmp3lame";
                 case Compression.XMA:
-                    {
-                        var xmaFile = new XMAFile(blamSound);
-                        using var writer = new EndianWriter(File.Create(filePath));
-                        xmaFile.Write(writer);
-                    }
-                    break;
-                case Compression.IMAADPCM:
-                    {
-                        var adpcmFile = new IMAADPCM(blamSound);
-                        using var writer = new EndianWriter(File.Create(filePath));
-                        adpcmFile.Write(writer);
-                    }
-                    break;
-                case Compression.XboxADPCM:
-                    {
-                        var adpcmFile = new XboxADPCM(blamSound);
-                        using var writer = new EndianWriter(File.Create(filePath));
-                        adpcmFile.Write(writer);
-                    }
-                    break;
+                    return "xma1";
                 default:
-                    {
-                        File.WriteAllBytes(filePath, blamSound.Data);
-                        break;
-                    }
+                    return "";
             }
         }
 
-        static int RunTool(string filePath, string args)
+        private static string GetInputCodecName(Compression format)
         {
-            var process = new Process
+            switch (format)
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = filePath,
-                    Arguments = args,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                }
-            };
+                case Compression.OGG:
+                    return "libvorbis";
+                case Compression.PCM:
+                case Compression.Tagtool_WAV:
+                    return "pcm_s16le";
+                case Compression.PCM_BigEndian:
+                    return "pcm_s16be";
+                case Compression.MP3:
+                    return "mp3";
+                default:
+                    return "";
+            }
+        }
 
-            process.Start();
-            process.WaitForExit();
+        private static string GetFormatShortName(Compression format)
+        {
+            switch (format)
+            {
+                case Compression.OGG:
+                    return "ogg";
+                case Compression.PCM:
+                    return "s16le";
+                case Compression.PCM_BigEndian:
+                    return "s16be";
+                case Compression.MP3:
+                    return "mp3";
+                case Compression.Tagtool_WAV:
+                    return "wav";
+                default:
+                    return "";
+            }
+        }
 
-            string output = process.StandardError.ReadToEnd();
-            return process.ExitCode;
+        private static byte[] PrepareInput(BlamSound blamSound)
+        {
+            if (blamSound.Compression == Compression.XMA)
+            {
+                var xmaFile = new XMAFile(blamSound);
+                var ms = new MemoryStream();
+                using var writer = new EndianWriter(ms);
+                xmaFile.Write(writer);
+                blamSound.Data = ms.ToArray();
+            }
+
+            else if (blamSound.Compression == Compression.PCM)
+            {
+                var xmaFile = new WAVFile(blamSound);
+                var ms = new MemoryStream();
+                using var writer = new EndianWriter(ms);
+                xmaFile.Write(writer);
+                blamSound.Data = ms.ToArray();
+            }
+
+            return blamSound.Data;
         }
     }
 }

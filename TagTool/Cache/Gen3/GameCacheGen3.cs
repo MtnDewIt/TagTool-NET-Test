@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using TagTool.Audio;
 using TagTool.BlamFile;
 using TagTool.Cache.Gen3;
 using TagTool.Cache.Resources;
@@ -11,6 +10,7 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Commands.Common;
 using TagTool.Common.Logging;
+using TagTool.Audio.Bank;
 
 namespace TagTool.Cache
 {
@@ -26,7 +26,7 @@ namespace TagTool.Cache
         public ResourceCacheGen3 ResourceCacheGen3;
 
         public List<DirectoryInfo> FMODSoundCacheDirectories = new List<DirectoryInfo>();
-        public FMODSoundCache FMODSoundCache;
+        public SoundBankCache FMODSoundCache;
 
         public override TagCache TagCache => TagCacheGen3;
         public override StringTable StringTable => StringTableGen3;
@@ -157,7 +157,7 @@ namespace TagTool.Cache
                 if (FMODSoundCacheDirectories.Count == 0)
                     Log.Warning("Failed to load any FMOD sound banks!");
 
-                FMODSoundCache = new FMODSoundCache(FMODSoundCacheDirectories);
+                FMODSoundCache = new SoundBankCache(FMODSoundCacheDirectories);
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
-using static TagTool.Audio.FMOD;
+using static TagTool.Audio.FMOD.FMOD;
 
-namespace TagTool.Audio
+namespace TagTool.Audio.FMOD
 {
     public static class FMODTagTool
     {
