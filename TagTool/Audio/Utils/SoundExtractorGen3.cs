@@ -27,7 +27,9 @@ namespace TagTool.Audio.Utils
                 var permutationData = new byte[rawInfo.ResourceSampleSize];
                 Array.Copy(resourceDefinition.Data.Data, (int)rawInfo.ResourceSampleOffset, permutationData, 0, (int)rawInfo.ResourceSampleSize);
 
-                return new BlamSound(sampleRate, channelCount, sampleCount, format, permutationData);
+                var blamSound = new BlamSound(sampleRate, channelCount, sampleCount, format, permutationData);
+   
+                return blamSound;
             }
             else
             {
@@ -45,12 +47,10 @@ namespace TagTool.Audio.Utils
 
                 if (cache.Platform == CachePlatform.MCC)
                 {
-                    byte[] permutationData = cache.FMODSoundCache.ExtractSound(permutation.FsbSoundHash);
-                    if (permutationData == null)
+                    var info = cache.FMODSoundCache.GetSoundInfo(permutation.FsbSoundHash);
+                    BlamSound blamSound = cache.FMODSoundCache.ExtractSound(permutation.FsbSoundHash);
+                    if (blamSound == null)
                         return null;
-
-                    var blamSound = new BlamSound(sampleRate, channelCount, sampleCount, Compression.PCM, permutationData);
-                    blamSound.UpdateFormat(Compression.PCM, AudioUtils.ConvertPCM32ToPCM16(permutationData));
 
                     return blamSound;
                 }
