@@ -21,8 +21,14 @@ namespace TagTool.Audio.Utils
             public int quality;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ALTranscodeInfo
+        {
+            public long sample_count; // returned sample count
+        }
+
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int al_transcode(nint input_stream, nint output_stream, ref ALTranscodeParams transcode_params);
+        public static extern int al_transcode(nint input_stream, nint output_stream, ref ALTranscodeParams transcode_params, ref ALTranscodeInfo info);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern nint al_stream_new(nint capacity);

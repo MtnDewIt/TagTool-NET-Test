@@ -60,7 +60,8 @@ namespace TagTool.Porting.Gen2
             {
                 Animation.SoundReferences.Add(new ModelAnimationGraph.AnimationTagReference
                 {
-                    Flags = (ModelAnimationGraph.AnimationTagReferenceFlags)gen2snd.Flags
+                    Flags = (ModelAnimationGraph.AnimationTagReferenceFlags)gen2snd.Flags,
+                    Reference = gen2snd.Sound
                 });
             }
 
@@ -69,7 +70,8 @@ namespace TagTool.Porting.Gen2
             {
                 Animation.EffectReferences.Add(new ModelAnimationGraph.AnimationTagReference
                 {
-                    Flags = (ModelAnimationGraph.AnimationTagReferenceFlags)gen2effe.Flags
+                    Flags = (ModelAnimationGraph.AnimationTagReferenceFlags)gen2effe.Flags,
+                    Reference = gen2effe.Effect
                 });
             }
 

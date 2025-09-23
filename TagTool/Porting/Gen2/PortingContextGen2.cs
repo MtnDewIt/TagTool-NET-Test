@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using TagTool.Audio;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
@@ -55,6 +56,7 @@ namespace TagTool.Porting.Gen2
                 "shad",
                 "sbsp",
                 "scnr",
+                "snd!",
                 "mach",
                 "ligh",
                 "eqip",
@@ -224,6 +226,17 @@ namespace TagTool.Porting.Gen2
                 return null;
             PostFixups(definition, edTag, cacheStream);
             return definition;
+        }
+
+        public override object ConvertData(Stream cacheStream, Stream blamCacheStream, object data, object definition, string blamTagName)
+        {
+            switch (data)
+            {
+                case SoundClass soundClass:
+                    return soundClass.ConvertSoundClass(BlamCache.Version);
+                default:
+                    return base.ConvertData(cacheStream, blamCacheStream, data, definition, blamTagName);
+            }
         }
 
         public void PostFixups(object definition, CachedTag destinationTag, Stream cacheStream)

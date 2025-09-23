@@ -79,6 +79,9 @@ namespace TagTool.Porting.Gen2
         public Sound ConvertSound(CachedTagGen2 gen2Tag, Gen2Sound gen2Sound, Stream gen2Stream, string gen2Name)
         {
             Sound sound = new Sound();
+            sound.SoundClass = gen2Sound.Class;
+            sound.Flags = gen2Sound.Flags.ConvertLexical<Sound.FlagsValue>();
+            sound.SampleRate = gen2Sound.SampleRate;
 
             LoadGen2SoundGestalt(BlamCache, gen2Stream);
             Gen2SoundCacheFileGestalt ugh;
@@ -98,26 +101,8 @@ namespace TagTool.Porting.Gen2
             List<CustomPlayback> customPlayback = gen2Sound.CustomPlaybackIndex != -1 ? new List<CustomPlayback> { ugh.CustomPlaybacks[gen2Sound.CustomPlaybackIndex] } : new List<CustomPlayback>();
 
             ExtraInfo extraInfo = gen2Sound.ExtraInfoIndex != -1 ? ugh.ExtraInfos[gen2Sound.ExtraInfoIndex] : null;
-            PlaybackParameter playbackParameters = (ugh.Playbacks[gen2Sound.PlaybackParamaterIndex]).DeepClone();
-
-            //
-            // convert playbackParameters to gen3 format
-            //
-
-            playbackParameters.DistanceParameters = new SoundDistanceParameters();
-            if (playbackParameters.MininumDistance != 0)
-            {
-                playbackParameters.DistanceParameters.MinimumDistance = playbackParameters.MininumDistance;
-                playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceA;
-            }
-
-            if (playbackParameters.MaximumDistance != 0)
-            {
-                playbackParameters.DistanceParameters.MaximumDistance = playbackParameters.MaximumDistance;
-                playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceB;
-            }
-
-            sound.Playback = playbackParameters;
+ 
+            sound.Playback = ConvertPlaybackParameters(ugh.Playbacks[gen2Sound.PlaybackParamaterIndex].DeepClone());
 
             //
             // Initialize other blocks
@@ -146,7 +131,7 @@ namespace TagTool.Porting.Gen2
                 sound.Flags |= Sound.FlagsValue.NeverObstruct;
 
             if (gen2Sound.Flags.HasFlag(Gen2Sound.Gen2SoundFlags.LinkCountToOwnerUnit))
-                sound.Flags |= Sound.FlagsValue.LinkCountToOwnerUnit ;
+                sound.Flags |= Sound.FlagsValue.LinkCountToOwnerUnit;
 
             if (gen2Sound.Flags.HasFlag(Gen2Sound.Gen2SoundFlags.PitchRangeIsLanguage))
                 sound.Flags |= Sound.FlagsValue.PitchRangeIsLanguage;
@@ -185,7 +170,6 @@ namespace TagTool.Porting.Gen2
                 var gen2PitchRange = ugh.PitchRanges[pitchRangeIndex];
                 PitchRange pitchRange = new PitchRange();
 
-
                 pitchRange.ImportName = ConvertStringId(ugh.ImportNames[gen2PitchRange.Name].Name);
                 pitchRange.PitchRangeParameters = ugh.PitchRangeParameters[gen2PitchRange.Parameters];
                 pitchRange.RuntimePermutationFlags = -1;
@@ -210,11 +194,11 @@ namespace TagTool.Porting.Gen2
 
                 for (int i = 0; i < permutationCount; i++)
                 {
-                    var permutationIndex = pitchRange.FirstPermutationIndex + i;
+                    var permutationIndex = gen2PitchRange.FirstPermutation + i;
 
                     var gen2Permutation = ugh.GetPermutation(permutationIndex);
-                    var permutation = new Permutation();
 
+                    var permutation = new Permutation();
                     permutation.ImportName = ConvertStringId(ugh.ImportNames[gen2Permutation.Name].Name);
                     permutation.SkipFraction = gen2Permutation.EncodedSkipFraction / 32767.0f;
                     permutation.Gain = gen2Permutation.EncodedGain * 127.0f;  // need proper sbyte decoding
@@ -223,7 +207,11 @@ namespace TagTool.Porting.Gen2
                     permutation.IsNotFirstPermutation = (uint)(i == 0 ? 0 : 1);
 
                     BlamSound blamSound = SoundExtractorGen2.ExtractSound((GameCacheGen2)BlamCache, ugh, gen2Sound, relativePitchRangeIndex, i);
-                    blamSound = AudioConverter.Convert(blamSound, targetFormat);
+                    blamSound = AudioConverter.Convert(blamSound, targetFormat,
+                        AudioConverter.ConverterOptions.Default with
+                        {
+                            UseTranscoderSampleCount = true
+                        });
 
                     permutation.SampleCount = blamSound.SampleCount;
 
@@ -266,7 +254,6 @@ namespace TagTool.Porting.Gen2
                 LoadMode = 0,
                 Compression = targetFormat,
                 Encoding = originalChannelCount == 2 ? EncodingValue.Stereo : EncodingValue.Mono,
-                SampleRate = new SampleRate { value = SampleRate.SampleRateValue._44khz },
             };
 
             //
@@ -277,6 +264,28 @@ namespace TagTool.Porting.Gen2
 
 
             return sound;
+        }
+
+        private static PlaybackParameter ConvertPlaybackParameters(PlaybackParameter playbackParameters)
+        {
+            playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceA;
+            playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceB;
+
+            if (playbackParameters.MininumDistance == 0)
+                playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceC;
+
+            if (playbackParameters.MaximumDistance == 0)
+                playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceD;
+
+            playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.Bit4;
+
+            playbackParameters.DistanceParameters = new SoundDistanceParameters()
+            {
+                MinimumDistance = playbackParameters.MininumDistance,
+                MaximumDistance = playbackParameters.MaximumDistance
+            };
+
+            return playbackParameters;
         }
     }
 }

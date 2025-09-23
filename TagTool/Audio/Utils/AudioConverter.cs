@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using TagTool.Audio.Converter;
@@ -22,10 +23,13 @@ namespace TagTool.Audio.Utils
         {
             public static readonly ConverterOptions Default = new()
             {
-                Quality = AudioQuality.Default
+                Quality = AudioQuality.Default,
+
             };
 
             public required AudioQuality Quality { get; init; }
+
+            public bool UseTranscoderSampleCount { get; init; } = false;
         }
 
         static readonly Dictionary<AudioQuality, int> Mp3QualityMap = new()
@@ -61,7 +65,8 @@ namespace TagTool.Audio.Utils
                 var transcodeParams = new ALTranscodeParams();
                 GetTranscodeParams(ref transcodeParams, blamSound, targetFormat, options);
 
-                int ret = al_transcode(input_stream, output_stream, ref transcodeParams);
+                var transcodeInfo = new ALTranscodeInfo();
+                int ret = al_transcode(input_stream, output_stream, ref transcodeParams, ref transcodeInfo);
                 if (ret != 0)
                     return null;
 
@@ -71,7 +76,13 @@ namespace TagTool.Audio.Utils
                 byte[] result = new byte[size];
                 Marshal.Copy(ptr, result, 0, size);
 
-                return new BlamSound(blamSound.SampleRate, blamSound.ChannelCount, blamSound.SampleCount, targetFormat, result);
+                uint newSampleCount = blamSound.SampleCount;
+                if (newSampleCount == 0 || options.UseTranscoderSampleCount)
+                {
+                    newSampleCount = (uint)transcodeInfo.sample_count;
+                }
+
+                return new BlamSound(blamSound.SampleRate, blamSound.ChannelCount, newSampleCount, targetFormat, result);
             }
             finally
             {
@@ -169,19 +180,27 @@ namespace TagTool.Audio.Utils
         {
             if (blamSound.Compression == Compression.XMA)
             {
-                var xmaFile = new XMAFile(blamSound);
+                var wavFile = new XMAFile(blamSound);
                 var ms = new MemoryStream();
                 using var writer = new EndianWriter(ms);
-                xmaFile.Write(writer);
+                wavFile.Write(writer);
                 blamSound.Data = ms.ToArray();
             }
 
             else if (blamSound.Compression == Compression.PCM)
             {
-                var xmaFile = new WAVFile(blamSound);
+                var wavFile = new WAVFile(blamSound);
                 var ms = new MemoryStream();
                 using var writer = new EndianWriter(ms);
-                xmaFile.Write(writer);
+                wavFile.Write(writer);
+                blamSound.Data = ms.ToArray();
+            }
+            else if (blamSound.Compression == Compression.XboxADPCM)
+            {
+                var wavFile = new XboxADPCM(blamSound);
+                var ms = new MemoryStream();
+                using var writer = new EndianWriter(ms);
+                wavFile.Write(writer);
                 blamSound.Data = ms.ToArray();
             }
 

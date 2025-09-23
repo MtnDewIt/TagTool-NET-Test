@@ -43,8 +43,9 @@ namespace TagTool.Audio.Utils
 
             int sampleRate = sound.SampleRate.GetSampleRateHz();
             int channelCount = Encoding.GetChannelCount(sound.Encoding);
+            uint sampleCount = (uint)(permutationData.Length / (36 * channelCount) * 64);
 
-            return new BlamSound(sampleRate, channelCount, permutation.SampleSize, sound.Compression, permutationData);
+            return new BlamSound(sampleRate, channelCount, sampleCount, sound.Compression, permutationData);
         }
     }
 }
