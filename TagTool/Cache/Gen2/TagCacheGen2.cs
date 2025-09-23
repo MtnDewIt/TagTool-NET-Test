@@ -109,7 +109,7 @@ namespace TagTool.Cache.Gen2
 
                 for (int i = 0; i < Header.TagGroupCount; i++)
                 {
-                    var group = new TagGroupGen2(new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()));
+                    var group = new TagGroupGen2(new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()), new Tag(reader.ReadInt32()), string.Empty);
                     if (!TagDefinitions.TagDefinitionExists(group))
                         Log.Warning($"Warning: tag definition for {group} does not exist!");
                 }
@@ -127,7 +127,7 @@ namespace TagTool.Cache.Gen2
                 string name = null;
                 if (Version < CacheVersion.Halo2Xbox)
                 {
-                    var group = new TagGroupGen2(entry.Tag, entry.ParentTag, entry.GrandParentTag);
+                    var group = new TagGroupGen2(entry.Tag, entry.ParentTag, entry.GrandParentTag, string.Empty);
                     if (!TagDefinitions.TagDefinitionExists(group))
                         Debug.WriteLine($"tag definition for {group} does not exists!");
 

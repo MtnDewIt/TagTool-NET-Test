@@ -17,6 +17,8 @@ using TagTool.Commands.ModelAnimationGraphs;
 using TagTool.Extensions;
 using System.Collections.Frozen;
 using TagTool.Common.Logging;
+using TagTool.Cache.Gen4;
+using TagTool.Cache.Gen3;
 
 namespace TagTool.Commands.Tags
 {
@@ -96,9 +98,9 @@ namespace TagTool.Commands.Tags
 
             FrozenDictionary<TagGroup, Type> TagTypes;
             if (TagCache >= CacheVersion.Halo4)
-                TagTypes = new Cache.Gen4.TagDefinitionsGen4().Gen4Types;
+                TagTypes = TagDefinitionsGen4.Gen4Types;
             else
-                TagTypes = new Cache.Gen3.TagDefinitionsGen3().Gen3Types;
+                TagTypes = TagDefinitionsGen3.Gen3Types;
 
             Type looseTagType = null;
             foreach (KeyValuePair<TagGroup, Type> tagType in TagTypes)

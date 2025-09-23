@@ -10,6 +10,6 @@ namespace TagTool.Cache.Gen4
         public TagGroupGen4(Tag tag, string name) : base(tag) { Name = name; }
         public TagGroupGen4(Tag tag, Tag parentTag, string name) : base(tag, parentTag) { Name = name; }
         public TagGroupGen4(Tag tag, Tag parentTag, Tag grandparentTag, string name) : base(tag, parentTag, grandparentTag) { Name = name; }
-        public override string ToString() => Name == "" ? Tag.ToString() : Name;
+        public override string ToString() => string.IsNullOrEmpty(Name) ? Tag.ToString() : Name;
     }
 }

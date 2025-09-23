@@ -506,7 +506,7 @@ namespace TagTool.Commands.Tags
                     var definitions = new TagDefinitionsGen3();
                     string fieldValue = $"{data}";
 
-                    foreach (KeyValuePair<TagGroup, Type> tagType in definitions.Gen3Types)
+                    foreach (KeyValuePair<TagGroup, Type> tagType in TagDefinitionsGen3.Gen3Types)
                     {
                         if (fieldValue.EndsWith("." + tagType.Key.ToString()))
                         {

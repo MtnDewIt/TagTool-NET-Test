@@ -88,7 +88,7 @@ namespace TagTool.Cache.Gen1
             {
                 var entry = deserializer.Deserialize<TagTableEntryGen1>(dataContext);
 
-                var group = new TagGroupGen1(entry.Tag, entry.ParentTag, entry.GrandParentTag);
+                var group = new TagGroupGen1(entry.Tag, entry.ParentTag, entry.GrandParentTag, string.Empty);
 
                 if (!TagDefinitions.TagDefinitionExists(group))
                     Debug.WriteLine($"Warning: tag definition for {group} does not exists!");
