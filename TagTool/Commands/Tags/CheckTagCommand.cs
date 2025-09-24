@@ -110,12 +110,19 @@ namespace TagTool.Commands.Tags
         {
             object data = null;
 
-            var output = CaptureConsoleOutput(() => data = Cache.Deserialize(Stream, tag));
-            foreach (var line in output.Split('\r', '\n'))
+            try
             {
-                var trimmed = line.Trim();
-                if (trimmed.StartsWith("WARNING:") || trimmed.StartsWith("ERROR"))
-                    Problems.Add(trimmed);
+                var output = CaptureConsoleOutput(() => data = Cache.Deserialize(Stream, tag));
+                foreach (var line in output.Split('\r', '\n'))
+                {
+                    var trimmed = line.Trim();
+                    if (trimmed.Contains("[WARNING]:") || trimmed.Contains("[ERROR]:") || trimmed.StartsWith("WARNING") || trimmed.StartsWith("ERROR"))
+                        Problems.Add(trimmed);
+                }
+            }
+            catch (Exception ex) 
+            {
+                Problems.Add($"Failed to deserialize {tag}: {ex.Message}");
             }
 
             VerifyData(data);
@@ -284,16 +291,23 @@ namespace TagTool.Commands.Tags
             }
         }
 
-        string CaptureConsoleOutput(Action action)
+        public static string CaptureConsoleOutput(Action action)
         {
-            using (var sw = new StringWriter())
+            var originalOut = Console.Out;
+            var sw = new StringWriter();
+
+            try
             {
-                var oldOut = Console.Out;
                 Console.SetOut(sw);
                 action();
-                Console.SetOut(oldOut);
-                return sw.ToString();
+                Console.Out.Flush();
             }
+            finally
+            {
+                Console.SetOut(originalOut);
+            }
+
+            return sw.ToString();
         }
     }
 }
