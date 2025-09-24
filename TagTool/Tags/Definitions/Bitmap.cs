@@ -8,7 +8,7 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xA4, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xB8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+    [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xB8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080)]
     [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xAC, MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
     [TagStructure(Name = "bitmap", Tag = "bitm", Size = 0xC0, MinVersion = CacheVersion.HaloReach)]
     public class Bitmap : TagStructure
@@ -63,7 +63,7 @@ namespace TagTool.Tags.Definitions
 
         public List<TagResourceReference> HardwareTextures;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MaxVersion = CacheVersion.Eldorado155080)]
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<TagResourceReference> InterleavedHardwareTextures;
 

@@ -103,7 +103,7 @@ namespace TagTool.Tags.Definitions
             public CachedTag BinkVideo;
         }
 
-        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080)]
         [TagStructure(Size = 0x5C, MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado604673)]
         [TagStructure(Size = 0x20, MinVersion = CacheVersion.Eldorado700123)]
         public class TextureRenderMannequin : TagStructure
@@ -122,10 +122,10 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Eldorado700123, MaxVersion = CacheVersion.Eldorado700123)]
             public List<TextureRenderAnimation> Animations;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado106708)]
+            [TagField(MaxVersion = CacheVersion.Eldorado155080)]
             public MannequinFlags Flags;
 
-            [TagField(Length = 0x3, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado106708)]
+            [TagField(Length = 0x3, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado155080)]
             public byte[] Padding;
 
             [TagField(MaxVersion = CacheVersion.Eldorado604673)]

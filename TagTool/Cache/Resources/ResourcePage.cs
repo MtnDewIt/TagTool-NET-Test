@@ -5,7 +5,7 @@ namespace TagTool.Cache.Resources
 {
     [TagStructure(Size = 0x58, Align = 0x8, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x58, Align = 0x8, MinVersion = CacheVersion.HaloReach)]
-    [TagStructure(Size = 0x24, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+    [TagStructure(Size = 0x24, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080)]
     [TagStructure(Size = 0x28, MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
     public class ResourcePage : TagStructure
 	{
@@ -17,7 +17,7 @@ namespace TagTool.Cache.Resources
         /// <summary>
         /// Gets or sets flags containing information about where the resource is located.
         /// </summary>
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080)]
         public OldRawPageFlags OldFlags;
 
         /// <summary>

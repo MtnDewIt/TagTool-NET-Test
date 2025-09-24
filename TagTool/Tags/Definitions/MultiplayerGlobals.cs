@@ -297,7 +297,7 @@ namespace TagTool.Tags.Definitions
                     public float CameraDistanceOffset;
                 }
 
-                [TagStructure(Size = 0x50, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+                [TagStructure(Size = 0x50, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080)]
                 [TagStructure(Size = 0x58, MinVersion = CacheVersion.Eldorado235640)]
                 public class MoveAnimation : TagStructure
 				{

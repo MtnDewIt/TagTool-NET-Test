@@ -159,7 +159,7 @@ namespace TagTool.Cache.Resources
             public StringId Name;
         }
 
-        [TagStructure(Size = 0x6C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagStructure(Size = 0x6C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado155080)]
         [TagStructure(Size = 0x70, MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
         public class TagResourceData : TagStructure
         {
