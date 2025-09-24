@@ -34,7 +34,9 @@ namespace TagTool.Porting.Gen3
             //
 
             Dictionary<int, KeyValuePair<int, List<string>>> table = new Dictionary<int, KeyValuePair<int, List<string>>>();
-            
+
+            BlamCache.LoadLocaleTables(blamCacheStream);
+
             var localeTable = BlamCache.LocaleTables;
 
             for(int i = 0; i < localeTable.Count; i++)

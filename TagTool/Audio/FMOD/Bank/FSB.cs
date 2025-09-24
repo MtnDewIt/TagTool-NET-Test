@@ -10,12 +10,12 @@ namespace TagTool.Audio.FMOD.Bank
         private FSBHeader Header;
         public List<FSBSubSound> SubSounds;
 
-        public FSB(string filePath)
+        public FSB(string filePath, bool withFilenames = true)
         {
             FilePath = filePath;
 
             using var reader = new EndianReader(OpenRead());
-            Load(reader);
+            Load(reader, withFilenames);
         }
 
         public Stream OpenRead()
@@ -48,7 +48,7 @@ namespace TagTool.Audio.FMOD.Bank
             }
         }
 
-        private void Load(EndianReader reader)
+        private void Load(EndianReader reader, bool withFilenames)
         {
             Header = new FSBHeader();
             Header.Read(reader);
@@ -67,17 +67,20 @@ namespace TagTool.Audio.FMOD.Bank
                 SubSounds[i].DataSize = end - SubSounds[i].DataOffset;
             }
 
-            if (Header.NamesChunkSizeBytes > 0)
+            if (withFilenames)
             {
-                reader.SeekTo(Header.HeaderChunkSizeBytes + Header.HeaderSize);
-                uint[] nameOffsets = new uint[Header.NumSoundSounds];
-                for (int i = 0; i < Header.NumSoundSounds; i++)
-                    nameOffsets[i] = reader.ReadUInt32();
-
-                for (int i = 0; i < Header.NumSoundSounds; i++)
+                if (Header.NamesChunkSizeBytes > 0)
                 {
-                    reader.SeekTo(Header.HeaderChunkSizeBytes + Header.HeaderSize + nameOffsets[i]);
-                    SubSounds[i].Name = reader.ReadNullTerminatedString();
+                    reader.SeekTo(Header.HeaderChunkSizeBytes + Header.HeaderSize);
+                    uint[] nameOffsets = new uint[Header.NumSoundSounds];
+                    for (int i = 0; i < Header.NumSoundSounds; i++)
+                        nameOffsets[i] = reader.ReadUInt32();
+
+                    for (int i = 0; i < Header.NumSoundSounds; i++)
+                    {
+                        reader.SeekTo(Header.HeaderChunkSizeBytes + Header.HeaderSize + nameOffsets[i]);
+                        SubSounds[i].Name = reader.ReadNullTerminatedString();
+                    }
                 }
             }
         }

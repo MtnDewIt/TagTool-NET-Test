@@ -232,21 +232,19 @@ namespace TagTool.Cache.Gen4
 
             reader.SeekTo(tagNamesBufferOffset);
 
-            using (var newReader = (TagsKey == "" || TagsKey == null) ?
-                new EndianReader(new MemoryStream(reader.ReadBytes(tagNamesHeader.TagNamesBufferSize)), EndianFormat.BigEndian) :
-                new EndianReader(reader.DecryptAesSegment(tagNamesHeader.TagNamesBufferSize, TagsKey), EndianFormat.BigEndian))
-            {
-                for (int i = 0; i < stringOffsets.Length; i++)
-                {
-                    if (stringOffsets[i] == -1)
-                    {
-                        Instances[i].Name = null;
-                        continue;
-                    }
+            StringBuffer tagNames = (TagsKey == "" || TagsKey == null)
+                ? new StringBuffer(reader.ReadBytes(tagNamesHeader.TagNamesBufferSize))
+                : new StringBuffer(reader.DecryptAesSegment(tagNamesHeader.TagNamesBufferSize, TagsKey));
 
-                    newReader.SeekTo(stringOffsets[i]);
-                    Instances[i].Name = newReader.ReadNullTerminatedString();
+            for (int i = 0; i < stringOffsets.Length; i++)
+            {
+                if (stringOffsets[i] == -1)
+                {
+                    Instances[i].Name = null;
+                    continue;
                 }
+
+                Instances[i].Name = tagNames.GetString(stringOffsets[i]).Replace(' ', '_');
             }
 
             #endregion

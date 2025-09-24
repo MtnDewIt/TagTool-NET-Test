@@ -46,11 +46,7 @@ namespace TagTool.Porting.Gen3
             if (BlamSoundGestalt == null)
                 BlamSoundGestalt = PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
 
-            if (!File.Exists($@"{Program.TagToolDirectory}\Tools\ffmpeg.exe"))
-            {
-                Log.Error("Failed to locate sound conversion tools. Please install ffmpeg in the Tools folder.");
-                return null;
-            }
+            BlamCache.LoadSoundBanks();
 
             RunAsync(
                 onExecute: () =>

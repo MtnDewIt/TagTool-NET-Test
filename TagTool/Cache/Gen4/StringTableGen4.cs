@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.BlamFile;
-using TagTool.Cache.MCC;
 
 namespace TagTool.Cache.Gen4
 {
@@ -50,32 +48,21 @@ namespace TagTool.Cache.Gen4
                 Add("");
             }
 
-            reader.SeekTo(stringIdBufferOffset);
-
-            EndianReader newReader;
-
-            if (StringKey == "")
-                newReader = new EndianReader(new MemoryStream(reader.ReadBytes(stringIDHeader.BufferSize)), reader.Format);
-            else
-                newReader = new EndianReader(reader.DecryptAesSegment(stringIDHeader.BufferSize, StringKey), reader.Format);
 
             //
             // Read strings
             //
 
+            reader.SeekTo(stringIdBufferOffset);
+
+            StringBuffer stringsBuffer = StringKey == ""
+                ? new StringBuffer(reader.ReadBytes(stringIDHeader.BufferSize))
+                : new StringBuffer(reader.DecryptAesSegment(stringIDHeader.BufferSize, StringKey));
+
             for (var i = 0; i < stringOffset.Length; i++)
             {
-                if (stringOffset[i] == -1)
-                {
-                    this[i] = "<null>";
-                    continue;
-                }
-
-                newReader.SeekTo(stringOffset[i]);
-                this[i] = newReader.ReadNullTerminatedString();
+                this[i] = stringOffset[i] == -1 ? "<null>" : stringsBuffer.GetString(stringOffset[i]);
             }
-            newReader.Close();
-            newReader.Dispose();
         }
 
         /*

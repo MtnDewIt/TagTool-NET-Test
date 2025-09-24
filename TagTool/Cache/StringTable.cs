@@ -48,7 +48,5 @@ namespace TagTool.Cache
                 return stringId;
             return AddString(newString);
         }
-
     }
-
 }

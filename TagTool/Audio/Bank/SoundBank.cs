@@ -11,7 +11,7 @@ namespace TagTool.Audio.Bank
         public SoundBank(string filePath)
         {
             Index = new SoundBankIndex($"{filePath}.info");
-            Bank = new FSB(filePath);
+            Bank = new FSB(filePath, withFilenames: false);
         }
 
         public BlamSound ExtractSound(int index)

@@ -324,8 +324,8 @@ namespace TagTool.IO
         /// </summary>
         /// <param name="length">The number of bytes to decrypt.</param>
         /// <param name="key">The decryption key as a string.</param>
-        /// <returns>A new <see cref="MemoryStream"/> containing the decrypted segment.</returns>
-        public MemoryStream DecryptAesSegment(int length, string key)
+        /// <returns>A new byte array containing the decrypted segment.</returns>
+        public byte[] DecryptAesSegment(int length, string key)
         {
             if (length % 16 != 0)
                 length += 16 - (length % 16);
@@ -347,7 +347,7 @@ namespace TagTool.IO
             aes.IV = iv;
             aes.Padding = PaddingMode.Zeros;
 
-            return new MemoryStream(aes.CreateDecryptor(aes.Key, aes.IV).TransformFinalBlock(data, 0, data.Length));
+            return aes.CreateDecryptor(aes.Key, aes.IV).TransformFinalBlock(data, 0, data.Length);
         }
 
         public int ReadBlock(byte[] buffer, int offset, int size)

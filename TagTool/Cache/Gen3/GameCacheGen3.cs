@@ -11,6 +11,8 @@ using TagTool.Tags.Definitions;
 using TagTool.Commands.Common;
 using TagTool.Common.Logging;
 using TagTool.Audio.Bank;
+using static TagTool.Tags.Definitions.Globals;
+using TagTool.Cache.CacheFile;
 
 namespace TagTool.Cache
 {
@@ -20,14 +22,11 @@ namespace TagTool.Cache
         public FileInfo CacheFile;
         public string NetworkKey;
        
-
         public StringTableGen3 StringTableGen3;
         public TagCacheGen3 TagCacheGen3;
         public ResourceCacheGen3 ResourceCacheGen3;
 
-        public List<DirectoryInfo> FMODSoundCacheDirectories = new List<DirectoryInfo>();
-        public SoundBankCache FMODSoundCache;
-
+        public CacheFileHeaderGen3 HeaderGen3 => (CacheFileHeaderGen3)BaseMapFile.Header;
         public override TagCache TagCache => TagCacheGen3;
         public override StringTable StringTable => StringTableGen3;
         public override ResourceCache ResourceCache => ResourceCacheGen3;
@@ -93,26 +92,6 @@ namespace TagTool.Cache
                 StringTableGen3 = new StringTableGen3(reader, BaseMapFile);
                 TagCacheGen3 = new TagCacheGen3(reader, BaseMapFile, StringTableGen3, Platform);
                 ResourceCacheGen3 = new ResourceCacheGen3(this);
-
-                if (TagCacheGen3.Instances.Count > 0)
-                {
-                    if (Version == CacheVersion.Halo3Beta || headerGen3.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
-                        LocaleTables = new List<LocaleTable>();
-                    else
-                    {
-                        //Allow caches to open even if Globals cannot deserialize
-                        try
-                        {
-                            var globals = Deserialize<Globals>(cacheStream, TagCacheGen3.GlobalInstances["matg"]);
-                            LocaleTables = LocalesTableGen3.CreateLocalesTable(reader, BaseMapFile, globals);
-                        }
-                        catch
-                        {
-                            Log.Warning("Failed to build locales table (Invalid Globals definition?)");
-                            LocaleTables = new List<LocaleTable>();
-                        }                                          
-                    }
-                }
             }
 
             // unused but kept for future uses
@@ -130,34 +109,7 @@ namespace TagTool.Cache
 
             if(Platform == CachePlatform.MCC)
             {
-                var game = Version.ToString().ToLower().Replace("retail", "");
-
-                //check if this is a mod
-                if (CacheFile.Directory.FullName.Contains("steamapps\\workshop\\content"))
-                {
-                    string root = CacheFile.Directory.FullName.Split(new string[] { "workshop" }, StringSplitOptions.None)[0];
-
-                    DirectoryInfo mainDirectory = new DirectoryInfo(Path.Combine(root, "common\\Halo The Master Chief Collection", game, "fmod\\pc"));
-                    if (mainDirectory.Exists)
-                        FMODSoundCacheDirectories.Add(mainDirectory);
-                    else
-                        Log.Warning("Failed to find main mcc sound banks!");
-                }
-
-                DirectoryInfo localDirectory = new DirectoryInfo(Path.Combine(CacheFile.Directory.FullName, "..", "fmod\\pc"));
-                if (localDirectory.Exists)
-                    FMODSoundCacheDirectories.Add(localDirectory);
-                else
-                {
-                    localDirectory = new DirectoryInfo(Path.Combine(CacheFile.Directory.FullName, "..", game, "fmod\\pc"));
-                    if (localDirectory.Exists)
-                        FMODSoundCacheDirectories.Add(localDirectory);
-                }
-
-                if (FMODSoundCacheDirectories.Count == 0)
-                    Log.Warning("Failed to load any FMOD sound banks!");
-
-                FMODSoundCache = new SoundBankCache(FMODSoundCacheDirectories);
+                
             }
         }
 
@@ -232,6 +184,73 @@ namespace TagTool.Cache
             {
                 sectionTable.SectionAddressToOffsets[i] += shiftAmount;
             }
+        }
+
+        public override void LoadLocaleTables(Stream stream)
+        {
+            if (LocaleTables != null)
+                return;
+
+            if (TagCacheGen3.Instances.Count == 0 || HeaderGen3.SectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+                return;
+
+            //Allow caches to open even if Globals cannot deserialize
+            try
+            {
+                var matg = Deserialize<Globals>(stream, TagCacheGen3.GlobalInstances["matg"]);
+
+                string localesKey = "";
+                switch (Version)
+                {
+                    case CacheVersion.HaloReach when Platform == CachePlatform.Original:
+                        localesKey = "BungieHaloReach!";
+                        break;
+                }
+
+                LanguagePack[] languagePacks = Platform == CachePlatform.MCC ? matg.LanguagePacksMCC : matg.LanguagePacks;
+
+                LocaleTables = CacheFileLocaleTables.Load(new EndianReader(stream, Endianness), HeaderGen3.SectionTable, localesKey, languagePacks);
+            }
+            catch
+            {
+                Log.Warning("Failed to build locales table (Invalid Globals definition?)");
+            }
+        }
+
+        public override void LoadSoundBanks()
+        {
+            if (SoundBanks != null || Platform != CachePlatform.MCC)
+                return;
+
+            var game = Version.ToString().ToLower().Replace("retail", "");
+
+            var directories =  new List<DirectoryInfo>();
+            //check if this is a mod
+            if (CacheFile.Directory.FullName.Contains("steamapps\\workshop\\content"))
+            {
+                string root = CacheFile.Directory.FullName.Split(new string[] { "workshop" }, StringSplitOptions.None)[0];
+
+                DirectoryInfo mainDirectory = new DirectoryInfo(Path.Combine(root, "common\\Halo The Master Chief Collection", game, "fmod\\pc"));
+                if (mainDirectory.Exists)
+                    directories.Add(mainDirectory);
+                else
+                    Log.Warning("Failed to find main mcc sound banks!");
+            }
+
+            DirectoryInfo localDirectory = new DirectoryInfo(Path.Combine(CacheFile.Directory.FullName, "..", "fmod\\pc"));
+            if (localDirectory.Exists)
+                directories.Add(localDirectory);
+            else
+            {
+                localDirectory = new DirectoryInfo(Path.Combine(CacheFile.Directory.FullName, "..", game, "fmod\\pc"));
+                if (localDirectory.Exists)
+                    directories.Add(localDirectory);
+            }
+
+            if (directories.Count == 0)
+                Log.Warning("Failed to load any FMOD sound banks!");
+
+            SoundBanks = new SoundBankCache(directories);
         }
     }
 }
