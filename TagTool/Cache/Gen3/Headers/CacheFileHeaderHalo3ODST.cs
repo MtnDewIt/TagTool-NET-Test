@@ -27,10 +27,8 @@ namespace TagTool.Cache.Gen3.Headers
         [TagField(Length = 32)]
         public string BuildNumber;
 
-        public CacheFileType ScenarioType;
-
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
-        public byte[] Pad0;
+        public ScenarioType ScenarioType;
+        public short SharedCacheFileType;
 
         public bool Uncompressed;
         public bool Tracked;
@@ -48,11 +46,14 @@ namespace TagTool.Cache.Gen3.Headers
         public uint StringIdIndexOffset;
         public uint StringIdDataOffset;
 
-        public uint SharedMapUsage; // c_flags_no_init<e_cache_file_shared_file_type,unsigned char,k_number_of_shared_file_types> (with 3 byte Pad1 after it)
+        public CacheFileSharedFileType SharedMapUsage;
+
+        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
+        public byte[] Pad1;
 
         public LastModificationDate CreationDate;
 
-        [TagField(Length = (int)CacheFileSharedFileType.Count)]
+        [TagField(Length = (int)SharedResourceDatabaseType.Count)]
         public SharedModificationDate[] SharedCreationDate;
 
         [TagField(Length = 32)]
@@ -63,7 +64,7 @@ namespace TagTool.Cache.Gen3.Headers
         [TagField(Length = 256)]
         public string TagPath;
 
-        public int MinorVersion;
+        public int MinorVersionNumber;
 
         public int DebugTagNameCount;
         public uint DebugTagNameDataOffset;
@@ -116,7 +117,7 @@ namespace TagTool.Cache.Gen3.Headers
         public override string GetTagPath() => TagPath;
         public override int GetMapId() => -1;
         public override int GetScenarioIndex() => -1;
-        public override CacheFileType GetScenarioType() => ScenarioType;
+        public override ScenarioType GetScenarioType() => ScenarioType;
         public override CacheFileSharedType GetSharedCacheFileType() => CacheFileSharedType.None;
         public override int GetStringIdCount() => StringIdCount;
         public override int GetStringIdDataCount() => StringIdDataCount;
@@ -130,7 +131,7 @@ namespace TagTool.Cache.Gen3.Headers
         public override uint GetDebugTagNameIndexOffset() => DebugTagNameIndexOffset;
         public override uint GetTagsOffset() => TagsOffset;
         public override uint GetTagsVirtualBase() => 0;
-        public override CacheFileFlags GetFlags() => CacheFileFlags.None;
+        public override bool GetCompression() => Uncompressed;
         public override int GetCompressedDataChunkSize() => -1;
         public override int GetCompressedDataOffset() => -1;
         public override int GetCompressedChunkTableOffset() => -1;

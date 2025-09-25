@@ -33,10 +33,8 @@ namespace TagTool.Cache.MCC.Headers
         [TagField(Length = 32)]
         public string BuildNumber;
 
-        public CacheFileType ScenarioType;
-
-        [TagField(Length = 0x2)]
-        public byte[] Pad;
+        public ScenarioType ScenarioType;
+        public short SharedCacheFileType;
 
         public uint Checksum;
 
@@ -59,7 +57,7 @@ namespace TagTool.Cache.MCC.Headers
         public override string GetTagPath() => null;
         public override int GetMapId() => -1;
         public override int GetScenarioIndex() => -1;
-        public override CacheFileType GetScenarioType() => ScenarioType;
+        public override ScenarioType GetScenarioType() => ScenarioType;
         public override CacheFileSharedType GetSharedCacheFileType() => CacheFileSharedType.None;
         public override int GetStringIdCount() => -1;
         public override int GetStringIdDataCount() => -1;
@@ -73,7 +71,7 @@ namespace TagTool.Cache.MCC.Headers
         public override uint GetDebugTagNameIndexOffset() => 0;
         public override uint GetTagsOffset() => 0;
         public override uint GetTagsVirtualBase() => 0;
-        public override CacheFileFlags GetFlags() => CacheFileFlags.None;
+        public override bool GetCompression() => false;
         public override int GetCompressedDataChunkSize() => -1;
         public override int GetCompressedDataOffset() => -1;
         public override int GetCompressedChunkTableOffset() => -1;

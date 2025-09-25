@@ -11,7 +11,7 @@ namespace TagTool.Tags.Definitions.Gen4
     public class Scenario : TagStructure
     {
         public List<ScenarioChildReferencesBlock> ChildScenarios;
-        public ScenarioTypeEnum Type;
+        public ScenarioType Type;
         public ScenarioFlags Flags;
         public ScenarioRuntimeTriggerVolumeFlags RuntimeTriggerVolumeFlags;
         public int CampaignId;
@@ -269,15 +269,6 @@ namespace TagTool.Tags.Definitions.Gen4
         public List<ScenarioUnitRecordingBlockStruct> UnitRecordings;
         // for non-mainmenu, we always use the first one
         public List<LoadscreenReferenceBlock> ExitLoadScreen;
-        
-        public enum ScenarioTypeEnum : short
-        {
-            Solo,
-            Multiplayer,
-            MainMenu,
-            MultiplayerShared,
-            SinglePlayerShared
-        }
         
         [Flags]
         public enum ScenarioFlags : ushort

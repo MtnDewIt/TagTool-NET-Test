@@ -1,6 +1,6 @@
 ﻿namespace TagTool.Cache
 {
-    public enum CacheFileSharedFileType : sbyte 
+    public enum SharedResourceDatabaseType : sbyte
     {
         Invalid = -1,
         MainMenu,
@@ -10,7 +10,7 @@
         Count
     }
 
-    public enum CacheFileSharedFileTypeMCC : sbyte
+    public enum SharedResourceDatabaseTypeMCC : sbyte
     {
         Invalid = -1,
         MainMenu,
@@ -21,7 +21,7 @@
         Count
     }
 
-    public enum CacheFileSharedFileTypeEDOld : sbyte
+    public enum SharedResourceDatabaseTypeEDOld : sbyte 
     {
         Invalid = -1,
         Ui,
@@ -34,7 +34,7 @@
         Count
     }
 
-    public enum CacheFileSharedFileTypeEDNew : sbyte
+    public enum SharedResourceDatabaseTypeEDNew : sbyte
     {
         None = -1,
         Ui,

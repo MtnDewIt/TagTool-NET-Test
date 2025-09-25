@@ -27,7 +27,7 @@ namespace TagTool.Cache.Eldorado.Headers
         [TagField(Length = 32)]
         public string BuildNumber;
 
-        public CacheFileType ScenarioType;
+        public ScenarioType ScenarioType;
         public CacheFileSharedType SharedCacheFileType;
 
         public bool Uncompressed;
@@ -46,11 +46,14 @@ namespace TagTool.Cache.Eldorado.Headers
         public uint StringIdIndexOffset;
         public uint StringIdDataOffset;
 
-        public uint SharedMapUsage;
+        public CacheFileSharedFileTypeEDOld SharedMapUsage;
+
+        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
+        public byte[] Pad1;
 
         public LastModificationDate CreationDate;
 
-        [TagField(Length = (int)CacheFileSharedFileTypeMS23.Count)]
+        [TagField(Length = (int)SharedResourceDatabaseTypeEDOld.Count)]
         public SharedModificationDate[] SharedCreationDate;
 
         [TagField(Length = 32)]
@@ -61,7 +64,7 @@ namespace TagTool.Cache.Eldorado.Headers
         [TagField(Length = 256)]
         public string TagPath;
 
-        public int MinorVersion;
+        public int MinorVersionNumber;
 
         public int DebugTagNameCount;
         public uint DebugTagNameDataOffset;
@@ -117,7 +120,7 @@ namespace TagTool.Cache.Eldorado.Headers
         public override string GetTagPath() => TagPath;
         public override int GetMapId() => MapId;
         public override int GetScenarioIndex() => ScenarioIndex;
-        public override CacheFileType GetScenarioType() => ScenarioType;
+        public override ScenarioType GetScenarioType() => ScenarioType;
         public override CacheFileSharedType GetSharedCacheFileType() => SharedCacheFileType;
         public override int GetStringIdCount() => StringIdCount;
         public override int GetStringIdDataCount() => StringIdDataCount;
@@ -131,7 +134,7 @@ namespace TagTool.Cache.Eldorado.Headers
         public override uint GetDebugTagNameIndexOffset() => DebugTagNameIndexOffset;
         public override uint GetTagsOffset() => TagsOffset;
         public override uint GetTagsVirtualBase() => 0;
-        public override CacheFileFlags GetFlags() => CacheFileFlags.None;
+        public override bool GetCompression() => Uncompressed;
         public override int GetCompressedDataChunkSize() => -1;
         public override int GetCompressedDataOffset() => -1;
         public override int GetCompressedChunkTableOffset() => -1;
@@ -140,6 +143,6 @@ namespace TagTool.Cache.Eldorado.Headers
         public override CacheFileSectionFileBounds GetReports() => Reports;
 
         public override void SetScenarioIndex(int index) => ScenarioIndex = index;
-        public override void SetScenarioType(CacheFileType scenarioType) => ScenarioType = scenarioType;
+        public override void SetScenarioType(ScenarioType scenarioType) => ScenarioType = scenarioType;
     }
 }

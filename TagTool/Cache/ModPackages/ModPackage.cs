@@ -789,11 +789,11 @@ namespace TagTool.Cache
 
                 var type = map.Header.GetScenarioType();
 
-                if (type == CacheFileType.Campaign)
+                if (type == ScenarioType.Solo)
                     Header.MapFlags |= MapFlags.CampaignMaps;
-                else if (type == CacheFileType.MainMenu)
+                else if (type == ScenarioType.MainMenu)
                     Header.MapFlags |= MapFlags.MainmenuMaps;
-                else if (type == CacheFileType.Multiplayer)
+                else if (type == ScenarioType.Multiplayer)
                     Header.MapFlags |= MapFlags.MultiplayerMaps;
             }
         }

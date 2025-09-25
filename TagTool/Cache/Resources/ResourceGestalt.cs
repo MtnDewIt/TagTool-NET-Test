@@ -15,7 +15,7 @@ namespace TagTool.Cache.Resources
     {
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(MinVersion = CacheVersion.HaloReach)]
-        public ScenarioTypeEnum MapType;
+        public ScenarioType MapType;
 
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -124,16 +124,6 @@ namespace TagTool.Cache.Resources
         public int DebugCampaignId;
         [TagField(Platform = CachePlatform.MCC)]
         public int DebugMapId;
-
-        public enum ScenarioTypeEnum : short
-        {
-            SinglePlayer,
-            Multiplayer,
-            MainMenu,
-            MultiplayerShared,
-            SinglePlayerShared,
-            SoundsShared
-        }
 
         [TagStructure(Size = 0x1C)]
         public class ResourceDefinition : TagStructure

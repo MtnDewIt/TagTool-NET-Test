@@ -7,8 +7,8 @@ namespace TagTool.JSON.Handlers
 {
     public class MapObjectHandler
     {
-        private CacheVersion Version;
-        private CachePlatform Platform;
+        private CacheVersion Version { get; set; }
+        private CachePlatform Platform { get; set; }
 
         private static List<JsonConverter> Converters;
 
@@ -38,9 +38,11 @@ namespace TagTool.JSON.Handlers
                 new DatumHandleHandler(),
                 new EnumHandler(),
                 new FileCreatorHandler(),
+                new Int16Point2dHandler(),
                 new LastModificationDateHandler(),
                 new NetworkRequestHashHandler(),
-                new Int16Point2dHandler(),
+                new PlatformSignedValueHandler(Platform),
+                new PlatformUnsignedValueHandler(Platform),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
                 new RealEulerAngles2dHandler(),
@@ -95,9 +97,11 @@ namespace TagTool.JSON.Handlers
                 new DatumHandleHandler(),
                 new EnumHandler(),
                 new FileCreatorHandler(),
+                new Int16Point2dHandler(),
                 new LastModificationDateHandler(),
                 new NetworkRequestHashHandler(),
-                new Int16Point2dHandler(),
+                new PlatformSignedValueHandler(Platform),
+                new PlatformUnsignedValueHandler(Platform),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
                 new RealEulerAngles2dHandler(),

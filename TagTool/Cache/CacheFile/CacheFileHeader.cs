@@ -36,6 +36,7 @@ namespace TagTool.Cache
                     CacheVersion.HaloCustomEdition => deserializer.Deserialize<CacheFileHeaderHalo1MCC>(dataContext),
                     CacheVersion.Halo2PC => deserializer.Deserialize<CacheFileHeaderHalo2MCC>(dataContext),
                     CacheVersion.Halo3Retail => deserializer.Deserialize<CacheFileHeaderHalo3MCC>(dataContext),
+                    CacheVersion.Halo3XboxOne => deserializer.Deserialize<CacheFileHeaderHalo3MCCXbox>(dataContext),
                     CacheVersion.Halo3ODST => deserializer.Deserialize<CacheFileHeaderHalo3ODSTMCC>(dataContext),
                     CacheVersion.HaloReach => deserializer.Deserialize<CacheFileHeaderHaloReachMCC>(dataContext),
                     CacheVersion.Halo4 => deserializer.Deserialize<CacheFileHeaderHalo4MCC>(dataContext),
@@ -91,6 +92,7 @@ namespace TagTool.Cache
                     CacheVersion.HaloCustomEdition => typeof(CacheFileHeaderHalo1MCC),
                     CacheVersion.Halo2PC => typeof(CacheFileHeaderHalo2MCC),
                     CacheVersion.Halo3Retail => typeof(CacheFileHeaderHalo3MCC),
+                    CacheVersion.Halo3XboxOne => typeof(CacheFileHeaderHalo3MCCXbox),
                     CacheVersion.Halo3ODST => typeof(CacheFileHeaderHalo3ODSTMCC),
                     CacheVersion.HaloReach => typeof(CacheFileHeaderHaloReachMCC),
                     CacheVersion.Halo4 => typeof(CacheFileHeaderHalo4MCC),
@@ -147,7 +149,7 @@ namespace TagTool.Cache
         public abstract string GetTagPath();
         public abstract int GetMapId();
         public abstract int GetScenarioIndex();
-        public abstract CacheFileType GetScenarioType();
+        public abstract ScenarioType GetScenarioType();
         public abstract CacheFileSharedType GetSharedCacheFileType();
 
         public abstract int GetStringIdCount();
@@ -165,7 +167,7 @@ namespace TagTool.Cache
         public abstract uint GetTagsOffset();
         public abstract uint GetTagsVirtualBase();
 
-        public abstract CacheFileFlags GetFlags();
+        public abstract bool GetCompression();
         public abstract int GetCompressedDataChunkSize();
         public abstract int GetCompressedDataOffset();
         public abstract int GetCompressedChunkTableOffset();
@@ -176,6 +178,6 @@ namespace TagTool.Cache
         
         // TODO: Figure out a better way of handling this
         public virtual void SetScenarioIndex(int index) { return; }
-        public virtual void SetScenarioType(CacheFileType scenarioType) { return; }
+        public virtual void SetScenarioType(ScenarioType scenarioType) { return; }
     }
 }

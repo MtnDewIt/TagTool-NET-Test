@@ -52,13 +52,13 @@ namespace TagTool.JSON.Parsers
                 switch (scnr.MapType)
                 {
                     case ScenarioMapType.MainMenu:
-                        mapData.Header.SetScenarioType(CacheFileType.MainMenu);
+                        mapData.Header.SetScenarioType(ScenarioType.MainMenu);
                         break;
                     case ScenarioMapType.SinglePlayer:
-                        mapData.Header.SetScenarioType(CacheFileType.Campaign);
+                        mapData.Header.SetScenarioType(ScenarioType.Solo);
                         break;
                     case ScenarioMapType.Multiplayer:
-                        mapData.Header.SetScenarioType(CacheFileType.Multiplayer);
+                        mapData.Header.SetScenarioType(ScenarioType.Multiplayer);
                         break;
                 }
 

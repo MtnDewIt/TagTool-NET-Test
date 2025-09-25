@@ -1,10 +1,10 @@
 ﻿using TagTool.Common;
 using TagTool.Tags;
 
-namespace TagTool.Cache.Eldorado.Headers
+namespace TagTool.Cache.MCC.Headers
 {
-    [TagStructure(Size = 0x3390, MinVersion = CacheVersion.Eldorado416097, MaxVersion = CacheVersion.Eldorado416097)]
-    public class CacheFileHeaderEldorado416097 : CacheFileHeader
+    [TagStructure(Size = 0x3000, MinVersion = CacheVersion.Halo3XboxOne, MaxVersion = CacheVersion.Halo3XboxOne, Platform = CachePlatform.MCC)]
+    public class CacheFileHeaderHalo3MCCXbox : CacheFileHeader
     {
         //
         // Header definition
@@ -28,7 +28,7 @@ namespace TagTool.Cache.Eldorado.Headers
         public string BuildNumber;
 
         public ScenarioType ScenarioType;
-        public CacheFileSharedType SharedCacheFileType;
+        public short SharedCacheFileType;
 
         public bool Uncompressed;
         public bool Tracked;
@@ -46,14 +46,14 @@ namespace TagTool.Cache.Eldorado.Headers
         public uint StringIdIndexOffset;
         public uint StringIdDataOffset;
 
-        public CacheFileSharedFileTypeEDNew SharedMapUsage;
+        public CacheFileSharedFileTypeMCC SharedMapUsage;
 
         [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
         public byte[] Pad1;
 
         public LastModificationDate CreationDate;
 
-        [TagField(Length = (int)SharedResourceDatabaseTypeEDNew.Count)]
+        [TagField(Length = (int)SharedResourceDatabaseTypeMCC.Count)]
         public SharedModificationDate[] SharedCreationDate;
 
         [TagField(Length = 32)]
@@ -71,23 +71,26 @@ namespace TagTool.Cache.Eldorado.Headers
         public int DebugTagNameDataSize;
         public uint DebugTagNameIndexOffset;
 
-        public CacheFileSectionFileBounds Reports;
-
         public uint RealtimeChecksum;
 
         public FileCreator CreatorName;
 
         public PlatformUnsignedValue ExpectedBaseAddress;
 
-        public int XDKVersion;
-        public int ContentHashMask;
+        public uint XDKVersion;
+
+        [TagField(Length = (int)CacheFilePartitionType.Count)]
+        public CacheFilePartition[] Partitions;
+
+        public uint ContentHashMask;
 
         [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
         public byte[] Pad2;
 
         public ulong SignatureMarker;
 
-        public NetworkRequestHash Hash;
+        [TagField(Length = 0x3)]
+        public SharedNetworkRequestHash[] ContentHashes;
 
         public RSASignature RSASignature;
 
@@ -95,13 +98,23 @@ namespace TagTool.Cache.Eldorado.Headers
 
         public SharedResourceUsage SharedResourceUsage;
 
-        public int TagCacheOffsets;
-        public int TagCount;
-        public int MapId;
-        public int ScenarioIndex;
-        public int CacheFileResourceGestaltIndex;
+        public uint TagsAddrsOffset;
+        public uint TagsAddrsSize;
 
-        [TagField(Length = 0x584, Flags = TagFieldFlags.Padding)]
+        public PlatformUnsignedValue Patch;
+
+        public uint PatchSize;
+
+        [TagField(Length = 0x10)]
+        public byte[] CompressedSectionOffset;
+
+        [TagField(Length = 0x10)]
+        public byte[] CompressedSectionSize;
+
+        [TagField(Length = 0x4)]
+        public byte[] CompressedSectionCodec;
+
+        [TagField(Length = 0x504)]
         public byte[] Padding;
 
         public Tag FooterSignature;
@@ -118,10 +131,10 @@ namespace TagTool.Cache.Eldorado.Headers
         public override string GetName() => Name;
         public override string GetBuildNumber() => BuildNumber;
         public override string GetTagPath() => TagPath;
-        public override int GetMapId() => MapId;
-        public override int GetScenarioIndex() => ScenarioIndex;
+        public override int GetMapId() => -1;
+        public override int GetScenarioIndex() => -1;
         public override ScenarioType GetScenarioType() => ScenarioType;
-        public override CacheFileSharedType GetSharedCacheFileType() => SharedCacheFileType;
+        public override CacheFileSharedType GetSharedCacheFileType() => CacheFileSharedType.None;
         public override int GetStringIdCount() => StringIdCount;
         public override int GetStringIdDataCount() => StringIdDataCount;
         public override uint GetStringIdIndexOffset() => StringIdIndexOffset;
@@ -140,9 +153,6 @@ namespace TagTool.Cache.Eldorado.Headers
         public override int GetCompressedChunkTableOffset() => -1;
         public override int GetCompressedChunkCount() => -1;
         public override CacheFileSectionTable GetSectionTable() => SectionTable;
-        public override CacheFileSectionFileBounds GetReports() => Reports;
-
-        public override void SetScenarioIndex(int index) => ScenarioIndex = index;
-        public override void SetScenarioType(ScenarioType scenarioType) => ScenarioType = scenarioType;
+        public override CacheFileSectionFileBounds GetReports() => null;
     }
 }

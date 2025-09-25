@@ -9,11 +9,11 @@ namespace TagTool.JSON.Handlers
 {
     public class TagObjectHandler
     {
-        private GameCache Cache;
-        private GameCacheEldoradoBase CacheContext;
-        private Stream CacheStream;
-        private TagObjectParser TagParser;
-        private List<string> ParsedTags;
+        private GameCache Cache { get; set; }
+        private GameCacheEldoradoBase CacheContext { get; set; }
+        private Stream CacheStream { get; set; }
+        private TagObjectParser TagParser { get; set; }
+        private List<string> ParsedTags { get; set; }
 
         private static List<JsonConverter> Converters;
 
@@ -48,6 +48,8 @@ namespace TagTool.JSON.Handlers
                 new DatumHandleHandler(),
                 new EnumHandler(),
                 new Int16Point2dHandler(),
+                new PlatformSignedValueHandler(Cache.Platform),
+                new PlatformUnsignedValueHandler(Cache.Platform),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
                 new RealEulerAngles2dHandler(),
@@ -103,6 +105,8 @@ namespace TagTool.JSON.Handlers
                 new DatumHandleHandler(),
                 new EnumHandler(),
                 new Int16Point2dHandler(),
+                new PlatformSignedValueHandler(Cache.Platform),
+                new PlatformUnsignedValueHandler(Cache.Platform),
                 new RealArgbColorHandler(),
                 new RealBoundingBoxHandler(),
                 new RealEulerAngles2dHandler(),

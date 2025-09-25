@@ -10,7 +10,7 @@ namespace TagTool.Tags.Definitions.Gen4
     [TagStructure(Name = "cache_file_resource_gestalt", Tag = "zone", Size = 0x22C)]
     public class CacheFileResourceGestalt : TagStructure
     {
-        public ScenarioTypeEnum ScenarioType;
+        public ScenarioType ScenarioType;
         public ScenarioFlags ScenarioFlags1;
         public List<CacheFileResourceTypeIdentifierBlock> ResourceTypeIdentifiers;
         public List<CacheFileInteropTypeIdentifierBlock> InteropTypeIdentifiers;
@@ -59,15 +59,6 @@ namespace TagTool.Tags.Definitions.Gen4
         public CacheFileTagResourcePredictionTable PredictionTable;
         public int MatIsInAReallyBadMoodCampaignId;
         public int NextTimeWeDonTPutThingsThatTheGameDependsOnOutsideOfToolGuerillaOrSapienMapId;
-        
-        public enum ScenarioTypeEnum : short
-        {
-            Solo,
-            Multiplayer,
-            MainMenu,
-            MultiplayerShared,
-            SinglePlayerShared
-        }
         
         [Flags]
         public enum ScenarioFlags : ushort

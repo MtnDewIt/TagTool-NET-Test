@@ -24,13 +24,11 @@ namespace TagTool.Cache.MCC.Headers
         public uint TagsOffset;
         public uint TotalTagsSize;
 
-        public CacheFileType ScenarioType;
+        public ScenarioType ScenarioType;
+        public short SharedCacheFileType;
 
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
-        public byte[] Pad0;
-
-        public CacheFileFlags Flags;
-
+        public bool Uncompressed;
+        public bool Tracked;
         public bool ValidSharedResourceUsage;
         public byte HeaderFlags;
 
@@ -48,12 +46,12 @@ namespace TagTool.Cache.MCC.Headers
 
         public GameLanguage Language;
 
-        public int MinorVersion;
+        public int MinorVersionNumber;
 
-        [TagField(Length = (int)CacheFileSharedFileType.Count)]
+        [TagField(Length = (int)SharedResourceDatabaseTypeMCC.Count)]
         public SharedModificationDate[] SharedCreationDate;
 
-        [TagField(Length = 0x18)]
+        [TagField(Length = 0x10)]
         public byte[] Unknown1;
 
         public FileCreator CreatorName;
@@ -113,7 +111,7 @@ namespace TagTool.Cache.MCC.Headers
         public override string GetTagPath() => TagPath;
         public override int GetMapId() => -1;
         public override int GetScenarioIndex() => -1;
-        public override CacheFileType GetScenarioType() => ScenarioType;
+        public override ScenarioType GetScenarioType() => ScenarioType;
         public override CacheFileSharedType GetSharedCacheFileType() => CacheFileSharedType.None;
         public override int GetStringIdCount() => StringIdCount;
         public override int GetStringIdDataCount() => StringIdDataCount;
@@ -127,7 +125,7 @@ namespace TagTool.Cache.MCC.Headers
         public override uint GetDebugTagNameIndexOffset() => DebugTagNameIndexOffset;
         public override uint GetTagsOffset() => TagsOffset;
         public override uint GetTagsVirtualBase() => 0;
-        public override CacheFileFlags GetFlags() => Flags;
+        public override bool GetCompression() => Uncompressed;
         public override int GetCompressedDataChunkSize() => -1;
         public override int GetCompressedDataOffset() => -1;
         public override int GetCompressedChunkTableOffset() => -1;

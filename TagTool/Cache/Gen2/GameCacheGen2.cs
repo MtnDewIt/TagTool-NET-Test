@@ -18,7 +18,7 @@ namespace TagTool.Cache
 
         public TagCacheGen2 TagCacheGen2;
         public StringTableGen2 StringTableGen2;
-        public CacheFileType SharedCacheType = CacheFileType.None;
+        public ScenarioType SharedCacheType = ScenarioType.None;
         public string VistaSharedTagCacheName;
         public FileInfo VistaSharedTagCacheFile;
         public GameCacheGen2 VistaSharedTagCache;
@@ -45,13 +45,13 @@ namespace TagTool.Cache
 
             switch (BaseMapFile.Header.GetScenarioType())
             {
-                case CacheFileType.Campaign:
-                    SharedCacheType = CacheFileType.SharedCampaign;
+                case ScenarioType.Solo:
+                    SharedCacheType = ScenarioType.SinglePlayerShared;
                     VistaSharedTagCacheName = "single_player_shared.map";
                     break;
-                case CacheFileType.Multiplayer:
-                case CacheFileType.MainMenu:    // see if this is necessary
-                    SharedCacheType = CacheFileType.Shared;
+                case ScenarioType.Multiplayer:
+                case ScenarioType.MainMenu:    // see if this is necessary
+                    SharedCacheType = ScenarioType.MultiplayerShared;
                     VistaSharedTagCacheName = "shared.map";
                     break;
             }
@@ -76,7 +76,7 @@ namespace TagTool.Cache
 
         private bool LoadVistaSharedTagCache()
         {
-            if (SharedCacheType == CacheFileType.None)
+            if (SharedCacheType == ScenarioType.None)
                 return false;
 
             VistaSharedTagCacheFile = new FileInfo(Path.Combine(Directory.FullName, VistaSharedTagCacheName));
@@ -222,13 +222,13 @@ namespace TagTool.Cache
         {
             Stream inputStream = null;
 
-            var flags = BaseMapFile.Header.GetFlags();
+            var compressed = BaseMapFile.Header.GetCompression();
             var dataOffset = BaseMapFile.Header.GetCompressedDataOffset();
             var chunkTableOffset = BaseMapFile.Header.GetCompressedChunkTableOffset();
             var dataChunkSize = BaseMapFile.Header.GetCompressedDataChunkSize();
             var chunkCount = BaseMapFile.Header.GetCompressedChunkCount();
 
-            if (flags.HasFlag(CacheFileFlags.Compressed))
+            if (compressed)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
                 {

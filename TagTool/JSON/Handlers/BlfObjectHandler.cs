@@ -7,8 +7,8 @@ namespace TagTool.JSON.Handlers
 {
     public class BlfObjectHandler
     {
-        private CacheVersion Version;
-        private CachePlatform Platform;
+        private CacheVersion Version { get; set; }
+        private CachePlatform Platform { get; set; }
 
         private static List<JsonConverter> Converters;
 

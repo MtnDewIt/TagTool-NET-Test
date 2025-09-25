@@ -110,13 +110,13 @@ namespace TagTool.BlamFile
             switch (scnr.MapType)
             {
                 case ScenarioMapType.MainMenu:
-                    header.ScenarioType = CacheFileType.MainMenu;
+                    header.ScenarioType = ScenarioType.MainMenu;
                     break;
                 case ScenarioMapType.SinglePlayer:
-                    header.ScenarioType = CacheFileType.Campaign;
+                    header.ScenarioType = ScenarioType.Solo;
                     break;
                 case ScenarioMapType.Multiplayer:
-                    header.ScenarioType = CacheFileType.Multiplayer;
+                    header.ScenarioType = ScenarioType.Multiplayer;
                     break;
             }
 
