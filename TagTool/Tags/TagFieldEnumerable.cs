@@ -95,17 +95,16 @@ namespace TagTool.Tags
 				// Ensure that fields are in declaration order - GetFields does NOT guarantee 
 				foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).OrderBy(i => i.MetadataToken))
 				{
-					var attr = TagStructure.GetTagFieldAttribute(type, field, Info.Version, Info.CachePlatform);
+					var attr = GetTagFieldAttribute(field, Info.Version, Info.CachePlatform);
+					if (attr == null)
+						continue;
 
-                    if (CacheVersionDetection.TestAttribute(attr, Info.Version, Info.CachePlatform))
-                    {
-						CreateTagFieldInfo(field, attr, Info.Version, Info.CachePlatform, ref offset);
-                    }
+					CreateTagFieldInfo(field, attr, Info.Version, Info.CachePlatform, ref offset);
 				}
 			}
 
 #if DEBUG
-			uint expectedSize = TagStructure.GetStructureSize(Info.Types[0], Info.Version, Info.CachePlatform);
+			uint expectedSize = Info.TotalSize;
 			if(Info.Structure.Align > 0)
 				offset = offset + (Info.Structure.Align - 1) & ~(Info.Structure.Align - 1);
 			if (Info.Structure.Align > 0)
@@ -116,6 +115,15 @@ namespace TagTool.Tags
 				Log.Warning($"Bad Size. Version: {Info.Version}:{Info.CachePlatform}, Type: '{typename}', Expected: 0x{expectedSize:X}, Actual: 0x{offset:X}");
 #endif
 		}
+
+        private static TagFieldAttribute GetTagFieldAttribute(FieldInfo field, CacheVersion version, CachePlatform platform)
+        {
+            var attributes = field.GetCustomAttributes<TagFieldAttribute>(false);
+            if (!attributes.Any())
+                return TagFieldAttribute.Default;
+
+            return attributes.Where(a => CacheVersionDetection.TestAttribute(a, version, platform)).FirstOrDefault();
+        }
 
         /// <summary>
         /// Creates and adds a <see cref="Tags.TagFieldInfo"/> to the <see cref="Tags.TagFieldInfo"/> <see cref="List{T}"/>.

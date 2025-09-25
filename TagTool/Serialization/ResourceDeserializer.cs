@@ -11,6 +11,7 @@ using BindingFlags = System.Reflection.BindingFlags;
 using System.IO;
 using System.Linq;
 using System.Buffers;
+using System.Collections;
 
 namespace TagTool.Serialization
 {
@@ -36,7 +37,7 @@ namespace TagTool.Serialization
 
             var resourceContext = context as ResourceDefinitionSerializationContext;
 
-            var result = Activator.CreateInstance(valueType);
+            var result = (ID3DStructure)Activator.CreateInstance(valueType);
             var elementType = valueType.GenericTypeArguments[0];
 
             // Read the pointer
@@ -52,9 +53,8 @@ namespace TagTool.Serialization
 
             nextReader.BaseStream.Position = address.Offset;
 
-            var definition = DeserializeValue(nextReader, context, null, elementType);
-            valueType.GetField("Definition").SetValue(result, definition);
-            valueType.GetField("AddressType").SetValue(result, address.Type);
+            result.Definition = DeserializeValue(nextReader, context, null, elementType);
+            result.AddressType = address.Type;
 
             reader.BaseStream.Position = startOffset + 0xC;
             return result;
@@ -67,8 +67,7 @@ namespace TagTool.Serialization
 
             var resourceContext = context as ResourceDefinitionSerializationContext;
 
-            var result = Activator.CreateInstance(valueType);
-            var elementType = valueType.GenericTypeArguments[0];
+            var result = (ITagBlock)Activator.CreateInstance(valueType);
 
             // Read count and offset
             var startOffset = reader.BaseStream.Position;
@@ -77,7 +76,7 @@ namespace TagTool.Serialization
             var pointer = new CacheAddress(reader.ReadUInt32());
 
             // Set block address type
-            valueType.GetField("AddressType").SetValue(result, pointer.Type);
+            result.AddressType = pointer.Type;
 
             if (count == 0)
             {
@@ -93,14 +92,7 @@ namespace TagTool.Serialization
             var nextReader = resourceContext.GetReader(pointer.Type);
             nextReader.BaseStream.Position = pointer.Offset;
 
-			object[] pooledValuesToAdd = ArrayPool<object>.Shared.Rent(count);
-			Span<object> valuesToAdd = pooledValuesToAdd.AsSpan()[..count];
-			for (var i = 0; i < count; i++)
-            {
-				valuesToAdd[i] = DeserializeValue(nextReader, resourceContext, null, elementType);
-            }
-			ReflectionHelpers.GetAddRangeBoxedDelegate(valueType)(result, valuesToAdd);
-			ArrayPool<object>.Shared.Return(pooledValuesToAdd);
+            DeserializeTagBlockCore(nextReader, resourceContext, result, count, valueType);
 
 			reader.BaseStream.Position = startOffset + (Version > CacheVersion.Halo2PC ? 0xC : 0x8);
 

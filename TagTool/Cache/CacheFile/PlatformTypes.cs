@@ -9,9 +9,9 @@ namespace TagTool.Cache
     /// Platform dependent unsigned integer, uint32 when 32 bit, uint64 when 64 bit. 
     /// Serializer is responsible for properly reading/writing to file.
     /// </summary>
-    public class PlatformUnsignedValue
+    public readonly struct PlatformUnsignedValue
     {
-        public ulong Value;
+        public readonly ulong Value;
 
         public PlatformUnsignedValue() { Value = 0; }
         public PlatformUnsignedValue(ulong value) { Value = value; }
@@ -20,16 +20,16 @@ namespace TagTool.Cache
         public uint Get32BitValue() => (uint)(Value);
         public ulong Get64BitValue() => Value;
 
-        public override string ToString() => $"0x{Value:X}";
+        public override readonly string ToString() => $"0x{Value:X}";
     }
 
     /// <summary>
     /// Platform dependent signed integer, int32 when 32 bit, int64 when 64 bit. 
     /// Serializer is responsible for properly reading/writing to file.
     /// </summary>
-    public class PlatformSignedValue
+    public readonly struct PlatformSignedValue
     {
-        public long Value;
+        public readonly long Value;
 
         public PlatformSignedValue() { Value = 0; }
         public PlatformSignedValue(long value) { Value = value; }

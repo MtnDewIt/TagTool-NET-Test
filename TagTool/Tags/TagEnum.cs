@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Xml.Linq;
 using TagTool.Cache;
 using TagTool.Scripting;
@@ -13,14 +16,17 @@ namespace TagTool.Tags
 
     public class TagEnum
     {
-        private static Dictionary<(CacheVersion, CachePlatform), VersionedCache> VersionedCaches
-            = new Dictionary<(CacheVersion, CachePlatform), VersionedCache>();
+        private static readonly FrozenDictionary<(CacheVersion, CachePlatform), VersionedCache> VersionedCaches = CreateVersionedCache();
 
-        static TagEnum()
+        private static FrozenDictionary<(CacheVersion version, CachePlatform platform), VersionedCache> CreateVersionedCache()
         {
+            var builder = ImmutableDictionary.CreateBuilder<(CacheVersion, CachePlatform), VersionedCache>();
+
             foreach (var platform in Enum.GetValues(typeof(CachePlatform)) as CachePlatform[])
                 foreach (var version in Enum.GetValues(typeof(CacheVersion)) as CacheVersion[])
-                    VersionedCaches[(version, platform)] = new VersionedCache(version, platform);
+                    builder.Add((version, platform), new VersionedCache(version, platform));
+
+            return builder.ToFrozenDictionary();
         }
 
         public static TagEnumInfo GetInfo(Type enumType, CacheVersion version, CachePlatform platform)
@@ -30,28 +36,27 @@ namespace TagTool.Tags
 
         public static TagEnumMemberEnumerable GetMemberEnumerable(TagEnumInfo info)
         {
-            return VersionedCaches[(info.CacheVersion, info.CachePlatform)].GetMemberEnumerable(info);
+            return info.Members;
         }
 
         public static TagEnumMemberEnumerable GetMemberEnumerable(Type enumType, CacheVersion version, CachePlatform platform)
         {
-            var info = GetInfo(enumType, version, platform);
-            return VersionedCaches[(version, platform)].GetMemberEnumerable(info);
+            return GetInfo(enumType, version, platform).Members;
         }
 
         public static bool AttributeInCacheVersion(TagEnumMemberAttribute attr, CacheVersion compare)
         {
-            if (attr.Version != CacheVersion.Unknown)
-                if (attr.Version != compare)
-                    return false;
+            if (attr.Version != CacheVersion.Unknown && attr.Version != compare)
+                return false;
 
-            if (attr.Gen != CacheGeneration.Unknown)
-                if (!CacheVersionDetection.IsInGen(attr.Gen, compare))
-                    return false;
+            if (attr.Gen != CacheGeneration.Unknown && !CacheVersionDetection.IsInGen(attr.Gen, compare))
+                return false;
 
-            if (attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
-                if (!CacheVersionDetection.IsBetween(compare, attr.MinVersion, attr.MaxVersion))
-                    return false;
+            if ((attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
+                && !CacheVersionDetection.IsBetween(compare, attr.MinVersion, attr.MaxVersion))
+            {
+                return false;
+            }
 
             return true;
         }
@@ -61,14 +66,18 @@ namespace TagTool.Tags
             return CacheVersionDetection.ComparePlatform(attr.Platform, compare);
         }
 
-        class VersionedCache
+        public static VersionedCache GetVersonedCache(CacheVersion version, CachePlatform platform)
         {
-            public CacheVersion CacheVersion;
-            public CachePlatform CachePlatform;
+            return VersionedCaches[(version, platform)];
+        }
 
-            public Dictionary<Type, TagEnumInfo> Infos = new Dictionary<Type, TagEnumInfo>();
-            public Dictionary<FieldInfo, TagEnumMemberInfo> MemberInfos = new Dictionary<FieldInfo, TagEnumMemberInfo>();
-            public Dictionary<TagEnumInfo, TagEnumMemberEnumerable> MemberEnumerables = new Dictionary<TagEnumInfo, TagEnumMemberEnumerable>();
+
+        public class VersionedCache
+        {
+            public readonly CacheVersion CacheVersion;
+            public readonly CachePlatform CachePlatform;
+
+            private readonly Dictionary<nint, TagEnumInfo> Infos = [];
 
             public VersionedCache(CacheVersion cacheVersion, CachePlatform cachePlatform)
             {
@@ -78,21 +87,12 @@ namespace TagTool.Tags
 
             public TagEnumInfo GetInfo(Type enumType)
             {
+                nint typeHandle = enumType.TypeHandle.Value;
                 lock (Infos)
                 {
-                    if (!Infos.TryGetValue(enumType, out TagEnumInfo info))
-                        Infos.Add(enumType, info = new TagEnumInfo(enumType, CacheVersion, CachePlatform));
+                    if (!Infos.TryGetValue(typeHandle, out TagEnumInfo info))
+                        Infos.Add(typeHandle, info = new TagEnumInfo(enumType, CacheVersion, CachePlatform));
                     return info;
-                }
-            }
-
-            public TagEnumMemberEnumerable GetMemberEnumerable(TagEnumInfo info)
-            {
-                lock (MemberEnumerables)
-                {
-                    if (!MemberEnumerables.TryGetValue(info, out TagEnumMemberEnumerable enumerable))
-                        MemberEnumerables.Add(info, enumerable = new TagEnumMemberEnumerable(info));
-                    return enumerable;
                 }
             }
         }
@@ -106,6 +106,22 @@ namespace TagTool.Tags
         public CachePlatform CachePlatform;
         public TagEnumAttribute Attribute;
         public bool IsFlags;
+        private TagEnumMemberEnumerable _members;
+
+        public TagEnumMemberEnumerable Members
+        {
+            get
+            {
+                if (_members == null)
+                {
+                    lock (this)
+                    {
+                        _members ??= new TagEnumMemberEnumerable(this);
+                    }
+                }
+                return _members;
+            }
+        }
 
         public TagEnumInfo(Type type, CacheVersion cacheVersion, CachePlatform cachePlatform)
         {

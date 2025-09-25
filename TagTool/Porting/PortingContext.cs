@@ -412,10 +412,6 @@ namespace TagTool.Porting
                     tagStructure = ConvertStructure(cacheStream, blamCacheStream, tagStructure, definition, blamTagName);
                     return data;
 
-                case PlatformSignedValue _:
-                case PlatformUnsignedValue _:
-                    return data;
-
                 default:
                     Log.Warning($"Unhandled type in `ConvertData`: {data.GetType().Name} (probably harmless).");
                     break;

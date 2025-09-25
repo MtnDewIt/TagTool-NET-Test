@@ -311,6 +311,8 @@ namespace TagTool.Cache.Gen3
         private Memory<byte> ReadSegmentData(ResourceData resource, int pageIndex, int offset, int sizeIndex)
         {
             var page = ResourceLayoutTable.Pages[pageIndex];
+            if (page.BlockAddress == uint.MaxValue || page.CompressedBlockSize == 0)
+                return Memory<byte>.Empty;
 
             byte[] decompressed;
             if(!ResourcePageCache.TryGetPage(pageIndex, out decompressed))
@@ -425,38 +427,34 @@ namespace TagTool.Cache.Gen3
                 }
             }
 
-            var decompressed = new byte[page.UncompressedBlockSize];
-
-            using (var cacheStream = cache.OpenCacheRead())
-            using (var reader = new EndianReader(cacheStream, Cache.Endianness))
+            uint blockOffset = 0;
+            if (page.SharedCacheIndex < 0 || (ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].Flags & 1) != 0)
             {
-                uint blockOffset = 0;
-                if (page.SharedCacheIndex < 0 || (ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].Flags & 1) != 0)
-                {
-                    var sectionTable = ((CacheFileHeaderGen3)cache.BaseMapFile.Header).SectionTable;
-                    blockOffset = sectionTable.GetOffset(CacheFileSectionType.ResourceSection, page.BlockAddress);
-                }
-                else
-                {
-                    blockOffset = ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].BlockOffset + page.BlockAddress;
-                }
-
-                reader.SeekTo(blockOffset);
-                var compressed = reader.ReadBytes(BitConverter.ToInt32(BitConverter.GetBytes(page.CompressedBlockSize), 0));
-
-                if (resource.ResourceTypeIndex != -1 && GetResourceTypeName(resource) == "sound_resource_definition")
-                    return compressed;
-
-                if (page.CompressionCodecIndex == -1)
-                    return compressed;
-                else
-                    using (var readerDeflate = new DeflateStream(new MemoryStream(compressed), CompressionMode.Decompress))
-                        readerDeflate.ReadAll(decompressed, 0, BitConverter.ToInt32(BitConverter.GetBytes(page.UncompressedBlockSize), 0));
+                var sectionTable = ((CacheFileHeaderGen3)cache.BaseMapFile.Header).SectionTable;
+                blockOffset = sectionTable.GetOffset(CacheFileSectionType.ResourceSection, page.BlockAddress);
+            }
+            else
+            {
+                blockOffset = ResourceLayoutTable.SharedFiles[page.SharedCacheIndex].BlockOffset + page.BlockAddress;
             }
 
-            return decompressed;
+            using var cacheStream = cache.OpenCacheRead();
+            var pageStream = new RangeStream(cacheStream, blockOffset, page.CompressedBlockSize);
+
+            if (page.CompressionCodecIndex == -1)
+            {
+                byte[] compressed = new byte[page.CompressedBlockSize];
+                pageStream.ReadExactly(compressed);
+                return compressed;
+            }
+            else
+            {
+                var decompressed = new byte[page.UncompressedBlockSize];
+
+                using var readerDeflate = new DeflateStream(pageStream, CompressionMode.Decompress);
+                readerDeflate.ReadExactly(decompressed);
+                return decompressed;
+            }
         }
     }
-
-    
 }

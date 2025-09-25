@@ -23,6 +23,17 @@ namespace TagTool.Cache.HaloOnline
         public long CreationTime;
         public int Unused2;
         public int Unused3;
+
+        public void Write(EndianWriter writer)
+        {
+            writer.Write(UnusedTag);
+            writer.Write(TagTableOffset);
+            writer.Write(TagCount);
+            writer.Write(Unused);
+            writer.Write(CreationTime);
+            writer.Write(Unused2);
+            writer.Write(Unused3);
+        }
     }
 
     public class TagCacheHaloOnline : TagCache
@@ -422,9 +433,7 @@ namespace TagTool.Cache.HaloOnline
             Header.TagTableOffset = offsetTableOffset;
             Header.TagCount = Tags.Count;
             writer.BaseStream.Position = 0;
-            var dataContext = new DataSerializationContext(writer);
-            var serializer = new TagSerializer(Version, CachePlatform);
-            serializer.Serialize(dataContext, Header);
+            Header.Write(writer);
         }
 
         public HashSet<CachedTagHaloOnline> FindDependencies(CachedTagHaloOnline tag)

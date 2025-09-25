@@ -1,8 +1,9 @@
+using System;
+using System.Buffers.Binary;
 using System.IO;
 using System.Linq;
 using System.Text;
-using static System.BitConverter;
-using static TagTool.IO.EndianFormat;
+
 namespace TagTool.IO
 {
     public class EndianWriter : BinaryWriter
@@ -45,50 +46,90 @@ namespace TagTool.IO
         public override void Write(double value) =>
             Write(value, Format);
 
-        public void Write(short value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(short value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(short)];
+            if(format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteInt16LittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteInt16BigEndian(buffer, value);
+            Write(buffer);
+        }
 
-        public void Write(int value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(int value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(int)];
+            if (format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteInt32LittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteInt32BigEndian(buffer, value);
+            Write(buffer);
+        }
 
-        public void Write(long value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(long value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(long)];
+            if (format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteInt64LittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteInt64BigEndian(buffer, value);
+            Write(buffer);
+        }
 
-        public void Write(ushort value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(ushort value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(ushort)];
+            if (format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteUInt16LittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteUInt16BigEndian(buffer, value);
+            Write(buffer);
+        }
 
-        public void Write(uint value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(uint value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(uint)];
+            if (format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteUInt32LittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteUInt32BigEndian(buffer, value);
+            Write(buffer);
+        }
 
-        public void Write(ulong value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(ulong value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(ulong)];
+            if (format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteUInt64LittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteUInt64BigEndian(buffer, value);
+            Write(buffer);
+        }
 
-        public void Write(float value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(float value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(float)];
+            if (format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteSingleLittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteSingleBigEndian(buffer, value);
+            Write(buffer);
+        }
 
-        public void Write(double value, EndianFormat format) =>
-            Write(format == BigEndian ?
-                GetBytes(value).Reverse().ToArray() :
-                GetBytes(value));
+        public void Write(double value, EndianFormat format)
+        {
+            Span<byte> buffer = stackalloc byte[sizeof(double)];
+            if (format == EndianFormat.LittleEndian)
+                BinaryPrimitives.WriteDoubleLittleEndian(buffer, value);
+            else
+                BinaryPrimitives.WriteDoubleBigEndian(buffer, value);
+            Write(buffer);
+        }
 
         public void WriteBlock(byte[] data) =>
-            BaseStream.Write(data, 0, data.Length);
+            Write(data, 0, data.Length);
 
         public void WriteBlock(byte[] data, int offset, int length) =>
-            BaseStream.Write(data, offset, length);
+            Write(data, offset, length);
     }
 }

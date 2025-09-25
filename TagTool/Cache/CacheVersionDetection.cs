@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TagTool.Common;
 using TagTool.Tags;
 
@@ -344,76 +345,63 @@ namespace TagTool.Cache
         /// <returns></returns>
         public static bool AttributeInCacheVersion(TagFieldAttribute attr, CacheVersion compare)
         {
-            if (attr.Version != CacheVersion.Unknown)
-                if (attr.Version != compare)
-                    return false;
+            if (attr.Version != CacheVersion.Unknown && attr.Version != compare)
+                return false;
 
-            if (attr.Gen != CacheGeneration.Unknown)
-                if (!IsInGen(attr.Gen, compare))
-                    return false;
+            if (attr.Gen != CacheGeneration.Unknown && !IsInGen(attr.Gen, compare))
+                return false;
 
-            if (attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
-                if (!IsBetween(compare, attr.MinVersion, attr.MaxVersion))
-                    return false;
+            if ((attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown) &&
+                !IsBetween(compare, attr.MinVersion, attr.MaxVersion))
+            {
+                return false;
+            }
 
             return true;
         }
 
         public static bool AttributeInCacheVersion(TagEnumMemberAttribute attr, CacheVersion compare)
         {
-            if (attr.Version != CacheVersion.Unknown)
-                if (attr.Version != compare)
-                    return false;
+            if (attr.Version != CacheVersion.Unknown && attr.Version != compare)
+                return false;
 
-            if (attr.Gen != CacheGeneration.Unknown)
-                if (!IsInGen(attr.Gen, compare))
-                    return false;
+            if (attr.Gen != CacheGeneration.Unknown && !IsInGen(attr.Gen, compare))
+                return false;
 
-            if (attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
-                if (!IsBetween(compare, attr.MinVersion, attr.MaxVersion))
-                    return false;
+            if ((attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown) &&
+                !IsBetween(compare, attr.MinVersion, attr.MaxVersion))
+            {
+                return false;
+            }
 
             return true;
         }
 
         public static bool AttributeInCacheVersion(TagStructureAttribute attr, CacheVersion compare)
         {
-            if (attr.Version != CacheVersion.Unknown)
-                if (attr.Version != compare)
-                    return false;
+            if (attr.Version != CacheVersion.Unknown && attr.Version != compare)
+                return false;
 
-            if (attr.Gen != CacheGeneration.Unknown)
-                if (!IsInGen(attr.Gen, compare))
-                    return false;
+            if (attr.Gen != CacheGeneration.Unknown && !IsInGen(attr.Gen, compare))
+                return false;
 
-            if (attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown)
-                if (!IsBetween(compare, attr.MinVersion, attr.MaxVersion))
-                    return false;
+            if ((attr.MinVersion != CacheVersion.Unknown || attr.MaxVersion != CacheVersion.Unknown) &&
+                !IsBetween(compare, attr.MinVersion, attr.MaxVersion))
+            {
+                return false;
+            }
 
             return true;
         }
 
-        public static bool AttributeInPlatform(TagFieldAttribute attr, CachePlatform compare)
-        {
-            return ComparePlatform(attr.Platform, compare);
-        }
 
-        public static bool AttributeInPlatform(TagEnumMemberAttribute attr, CachePlatform compare)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ComparePlatform(CachePlatform platform, CachePlatform compare)
         {
-            return ComparePlatform(attr.Platform, compare);
-        }
-
-        public static bool AttributeInPlatform(TagStructureAttribute attr, CachePlatform compare)
-        {
-            return ComparePlatform(attr.Platform, compare);
-        }
-
-        public static bool ComparePlatform(CachePlatform attributeCachePlatform, CachePlatform compare)
-        {
-            if (attributeCachePlatform == CachePlatform.All)
+            if (platform == CachePlatform.All)
                 return true;
             else
-                return attributeCachePlatform == compare;
+                return platform == compare;
         }
 
         /// <summary>
@@ -422,6 +410,7 @@ namespace TagTool.Cache
         /// <param name="lhs">The left-hand version number.</param>
         /// <param name="rhs">The right-hand version number.</param>
         /// <returns>A positive value if the left version is newer, a negative value if the right version is newer, and 0 if the versions are equivalent.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Compare(CacheVersion lhs, CacheVersion rhs)
         {
             // Assume the enum values are in order by release date
@@ -452,6 +441,7 @@ namespace TagTool.Cache
         /// <param name="gen"></param>
         /// <param name="compare"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsInGen(CacheGeneration gen, CacheVersion compare)
         {
             if (compare == CacheVersion.Unknown || gen == CacheGeneration.Unknown)
@@ -460,6 +450,7 @@ namespace TagTool.Cache
                 return GetGeneration(compare) == gen;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool InCacheBuildType(CacheBuildType buildType, CacheVersion compare)
         {
             if (compare == CacheVersion.Unknown || buildType == CacheBuildType.Unknown)
@@ -468,6 +459,7 @@ namespace TagTool.Cache
                 return GetCacheBuildType(compare) == buildType;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CacheBuildType GetCacheBuildType(CacheVersion version)
         {
             switch (version)
@@ -479,11 +471,28 @@ namespace TagTool.Cache
             return CacheBuildType.ReleaseBuild;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AttributeInPlatform(TagFieldAttribute attr, CachePlatform compare)
+        {
+            return ComparePlatform(attr.Platform, compare);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AttributeInPlatform(TagEnumMemberAttribute attr, CachePlatform compare)
+        {
+            return ComparePlatform(attr.Platform, compare);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AttributeInPlatform(TagStructureAttribute attr, CachePlatform compare)
+        {
+            return ComparePlatform(attr.Platform, compare);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TestAttribute(TagFieldAttribute a, CacheVersion version, CachePlatform platform)
         {
             if (!InCacheBuildType(a.BuildType, version))
-                return false;
-            if (!IsInGen(a.Gen, version))
                 return false;
             if (!AttributeInPlatform(a, platform))
                 return false;
@@ -493,6 +502,7 @@ namespace TagTool.Cache
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TestAttribute(TagEnumMemberAttribute a, CacheVersion version, CachePlatform platform)
         {
             if (!IsInGen(a.Gen, version))
@@ -505,14 +515,12 @@ namespace TagTool.Cache
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TestAttribute(TagStructureAttribute a, CacheVersion version, CachePlatform platform)
         {
             if (!InCacheBuildType(a.BuildType, version))
-                return false;
-           
+                return false;   
             if (!AttributeInPlatform(a, platform))
-                return false;
-            if (!IsInGen(a.Gen, version))
                 return false;
             if (!AttributeInCacheVersion(a, version))
                 return false;

@@ -13,6 +13,8 @@ using TagTool.Commands.Common;
 using TagTool.Geometry.BspCollisionGeometry;
 using System.Runtime.InteropServices;
 using TagTool.Common.Logging;
+using System.Collections;
+using static TagTool.IO.ConsoleHistory;
 
 namespace TagTool.Serialization
 {
@@ -112,9 +114,14 @@ namespace TagTool.Serialization
                 int padding = -fieldOffset & (int)(align - 1);
                 if (padding > 0)
                 {
-                    var paddingBytes = new byte[padding];
-                    block.Stream.Write(paddingBytes, 0, paddingBytes.Length);
+                    SerializePadding(block, padding);
                 }
+            }
+
+            if (tagFieldInfo.FieldType.IsPrimitive)
+            {
+                if (SerializePropertyDirect(context, block.Writer, tagFieldInfo, instance))
+                    return;
             }
 
             object objectValue = tagFieldInfo.GetValue(instance);
@@ -135,6 +142,49 @@ namespace TagTool.Serialization
                 SerializeValue(context, tagStream, block,
                                     objectValue, tagFieldInfo.Attribute, tagFieldInfo.FieldType);
             }
+        }
+
+        private bool SerializePropertyDirect(ISerializationContext context, EndianWriter writer, TagFieldInfo tagFieldInfo, object instance)
+        {
+            switch (Type.GetTypeCode(tagFieldInfo.FieldType))
+            {
+                case TypeCode.Boolean:
+                    writer.Write(tagFieldInfo.GetValueTyped<bool>(instance));
+                    break;
+                case TypeCode.Byte:
+                    writer.Write(tagFieldInfo.GetValueTyped<byte>(instance));
+                    break;
+                case TypeCode.Double:
+                    writer.Write(tagFieldInfo.GetValueTyped<double>(instance));
+                    break;
+                case TypeCode.Int16:
+                    writer.Write(tagFieldInfo.GetValueTyped<short>(instance));
+                    break;
+                case TypeCode.Int32:
+                    writer.Write(tagFieldInfo.GetValueTyped<int>(instance));
+                    break;
+                case TypeCode.Int64:
+                    writer.Write(tagFieldInfo.GetValueTyped<long>(instance));
+                    break;
+                case TypeCode.SByte:
+                    writer.Write(tagFieldInfo.GetValueTyped<sbyte>(instance));
+                    break;
+                case TypeCode.Single:
+                    writer.Write(tagFieldInfo.GetValueTyped<float>(instance));
+                    break;
+                case TypeCode.UInt16:
+                    writer.Write(tagFieldInfo.GetValueTyped<ushort>(instance));
+                    break;
+                case TypeCode.UInt32:
+                    writer.Write(tagFieldInfo.GetValueTyped<uint>(instance));
+                    break;
+                case TypeCode.UInt64:
+                    writer.Write(tagFieldInfo.GetValueTyped<ulong>(instance));
+                    break;
+                default:
+                    return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -233,7 +283,7 @@ namespace TagTool.Serialization
             else if (valueType == typeof(byte[]))
             {
                 if ((valueInfo.Flags & Padding) != 0 || (value == null && valueInfo.Length > 0))
-                    block.Writer.Write(new byte[valueInfo.Length]);
+                    SerializePadding(block, valueInfo.Length);
                 else if (valueInfo.Length > 0)
                     block.Writer.Write((byte[])value);
                 else
@@ -296,11 +346,11 @@ namespace TagTool.Serialization
             else if (valueType.IsArray)
                 SerializeInlineArray(context, tagStream, block, (Array)value, valueInfo, valueType);
             else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(List<>))
-                SerializeTagBlockAsList(context, tagStream, block, value, valueType, valueInfo);
+                SerializeTagBlockAsList(context, tagStream, block, (IList)value, valueType, valueInfo);
             else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(TagBlock<>))
-                SerializeTagBlock(context, tagStream, block, value, valueType, valueInfo);
+                SerializeTagBlock(context, tagStream, block, (ITagBlock)value, valueType, valueInfo);
             else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(D3DStructure<>))
-                SerializeD3DStructure(context, tagStream, block, value, valueType);
+                SerializeD3DStructure(context, tagStream, block, (ID3DStructure)value, valueType);
             else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Bounds<>))
                 SerializeRange(context, tagStream, block, value);
             else if (valueType == typeof(PlatformUnsignedValue))
@@ -315,10 +365,22 @@ namespace TagTool.Serialization
                 SerializeFlagBits(block.Writer, (IFlagBits)value, valueInfo, valueType);
             else
             {
-                if (value == null)
-                    value = Activator.CreateInstance(valueType);
+                var info = TagStructure.GetTagStructureInfo(valueType, Version, CachePlatform);
+                SerializeStruct(context, tagStream, block, info, value ?? info.CreateInstance());
+            }
+        }
 
-                SerializeStruct(context, tagStream, block, TagStructure.GetTagStructureInfo(valueType, Version, CachePlatform), value);
+        private static void SerializePadding(IDataBlock block, int size)
+        {
+            if (size <= 16)
+            {
+                Span<byte> paddingBytes = stackalloc byte[size];
+                paddingBytes.Clear();
+                block.Writer.Write(paddingBytes);
+            }
+            else
+            {
+                block.Writer.Write(new byte[size]);
             }
         }
 
@@ -553,15 +615,13 @@ namespace TagTool.Serialization
         /// <param name="list">The list of values in the tag block.</param>
         /// <param name="listType">Type of the list.</param>
         /// <param name="valueInfo">Information about the value. Can be <c>null</c>.</param>
-        public virtual void SerializeTagBlock(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object list, Type listType, TagFieldAttribute valueInfo)
+        public virtual void SerializeTagBlock(ISerializationContext context, MemoryStream tagStream, IDataBlock block, ITagBlock list, Type listType, TagFieldAttribute valueInfo)
         {
             var writer = block.Writer;
             var count = 0;
             if (list != null)
             {
-                // Use reflection to get the number of elements in the list
-                var countProperty = listType.GetProperty("Count");
-                count = (int)countProperty.GetValue(list);
+                count = list.Count;
             }
             if (count == 0)
             {
@@ -572,13 +632,10 @@ namespace TagTool.Serialization
             }
 
             var elementType = listType.GenericTypeArguments[0];
-            
+
             // Serialize each value in the list to a data block
             var tagBlock = context.CreateBlock();
-            var enumerableList = (System.Collections.IEnumerable)list;
-
-            foreach (var val in enumerableList)
-                SerializeValue(context, tagStream, tagBlock, val, null, elementType);
+            SerializeTagBlockCore(context, tagStream, tagBlock, elementType, list);
 
             // Ensure the block is aligned correctly
             var align = Math.Max(DefaultBlockAlign, (valueInfo != null) ? valueInfo.DataAlign : 0);
@@ -599,15 +656,13 @@ namespace TagTool.Serialization
         /// <param name="list">The list of values in the tag block.</param>
         /// <param name="listType">Type of the list.</param>
         /// <param name="valueInfo">Information about the value. Can be <c>null</c>.</param>
-        private void SerializeTagBlockAsList(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object list, Type listType, TagFieldAttribute valueInfo)
+        private void SerializeTagBlockAsList(ISerializationContext context, MemoryStream tagStream, IDataBlock block, IList list, Type listType, TagFieldAttribute valueInfo)
         {
             var writer = block.Writer;
             var count = 0;
             if (list != null)
             {
-                // Use reflection to get the number of elements in the list
-                var countProperty = listType.GetProperty("Count");
-                count = (int)countProperty.GetValue(list);
+                count = list.Count;
             }
             if (count == 0)
             {
@@ -621,10 +676,7 @@ namespace TagTool.Serialization
 
             // Serialize each value in the list to a data block
             var tagBlock = context.CreateBlock();
-            var enumerableList = (System.Collections.IEnumerable)list;
-
-            foreach (var val in enumerableList)
-                SerializeValue(context, tagStream, tagBlock, val, null, elementType);
+            SerializeTagBlockCore(context, tagStream, tagBlock, elementType, list);
 
             // Ensure the block is aligned correctly
             var align = Math.Max(DefaultBlockAlign, (valueInfo != null) ? valueInfo.DataAlign : 0);
@@ -634,6 +686,30 @@ namespace TagTool.Serialization
             writer.Write(count);
             block.WritePointer(tagBlock.Finalize(tagStream), listType);
             writer.Write(0);
+        }
+
+        protected void SerializeTagBlockCore(ISerializationContext context, MemoryStream tagStream, IDataBlock tagBlock, Type elementType, IList list)
+        {
+            if (list is TagBlock<byte> typedTagBlock)
+            {
+                tagBlock.Writer.Write(CollectionsMarshal.AsSpan(typedTagBlock.Elements));
+            }
+            else if (list is List<byte> typedListBlock)
+            {
+                tagBlock.Writer.Write(CollectionsMarshal.AsSpan(typedListBlock));
+            }
+            else if (elementType.IsClass && !elementType.IsGenericType && elementType.IsSubclassOf(typeof(TagStructure)) )
+            {
+                var info = TagStructure.GetTagStructureInfo(elementType, Version, CachePlatform);
+                foreach (var val in list)
+                   SerializeStruct(context, tagStream, tagBlock, info, val ?? info.CreateInstance());
+            }
+            else
+            {
+                // We generally don't use value types in blocks other than byte, but this is here in case
+                foreach (var val in list)
+                    SerializeValue(context, tagStream, tagBlock, val, null, elementType);
+            }
         }
 
         private void SerializeIndirectValue(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object val, Type valueType)
@@ -653,7 +729,7 @@ namespace TagTool.Serialization
             block.WritePointer(valueBlock.Finalize(tagStream), valueType);
         }
 
-        public virtual void SerializeD3DStructure(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object val, Type valueType)
+        public virtual void SerializeD3DStructure(ISerializationContext context, MemoryStream tagStream, IDataBlock block, ID3DStructure val, Type valueType)
         {
             var writer = block.Writer;
 
@@ -683,11 +759,11 @@ namespace TagTool.Serialization
             switch (platformType)
             {
                 case PlatformType._32Bit:
-                    writer.Write(value?.Get32BitValue() ?? 0);
+                    writer.Write(value.Get32BitValue());
                     break;
 
                 case PlatformType._64Bit:
-                    writer.Write(value?.Get64BitValue() ?? 0);
+                    writer.Write(value.Get64BitValue());
                     break;
             }
         }
@@ -700,11 +776,11 @@ namespace TagTool.Serialization
             switch (platformType)
             {
                 case PlatformType._32Bit:
-                    writer.Write(value?.Get32BitValue() ?? 0);
+                    writer.Write(value.Get32BitValue());
                     break;
 
                 case PlatformType._64Bit:
-                    writer.Write(value?.Get64BitValue() ?? 0);
+                    writer.Write(value.Get64BitValue());
                     break;
             }
         }

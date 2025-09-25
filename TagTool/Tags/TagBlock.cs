@@ -5,7 +5,12 @@ using System;
 
 namespace TagTool.Tags
 {
-    public class TagBlock<T> : IList, IList<T>
+    public interface ITagBlock : IList
+    {
+        public CacheAddressType AddressType { get; set; }
+    }
+
+    public class TagBlock<T> : ITagBlock, IList<T>
     {
         public int Count => Elements.Count;
         public List<T> Elements;
@@ -14,6 +19,11 @@ namespace TagTool.Tags
         public TagBlock()
         {
             Elements = new List<T>();
+        }
+
+        public TagBlock(int capacity)
+        {
+            Elements = new List<T>(capacity);
         }
 
         public TagBlock(CacheAddressType addressType)
@@ -48,6 +58,9 @@ namespace TagTool.Tags
         public void RemoveAt(int index) => Elements.RemoveAt(index);
 
         int ICollection<T>.Count => Count;
+
+        CacheAddressType ITagBlock.AddressType { get => AddressType; set => AddressType = value; }
+
         public void Add(T item) => Elements.Add(item);
         public bool Contains(T item) => Elements.Contains(item);
         public void CopyTo(T[] array, int arrayIndex) => Elements.CopyTo(array, arrayIndex);
