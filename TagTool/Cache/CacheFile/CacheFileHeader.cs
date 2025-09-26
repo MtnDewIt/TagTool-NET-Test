@@ -77,6 +77,7 @@ namespace TagTool.Cache
                     CacheVersion.Eldorado571627 => deserializer.Deserialize<CacheFileHeaderEldorado571627>(dataContext),
                     CacheVersion.Eldorado604673 => deserializer.Deserialize<CacheFileHeaderEldorado604673>(dataContext),
                     CacheVersion.Eldorado700123 => deserializer.Deserialize<CacheFileHeaderEldorado700123>(dataContext),
+                    CacheVersion.Halo4E3 => deserializer.Deserialize<CacheFileHeaderHalo4E3>(dataContext),
                     CacheVersion.Halo4 => deserializer.Deserialize<CacheFileHeaderHalo4>(dataContext),
                     _ => null,
                 };
@@ -133,6 +134,7 @@ namespace TagTool.Cache
                     CacheVersion.Eldorado571627 => typeof(CacheFileHeaderEldorado571627),
                     CacheVersion.Eldorado604673 => typeof(CacheFileHeaderEldorado604673),
                     CacheVersion.Eldorado700123 => typeof(CacheFileHeaderEldorado700123),
+                    CacheVersion.Halo4E3 => typeof(CacheFileHeaderHalo4E3),
                     CacheVersion.Halo4 => typeof(CacheFileHeaderHalo4),
                     _ => null,
                 };

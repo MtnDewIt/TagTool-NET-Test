@@ -116,6 +116,7 @@ namespace TagTool.Cache
                         return new GameCacheEldorado(tagsFile.Directory);
                     }
 
+                case CacheVersion.Halo4E3:
                 case CacheVersion.Halo4:
                 case CacheVersion.Halo2AMP:
                     return new GameCacheGen4(map, file);

@@ -30,16 +30,26 @@ namespace TagTool.Cache.Gen4
             if (sectionTable != null && sectionTable.Sections[(int)CacheFileSectionType.StringSection].Size == 0)
                 return;
 
-            switch (baseMapFile.Platform)
+            if (baseMapFile.Platform == CachePlatform.Original)
             {
-                case CachePlatform.MCC:
-                    Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
-                    break;
-                default:
-                    Resolver = new StringIdResolverHalo4();
-                    StringKey = "ILikeSafeStrings";
-                    break;
+                switch (Version) 
+                {
+                    case CacheVersion.Halo4E3:
+                        Resolver = new StringIdResolverHalo4E3();
+                        StringKey = "ILikeSafeStrings";
+                        break;
+
+                    case CacheVersion.Halo4:
+                        Resolver = new StringIdResolverHalo4();
+                        StringKey = "ILikeSafeStrings";
+                        break;
+
+                    default:
+                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, baseMapFile.Platform));
+                }
             }
+            else if (baseMapFile.Platform == CachePlatform.MCC)
+                Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
 
             uint stringIdIndexOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
             uint stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);

@@ -172,8 +172,9 @@ namespace TagTool.Tags.Definitions.Gen4
             [TagField(ValidTags = new [] { "effe" })]
             public CachedTag ObjectCleanupEffect;
         }
-        
-        [TagStructure(Size = 0xB8, Platform = CachePlatform.Original)]
+
+        [TagStructure(Size = 0x9C, MinVersion = CacheVersion.Halo4E3, MaxVersion = CacheVersion.Halo4E3, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0xB8, MinVersion = CacheVersion.Halo4, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xA8, Platform = CachePlatform.MCC)]
         public class SoundGlobalsBlock : TagStructure
         {
@@ -199,9 +200,10 @@ namespace TagTool.Tags.Definitions.Gen4
             [TagField(ValidTags = new [] { "sbnk" })]
             // Extra sound bank for WWise - only loaded for Campaign.
             public CachedTag CampaignSoundBank;
-            [TagField(ValidTags = new [] { "sbnk" })]
+            [TagField(ValidTags = new [] { "sbnk" }, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4)]
             // Extra sound bank for WWise - only loaded for MP - PVP.
             public CachedTag MultiplayerSoundBank;
+            [TagField(MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4)]
             public List<StreamingPackBlock> StreamingPackFiles;
             public List<CampaignUnspatializedSoundsBlock> UnSpatializedCampaignSounds;
             
@@ -1768,8 +1770,9 @@ namespace TagTool.Tags.Definitions.Gen4
                 }
             }
         }
-        
-        [TagStructure(Size = 0xD4)]
+
+        [TagStructure(Size = 0xC4, MinVersion = CacheVersion.Halo4E3, MaxVersion = CacheVersion.Halo4E3)]
+        [TagStructure(Size = 0xD4, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4)]
         public class DamageGlobalsBlock : TagStructure
         {
             [TagField(ValidTags = new [] { "jpt!" })]
@@ -1782,7 +1785,7 @@ namespace TagTool.Tags.Definitions.Gen4
             public CachedTag HardLandingDamage;
             [TagField(ValidTags = new [] { "jpt!" })]
             public CachedTag HsDamage;
-            [TagField(ValidTags = new [] { "jpt!" })]
+            [TagField(ValidTags = new [] { "jpt!" }, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo4)]
             public CachedTag HsFireDamage;
             // you die if you fall faster than this (non-multiplayer only)
             public float TerminalVelocity; // wu/s

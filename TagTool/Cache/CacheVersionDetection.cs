@@ -163,6 +163,10 @@ namespace TagTool.Cache
                     version = CacheVersion.HaloReach;
                     cachePlatform = CachePlatform.Original;
                     break;
+                case "15119.12.05.31.0400.e3m60":
+                    version = CacheVersion.Halo4E3;
+                    cachePlatform = CachePlatform.Original;
+                    break;
                 case "20810.12.09.22.1647.main":
                 case "21122.12.11.21.0101.main":
                 case "21165.12.12.12.0112.main":
@@ -324,6 +328,8 @@ namespace TagTool.Cache
                         return "11860.10.07.24.0147.omaha_relea";
                     case CacheVersion.HaloReach11883:
                         return "11883.10.10.25.1227.dlc_1_ship__tag_test";
+                    case CacheVersion.Halo4E3:
+                        return "15119.12.05.31.0400.e3m60";
                     case CacheVersion.Halo4:
                         return "20810.12.09.22.1647.main";
                     default:
@@ -351,8 +357,13 @@ namespace TagTool.Cache
 				case CacheVersion.Halo3ODST:
 				case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
+                case CacheVersion.Halo4220811:
+                case CacheVersion.Halo4280911:
+                case CacheVersion.Halo4E3:
                 case CacheVersion.Halo4:
-					return false;
+                case CacheVersion.Halo4140113:
+                case CacheVersion.Halo4131113:
+                    return false;
 
                 case CacheVersion.HaloXbox:
                 case CacheVersion.HaloPC:
@@ -523,6 +534,10 @@ namespace TagTool.Cache
             switch (version)
             {
                 case CacheVersion.HaloReach11883:
+                case CacheVersion.Halo4220811:
+                case CacheVersion.Halo4280911:
+                case CacheVersion.Halo4140113:
+                case CacheVersion.Halo4131113:
                     return CacheBuildType.TagsBuild;
             }
 
@@ -618,7 +633,12 @@ namespace TagTool.Cache
                 case CacheVersion.Eldorado700123:
                     return CacheGeneration.Eldorado;
 
+                case CacheVersion.Halo4220811:
+                case CacheVersion.Halo4280911:
+                case CacheVersion.Halo4E3:
                 case CacheVersion.Halo4:
+                case CacheVersion.Halo4140113:
+                case CacheVersion.Halo4131113:
                 case CacheVersion.Halo2AMP:
                     return CacheGeneration.Fourth;
 
@@ -681,7 +701,12 @@ namespace TagTool.Cache
                 case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
                     return GameTitle.HaloReach;
+                case CacheVersion.Halo4220811:
+                case CacheVersion.Halo4280911:
+                case CacheVersion.Halo4E3:
                 case CacheVersion.Halo4:
+                case CacheVersion.Halo4140113:
+                case CacheVersion.Halo4131113:
                     return GameTitle.Halo4;
                 case CacheVersion.Halo2AMP:
                     return GameTitle.Halo2AMP;
@@ -751,7 +776,12 @@ namespace TagTool.Cache
         Eldorado700123,
         HaloReach,
         HaloReach11883,
+        Halo4220811,
+        Halo4280911,
+        Halo4E3,
         Halo4,
+        Halo4140113,
+        Halo4131113,
         Halo2AMP
     }
 
