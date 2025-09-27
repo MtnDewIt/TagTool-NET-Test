@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using TagTool.Audio.Bank;
 using TagTool.BlamFile;
+using TagTool.Cache.CacheFile;
 using TagTool.Cache.Gen3;
 using TagTool.Cache.Resources;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
-using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Commands.Common;
-using TagTool.Common.Logging;
-using TagTool.Audio.Bank;
 
 namespace TagTool.Cache
 {
@@ -31,9 +30,6 @@ namespace TagTool.Cache
         public override TagCache TagCache => TagCacheGen3;
         public override StringTable StringTable => StringTableGen3;
         public override ResourceCache ResourceCache => ResourceCacheGen3;
-        public override Stream OpenCacheRead() => CacheFile.OpenRead();
-        public override Stream OpenCacheReadWrite() => CacheFile.Open(FileMode.Open, FileAccess.ReadWrite);
-        public override Stream OpenCacheWrite() => CacheFile.Open(FileMode.Open, FileAccess.Write);
 
         /// <summary>
         /// Alignment of sections in the cache
@@ -98,7 +94,7 @@ namespace TagTool.Cache
 
                 if (TagCacheGen3.Instances.Count > 0)
                 {
-                    if (Version == CacheVersion.Halo3Beta || sectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+                    if (Version == CacheVersion.Halo3Beta || sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                         LocaleTables = new List<LocaleTable>();
                     else
                     {
@@ -130,7 +126,7 @@ namespace TagTool.Cache
                     break;
             }
 
-            if(Platform == CachePlatform.MCC)
+            if (Version != CacheVersion.Halo3XboxOne && Platform == CachePlatform.MCC)
             {
                 var game = Version.ToString().ToLower().Replace("retail", "");
 
@@ -207,15 +203,105 @@ namespace TagTool.Cache
 
         #endregion
 
+        public override Stream OpenCacheRead() 
+        {
+            Stream resultStream = null;
+
+            if (Version == CacheVersion.Halo3XboxOne && IsCompressed(BaseMapFile.Header))
+            {
+                var sectionTable = BaseMapFile.Header.GetSectionTable();
+                var offsets = BaseMapFile.Header.GetCompressedSectionOffset();
+                var sizes = BaseMapFile.Header.GetCompressedSectionSize();
+                var codecs = BaseMapFile.Header.GetCompressedSectionCodec();
+
+                using (MemoryStream memoryStream = new MemoryStream()) 
+                {
+                    using (Stream stream = CacheFile.OpenRead()) 
+                    {
+                        using (EndianReader reader = new EndianReader(stream, Endianness)) 
+                        {
+                            byte[] header = reader.ReadBytes(0x4000);
+
+                            memoryStream.Write(header, 0, 0x4000);
+
+                            int[] order = new int[4] { 0, 1, 3, 2 };
+
+                            for (int i = 0; i < 4; i++) 
+                            {
+                                int index = order[i];
+
+                                var offset = offsets[index].Value;
+                                var compressedSize = sizes[index].Value;
+                                var codec = codecs[index].Codec;
+                                var decompressedSize = sectionTable.OriginalSectionBounds[index].Size;
+                                var address = sectionTable.OriginalSectionBounds[index].Offset;
+                                var mask = sectionTable.SectionOffsets[index];
+
+                                if (codec == CompressedSectionCodec.None)
+                                {
+                                    reader.SeekTo(offset);
+
+                                    byte[] buffer = new byte[decompressedSize];
+
+                                    int bufferSize = reader.Read(buffer, 0, decompressedSize);
+
+                                    memoryStream.Write(buffer, 0, bufferSize);
+                                }
+                                else if (codec == CompressedSectionCodec.LZMALib)
+                                {
+                                    // TODO: Implement LZMA decompression
+                                }
+                                else 
+                                {
+                                    throw new ArgumentException($"Unsupported Compressed Secion Codec {codec}");
+                                }
+                            }
+                        }
+                    }
+
+                    resultStream = new MemoryStream(memoryStream.ToArray());
+                }
+            }
+            else 
+            {
+                resultStream = CacheFile.OpenRead();
+            }
+
+            return resultStream;
+        }
+
+        public override Stream OpenCacheReadWrite() 
+        {
+            return CacheFile.Open(FileMode.Open, FileAccess.ReadWrite);
+        }
+
+        public override Stream OpenCacheWrite() 
+        {
+            return CacheFile.Open(FileMode.Open, FileAccess.Write);
+        }
+
         public override void SaveStrings()
         {
             throw new NotImplementedException();
         }
 
+        public static bool IsCompressed(CacheFileHeader header) 
+        {
+            var compressedSizes = header.GetCompressedSectionSize();
+
+            foreach (var size in compressedSizes) 
+            {
+                if (size.Value > 0)
+                    return true;
+            }
+
+            return false;
+        }
+
         public void ResizeSection(CacheFileSectionType type, int requestedAdditionalSpace)
         {
             var sectionTable = BaseMapFile.Header.GetSectionTable();
-            var section = sectionTable.Sections[(int)type];
+            var section = sectionTable.OriginalSectionBounds[(int)type];
 
             var sectionFileOffset = sectionTable.GetSectionOffset(type);
             var sectionSize = section.Size;
@@ -232,7 +318,7 @@ namespace TagTool.Cache
 
             for(int i = (int)type + 1; i < (int)CacheFileSectionType.Count; i++)
             {
-                sectionTable.SectionAddressToOffsets[i] += shiftAmount;
+                sectionTable.SectionOffsets[i] += shiftAmount;
             }
         }
     }

@@ -131,7 +131,7 @@ namespace TagTool.Cache.Gen4
                 sectionOffset = sectionTable.GetSectionOffset(CacheFileSectionType.TagSection);
 
                 // means no tags
-                if (sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size == 0)
+                if (sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Size == 0)
                     return;
 
                 debugTagNameIndexOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
@@ -191,7 +191,7 @@ namespace TagTool.Cache.Gen4
                 uint ID = (uint)((reader.ReadInt16() << 16) | i);
 
                 var offset = CachePlatform == CachePlatform.MCC ?
-                    (uint)((ulong)sectionTable.SectionAddressToOffsets[2] + (ulong)sectionTable.Sections[2].Offset + (((ulong)reader.ReadUInt32() * 4) - (expectedBaseAddress - expand))) :
+                    (uint)((ulong)sectionTable.SectionOffsets[2] + (ulong)sectionTable.OriginalSectionBounds[2].Offset + (((ulong)reader.ReadUInt32() * 4) - (expectedBaseAddress - expand))) :
                     (uint)(reader.ReadUInt32() - addressMask);
 
                 CachedTagGen4 tag = new CachedTagGen4(groupIndex, ID, offset, i, tagGroup);

@@ -48,16 +48,16 @@ namespace TagTool.Commands.Tags
                 CacheGeneration = 3;
                 var cacheGen3 = (GameCacheGen3)Cache;
                 var sectionTable = cacheGen3.BaseMapFile.Header.GetSectionTable();
-                TagSectionMin = sectionTable.Sections[(int)CacheFileSectionType.TagSection].Offset;
-                TagSectionMax = TagSectionMin + sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size;
+                TagSectionMin = sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Offset;
+                TagSectionMax = TagSectionMin + sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Size;
             }
             else if (CacheVersionDetection.IsInGen(TagTool.Cache.CacheGeneration.Fourth, Cache.Version))
             {
                 CacheGeneration = 4;
                 var cacheGen4 = (GameCacheGen4)Cache;
                 var sectionTable = cacheGen4.BaseMapFile.Header.GetSectionTable();
-                TagSectionMin = sectionTable.Sections[(int)CacheFileSectionType.TagSection].Offset;
-                TagSectionMax = TagSectionMin + sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size;
+                TagSectionMin = sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Offset;
+                TagSectionMax = TagSectionMin + sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Size;
             }
             else if(CacheVersionDetection.IsInGen(TagTool.Cache.CacheGeneration.Second, Cache.Version))
             {

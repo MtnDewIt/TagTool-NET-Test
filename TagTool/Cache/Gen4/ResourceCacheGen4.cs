@@ -34,10 +34,10 @@ namespace TagTool.Cache.Gen4
             var sectionTable = Cache.BaseMapFile.Header.GetSectionTable();
 
             // means no resources
-            if (Cache.Version > CacheVersion.Halo3Beta && sectionTable.Sections[(int)CacheFileSectionType.ResourceSection].Size == 0)
+            if (Cache.Version > CacheVersion.Halo3Beta && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.ResourceSection].Size == 0)
                 return;
             // means resources but no tags, campaign.map for example. The resource section only contains pages for resources
-            else if (Cache.Version > CacheVersion.Halo3Beta && sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size == 0)
+            else if (Cache.Version > CacheVersion.Halo3Beta && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Size == 0)
                 return;
             else
             {

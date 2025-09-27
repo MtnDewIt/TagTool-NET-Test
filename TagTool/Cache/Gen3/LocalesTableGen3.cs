@@ -29,7 +29,7 @@ namespace TagTool.Cache.Gen3
             }
             var sectionTable = baseMapFile.Header.GetSectionTable();
 
-            if (sectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+            if (sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                 return new List<LocaleTable>();
 
             foreach (var language in Enum.GetValues(typeof(GameLanguage)))

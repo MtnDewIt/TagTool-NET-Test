@@ -13,13 +13,13 @@ namespace TagTool.Cache
         /// Add this value to the section virtual address to get the file offset
         /// </summary>
         [TagField(Length = (int)CacheFileSectionType.Count)]
-        public int[] SectionAddressToOffsets;
+        public int[] SectionOffsets;
 
         /// <summary>
         /// Sections in a map file, ordered and offset is determined by the sizes after the map header.
         /// </summary>
         [TagField(Length = (int)CacheFileSectionType.Count)]
-        public CacheFileSectionFileBounds[] Sections = new CacheFileSectionFileBounds[(int)CacheFileSectionType.Count];
+        public CacheFileSectionFileBounds[] OriginalSectionBounds = new CacheFileSectionFileBounds[(int)CacheFileSectionType.Count];
 
         /// <summary>
         /// Get the section's file offset given the type
@@ -28,7 +28,7 @@ namespace TagTool.Cache
         /// <returns></returns>
         public uint GetSectionOffset(CacheFileSectionType type)
         {
-            return (uint)(Sections[(int)type].Offset + SectionAddressToOffsets[(int)type]);
+            return (uint)(OriginalSectionBounds[(int)type].Offset + SectionOffsets[(int)type]);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace TagTool.Cache
         /// <returns></returns>
         public uint GetOffset(CacheFileSectionType type, uint address)
         {
-            return (uint)(address + SectionAddressToOffsets[(int)type]);
+            return (uint)(address + SectionOffsets[(int)type]);
         }
     }
 

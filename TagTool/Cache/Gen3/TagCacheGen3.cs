@@ -150,7 +150,7 @@ namespace TagTool.Cache.Gen3
                 sectionOffset = sectionTable.GetSectionOffset(CacheFileSectionType.TagSection);
 
                 // means no tags
-                if (sectionTable.Sections[(int)CacheFileSectionType.TagSection].Size == 0)
+                if (sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Size == 0)
                     return;
 
                 debugTagNameIndexOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);

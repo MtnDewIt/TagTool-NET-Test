@@ -84,7 +84,7 @@ namespace TagTool.Cache
                 if (TagCacheGen4.Instances.Count > 0)
                 {
 
-                    if (sectionTable.Sections[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+                    if (sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LocalizationSection].Size == 0)
                         LocaleTables = new List<LocaleTable>();
                     else
                     {
@@ -158,7 +158,7 @@ namespace TagTool.Cache
         public void ResizeSection(CacheFileSectionType type, int requestedAdditionalSpace)
         {
             var sectionTable = BaseMapFile.Header.GetSectionTable();
-            var section = sectionTable.Sections[(int)type];
+            var section = sectionTable.OriginalSectionBounds[(int)type];
 
             var sectionFileOffset = sectionTable.GetSectionOffset(type);
             var sectionSize = section.Size;
@@ -175,7 +175,7 @@ namespace TagTool.Cache
 
             for(int i = (int)type + 1; i < (int)CacheFileSectionType.Count; i++)
             {
-                sectionTable.SectionAddressToOffsets[i] += shiftAmount;
+                sectionTable.SectionOffsets[i] += shiftAmount;
             }
         }
     }

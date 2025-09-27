@@ -1,4 +1,5 @@
-﻿using TagTool.Common;
+﻿using TagTool.Cache.CacheFile;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.Cache.MCC.Headers
@@ -79,6 +80,9 @@ namespace TagTool.Cache.MCC.Headers
 
         public uint XDKVersion;
 
+        [TagField(Length = 0x4, Flags = TagFieldFlags.Padding)]
+        public byte[] Alignment;
+
         [TagField(Length = (int)CacheFilePartitionType.Count)]
         public CacheFilePartition[] Partitions;
 
@@ -105,14 +109,14 @@ namespace TagTool.Cache.MCC.Headers
 
         public uint PatchSize;
 
-        [TagField(Length = 0x10)]
-        public byte[] CompressedSectionOffset;
-
-        [TagField(Length = 0x10)]
-        public byte[] CompressedSectionSize;
+        [TagField(Length = 0x4)]
+        public CacheFileCompressedSection[] CompressedSectionOffset;
 
         [TagField(Length = 0x4)]
-        public byte[] CompressedSectionCodec;
+        public CacheFileCompressedSection[] CompressedSectionSize;
+
+        [TagField(Length = 0x4)]
+        public CacheFileCompressionCodec[] CompressedSectionCodec;
 
         [TagField(Length = 0x504)]
         public byte[] Padding;
@@ -154,5 +158,21 @@ namespace TagTool.Cache.MCC.Headers
         public override int GetCompressedChunkCount() => -1;
         public override CacheFileSectionTable GetSectionTable() => SectionTable;
         public override CacheFileSectionFileBounds GetReports() => null;
+
+        public override CacheFileCompressedSection[] GetCompressedSectionOffset() => CompressedSectionOffset;
+        public override CacheFileCompressedSection[] GetCompressedSectionSize() => CompressedSectionSize;
+        public override CacheFileCompressionCodec[] GetCompressedSectionCodec() => CompressedSectionCodec;
+    }
+
+    [TagStructure(Size = 0x4)]
+    public class CacheFileCompressedSection : TagStructure 
+    {
+        public uint Value;
+    }
+
+    [TagStructure(Size = 0x1)]
+    public class CacheFileCompressionCodec : TagStructure
+    {
+        public CompressedSectionCodec Codec;
     }
 }

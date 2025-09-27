@@ -27,7 +27,7 @@ namespace TagTool.Cache.Gen4
             var namespaceOffset = gen4Header.GetStringIdNamespaceOffset();
 
             // means no strings
-            if (sectionTable != null && sectionTable.Sections[(int)CacheFileSectionType.StringSection].Size == 0)
+            if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.StringSection].Size == 0)
                 return;
 
             if (baseMapFile.Platform == CachePlatform.Original)

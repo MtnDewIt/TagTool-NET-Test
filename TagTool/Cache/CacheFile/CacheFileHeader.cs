@@ -187,5 +187,9 @@ namespace TagTool.Cache
         // TODO: Figure out a better way of handling this
         public virtual void SetScenarioIndex(int index) { return; }
         public virtual void SetScenarioType(ScenarioType scenarioType) { return; }
+
+        public virtual CacheFileCompressedSection[] GetCompressedSectionOffset() { return null; }
+        public virtual CacheFileCompressedSection[] GetCompressedSectionSize() { return null; }
+        public virtual CacheFileCompressionCodec[] GetCompressedSectionCodec() { return null; }
     }
 }
