@@ -127,15 +127,14 @@ namespace TagTool.Cache.Gen3
 
             if (CachePlatform == CachePlatform.Original)
             {
-                switch (Version)
+                TagsKey = Version switch
                 {
-                    case CacheVersion.HaloReach:
-                        TagsKey = "LetsAllPlayNice!";
-                        break;
-                    default:
-                        TagsKey = "";
-                        break;
-                }
+                    CacheVersion.HaloReachAlpha or
+                    CacheVersion.HaloReachPreBeta or
+                    CacheVersion.HaloReachBeta => "rs&m*l#/t%_()e;[",
+                    CacheVersion.HaloReach => "LetsAllPlayNice!",
+                    _ => "",
+                };
             }
             else
                 TagsKey = "";

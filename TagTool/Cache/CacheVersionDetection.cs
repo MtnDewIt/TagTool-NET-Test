@@ -159,6 +159,18 @@ namespace TagTool.Cache
                     version = CacheVersion.Eldorado700123;
                     cachePlatform = CachePlatform.Original;
                     break;
+                case "08516.10.02.19.1607.omaha_alpha":
+                    version = CacheVersion.HaloReachAlpha;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "09449.10.03.25.1545.omaha_beta":
+                    version = CacheVersion.HaloReachPreBeta;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "09730.10.04.09.1309.omaha_delta":
+                    version = CacheVersion.HaloReachBeta;
+                    cachePlatform = CachePlatform.Original;
+                    break;
                 case "11860.10.07.24.0147.omaha_relea":
                     version = CacheVersion.HaloReach;
                     cachePlatform = CachePlatform.Original;
@@ -324,6 +336,12 @@ namespace TagTool.Cache
                         return "11.1.601838 Live";
                     case CacheVersion.Eldorado700123:
                         return "12.1.700123 cert_ms30_oct19";
+                    case CacheVersion.HaloReachAlpha:
+                        return "08516.10.02.19.1607.omaha_alpha";
+                    case CacheVersion.HaloReachPreBeta:
+                        return "09449.10.03.25.1545.omaha_beta";
+                    case CacheVersion.HaloReachBeta:
+                        return "09730.10.04.09.1309.omaha_delta";
                     case CacheVersion.HaloReach:
                         return "11860.10.07.24.0147.omaha_relea";
                     case CacheVersion.HaloReach11883:
@@ -355,7 +373,10 @@ namespace TagTool.Cache
 				case CacheVersion.Halo3Beta:
 				case CacheVersion.Halo3Retail:
 				case CacheVersion.Halo3ODST:
-				case CacheVersion.HaloReach:
+                case CacheVersion.HaloReachAlpha:
+                case CacheVersion.HaloReachPreBeta:
+                case CacheVersion.HaloReachBeta:
+                case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
                 case CacheVersion.Halo4220811:
                 case CacheVersion.Halo4280911:
@@ -609,6 +630,9 @@ namespace TagTool.Cache
                 case CacheVersion.Halo3Retail:
                 case CacheVersion.Halo3XboxOne:
                 case CacheVersion.Halo3ODST:
+                case CacheVersion.HaloReachAlpha:
+                case CacheVersion.HaloReachPreBeta:
+                case CacheVersion.HaloReachBeta:
                 case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
                     return CacheGeneration.Third;
@@ -698,6 +722,9 @@ namespace TagTool.Cache
                 case CacheVersion.Eldorado604673:
                 case CacheVersion.Eldorado700123:
                     return GameTitle.Eldorado;
+                case CacheVersion.HaloReachAlpha:
+                case CacheVersion.HaloReachPreBeta:
+                case CacheVersion.HaloReachBeta:
                 case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
                     return GameTitle.HaloReach;
@@ -774,6 +801,9 @@ namespace TagTool.Cache
         Eldorado571627,
         Eldorado604673,
         Eldorado700123,
+        HaloReachAlpha,
+        HaloReachPreBeta,
+        HaloReachBeta,
         HaloReach,
         HaloReach11883,
         Halo4220811,

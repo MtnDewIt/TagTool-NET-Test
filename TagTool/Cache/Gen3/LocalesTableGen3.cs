@@ -15,17 +15,17 @@ namespace TagTool.Cache.Gen3
             
             List<LocaleTable> localesTable = new List<LocaleTable>();
             string localesKey = "";
-            switch (baseMapFile.Version)
+
+            if (baseMapFile.Platform == CachePlatform.Original) 
             {
-                case CacheVersion.Halo3Retail:
-                    localesKey = "";
-                    break;
-                case CacheVersion.Halo3ODST:
-                    localesKey = "";
-                    break;
-                case CacheVersion.HaloReach when baseMapFile.Platform == CachePlatform.Original:
-                    localesKey = "BungieHaloReach!";
-                    break;
+                localesKey = baseMapFile.Version switch 
+                {
+                    CacheVersion.HaloReachAlpha or
+                    CacheVersion.HaloReachPreBeta or
+                    CacheVersion.HaloReachBeta => "rs&m*l#/t%_()e;[",
+                    CacheVersion.HaloReach => "BungieHaloReach!",
+                    _ => ""
+                };
             }
             var sectionTable = baseMapFile.Header.GetSectionTable();
 

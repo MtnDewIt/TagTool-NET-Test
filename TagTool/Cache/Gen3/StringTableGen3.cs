@@ -43,6 +43,17 @@ namespace TagTool.Cache.Gen3
                         Resolver = new StringIdResolverHalo3ODST();
                         break;
 
+                    case CacheVersion.HaloReachAlpha:
+                        Resolver = new StringIdResolverHaloReachAlpha();
+                        StringKey = "rs&m*l#/t%_()e;[";
+                        break;
+
+                    case CacheVersion.HaloReachPreBeta:
+                    case CacheVersion.HaloReachBeta:
+                        Resolver = new StringIdResolverHaloReachBeta();
+                        StringKey = "rs&m*l#/t%_()e;[";
+                        break;
+
                     case CacheVersion.HaloReach:
                         Resolver = new StringIdResolverHaloReach();
                         StringKey = "ILikeSafeStrings";
