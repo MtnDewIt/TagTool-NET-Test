@@ -80,13 +80,16 @@ namespace TagTool.Commands.Shaders
         {
             bool applyFixes = true;
 
-            if (args.Count > 3 || args.Count < 2)
+            if (args.Count < 2)
                 return new TagToolError(CommandError.ArgCount);
 
             string shaderType = args[0].ToLower();
 
             if (shaderType == "explicit" || shaderType == "chud" || shaderType == "glvs" || shaderType == "glps")
             {
+                if (args.Count > 3)
+                    return new TagToolError(CommandError.ArgCount);
+
                 if (args.Count > 2)
                 {
                     if (string.Equals(args[2], "nofixes", StringComparison.OrdinalIgnoreCase))
