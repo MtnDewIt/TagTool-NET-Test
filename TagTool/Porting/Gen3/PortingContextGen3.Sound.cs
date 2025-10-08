@@ -41,7 +41,7 @@ namespace TagTool.Porting.Gen3
             return sound;
         }
 
-        private Sound ConvertSound(Stream cacheStream, Stream blamCacheStream, Sound sound, CachedTag destTag, string blamTag_Name)
+        private Sound ConvertSound(Stream cacheStream, Stream blamCacheStream, Sound sound, CachedTag destTag, string blamTagName)
         {
             if (BlamSoundGestalt == null)
                 BlamSoundGestalt = PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
@@ -56,7 +56,7 @@ namespace TagTool.Porting.Gen3
                 onExecute: () =>
                 {
                     SoundConversionResult result;
-                    result = ConvertSoundInternal(sound, blamTag_Name);
+                    result = ConvertSoundInternal(sound, blamTagName);
 
                     return result;
                 },
@@ -73,7 +73,7 @@ namespace TagTool.Porting.Gen3
             return sound;
         }
 
-        private SoundConversionResult ConvertSoundInternal(Sound sound, string blamTag_Name)
+        private SoundConversionResult ConvertSoundInternal(Sound sound, string blamTagName)
         {
             var result = new SoundConversionResult();
             result.Definition = sound;
@@ -174,16 +174,16 @@ namespace TagTool.Porting.Gen3
                     {
                         int sampleRate = platformCodec.SampleRate.GetSampleRateHz();
                         int channelCount = Encoding.GetChannelCount(platformCodec.Encoding);
-                        blamSound = AudioCache.Load(soundCachePath, BlamCache.Version, blamTag_Name, relativePitchRangeIndex, i, targetFormat, sampleRate, permutation.SampleCount, channelCount);
+                        blamSound = AudioCache.Load(soundCachePath, BlamCache.Version, blamTagName, relativePitchRangeIndex, i, targetFormat, sampleRate, permutation.SampleCount, channelCount);
                     }
 
                     if (blamSound == null)
                     {
-                        blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)BlamCache, BlamSoundGestalt, sound, relativePitchRangeIndex, i);
+                        blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)BlamCache, BlamSoundGestalt, sound, blamTagName, relativePitchRangeIndex, i);
                         blamSound = AudioConverter.Convert(blamSound, targetFormat);
                         if (useCache)
                         {
-                            AudioCache.Store(soundCachePath, BlamCache.Version, blamTag_Name, relativePitchRangeIndex, i, blamSound);
+                            AudioCache.Store(soundCachePath, BlamCache.Version, blamTagName, relativePitchRangeIndex, i, blamSound);
                         }
                     }
 

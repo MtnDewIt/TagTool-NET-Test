@@ -6,6 +6,7 @@ using TagTool.Audio.Utils;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
+using TagTool.Common;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Sounds
@@ -137,7 +138,7 @@ namespace TagTool.Commands.Sounds
 
                     for (int permutationIndex = 0; permutationIndex < range.Permutations.Count; permutationIndex++)
                     {
-                        BlamSound blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)Cache, null, Definition, pitchRangeIndex, permutationIndex);
+                        BlamSound blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)Cache, null, Definition, Tag.Name, pitchRangeIndex, permutationIndex);
                         if(targetFormat != null)
                             blamSound = AudioConverter.Convert(blamSound, targetFormat.Value);
 
@@ -160,7 +161,7 @@ namespace TagTool.Commands.Sounds
 
                     for (int i = 0; i < permutationCount; i++)
                     {
-                        BlamSound blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)Cache, BlamSoundGestalt, Definition, relativePitchRangeIndex, i);
+                        BlamSound blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)Cache, BlamSoundGestalt, Definition, Tag.Name, relativePitchRangeIndex, i);
                         if(targetFormat != null)
                             blamSound = AudioConverter.Convert(blamSound, targetFormat.Value, converterOptions);
 

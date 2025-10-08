@@ -89,7 +89,7 @@ namespace TagTool.Commands.Sounds
 
                 for (int i = 0; i < permutationCount; i++)
                 {
-                    BlamSound blamSound = SoundExtractorGen3.ExtractSound(Cache, BlamSoundGestalt, Sound, relativePitchRangeIndex, i);
+                    BlamSound blamSound = SoundExtractorGen3.ExtractSound(Cache, BlamSoundGestalt, Sound, Tag.Name, relativePitchRangeIndex, i);
                     string permutationName = $"{baseName}_{relativePitchRangeIndex}_{i}";
                     var fileName = $"{directory}\\{permutationName}.xma";
 

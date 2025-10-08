@@ -497,6 +497,12 @@ namespace TagTool.Shaders.ShaderMatching
                         int portingOptionIndex = srcRmt2Descriptor.Options[j];
                         string optionName = PortingCache.StringTable.GetString(portingRmdfDefinition.Categories[j].ShaderOptions[portingOptionIndex].Name);
 
+                        // Workaround for option name typo
+                        if (optionName == "from_flat_exture_as_cubemap") 
+                        {
+                            optionName = "from_flat_texture_as_cubemap";
+                        }
+
                         // Workaround for H3/ODST content bug
                         if (srcRmt2Descriptor.Type == "decal" && methodName == "bump_mapping" && (PortingCache.Version == CacheVersion.Halo3Retail || PortingCache.Version == CacheVersion.Halo3ODST))
                         {

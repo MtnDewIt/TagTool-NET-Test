@@ -1,5 +1,6 @@
 ﻿using System;
 using TagTool.Cache;
+using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 
@@ -10,7 +11,7 @@ namespace TagTool.Audio.Utils
         /// <summary>
         /// Extracts raw sound data for a given permutation
         /// </summary>
-        public static BlamSound ExtractSound(GameCacheGen3 cache, SoundCacheFileGestalt soundGestalt, Sound sound, int pitchRangeIndex, int permutationIndex)
+        public static BlamSound ExtractSound(GameCacheGen3 cache, SoundCacheFileGestalt soundGestalt, Sound sound, string tagName, int pitchRangeIndex, int permutationIndex)
         {
             if (CacheVersionDetection.GetCacheBuildType(cache.Version) == CacheBuildType.TagsBuild)
             {
@@ -49,8 +50,11 @@ namespace TagTool.Audio.Utils
                 {
                     var info = cache.FMODSoundCache.GetSoundInfo(permutation.FsbSoundHash);
                     BlamSound blamSound = cache.FMODSoundCache.ExtractSound(permutation.FsbSoundHash);
-                    if (blamSound == null)
-                        return null;
+                    if (blamSound == null) 
+                    {
+                        Log.Warning($"Failed to find sound \"{tagName}\" permutation {permutationIndex} in FMOD sound cache!");
+                        blamSound = new BlamSound();
+                    }
 
                     return blamSound;
                 }

@@ -54,9 +54,9 @@ namespace TagTool.Shaders.ShaderGenerator
         [Flags]
         private enum ParameterTypeFlags
         {
-            Vector = 0,
-            Integer = 1 << 0,
-            Boolean = 1 << 1,
+            Float = 0,
+            Int = 1 << 0,
+            Bool = 1 << 1,
             Sampler = 1 << 2
         }
 
@@ -562,12 +562,12 @@ namespace TagTool.Shaders.ShaderGenerator
                             break;
                         case RenderMethodOption.ParameterBlock.OptionDataType.Int:
                             rmt2.IntegerParameterNames.Add(new RenderMethodTemplate.ShaderArgument { Name = parameter.Name });
-                            if (parameterTypes.ContainsKey(name) && parameterTypes[name].HasFlag(ParameterTypeFlags.Vector))
+                            if (parameterTypes.ContainsKey(name) && parameterTypes[name].HasFlag(ParameterTypeFlags.Float))
                                 rmt2.RealParameterNames.Add(new RenderMethodTemplate.ShaderArgument { Name = parameter.Name });
                             break;
                         case RenderMethodOption.ParameterBlock.OptionDataType.Bool:
                             rmt2.BooleanParameterNames.Add(new RenderMethodTemplate.ShaderArgument { Name = parameter.Name });
-                            if (parameterTypes.ContainsKey(name) && parameterTypes[name].HasFlag(ParameterTypeFlags.Vector))
+                            if (parameterTypes.ContainsKey(name) && parameterTypes[name].HasFlag(ParameterTypeFlags.Float))
                                 rmt2.RealParameterNames.Add(new RenderMethodTemplate.ShaderArgument { Name = parameter.Name });
                             break;
                         case RenderMethodOption.ParameterBlock.OptionDataType.Bitmap:
