@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using TagTool.Common.Logging;
 
 namespace TagTool.Common
 {
@@ -51,7 +52,11 @@ namespace TagTool.Common
 
         public AnsiWriter(TextWriter writer)
         {
-            EnableVTP();
+            if (!EnableVTP()) 
+            {
+                Log.Error("Failed to enable Virtual Terminal Processing (VTP) for Windows Console");
+            }
+
             _writer = writer;
         }
 
