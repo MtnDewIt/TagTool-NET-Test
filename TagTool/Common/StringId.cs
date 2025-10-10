@@ -66,7 +66,16 @@ namespace TagTool.Common
                 error = $"{args.Count} arguments supplied; should be 1";
                 return false;
             }
-            result = cache.StringTable.GetStringId(args[0]);
+
+            if (string.Equals(args[0], "null"))
+            {
+                result = Empty;
+            }
+            else 
+            {
+                result = cache.StringTable.GetStringId(args[0]);
+            }
+
             error = null;
             return true;
         }
