@@ -1,61 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using TagTool.BlamFile;
+using TagTool.Cache.CacheFile;
 using TagTool.Common;
 using TagTool.IO;
-using TagTool.Tags;
-using TagTool.BlamFile;
 using TagTool.Serialization;
-using System.Diagnostics;
+using TagTool.Tags;
 
 namespace TagTool.Cache.Gen3
 {
-    [TagStructure(Size = 0x28, Platform = CachePlatform.Original)]
-    [TagStructure(Size = 0x50, Platform = CachePlatform.MCC)]
-    public class TagCacheGen3Header
-    {
-        public int TagGroupCount;
-
-        [TagField(Platform = CachePlatform.MCC)]
-        public Tag TagGroupSignature = new Tag("343i");
-
-        public PlatformUnsignedValue TagGroupsAddress;
-
-        public int TagInstancesCount;
-
-        [TagField(Platform = CachePlatform.MCC)]
-        public Tag TagInstancesSignature = new Tag("343i");
-
-        public PlatformUnsignedValue TagInstancesAddress;
-
-        public int GlobalIndicesCount;
-
-        [TagField(Platform = CachePlatform.MCC)]
-        public Tag GlobalIndicesSignature = new Tag("343i");
-
-        public PlatformUnsignedValue GlobalIndicesAddress;
-
-
-        public int InteropsCount;
-
-        [TagField(Platform = CachePlatform.MCC)]
-        public Tag InteropsSignature = new Tag("343i");
-
-        public PlatformUnsignedValue InteropAddress;
-
-        [TagField(Platform = CachePlatform.MCC)]
-        public uint Unknown1;
-
-        public int CRC;
-        public Tag Signature = new Tag("tags");
-
-        [TagField(Platform = CachePlatform.MCC)]
-        public uint Unknown2;
-    }
-
     public class TagCacheGen3 : TagCache
     {
-        public TagCacheGen3Header Header;
+        public CacheFileTagsHeader Header;
 
         public List<TagGroupGen3> Groups;
 
@@ -89,8 +47,6 @@ namespace TagTool.Cache.Gen3
             }
             return null;
         }
-
-
 
         public override CachedTag AllocateTag(TagGroup type, string name = null)
         {
@@ -172,18 +128,18 @@ namespace TagTool.Cache.Gen3
             var dataContext = new DataSerializationContext(reader);
             var deserializer = new TagDeserializer(Version, CachePlatform);
 
-            Header = deserializer.Deserialize<TagCacheGen3Header>(dataContext);
+            Header = deserializer.Deserialize<CacheFileTagsHeader>(dataContext);
 
-            var tagGroupsOffset = Header.TagGroupsAddress.Value - tagDataSectionOffset;
-            var tagInstancesOffset = Header.TagInstancesAddress.Value - tagDataSectionOffset;
-            var globalIndicesOffset = Header.GlobalIndicesAddress.Value - tagDataSectionOffset;
+            var tagGroupsOffset = Header.TagGroups.Address.Value - tagDataSectionOffset;
+            var tagInstancesOffset = Header.TagInstances.Address.Value - tagDataSectionOffset;
+            var globalIndicesOffset = Header.GlobalTagIndices.Address.Value - tagDataSectionOffset;
 
 
             #region Read Tag Groups
 
             reader.SeekTo((long)tagGroupsOffset);
 
-            for (int i = 0; i < Header.TagGroupCount; i++)
+            for (int i = 0; i < Header.TagGroups.Count; i++)
             {
                 var group = new TagGroupGen3()
                 {
@@ -203,7 +159,7 @@ namespace TagTool.Cache.Gen3
 
             reader.SeekTo((long)tagInstancesOffset);
 
-            for (int i = 0; i < Header.TagInstancesCount; i++)
+            for (int i = 0; i < Header.TagInstances.Count; i++)
             {
                 var groupIndex = reader.ReadInt16();
                 var tagGroup = groupIndex == -1 ? new TagGroupGen3() : Groups[groupIndex];
@@ -236,9 +192,9 @@ namespace TagTool.Cache.Gen3
 
             reader.SeekTo(debugTagNameIndexOffset);
 
-            var stringOffsets = new int[Header.TagInstancesCount];
+            var stringOffsets = new int[Header.TagInstances.Count];
 
-            for (int i = 0; i < Header.TagInstancesCount; i++)
+            for (int i = 0; i < Header.TagInstances.Count; i++)
                 stringOffsets[i] = reader.ReadInt32();
 
             #endregion
@@ -270,7 +226,7 @@ namespace TagTool.Cache.Gen3
 
             reader.SeekTo((long)globalIndicesOffset);
 
-            for (int i = 0; i < Header.GlobalIndicesCount; i++)
+            for (int i = 0; i < Header.GlobalTagIndices.Count; i++)
             {
                 var tag = reader.ReadTag();
                 var ID = reader.ReadUInt32();
