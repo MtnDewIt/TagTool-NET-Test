@@ -2,6 +2,7 @@
 using System.IO;
 using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
 using TagTool.Tags;
@@ -219,10 +220,11 @@ namespace TagTool.BlamFile
                         ServerSignature = BlfServerSignature.Decode(deserializer, dataContext);
                         break;
 
-                    case "mps2": // s_blf_chunk_multiplayer_player_vs_player_statistics
-                    case "chrt": // s_blf_chunk_network_banhammer_cheating_report
                     default:
-                        throw new NotImplementedException($"BLF chunk type {header.Signature} not implemented!");
+                        Log.Warning($"BLF chunk type {header.Signature} not implemented! Skipping...");
+                        var currentHeader = (BlfChunkHeader)deserializer.Deserialize(dataContext, typeof(BlfChunkHeader));
+                        dataContext.Reader.SeekTo(dataContext.Reader.Position + (currentHeader.Length - 0xC));
+                        break;
                 }
             }
 
