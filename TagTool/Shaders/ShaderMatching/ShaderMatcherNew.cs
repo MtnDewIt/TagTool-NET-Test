@@ -10,8 +10,10 @@ using TagTool.Tags.Definitions;
 using TagTool.Commands.Porting;
 using TagTool.Porting;
 using TagTool.Porting.Gen3;
-using static TagTool.Porting.Gen3.PortingContextGen3;
 using TagTool.Common.Logging;
+using TagTool.BlamFile;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace TagTool.Shaders.ShaderMatching
 {
@@ -20,7 +22,6 @@ namespace TagTool.Shaders.ShaderMatching
         private GameCache BaseCache;
         private GameCache PortingCache;
         private Stream BaseCacheStream;
-        private Stream PortingCacheStream;
         private PortingContextGen3 PortContext;
         // shader type, definition
         private Dictionary<string, RenderMethodDefinition> RenderMethodDefinitions;
@@ -33,12 +34,6 @@ namespace TagTool.Shaders.ShaderMatching
         public bool UseMs30 { get; set; } = false;
         public bool PerfectMatchesOnly { get; set; } = false;
 
-        static Dictionary<string, int[]> MethodWeights = new Dictionary<string, int[]>()
-        {
-           ["default"] = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-           ["shader"] = new int[] { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }
-        };
-
         static readonly string[] ContentBugDecals = [
             "objects\\vehicles\\scorpion\\shaders\\number_decal",
             "objects\\vehicles\\scorpion\\shaders\\scorpion_decal",
@@ -50,8 +45,12 @@ namespace TagTool.Shaders.ShaderMatching
             "objects\\levels\\multi\\shrine\\shaders\\xtra_decals"
         ];
 
-        public ShaderMatcherNew()
+        public class TemplateConversionResult
         {
+            public RenderMethodTemplate Definition;
+            public PixelShader PixelShaderDefinition;
+            public VertexShader VertexShaderDefinition;
+            public CachedTag Tag;
         }
 
         public void Init(GameCache baseCache, 
@@ -67,7 +66,6 @@ namespace TagTool.Shaders.ShaderMatching
             BaseCache = baseCache;
             PortingCache = portingCache;
             BaseCacheStream = baseCacheStream;
-            PortingCacheStream = portingCacheStream;
             IsInitialized = true;
             PortContext = portContext;
 
@@ -95,7 +93,6 @@ namespace TagTool.Shaders.ShaderMatching
             BaseCache = null;
             PortingCache = null;
             BaseCacheStream = null;
-            PortingCacheStream = null;
             IsInitialized = false;
             PortContext = null;
             RenderMethodDefinitions = null;
@@ -161,42 +158,42 @@ namespace TagTool.Shaders.ShaderMatching
         /// <summary>
         /// Find the closest template in the base cache to the input template.
         /// </summary>
-        public CachedTag FindClosestTemplate(CachedTag sourceRmt2Tag, RenderMethodTemplate sourceRmt2, bool canGenerate, string blamRenderMethodName)
+        public CachedTag FindClosestTemplate(string sourceRmt2Name, string blamRenderMethodName, out string tagName, out bool isExactMatch)
         {
             Debug.Assert(IsInitialized);
-    
-            Rmt2Descriptor sourceRmt2Desc;
-            if (!Rmt2Descriptor.TryParse(sourceRmt2Tag.Name, out sourceRmt2Desc))
+            isExactMatch = false;
+            tagName = null;
+
+            if (!Rmt2Descriptor.TryParse(sourceRmt2Name, out Rmt2Descriptor sourceRmt2Desc))
             {
-                Log.Error($"Invalid rmt2 name '{sourceRmt2Tag.Name}'");
+                Log.Error($"Invalid rmt2 name '{sourceRmt2Name}'");
                 return null;
             }
 
             // rebuild options to match base cache
             sourceRmt2Desc = RebuildRmt2Options(sourceRmt2Desc, blamRenderMethodName);
+            tagName = $"shaders\\{sourceRmt2Desc.Type}_templates\\_{string.Join("_", sourceRmt2Desc.Options)}";
 
-            string tagName = $"shaders\\{sourceRmt2Desc.Type}_templates\\_{string.Join("_", sourceRmt2Desc.Options)}";
+            // if using a shader cache, try and find it there
+            if (ShaderCache.ExportTemplate(BaseCacheStream, BaseCache, tagName, out CachedTag cachedRmt2Tag))
+            {
+                if (PortContext.FlagIsSet(PortingFlags.Print))
+                    Console.WriteLine($"['{cachedRmt2Tag.Group.Tag}', 0x{cachedRmt2Tag.Index:X4}] {cachedRmt2Tag.Name}.{(cachedRmt2Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
+                isExactMatch = true;
+                return cachedRmt2Tag;
+            }
 
-            var relevantRmt2s = new List<Rmt2Pairing>();
-
-            Dictionary<CachedTag, long> ShaderTemplateValues = new Dictionary<CachedTag, long>();
-            ParticleSorter particleTemplateSorter = new ParticleSorter();
-            BeamSorter beamTemplateSorter = new BeamSorter();
-            ContrailSorter contrailTemplateSorter = new ContrailSorter();
-            LightVolumeSorter lightvolumeTemplateSorter = new LightVolumeSorter();
-            ShaderSorter shaderTemplateSorter = new ShaderSorter();
-            HalogramSorter halogramTemplateSorter = new HalogramSorter();
-            TerrainSorter terrainTemplateSorter = new TerrainSorter();
-            FoliageSorter foliageTemplateSorter = new FoliageSorter();
-            DecalSorter decalTemplateSorter = new DecalSorter();
-            ScreenSorter screenTemplateSorter = new ScreenSorter();
-            WaterSorter waterTemplateSorter = new WaterSorter();
+            SortingInterface sorter = GetSorter(sourceRmt2Desc.Type);
+            long minDistance = long.MaxValue;
+            CachedTag bestTag = null;
 
             // search
-            foreach (var rmt2Tag in BaseCache.TagCache.NonNull().Where(tag => tag.IsInGroup("rmt2")))
+            foreach (CachedTag rmt2Tag in BaseCache.TagCache.TagTable)
             {
-                Rmt2Descriptor destRmt2Desc;
-                if (rmt2Tag.Name == null || rmt2Tag.Name == "" || !Rmt2Descriptor.TryParse(rmt2Tag.Name, out destRmt2Desc))
+                if (rmt2Tag == null || rmt2Tag.Group.Tag != "rmt2")
+                    continue;
+
+                if (!Rmt2Descriptor.TryParse(rmt2Tag.Name, out Rmt2Descriptor destRmt2Desc))
                     continue;
 
                 // ignore ms30 templates if desired
@@ -207,254 +204,112 @@ namespace TagTool.Shaders.ShaderMatching
                 if (destRmt2Desc.Type != sourceRmt2Desc.Type)
                     continue;
 
-                int[] weights;
-                if (!MethodWeights.TryGetValue(sourceRmt2Desc.Type, out weights))
-                    weights = MethodWeights["default"];
-
                 // match the options from the rmt2 tag names
-                int commonOptions = 0;
-                int score = 0;
-                for (int i = 0; i < sourceRmt2Desc.Options.Length; i++)
+                if (sourceRmt2Desc.Options.AsSpan().SequenceEqual(destRmt2Desc.Options))
                 {
-                    if (i >= destRmt2Desc.Options.Length)
-                        continue;
-
-                    if (sourceRmt2Desc.Options[i] == destRmt2Desc.Options[i])
-                    {
-                        score += 1 + weights[i];
-                        commonOptions++;
-                    }
-                }
-
-                // if we found an exact match, return it
-                if (commonOptions == sourceRmt2Desc.Options.Length)
-                {
-                    //Console.WriteLine("Found perfect rmt2 match:");
-                    //Console.WriteLine(sourceRmt2Tag.Name);
-                    //Console.WriteLine(rmt2Tag.Name);
+                    isExactMatch = true;
                     return rmt2Tag;
                 }
-                    
 
-                // add it to the list to be considered
-                relevantRmt2s.Add(new Rmt2Pairing()
+                // if not exact match determine how close it is
+                if (sorter != null && !PerfectMatchesOnly)
                 {
-                    Score = score,
-                    CommonOptions = commonOptions,
-                    DestTag = rmt2Tag,
-                    SourceTag = sourceRmt2Tag
-                });
-
-                switch (sourceRmt2Desc.Type)
-                {
-                    case "beam":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(beamTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "contrail":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(contrailTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "shader":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(shaderTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "halogram":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(halogramTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "terrain":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(terrainTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "particle":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(particleTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "light_volume":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(lightvolumeTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "foliage":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(foliageTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "decal":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(decalTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "screen":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(screenTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
-                    case "water":
-                        ShaderTemplateValues.Add(rmt2Tag, Sorter.GetValue(waterTemplateSorter, Sorter.GetTemplateOptions(rmt2Tag.Name)));
-                        break;
+                    long targetValue = Sorter.GetValue(sorter, sourceRmt2Desc.Options);
+                    long value = Sorter.GetValue(sorter, destRmt2Desc.Options);
+                    long distance = Math.Abs(value - targetValue);
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        bestTag = rmt2Tag;
+                    }
                 }
             }
 
-            if (ShaderCache.ExportTemplate(BaseCacheStream, BaseCache, tagName, out CachedTag cachedRmt2Tag))
-            {
-                if (PortContext.FlagIsSet(PortingFlags.Print))
-                    Console.WriteLine($"['{cachedRmt2Tag.Group.Tag}', 0x{cachedRmt2Tag.Index:X4}] {cachedRmt2Tag.Name}.{(cachedRmt2Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
-                return cachedRmt2Tag;
-            }
-
-            // potentially async here. depends on: type (cannot be an effect type) and whether the rmt2 exists already.
-            if (canGenerate && TryGenerateTemplate(tagName, sourceRmt2Desc, out CachedTag generatedRmt2))
-            {
-                return generatedRmt2;
-            }
-
-            Console.WriteLine($"No rmt2 match found for {sourceRmt2Tag.Name}");
-
-            if (PerfectMatchesOnly)
-                return null;
-
-            // rebuild source rmt2 tagname using updated indices
-            string srcRmt2Tagname = $"shaders\\{sourceRmt2Desc.Type}_templates\\_{string.Join("_", sourceRmt2Desc.Options)}";
-
-            // find closest rmt2
-
-            switch (sourceRmt2Desc.Type)
-            {
-                case "beam":            return GetBestTag(beamTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "black":           return null;
-                case "custom":          return null;
-                case "contrail":        return GetBestTag(contrailTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "decal":           return GetBestTag(decalTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "foliage":         return GetBestTag(foliageTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "halogram":        return GetBestTag(halogramTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "light_volume":    return GetBestTag(lightvolumeTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "particle":        return GetBestTag(particleTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "screen":          return GetBestTag(screenTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "shader":          return GetBestTag(shaderTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "terrain":         return GetBestTag(terrainTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                case "water":           return GetBestTag(waterTemplateSorter, ShaderTemplateValues, srcRmt2Tagname, sourceRmt2Tag.Name);
-                default:                return null;
-            }
+            return bestTag;
         }
 
-        private bool CanGenerateAsync(string shaderType)
-        {
-            // todo: support rmd but avoid decs
-            switch (shaderType)
-            {
-                case "shader":
-                case "custom":
-                case "cortana":
-                case "halogram":
-                case "glass":
-                case "terrain":
-                case "foliage":
-                case "water":
-                case "zonly":
-                    return true;
-                default:
-                    return false;
-            }
-        }
 
-        private bool TryGenerateTemplate(string tagName, Rmt2Descriptor rmt2Desc, out CachedTag generatedRmt2)
+        public Task<TemplateConversionResult> GenerateTemplateAsync(Stream cacheStream, string tagName, out CachedTag generatedRmt2)
         {
             generatedRmt2 = null;
+
+            if (!Rmt2Descriptor.TryParse(tagName, out Rmt2Descriptor rmt2Desc))
+            {
+                Log.Error($"Invalid rmt2 tag name {tagName}");
+                throw new InvalidOperationException();
+            }
 
             if (!RenderMethodDefinitions.ContainsKey(rmt2Desc.Type))
             {
                 Log.Error($"No rmdf tag present for {rmt2Desc.Type}");
-                return false;
+                throw new InvalidOperationException();
             }
+
             RenderMethodDefinition rmdf = RenderMethodDefinitions[rmt2Desc.Type];
+      
+            var glps = BaseCache.Deserialize<GlobalPixelShader>(BaseCacheStream, rmdf.GlobalPixelShader);
+            var glvs = BaseCache.Deserialize<GlobalVertexShader>(BaseCacheStream, rmdf.GlobalVertexShader);
 
-            RenderMethodTemplate rmt2;
-            PixelShader pixl;
-            VertexShader vtsh;
+            // get options in numeric array
+            List<byte> options = new List<byte>();
+            foreach (var option in tagName.Split('\\')[2].Remove(0, 1).Split('_'))
+                options.Add(byte.Parse(option));
 
-            try
-            {
-                if (CanGenerateAsync(rmt2Desc.Type))
+            var allRmopParameters = ShaderGenerator.ShaderGeneratorNew.GatherParametersAsync(RenderMethodOptions, rmdf, options);
+
+            CachedTag rmt2Tag = BaseCache.TagCache.AllocateTag<RenderMethodTemplate>(tagName);
+            generatedRmt2 = rmt2Tag;
+
+
+            return PortContext.RunOnThreadPool(() => 
                 {
-                    CachedTag rmt2Tag = BaseCache.TagCache.AllocateTag<RenderMethodTemplate>(tagName);
-                    PortContext.PendingTemplates.Add(tagName);
+                    var result = new TemplateConversionResult();
 
-                    var glps = BaseCache.Deserialize<GlobalPixelShader>(BaseCacheStream, rmdf.GlobalPixelShader);
-                    var glvs = BaseCache.Deserialize<GlobalVertexShader>(BaseCacheStream, rmdf.GlobalVertexShader);
+                    result.Tag = rmt2Tag;
+                    result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache,
+                        rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
 
-                    // get options in numeric array
-                    List<byte> options = new List<byte>();
-                    foreach (var option in tagName.Split('\\')[2].Remove(0, 1).Split('_'))
-                        options.Add(byte.Parse(option));
+                    return result;
+                })
+                .ContinueWith(task =>
+                    {
+                        TemplateConversionResult result = task.Result;
+                        var asyncRmt2 = result.Definition;
+                        var asyncPixl = result.PixelShaderDefinition;
+                        var asyncVtsh = result.VertexShaderDefinition;
 
-                    var allRmopParameters = ShaderGenerator.ShaderGeneratorNew.GatherParametersAsync(RenderMethodOptions, rmdf, options);
+                        if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
+                            asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
+                        if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
+                            asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
 
-                    PortContext.RunAsync(
-                        onExecute: () =>
-                        {
-                            var result = new TemplateConversionResult();
+                        BaseCache.Serialize(cacheStream, asyncRmt2.PixelShader, asyncPixl);
+                        BaseCache.Serialize(cacheStream, asyncRmt2.VertexShader, asyncVtsh);
+                        BaseCache.Serialize(cacheStream, result.Tag, asyncRmt2);
 
-                            result.Tag = rmt2Tag;
-                            result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache, 
-                                rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
+                        if (PortContext.FlagIsSet(PortingFlags.Print))
+                            Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
 
-                            return result;
-                        },
-                        onSuccess: (TemplateConversionResult result) =>
-                        {
-                            var asyncRmt2 = result.Definition;
-                            var asyncPixl = result.PixelShaderDefinition;
-                            var asyncVtsh = result.VertexShaderDefinition;
-
-                            if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
-                                asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
-                            if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
-                                asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
-
-                            BaseCache.Serialize(BaseCacheStream, asyncRmt2.PixelShader, asyncPixl);
-                            BaseCache.Serialize(BaseCacheStream, asyncRmt2.VertexShader, asyncVtsh);
-                            BaseCache.Serialize(BaseCacheStream, result.Tag, asyncRmt2);
-
-                            if (PortContext.FlagIsSet(PortingFlags.Print))
-                                Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
-                        });
-
-                    generatedRmt2 = rmt2Tag;
-                    return true;
-                }
-                else
-                {
-                    rmt2 = ShaderGenerator.ShaderGeneratorNew.GenerateTemplateSafe(BaseCache, BaseCacheStream, rmdf, tagName, out pixl, out vtsh);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Generation failed, finding best substitute");
-                return false;
-            }
-
-            generatedRmt2 = BaseCache.TagCache.AllocateTag<RenderMethodTemplate>(tagName);
-
-            BaseCache.Serialize(BaseCacheStream, generatedRmt2, rmt2);
-
-            ShaderCache.ImportTemplate(BaseCache, tagName, rmt2, pixl, vtsh);
-
-            return true;
+                        return result;
+                    },
+                    PortContext.MainThreadScheduler);
         }
 
-        /// <summary>
-        /// Returns the best render_method_template tag match using the given dictionary and source rmt2
-        /// </summary>
-        private CachedTag GetBestTag(SortingInterface sortingInterface, Dictionary<CachedTag, long> shaderTemplateValues, string newTagName, string srcTagName)
+        private static SortingInterface GetSorter(string type) => type switch
         {
-            long targetValue = Sorter.GetValue(sortingInterface, Sorter.GetTemplateOptions(newTagName));
-            long bestValue = long.MaxValue;
-            CachedTag bestTag = null;
-
-            foreach (var pair in shaderTemplateValues)
-            {
-                if (Math.Abs(pair.Value - targetValue) < bestValue)
-                {
-                    bestValue = Math.Abs(pair.Value - targetValue);
-                    bestTag = pair.Key;
-                }
-            }
-            /*
-            Console.WriteLine($"Closest tag to {srcTagName} with options and value {targetValue}");
-            sortingInterface.PrintOptions(Sorter.GetTemplateOptions(newTagName));
-            Console.WriteLine($"is tag {bestTag.Name} with options and value {bestValue + targetValue}");
-            sortingInterface.PrintOptions(Sorter.GetTemplateOptions(bestTag.Name));
-            */
-            return bestTag;
-        }
+            "beam" => new BeamSorter(),
+            "contrail" => new ContrailSorter(),
+            "shader" => new ShaderSorter(),
+            "halogram" => new HalogramSorter(),
+            "terrain" => new TerrainSorter(),
+            "particle" => new ParticleSorter(),
+            "light_volume" => new LightVolumeSorter(),
+            "foliage" => new FoliageSorter(),
+            "decal" => new DecalSorter(),
+            "screen" => new ScreenSorter(),
+            "water" => new WaterSorter(),
+            _ => null,
+        };
 
         /// <summary>
         /// Rebuilds an rmt2's options in memory so indices match up with the base cache

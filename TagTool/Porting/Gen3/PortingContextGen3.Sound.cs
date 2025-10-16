@@ -48,23 +48,10 @@ namespace TagTool.Porting.Gen3
 
             BlamCache.LoadSoundBanks();
 
-            RunAsync(
-                onExecute: () =>
-                {
-                    SoundConversionResult result;
-                    result = ConvertSoundInternal(sound, blamTag_Name);
+            var task = RunOnThreadPool(() => ConvertSoundInternal(sound, blamTag_Name))
+                .ContinueWith(task => FinishConvertSound(task.GetAwaiter().GetResult()), MainThreadScheduler);
 
-                    return result;
-                },
-                onSuccess: (SoundConversionResult result) =>
-                {
-                    Sound blamDefinition = FinishConvertSound(result);
-
-                    CacheContext.Serialize(cacheStream, destTag, blamDefinition);
-
-                    if (FlagIsSet(PortingFlags.Print))
-                        Console.WriteLine($"['{destTag.Group.Tag}', 0x{destTag.Index:X4}] {destTag.Name}.{(destTag.Group as TagGroupGen3).Name}");
-                });
+            AddTask(task);
 
             return sound;
         }

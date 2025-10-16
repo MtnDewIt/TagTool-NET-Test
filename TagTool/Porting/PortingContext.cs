@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Porting.Gen2;
 using TagTool.Common;
 using TagTool.Common.Logging;
+using TagTool.Porting.Gen2;
 using TagTool.Porting.Gen3;
 using TagTool.Porting.HaloOnline;
 using TagTool.Tags;
@@ -22,8 +22,7 @@ namespace TagTool.Porting
         public readonly GameCacheHaloOnlineBase CacheContext;
         public readonly GameCache BlamCache;
         protected readonly TagDefinitionCache TagDefinitionCache = new();
-        protected readonly BlockingCollection<Action> DeferredActions = [];
-        private readonly HashSet<int> ReplacedTags = [];
+        protected readonly HashSet<int> ReplacedTags = [];
         private readonly HashSet<int> VisitedTags = [];
         private readonly Dictionary<int, CachedTag> PortedTags = [];
         private readonly Dictionary<uint, StringId> PortedStringIds = [];
@@ -43,8 +42,6 @@ namespace TagTool.Porting
         {
             CacheContext = cacheContext;
             BlamCache = blamCache;
-
-            InitAsync();
         }
 
         /// <summary>
@@ -106,7 +103,7 @@ namespace TagTool.Porting
         /// <returns>The resulting the tag from the destination cache</returns>
         public CachedTag ConvertTag(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, string blamParentTagName = null, object blamDefinition = null)
         {
-            ProcessDeferredActions();
+            ProcessTasks();
 
             if (blamTag == null)
                 return null;
@@ -157,7 +154,7 @@ namespace TagTool.Porting
 
             if (!FlagIsSet(PortingFlags.New))
             {
-                CachedTag existingTag =  FindExistingTag(resultTag);
+                CachedTag existingTag = FindExistingTag(resultTag);
                 if (existingTag != null)
                 {
                     // Avoid re-entrancy
@@ -191,45 +188,59 @@ namespace TagTool.Porting
             // Load and convert the Blam tag definition
             //
 
-            if (blamDefinition == null)
-                blamDefinition = BlamCache.Deserialize(blamCacheStream, blamTag);
+            blamDefinition ??= BlamCache.Deserialize(blamCacheStream, blamTag);
 
-            blamDefinition = ConvertDefinition(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition, out bool isDeferred);
+            Task convertTask;
+            _taskListStack.Push([]);
 
-            if (blamDefinition == null)
+            try
             {
-                // TODO: remove edTag from ConvertDefinition so that we don't have this problem
-                if (edTag.Index < CacheContext.TagCacheGenHO.Tags.Count - 1)
-                    CacheContext.TagCacheGenHO.Tags[edTag.Index] = null;
-                else
-                    CacheContext.TagCacheGenHO.Tags.RemoveAt(edTag.Index);
-
-                CachedTag fallback = GetFallbackTag(blamTag);
-                Log.Error($"Failed to convert tag '{blamTag}', using fallback tag: {fallback}");
-
-                return fallback;
+                blamDefinition = ConvertDefinition(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition);
             }
+            finally
+            {
+                convertTask = Task.WhenAll(_taskListStack.Pop());
+            }
+
+            Task seriailizeTask = convertTask
+                .ContinueWith(task => FinishConvertTag(cacheStream, blamTag, blamDefinition, edTag), MainThreadScheduler);
+
+            if (seriailizeTask.IsFaulted)
+            {
+                // re-throw exceptions early
+                throw new Exception($"Exception while porting '{blamTag}'", seriailizeTask.Exception);
+            }
+            else if (!seriailizeTask.IsCompleted)
+            {
+                _allTasks.Add(seriailizeTask);
+                _tagConvertTasks.Add(edTag.Index, seriailizeTask);
+            }
+
+            return edTag;
+        }
+
+        private CachedTag FinishConvertTag(Stream cacheStream, CachedTag blamTag, object blamDefinition, CachedTag edTag)
+        {
+            ArgumentNullException.ThrowIfNull(blamDefinition);
 
             //
             // Finalize and serialize the new ElDorado tag definition
             //
 
-            if (!isDeferred)
+            _tagConvertTasks.Remove(edTag.Index);
+            TagDefinitionCache.Evict(edTag);
+            CacheContext.Serialize(cacheStream, edTag, blamDefinition);
+
+            if (FlagIsSet(PortingFlags.Print))
+                Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag}");
+
+            if (blamDefinition is Scenario scnr && FlagIsSet(PortingFlags.UpdateMapFiles))
             {
-                TagDefinitionCache.Evict(edTag);
-                CacheContext.Serialize(cacheStream, edTag, blamDefinition);
+                string mapInfoDir = BlamCache.Directory == null ? "" : Path.Combine(BlamCache.Directory.FullName, "info");
+                MapFileUpdater.UpdateMapFile(CacheContext, edTag, scnr, mapInfoDir);
 
-                if (FlagIsSet(PortingFlags.Print))
-                    Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag}");
-
-                if (blamDefinition is Scenario scnr && FlagIsSet(PortingFlags.UpdateMapFiles))
-                {
-                    string mapInfoDir = BlamCache.Directory == null ? "" : Path.Combine(BlamCache.Directory.FullName, "info");
-                    MapFileUpdater.UpdateMapFile(CacheContext, blamTag, scnr, mapInfoDir);
-
-                    if (scnr.MapType == ScenarioMapType.SinglePlayer)
-                        ShouldGenerateCampaignFile = true;
-                }
+                if (scnr.MapType == ScenarioMapType.SinglePlayer)
+                    ShouldGenerateCampaignFile = true;
             }
 
             return edTag;
@@ -272,7 +283,7 @@ namespace TagTool.Porting
             return edTag;
         }
 
-        protected virtual CachedTag GetFallbackTag(CachedTag edTag)
+        protected virtual CachedTag GetFallbackTag(CachedTag blamTag)
         {
             return null;
         }
@@ -296,11 +307,9 @@ namespace TagTool.Porting
         /// <param name="blamTag">Tag to be ported</param>
         /// <param name="edTag">Tag that is being ported to</param>
         /// <param name="blamDefinition">Deserialized definition data</param>
-        /// <param name="isDeferred">Optional boolean that determines whether this tag should be serialized now (false) or later via a deferred action (true)</param>
         /// <returns></returns>
-        protected virtual object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        protected virtual object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition)
         {
-            isDeferred = false;
             return ConvertData(cacheStream, blamCacheStream, blamDefinition, blamDefinition, blamTag.Name);
         }
 
@@ -497,11 +506,9 @@ namespace TagTool.Porting
         /// <param name="saveStrings">Save the string id cache</param>
         public virtual void Finish(bool saveStrings = true)
         {
-            WaitForPendingTasks();
-
             try
             {
-                ProcessDeferredActions();
+                FinishAsync();
                 FinishInternal();
 
                 if (saveStrings)
@@ -514,7 +521,6 @@ namespace TagTool.Porting
             finally
             {
                 // discard the queue in case of an exception
-                while (DeferredActions.TryTake(out var _)) { }
                 TagDefinitionCache.Clear();
                 VisitedTags.Clear();
                 PortedTags.Clear();
@@ -530,14 +536,6 @@ namespace TagTool.Porting
         /// </remarks>
         protected virtual void FinishInternal()
         {
-        }
-
-        protected void ProcessDeferredActions()
-        {
-            while (DeferredActions.TryTake(out Action action))
-            {
-                action();
-            }
         }
 
         /// <summary>

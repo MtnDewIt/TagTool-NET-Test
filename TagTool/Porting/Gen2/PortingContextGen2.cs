@@ -120,9 +120,8 @@ namespace TagTool.Porting.Gen2
             return CacheContext.TagCache.TagDefinitions.TagDefinitionExists(resultTag.Group.Tag);
         }
 
-        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition)
         {
-            isDeferred = false;
             object origGen2definition = BlamCache.Deserialize(blamCacheStream, blamTag);
             object gen2definition = BlamCache.Deserialize(blamCacheStream, blamTag);
             if (blamTag.Group.Tag == "shad")

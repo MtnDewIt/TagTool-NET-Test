@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 using TagTool.Audio;
+using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
@@ -23,7 +27,6 @@ namespace TagTool.Porting.Gen3
     public partial class PortingContextGen3 : PortingContext
     {
         private readonly RenderGeometryConverter GeometryConverter;
-        private TraversalData _traversalData = null;
 
         public PortingContextGen3(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
         {
@@ -32,54 +35,23 @@ namespace TagTool.Porting.Gen3
 
         protected override void FinishInternal()
         {
-            FinalizeRenderMethods();
             Matcher.DeInit();
-        }
-
-        protected override CachedTag GetFallbackTag(CachedTag blamTag)
-        {
-            // TODO: move this into PortingContext.cs
-            if (blamTag.IsInGroup("beam", "cntl", "decs", "ltvl", "prt3", "rm  "))
-            {
-                return GetDefaultShader(blamTag.Group.Tag);
-            }
-
-            return base.GetFallbackTag(blamTag);
+            PendingTemplates.Clear();
         }
 
         protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName)
         {
-            if (blamTag.IsInGroup("rmt2"))
-                return FindClosestRmt2(cacheStream, blamCacheStream, blamTag, blamParentTagName);
-
             return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName);
         }
 
-        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag blamTag, object blamDefinition)
         {
-            isDeferred = false;
-
-            TraversalData oldTraversalData = _traversalData;
-            TraversalData traversalData = _traversalData = new TraversalData();
-
             // Perform pre-conversion fixups
             blamDefinition = PreConvertDefinition(cacheStream, blamCacheStream, blamTag, blamDefinition);
             // Perform automatic conversion
             blamDefinition = ConvertData(cacheStream, blamCacheStream, blamDefinition, blamDefinition, blamTag.Name);
             // Perform post-conversion fixups
-            blamDefinition = PostConvertDefinition(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition, out isDeferred);
-
-            _traversalData = oldTraversalData;
-
-            if (traversalData.IsFailedConversion)
-                return null;
-
-            if (traversalData.DeferredRenderMethods.Count > 0)
-            {
-                // For the render methods that have pending templates defer conversion until the end
-                DeferredRenderMethods.Add(new DeferredRenderMethodData(cacheStream, blamCacheStream, edTag, blamTag, blamDefinition, traversalData.DeferredRenderMethods));
-                isDeferred = true;
-            }
+            blamDefinition = PostConvertDefinition(cacheStream, blamCacheStream, edTag, blamTag, blamDefinition);
 
             return blamDefinition;
         }
@@ -132,11 +104,10 @@ namespace TagTool.Porting.Gen3
         /// <summary>
         /// Perform post-conversion fixups to Blam data
         /// </summary>
-        private object PostConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition, out bool isDeferred)
+        private object PostConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition)
         {
             ((TagStructure)blamDefinition).PostConvert(BlamCache.Version, CacheContext.Version);
 
-            isDeferred = false;
             switch (blamDefinition)
             {
                 case AreaScreenEffect sefc:
@@ -144,8 +115,7 @@ namespace TagTool.Porting.Gen3
                     break;
 
                 case Bitmap bitm:
-                    isDeferred = true;
-                    blamDefinition = ConvertBitmapAsync(cacheStream, edTag, blamTag, bitm);
+                    blamDefinition = ConvertBitmap(cacheStream, edTag, blamTag, bitm);
                     break;
 
                 case CameraFxSettings cfxs:
@@ -268,9 +238,9 @@ namespace TagTool.Porting.Gen3
                     break;
 
                 case Sound sound:
-                    isDeferred = true;
                     blamDefinition = ConvertSound(cacheStream, blamCacheStream, sound, edTag, blamTag.Name);
                     break;
+
                 case SoundClasses sncl:
                     blamDefinition = ConvertSoundClasses(sncl, BlamCache.Version);
                     break;
@@ -364,12 +334,7 @@ namespace TagTool.Porting.Gen3
                     return ConvertTargetLockOnData(lockOnData);
 
                 case RenderMethod renderMethod:
-                    RenderMethod edRenderMethod = ConvertStructure(cacheStream, blamCacheStream, renderMethod.DeepCloneV2(), definition, blamTagName);
-                    if (PendingTemplates.Contains(edRenderMethod.ShaderProperties[0].Template.Name))
-                        _traversalData.DeferredRenderMethods.Add((edRenderMethod, renderMethod));
-                    else if (ConvertShaderInternal(cacheStream, blamCacheStream, edRenderMethod, renderMethod) == null)
-                        _traversalData.IsFailedConversion = true;
-                    return edRenderMethod;
+                    return ConvertRenderMethod(cacheStream, blamCacheStream, definition, blamTagName, renderMethod);
 
                 case Scenario.MultiplayerObjectProperties scnrObj:
                     scnrObj = ConvertStructure(cacheStream, blamCacheStream, scnrObj, definition, blamTagName);
@@ -488,6 +453,7 @@ namespace TagTool.Porting.Gen3
                     return false;
 
                 // these tags will be generated in the template generation code
+                case "rmt2":
                 case "rmdf":
                 case "glvs":
                 case "glps":
@@ -614,15 +580,6 @@ namespace TagTool.Porting.Gen3
         protected override bool CanCachePortedTag(CachedTag blamTag, CachedTag tag, string blamParentTagName)
         {
             return tag == null || !tag.IsInGroup("rmt2");
-        }
-
-        class TraversalData
-        {
-            // A list of render methods to defer conversion until the end
-            public List<(RenderMethod RenderMethod, RenderMethod BlamRenderMethod)> DeferredRenderMethods = [];
-
-            // Should be set if some part of the tag could not be converted and would crash if used. If possible an alternate tag will be used
-            public bool IsFailedConversion = false;
         }
     }
 }
