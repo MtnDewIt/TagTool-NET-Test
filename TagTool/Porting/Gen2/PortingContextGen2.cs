@@ -33,7 +33,7 @@ namespace TagTool.Porting.Gen2
             AutoConverter = new StructureAutoConverter(BlamCache, CacheContext);
         }
 
-        protected override bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, out CachedTag resultTag)
+        protected override bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, object blamDefinition, out CachedTag resultTag)
         {
             resultTag = null;
             //use hardcoded list of supported tags to prevent unnecessary deserialization
@@ -103,35 +103,33 @@ namespace TagTool.Porting.Gen2
 
                 return false;
             }
+
+
+            if (blamDefinition is Shader shader)
+            {
+                if (!ShaderTemplateIsSupported(shader.Template.Name.Split('\\').Last()))
+                {
+                    Log.Warning($"Shader template '{shader.Template.Name}' not yet supported!");
+                    CacheContext.TagCache.TryGetTag(@"shaders\invalid.rmsh", out resultTag);
+                    return false;
+                }
+            }
+
             return true;
         }
-        protected override bool GroupIsValid(CachedTag blamTag, out CachedTag resultTag)
+
+        protected override (string Name, Tag GroupTag) GetTargetTagNameAndGroup(CachedTag blamTag, object blamDefinition)
         {
-            resultTag = new CachedTagHaloOnline
-            {
-                Group = new TagGroup(blamTag.Group.Tag),
-                Index = blamTag.Index,
-                Name = blamTag.Name,
-            };
-            if (blamTag.Group.Tag == "shad")
-            {
-                resultTag.Group.Tag = "rmsh";
-            }
-            return CacheContext.TagCache.TagDefinitions.TagDefinitionExists(resultTag.Group.Tag);
+            if (blamDefinition is Shader shader)
+                return (blamTag.Name, "rmsh");
+
+            return base.GetTargetTagNameAndGroup(blamTag, blamDefinition);
         }
 
-        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition)
+        protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object gen2definition)
         {
             object origGen2definition = BlamCache.Deserialize(blamCacheStream, blamTag);
-            object gen2definition = BlamCache.Deserialize(blamCacheStream, blamTag);
-            if (blamTag.Group.Tag == "shad")
-            {
-                if (!ShaderTemplateIsSupported(((Shader)gen2definition).Template.Name.Split('\\').Last()))
-                {
-                    Log.Warning($"Shader template '{((Shader)gen2definition).Template.Name}' not yet supported!");
-                    return null;
-                }                  
-            }
+
             gen2definition = ConvertData(cacheStream, blamCacheStream, gen2definition, gen2definition, blamTag.Name);
             object definition;
 
@@ -217,12 +215,9 @@ namespace TagTool.Porting.Gen2
                     definition = ConvertNewHudDefinition(nhdt, gen2Hud, cacheStream, blamCacheStream, blamTag);
                     break;
                 default:
-                    Log.Warning($"Porting tag group '{blamTag.Group}' not yet supported, returning null!");
-                    return null;
+                    throw new NotSupportedException($"Porting tag group '{blamTag.Group}' not yet supported!");
             }
 
-            if (definition == null)
-                return null;
             PostFixups(definition, edTag, cacheStream);
             return definition;
         }

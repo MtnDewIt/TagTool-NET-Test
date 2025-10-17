@@ -1246,8 +1246,7 @@ namespace TagTool.Porting.Gen2
                         break;
                     }
                 default:
-                    Log.Warning($"Shader template '{shader_template}' not yet supported!");
-                    return null;
+                    throw new NotSupportedException($"Shader template '{shader_template}' not yet supported!");
             }
 
             // Change the contents of lists depending on the h2 template used

@@ -32,13 +32,12 @@ namespace TagTool.Porting.Gen3
             _blamCache = portingContext.BlamCache;
         }
 
-        public void MergeRenderMethods(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag blamTag)
+        public void MergeRenderMethods(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag blamTag, object blamDef)
         {
             if (!_portingContext.Flags.HasFlag(PortingFlags.Recursive))
                 return;
 
             var edDef = _cacheContext.Deserialize(cacheStream, edTag);
-            var blamDef = _blamCache.Deserialize(blamCacheStream, blamTag);
 
             if (MergeDefinition(cacheStream, blamCacheStream, edDef, blamDef))
             {

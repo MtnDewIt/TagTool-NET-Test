@@ -8,6 +8,8 @@ using System.Xml.Serialization;
 using TagTool.Audio;
 using TagTool.BlamFile;
 using TagTool.Cache;
+using TagTool.Cache.Gen3;
+using TagTool.Cache.Resources;
 using TagTool.Commands.Common;
 using TagTool.Commands.Porting;
 using TagTool.Common;
@@ -37,11 +39,6 @@ namespace TagTool.Porting.Gen3
         {
             Matcher.DeInit();
             PendingTemplates.Clear();
-        }
-
-        protected override CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName)
-        {
-            return base.ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName);
         }
 
         protected override object ConvertDefinition(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag blamTag, object blamDefinition)
@@ -402,30 +399,30 @@ namespace TagTool.Porting.Gen3
             return value;
         }
 
-        protected override void MergeTags(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag)
+        protected override void MergeTags(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition)
         {
-            switch (blamTag.Group.Tag.ToString())
+            switch (blamDefinition)
             {
-                case "char":
-                    MergeCharacter(cacheStream, blamCacheStream, edTag, blamTag);
+                case Character character:
+                    MergeCharacter(cacheStream, blamCacheStream, edTag, blamTag, character);
                     break;
 
-                case "mulg":
-                    MergeMultiplayerGlobals(cacheStream, blamCacheStream, edTag, blamTag);
+                case MultiplayerGlobals mulg:
+                    MergeMultiplayerGlobals(cacheStream, blamCacheStream, edTag, blamTag, mulg);
                     break;
 
-                case "unic":
-                    MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, edTag, blamTag);
+                case MultilingualUnicodeStringList unic:
+                    MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, edTag, blamTag, unic);
                     break;
             }
 
             if (blamTag.IsInGroup("rm  ") || PortingConstants.EffectGroups.Contains(blamTag.Group.Tag))
             {
-                new RenderMethodMerger(this).MergeRenderMethods(cacheStream, blamCacheStream, edTag, blamTag);
+                new RenderMethodMerger(this).MergeRenderMethods(cacheStream, blamCacheStream, edTag, blamTag, blamDefinition);
             }
         }
 
-        protected override bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, out CachedTag resultTag)
+        protected override bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, object blamDefinition, out CachedTag resultTag)
         {
             resultTag = null;
 
@@ -458,89 +455,80 @@ namespace TagTool.Porting.Gen3
                 case "glvs":
                 case "glps":
                     return false;
+                default:
+                    break;
             }
 
-            if (PortingConstants.ResourceTagGroups.Contains(blamTag.Group.Tag))
+            if (blamTag.Group.Tag == "snd!")
             {
-                // there is only a few cases here -- if geometry\animation references a null resource its tag is still valid
-
-                if (blamTag.Group.Tag == "snd!")
+                if (!FlagIsSet(PortingFlags.Audio))
                 {
-                    if (!FlagIsSet(PortingFlags.Audio))
+                    PortingConstants.DefaultTagNames.TryGetValue(blamTag.Group.Tag, out string defaultSoundName);
+                    CacheContext.TagCache.TryGetTag($"{defaultSoundName}.{blamTag.Group.Tag}", out resultTag);
+                    return false;
+                }
+
+                var sound = (Sound)blamDefinition;
+
+                if (BlamCache.Platform != CachePlatform.MCC)
+                {
+                    if (sound.SoundReference != null)
                     {
-                        PortingConstants.DefaultTagNames.TryGetValue(blamTag.Group.Tag, out string defaultSoundName);
-                        CacheContext.TagCache.TryGetTag($"{defaultSoundName}.{blamTag.Group.Tag}", out resultTag);
+                        BlamSoundGestalt ??= PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
+                        var xmaFileSize = BlamSoundGestalt.GetFileSize(sound.SoundReference.PitchRangeIndex, sound.SoundReference.PitchRangeCount, BlamCache.Platform);
+                        if (xmaFileSize < 0)
+                            return false;
+                    }
+
+                    if (!BlamCache.ResourceCache.IsResourceValid(sound.GetResource(BlamCache.Version, BlamCache.Platform)))
+                    {
+                        Log.Warning($"Invalid resource for sound {blamTag.Name}");
                         return false;
                     }
-
-                    Sound sound = BlamCache.Deserialize<Sound>(blamCacheStream, blamTag);
-
-                    if (BlamSoundGestalt == null)
-                        BlamSoundGestalt = PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
-
-                    if (BlamCache.Platform != CachePlatform.MCC)
+                }
+                else
+                {
+                    if (sound.Resource.Gen3ResourceID == DatumHandle.None)
                     {
-                        if (sound.SoundReference != null)
-                        {
-                            var xmaFileSize = BlamSoundGestalt.GetFileSize(sound.SoundReference.PitchRangeIndex, sound.SoundReference.PitchRangeCount, BlamCache.Platform);
-                            if (xmaFileSize < 0)
-                                return false;
-                        }
-
-                        var soundResource = BlamCache.ResourceCache.GetSoundResourceDefinition(sound.GetResource(BlamCache.Version, BlamCache.Platform));
-                        if (soundResource == null)
-                            return false;
-
-                        var xmaData = soundResource.Data.Data;
-                        if (xmaData == null)
-                            return false;
+                        Log.Warning($"Invalid resource for sound {blamTag.Name}");
+                        return false;
                     }
+                }
+            }
+            else if (blamTag.Group.Tag == "bitm")
+            {
+                var bitmap = (Bitmap)blamDefinition;
+
+                for (int i = 0; i < bitmap.Images.Count; i++)
+                {
+                    var image = bitmap.Images[i];
+
+                    TagResourceReference bitmapResource;
+
+                    if (image.XboxFlags.HasFlag(TagTool.Bitmaps.BitmapFlagsXbox.Xbox360UseInterleavedTextures))
+                        bitmapResource = bitmap.InterleavedHardwareTextures[image.InterleavedInterop];
                     else
+                        bitmapResource = bitmap.HardwareTextures[i];
+
+                    if (!BlamCache.ResourceCache.IsResourceValid(bitmapResource))
                     {
-                        if (sound.Resource.Gen3ResourceID == DatumHandle.None)
-                        {
-                            Log.Warning($"Invalid resource for sound {blamTag.Name}");
-                            return false;
-                        }
-                    }
-                }
-                else if (blamTag.Group.Tag == "bitm")
-                {
-                    Bitmap bitmap = BlamCache.Deserialize<Bitmap>(blamCacheStream, blamTag);
-
-                    for (int i = 0; i < bitmap.Images.Count; i++)
-                    {
-                        var image = bitmap.Images[i];
-
-                        // need to assign resource reference to an object here -- otherwise it compiles strangely??
-                        object bitmapResourceDefinition;
-
-                        if (image.XboxFlags.HasFlag(TagTool.Bitmaps.BitmapFlagsXbox.Xbox360UseInterleavedTextures))
-                            bitmapResourceDefinition = BlamCache.ResourceCache.GetBitmapTextureInterleavedInteropResource(bitmap.InterleavedHardwareTextures[image.InterleavedInterop]);
-                        else
-                            bitmapResourceDefinition = BlamCache.ResourceCache.GetBitmapTextureInteropResource(bitmap.HardwareTextures[i]);
-
-                        if (bitmapResourceDefinition == null)
-                        {
-                            Log.Warning($"Invalid resource for bitm {blamTag.Name}");
-                            return false;
-                        }
-                    }
-                }
-                else if (blamTag.Group.Tag == "Lbsp")
-                {
-                    ScenarioLightmapBspData Lbsp = BlamCache.Deserialize<ScenarioLightmapBspData>(blamCacheStream, blamTag);
-
-                    if (BlamCache.ResourceCache.GetRenderGeometryApiResourceDefinition(Lbsp.Geometry.Resource) == null)
+                        Log.Warning($"Invalid resource for bitm {blamTag.Name}");
                         return false;
+                    }
+                }
+            }
+            else if (blamTag.Group.Tag == "Lbsp")
+            {
+                var Lbsp = (ScenarioLightmapBspData)blamDefinition;
+
+                if (!BlamCache.ResourceCache.IsResourceValid(Lbsp.Geometry.Resource))
+                {
+                    Log.Warning($"Invalid resource for Lbsp {blamTag.Name}");
+                    return false;
                 }
             }
             else if (PortingConstants.RenderMethodGroups.Contains(blamTag.Group.Tag))
             {
-                // TODO: should probably be handling the effect system tags also
-
-                RenderMethod renderMethod = BlamCache.Deserialize<RenderMethod>(blamCacheStream, blamTag);
-
                 if (BlamCache.Version >= CacheVersion.HaloReach)
                 {
                     switch (blamTag.Group.Tag.ToString())
@@ -551,35 +539,9 @@ namespace TagTool.Porting.Gen3
                             return false;
                     }
                 }
-
-                string templateName = renderMethod.ShaderProperties[0].Template.Name;
-                if (TagTool.Shaders.ShaderMatching.ShaderMatcherNew.Rmt2Descriptor.TryParse(templateName, out var rmt2Descriptor))
-                {
-                    foreach (var tag in CacheContext.TagCacheGenHO.TagTable)
-                    {
-                        if (tag != null && tag.Group.Tag == "rmt2" && (tag.Name.Contains(rmt2Descriptor.Type) || FlagIsSet(PortingFlags.GenerateShaders)))
-                        {
-                            if ((FlagIsSet(PortingFlags.Ms30) && tag.Name.StartsWith("ms30\\")) || (!FlagIsSet(PortingFlags.Ms30) && !tag.Name.StartsWith("ms30\\")))
-                                return true;
-
-                            else if (tag.Name.StartsWith("ms30\\"))
-                                continue;
-                        }
-                    }
-                };
-                // TODO: add code for "!MatchShaders" -- if a perfect match isnt found a null tag will be left in the cache
-
-                // "ConvertTagInternal" isnt called so the default shader needs to be set here
-                resultTag = GetDefaultShader(blamTag.Group.Tag);
-                return false;
             }
 
             return true;
-        }
-
-        protected override bool CanCachePortedTag(CachedTag blamTag, CachedTag tag, string blamParentTagName)
-        {
-            return tag == null || !tag.IsInGroup("rmt2");
         }
     }
 }

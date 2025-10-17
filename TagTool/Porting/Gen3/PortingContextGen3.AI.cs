@@ -72,11 +72,10 @@ namespace TagTool.Porting.Gen3
             return style;
         }
 
-        private void MergeCharacter(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag)
+        private void MergeCharacter(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag, Character h3Def)
         {
             var edDef = CacheContext.Deserialize<Character>(cacheStream, edTag);
-            var h3Def = BlamCache.Deserialize<Character>(blamCacheStream, h3Tag);
-
+   
             var merged = false;
 
             if (edDef.WeaponsProperties.Count == h3Def.WeaponsProperties.Count)

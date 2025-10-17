@@ -22,8 +22,7 @@ namespace TagTool.Porting
         public readonly GameCacheHaloOnlineBase CacheContext;
         public readonly GameCache BlamCache;
         protected readonly TagDefinitionCache TagDefinitionCache = new();
-        protected readonly HashSet<int> ReplacedTags = [];
-        private readonly HashSet<int> VisitedTags = [];
+        private readonly HashSet<int> ReplacedTags = [];
         private readonly Dictionary<int, CachedTag> PortedTags = [];
         private readonly Dictionary<uint, StringId> PortedStringIds = [];
         private bool ShouldGenerateCampaignFile = false;
@@ -72,23 +71,12 @@ namespace TagTool.Porting
         /// <param name="blamTag">Tag to be ported</param>
         /// <param name="cacheStream">Destination cache stream</param>
         /// <param name="blamCacheStream">Source cache stream</param>
+        /// <param name="blamDefinition">Source definition</param>
         /// <param name="resultTag">Alternative tag to use</param>
         /// <returns>True if the tag can be ported, otherwise alternativeTag will be used</returns>
-        protected virtual bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, out CachedTag resultTag)
+        protected virtual bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, object blamDefinition, out CachedTag resultTag)
         {
             resultTag = null;
-            return true;
-        }
-
-        /// <summary>
-        /// Checks if a ported tag can be cached for future calls to ConvertTag <see cref="ConvertTag"/>
-        /// </summary>
-        /// <param name="blamTag">Tag to be converted</param>
-        /// <param name="tag">Converted tag</param>
-        /// <param name="blamParentTagName">Parent tag that references <paramref name="tag"/></param>
-        /// <returns>True if the tag can be cached, false if conversion should run each time this tag is encountered</returns>
-        protected virtual bool CanCachePortedTag(CachedTag blamTag, CachedTag tag, string blamParentTagName)
-        {
             return true;
         }
 
@@ -108,11 +96,15 @@ namespace TagTool.Porting
             if (blamTag == null)
                 return null;
 
-            if (PortedTags.TryGetValue(blamTag.Index, out CachedTag portedTag))
+            if(PortedTags.TryGetValue(blamTag.Index, out CachedTag portedTag))
                 return portedTag;
 
-            CachedTag result = null;
-            if (TagIsValid(blamTag, cacheStream, blamCacheStream, out result))
+            if (!BlamCache.TagCache.TagDefinitions.TagDefinitionExists(blamTag.Group.Tag))
+                return null;
+
+            blamDefinition ??= BlamCache.Deserialize(blamCacheStream, blamTag);
+
+            if (TagIsValid(blamTag, cacheStream, blamCacheStream, blamDefinition, out CachedTag result))
             {
                 result = ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName);
 
@@ -125,26 +117,28 @@ namespace TagTool.Porting
                     Log.Warning($"using bitm tag reference \"{blamTag}\" from source cache");
             }
 
-            if (CanCachePortedTag(blamTag, result, blamParentTagName))
-                PortedTags[blamTag.Index] = result;
+            PortedTags[blamTag.Index] = result;
+
             return result;
         }
-        protected virtual bool GroupIsValid(CachedTag blamTag, out CachedTag resultTag)
+
+        /// <summary>
+        /// Allows subclasses to override the name and group of the ported tag
+        /// </summary>
+        /// <param name="blamTag">Source tag instance</param>
+        /// <param name="blamDefinition">Source tag definition</param>
+        /// <returns>A tuple containing the name and group of the ported tag</returns>
+        protected virtual (string Name, Tag GroupTag) GetTargetTagNameAndGroup(CachedTag blamTag, object blamDefinition)
         {
-            resultTag = blamTag;
-            return CacheContext.TagCache.TagDefinitions.TagDefinitionExists(blamTag.Group.Tag);
+            return (blamTag.Name, blamTag.Group.Tag);
         }
 
         protected virtual CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName)
         {
-            if (blamTag == null)
-                return null;
+            (string targetTagName, Tag targetGroupTag) = GetTargetTagNameAndGroup(blamTag, blamDefinition);
 
-            if (!GroupIsValid(blamTag, out CachedTag resultTag))
-            {
-                Log.Warning($"Tag group {blamTag.Group} does not exist in destination cache! Returning null!");
+            if (!CacheContext.TagCache.TagDefinitions.TagDefinitionExists(targetGroupTag))
                 return null;
-            }
 
             CachedTag edTag = null;
 
@@ -154,41 +148,32 @@ namespace TagTool.Porting
 
             if (!FlagIsSet(PortingFlags.New))
             {
-                CachedTag existingTag = FindExistingTag(resultTag);
-                if (existingTag != null)
+                edTag = FindExistingTag(targetGroupTag, targetTagName);
+                if (edTag != null)
                 {
-                    // Avoid re-entrancy
-                    if (!VisitedTags.Add(blamTag.Index))
-                        return existingTag;
-
-                    if (ShouldReplaceTag(existingTag))
+                    if (ShouldReplaceTag(edTag))
                     {
-                        if (!ReplacedTags.Add(blamTag.Index))
-                            return existingTag;
-
-                        edTag = existingTag;
+                        if (!ReplacedTags.Add(blamTag.Index)) // Avoid replacing the tag multiple times
+                            return edTag;
                     }
-                    else if (FlagIsSet(PortingFlags.Merge))
+                    else
                     {
-                        MergeTags(cacheStream, blamCacheStream, blamTag, existingTag);
-                        return existingTag;
+                        PortedTags[blamTag.Index] = edTag; // Avoid re-entrancy
+
+                        if (FlagIsSet(PortingFlags.Merge))
+                            MergeTags(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition);
+
+                        return edTag;
                     }
                 }
             }
-            VisitedTags.Add(blamTag.Index);
+
+            edTag ??= AllocateNewTag(targetGroupTag, targetTagName);
+            PortedTags[blamTag.Index] = edTag; // Avoid re-entrancy
 
             //
-            // Allocate Eldorado Tag
+            // Convert the Blam tag definition
             //
-
-            edTag ??= AllocateNewTag(resultTag);
-            edTag.Name = blamTag.Name;
-
-            //
-            // Load and convert the Blam tag definition
-            //
-
-            blamDefinition ??= BlamCache.Deserialize(blamCacheStream, blamTag);
 
             Task convertTask;
             _taskListStack.Push([]);
@@ -196,6 +181,8 @@ namespace TagTool.Porting
             try
             {
                 blamDefinition = ConvertDefinition(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition);
+                if (blamDefinition == null)
+                    throw new InvalidOperationException("Returning null from ConvertDefinition() is disallowed.");
             }
             finally
             {
@@ -205,12 +192,7 @@ namespace TagTool.Porting
             Task seriailizeTask = convertTask
                 .ContinueWith(task => FinishConvertTag(cacheStream, blamTag, blamDefinition, edTag), MainThreadScheduler);
 
-            if (seriailizeTask.IsFaulted)
-            {
-                // re-throw exceptions early
-                throw new Exception($"Exception while porting '{blamTag}'", seriailizeTask.Exception);
-            }
-            else if (!seriailizeTask.IsCompleted)
+            if (!seriailizeTask.IsCompleted)
             {
                 _allTasks.Add(seriailizeTask);
                 _tagConvertTasks.Add(edTag.Index, seriailizeTask);
@@ -219,7 +201,7 @@ namespace TagTool.Porting
             return edTag;
         }
 
-        private CachedTag FinishConvertTag(Stream cacheStream, CachedTag blamTag, object blamDefinition, CachedTag edTag)
+        protected CachedTag FinishConvertTag(Stream cacheStream, CachedTag blamTag, object blamDefinition, CachedTag edTag)
         {
             ArgumentNullException.ThrowIfNull(blamDefinition);
 
@@ -246,39 +228,43 @@ namespace TagTool.Porting
             return edTag;
         }
 
-        private bool ShouldReplaceTag(CachedTag existingTag)
+        protected bool ShouldReplaceTag(CachedTag existingTag)
         {
             return FlagIsSet(PortingFlags.Replace)
                     && !PortingConstants.DoNotReplaceGroups.Contains(existingTag.Group.Tag)
                     && !DoNotReplaceGroups.Contains(existingTag.Group.Tag);
         }
 
-        private CachedTag FindExistingTag(CachedTag blamTag)
+        private CachedTag FindExistingTag(Tag group, string name)
         {
             // faster than TryGetTag
             foreach (CachedTag instance in CacheContext.TagCache.TagTable)
             {
-                if (instance != null && instance.Group.Tag == blamTag.Group.Tag && instance.Name == blamTag.Name)
+                if (instance != null && instance.Group.Tag == group && instance.Name == name)
                     return instance;
             }
             return null;
         }
 
-        protected CachedTag AllocateNewTag(CachedTag blamTag)
+        protected CachedTag AllocateNewTag(Tag groupTag, string name)
         {
             CachedTag edTag = null;
+
+            TagGroup group = CacheContext.TagCache.TagDefinitions.GetTagGroupFromTag(groupTag);
 
             if (FlagIsSet(PortingFlags.UseNull))
             {
                 var i = CacheContext.TagCache.TagTable.ToList().FindIndex(n => n == null);
 
                 if (i >= 0)
-                    CacheContext.TagCacheGenHO.Tags[i] = (CachedTagHaloOnline)(edTag = (new CachedTagHaloOnline(i, blamTag.Group)));
+                    CacheContext.TagCacheGenHO.Tags[i] = (CachedTagHaloOnline)(edTag = (new CachedTagHaloOnline(i, group)));
             }
             else
             {
-                edTag = CacheContext.TagCache.AllocateTag(blamTag.Group);
+                edTag = CacheContext.TagCache.AllocateTag(group);
             }
+
+            edTag.Name = name;
 
             return edTag;
         }
@@ -295,7 +281,8 @@ namespace TagTool.Porting
         /// <param name="blamCacheStream">Source cache stream</param>
         /// <param name="blamTag">Tag to be merged</param>
         /// <param name="edTag">Tag to merge into</param>
-        protected virtual void MergeTags(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag)
+        /// <param name="blamDefinition">Source definition</param>
+        protected virtual void MergeTags(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, CachedTag edTag, object blamDefinition)
         {
         }
 
@@ -522,7 +509,6 @@ namespace TagTool.Porting
             {
                 // discard the queue in case of an exception
                 TagDefinitionCache.Clear();
-                VisitedTags.Clear();
                 PortedTags.Clear();
                 ShouldGenerateCampaignFile = false;
             }

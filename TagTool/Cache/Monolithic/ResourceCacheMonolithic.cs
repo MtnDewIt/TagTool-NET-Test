@@ -149,5 +149,14 @@ namespace TagTool.Cache.Monolithic
                 }
             }
         }
+
+        public override bool IsResourceValid(TagResourceReference resourceReference)
+        {
+            var xsyncState = resourceReference.XSyncState;
+            if (xsyncState == null)
+                return false;
+
+            return true;
+        }
     }
 }

@@ -9,6 +9,7 @@ using TagTool.Tags.Resources;
 using TagTool.BlamFile;
 using TagTool.Cache.Resources;
 using TagTool.Extensions;
+using System.Security.AccessControl;
 
 namespace TagTool.Cache.Gen3
 {
@@ -62,6 +63,9 @@ namespace TagTool.Cache.Gen3
                 LoadResourceCache();
 
             if (resourceReference == null)
+                return null;
+
+            if (resourceReference.Gen3ResourceID == DatumHandle.None)
                 return null;
 
             return ResourceGestalt.TagResources[resourceReference.Gen3ResourceID.Index];
@@ -275,6 +279,8 @@ namespace TagTool.Cache.Gen3
         public override object GetResourceDefinition(TagResourceReference resourceReference, Type definitionType)
         {
             var tagResource = GetTagResourceFromReference(resourceReference);
+            if (!IsResourceValid(tagResource))
+                return null;
 
             byte[] resourceDefinitionData = new byte[tagResource.DefinitionDataLength];
             Array.Copy(ResourceGestalt.DefinitionData, tagResource.DefinitionDataOffset, resourceDefinitionData, 0, tagResource.DefinitionDataLength);
@@ -284,15 +290,14 @@ namespace TagTool.Cache.Gen3
             Memory<byte> primaryResourceData = GetPrimaryResource(resourceReference.Gen3ResourceID);
             Memory<byte> secondaryResourceData = GetSecondaryResource(resourceReference.Gen3ResourceID);
 
-            if (primaryResourceData.IsEmpty && secondaryResourceData.IsEmpty && (definitionType ==  typeof(BitmapTextureInteropResource) || definitionType == typeof(BitmapTextureInterleavedInteropResource)))
-                return null;
+            //if (primaryResourceData.IsEmpty && secondaryResourceData.IsEmpty && (definitionType ==  typeof(BitmapTextureInteropResource) || definitionType == typeof(BitmapTextureInterleavedInteropResource)))
+            //    return null;
 
             if (primaryResourceData.IsEmpty)
                 primaryResourceData = new byte[0];
 
             if (secondaryResourceData.IsEmpty)
                 secondaryResourceData = new byte[0];
-
 
             using (var definitionDataStream = new MemoryStream(resourceDefinitionData))
             using (var dataStream = new FixedMemoryStream(primaryResourceData))
@@ -455,6 +460,20 @@ namespace TagTool.Cache.Gen3
                 readerDeflate.ReadExactly(decompressed);
                 return decompressed;
             }
+        }
+
+        public override bool IsResourceValid(TagResourceReference resourceReference)
+        {
+            ResourceData resource = GetTagResourceFromReference(resourceReference);
+            if (!IsResourceValid(resource))
+                return false;
+
+            if (resource.SegmentIndex == -1)
+                return false;
+
+            var segment = ResourceLayoutTable.Sections[resource.SegmentIndex];
+
+            return resource.DefinitionDataLength > 0 || segment.RequiredPageIndex != -1 || segment.OptionalPageIndex != -1;
         }
     }
 }

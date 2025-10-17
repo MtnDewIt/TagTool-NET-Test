@@ -18,7 +18,7 @@ namespace TagTool.Cache.Resources
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public TagResourceTypeGen3 ResourceType;
 
-        public byte Flags;
+        public sbyte DefinitionDataAlignmentBits;
 
         [TagField(Gen = CacheGeneration.Third)]
         public int DefinitionDataOffset;
@@ -30,7 +30,7 @@ namespace TagTool.Cache.Resources
         public int SecondaryFixupInformationOffset;
 
         [TagField(Gen = CacheGeneration.Third)]
-        public UnknownFlags Unknown1;
+        public ResourceDataFlags Flags;
 
         [TagField(Gen = CacheGeneration.Third)]
         public short SegmentIndex;
@@ -47,11 +47,11 @@ namespace TagTool.Cache.Resources
         public int Unknown2 = 1;
 
         [Flags]
-        public enum UnknownFlags : short
+        public enum ResourceDataFlags : short
         {
             Invalid = 0,
-            PrimaryPageValid = 1 << 0,
-            SecondaryPageValid =  1 << 1
+            HasPageableData = 1 << 0,
+            HasOptionalData = 1 << 1
         }
     }
 }
