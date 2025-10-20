@@ -14,6 +14,8 @@ namespace TagTool.Porting.Gen3
 {
     partial class PortingContextGen3
     {
+        private BitmapConverterMode BitmapMode = BitmapConverterMode.None;
+
         private Bitmap ConvertBitmap(Stream cacheStream, CachedTag edTag, CachedTag blamTag, Bitmap bitmap)
         {
             bitmap.Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource;
@@ -39,11 +41,13 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
+            BitmapConverterMode bitmapMode = BitmapMode;
+
             var tasks = new List<Task<BaseBitmap>>();
             for (int i = 0; i < bitmap.Images.Count; i++)
             {
                 int imageIndex = i;
-                tasks.Add(RunOnThreadPool(() => ConvertBitmapInternal(bitmap, imageIndex, blamTag.Name)));
+                tasks.Add(RunOnThreadPool(() => ConvertBitmapInternal(bitmap, imageIndex, blamTag.Name, bitmapMode)));
             }
 
             AddTask(Task.WhenAll(tasks)
@@ -74,12 +78,13 @@ namespace TagTool.Porting.Gen3
             return bitmap;
         }
 
-        private BaseBitmap ConvertBitmapInternal(Bitmap bitmap, int imageIndex, string tagName)
+        private BaseBitmap ConvertBitmapInternal(Bitmap bitmap, int imageIndex, string tagName, BitmapConverterMode mode)
         {
             var bitmapConverter = new BitmapConverterGen3(BlamCache)
             {
                 ForceDxt5nm = Options.UseExperimentalDxt5nm,
-                HqNormalMapCompression = Options.HqNormalMapConversion
+                HqNormalMapCompression = Options.HqNormalMapConversion,
+                Mode = mode
             };
             return bitmapConverter.ConvertBitmap(bitmap, imageIndex, tagName);
         }

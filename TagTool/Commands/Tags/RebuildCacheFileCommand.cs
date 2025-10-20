@@ -131,7 +131,7 @@ namespace TagTool.Commands
             {
                 if (destCacheContext.TagCacheGenHO.Tags[i] == null)
                 {
-                    destCacheContext.TagCacheGenHO.Tags[i] = destTag = new CachedTagHaloOnline(i, (TagGroupGen3)srcTag.Group);
+                    destCacheContext.TagCacheGenHO.Tags[i] = destTag = new CachedTagHaloOnline(destCacheContext.TagCache, i, (TagGroupGen3)srcTag.Group);
                     break;
                 }
             }

@@ -34,17 +34,6 @@ namespace TagTool.Shaders.ShaderMatching
         public bool UseMs30 { get; set; } = false;
         public bool PerfectMatchesOnly { get; set; } = false;
 
-        static readonly string[] ContentBugDecals = [
-            "objects\\vehicles\\scorpion\\shaders\\number_decal",
-            "objects\\vehicles\\scorpion\\shaders\\scorpion_decal",
-            "objects\\vehicles\\scorpion\\shaders\\icon",
-            "objects\\vehicles\\shared\\pelican_110_hc\\shaders\\pelican_decals",
-            "levels\\solo\\100_citadel\\decals\\gravel",
-            "levels\\dlc\\bunkerworld\\decals\\decal_missile_facility",
-            "levels\\shared\\decals\\multi\\riverworld\\riverworld_granite_decal",
-            "objects\\levels\\multi\\shrine\\shaders\\xtra_decals"
-        ];
-
         public class TemplateConversionResult
         {
             public RenderMethodTemplate Definition;
@@ -371,15 +360,6 @@ namespace TagTool.Shaders.ShaderMatching
                         //    optionName = "cook_torrance_odst";
                         //if (methodName == "material_model" && optionName == "cook_torrance_rim_fresnel")
                         //    optionName = "cook_torrance";
-
-                        // Workaround for H3/ODST content bug
-                        if (srcRmt2Descriptor.Type == "decal" && methodName == "bump_mapping" && (PortingCache.Version == CacheVersion.Halo3Retail || PortingCache.Version == CacheVersion.Halo3ODST))
-                        {
-                            if (ContentBugDecals.Contains(renderMethodName) && (optionName == "standard" || optionName == "standard_mask"))
-                            {
-                                optionName += "_diffuse";
-                            }
-                        }
 
                         if (PortingCache.Version == CacheVersion.HaloReach)
                         {

@@ -71,6 +71,20 @@ namespace TagTool.Porting
             });
         }
 
+        protected void PushTaskList()
+        {
+            _taskListStack.Push([]);
+        }
+
+        protected List<Task> PopTaskList()
+        {
+            return _taskListStack.Pop();
+        }
+
+        protected void AddUnattachedTask(Task task)
+        {
+            _allTasks.Add(task);
+        }
 
         public void AddTask(Task task)
         {

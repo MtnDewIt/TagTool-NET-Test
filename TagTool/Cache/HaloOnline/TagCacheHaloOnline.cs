@@ -107,7 +107,7 @@ namespace TagTool.Cache.HaloOnline
                 if (names.ContainsKey(i))
                     name = names[i];
 
-                var tag = new CachedTagHaloOnline(i, name) { HeaderOffset = headerOffsets[i] };
+                var tag = new CachedTagHaloOnline(this, i, name) { HeaderOffset = headerOffsets[i] };
                 Tags.Add(tag);
 
                 reader.BaseStream.Position = tag.HeaderOffset;
@@ -125,7 +125,7 @@ namespace TagTool.Cache.HaloOnline
         public override CachedTag AllocateTag(TagGroup type, string name = null)
         {
             var tagIndex = Tags.Count;
-            var tag = new CachedTagHaloOnline(tagIndex, type, name);
+            var tag = new CachedTagHaloOnline(this, tagIndex, type, name);
             Tags.Add(tag);
             return tag;
         }
@@ -135,12 +135,12 @@ namespace TagTool.Cache.HaloOnline
         /// </summary>
         public override CachedTag CreateCachedTag(int index, TagGroup group, string name = null)
         {
-            return new CachedTagHaloOnline(index, group, name);
+            return new CachedTagHaloOnline(this, index, group, name);
         }
 
         public override CachedTag CreateCachedTag()
         {
-            return new CachedTagHaloOnline(-1, new TagGroupGen3(), null);
+            return new CachedTagHaloOnline(this, -1, new TagGroupGen3(), null);
         }
 
         /// <summary>
