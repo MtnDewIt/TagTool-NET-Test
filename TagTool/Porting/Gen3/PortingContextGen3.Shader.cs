@@ -7,9 +7,11 @@ using System;
 using TagTool.Shaders.ShaderConverter;
 using System.Collections.Generic;
 using TagTool.Shaders;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TagTool.Bitmaps.Utils;
 using TagTool.Bitmaps;
+using TagTool.Common.Logging;
 
 namespace TagTool.Porting.Gen3
 {
@@ -119,11 +121,23 @@ namespace TagTool.Porting.Gen3
             {
                 string paramName = BlamCache.StringTable.GetString(rmt2.TextureParameterNames[i].Name);
                 var constant = postprocessDef.TextureConstants[i];
+                if (constant.Bitmap == null)
+                {
+                    Log.Warning($"Render method in '{blamTagName}' has a null bitmap for parameter '{paramName}'");
+                    continue;
+                }
 
                 Bitmap bitmap = BlamCache.Deserialize<Bitmap>(blamCacheStream, constant.Bitmap);
 
-                if (Options.UseExperimentalDxt5nm && paramName.StartsWith("bump_") && !BitmapUtils.IsNormalMap(bitmap, 0))
+                if (Options.UseExperimentalDxt5nm && BumpMapParameterRegex().IsMatch(paramName) && !BitmapUtils.IsNormalMap(bitmap, 0))
                 {
+                    Log.Warning($"Render method in '{blamTagName}' has an invalid bump map for parameter '{paramName}'");
+
+                    if (BumpFileNameSuffixRegex().IsMatch(constant.Bitmap.Name))
+                    {
+                        Log.Warning($"Possibly incorrect bitmap usage detected '{constant.Bitmap}'");
+                    }
+
                     // Fix diffuse bitmaps that are incorrectly used as bump maps. This needs to be done for dxt5nm
 
                     BitmapConverterMode oldBitmapMode = BitmapMode;
@@ -208,5 +222,11 @@ namespace TagTool.Porting.Gen3
 
             return rmop;
         }
+
+        [GeneratedRegex("^(bump_map|bump_detail_map|bump_detail_masked_map|distort_map|wrinkle_normal|detail_bump)")]
+        private static partial Regex BumpMapParameterRegex();
+
+        [GeneratedRegex("(_bump|_zbump|_detailbump|_normal)$")]
+        private static partial Regex BumpFileNameSuffixRegex();
     }
 }
