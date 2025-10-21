@@ -415,21 +415,7 @@ namespace TagTool.Cache.Gen3
                 cacheFilePath = Path.Combine(Cache.Directory.FullName, cacheFilePath);
 
                 if (cacheFilePath != Cache.CacheFile.FullName)
-                {
-                    if (Cache.SharedCacheFiles.ContainsKey(cacheFilePath))
-                        cache = Cache.SharedCacheFiles[cacheFilePath];
-                    else
-                    {
-                        var newCache = new FileInfo(cacheFilePath);
-                        using (var newCacheStream = newCache.OpenRead())
-                        using (var newCacheReader = new EndianReader(newCacheStream))
-                        {
-                            var newMapFile = new MapFile();
-                            newMapFile.Read(newCacheReader);
-                            cache = Cache.SharedCacheFiles[cacheFilePath] = new GameCacheGen3(newMapFile, newCache);
-                        }
-                    }
-                }
+                    cache = OpenSharedCacheFile(cacheFilePath);
             }
 
             uint blockOffset = 0;
@@ -459,6 +445,22 @@ namespace TagTool.Cache.Gen3
                 using var readerDeflate = new DeflateStream(pageStream, CompressionMode.Decompress);
                 readerDeflate.ReadExactly(decompressed);
                 return decompressed;
+            }
+        }
+
+        private GameCacheGen3 OpenSharedCacheFile(string cacheFilePath)
+        {
+            lock (Cache.SharedCacheFiles)
+            {
+                if (!Cache.SharedCacheFiles.TryGetValue(cacheFilePath, out GameCacheGen3 cache))
+                {
+                    var newCacheFile = new FileInfo(cacheFilePath);
+                    using var newCacheReader = new EndianReader(newCacheFile.OpenRead());
+                    var newMapFile = new MapFile();
+                    newMapFile.Read(newCacheReader);
+                    cache = Cache.SharedCacheFiles[cacheFilePath] = new GameCacheGen3(newMapFile, newCacheFile);
+                }
+                return cache;
             }
         }
 
