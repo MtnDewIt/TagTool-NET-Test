@@ -46,29 +46,12 @@ namespace TagTool.Porting.Gen3
             if (BlamSoundGestalt == null)
                 BlamSoundGestalt = PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
 
-            if (!File.Exists($@"{Program.TagToolDirectory}\Tools\ffmpeg.exe"))
-            {
-                Log.Error("Failed to locate sound conversion tools. Please install ffmpeg in the Tools folder.");
-                return null;
-            }
+            BlamCache.LoadSoundBanks();
 
-            RunAsync(
-                onExecute: () =>
-                {
-                    SoundConversionResult result;
-                    result = ConvertSoundInternal(sound, blamTagName);
+            var task = RunOnThreadPool(() => ConvertSoundInternal(sound, blamTagName))
+                .ContinueWith(task => FinishConvertSound(task.GetAwaiter().GetResult()), MainThreadScheduler);
 
-                    return result;
-                },
-                onSuccess: (SoundConversionResult result) =>
-                {
-                    Sound blamDefinition = FinishConvertSound(result);
-
-                    CacheContext.Serialize(cacheStream, destTag, blamDefinition);
-
-                    if (FlagIsSet(PortingFlags.Print))
-                        Console.WriteLine($"['{destTag.Group.Tag}', 0x{destTag.Index:X4}] {destTag.Name}.{(destTag.Group as TagGroupGen3).Name}");
-                });
+            AddTask(task);
 
             return sound;
         }

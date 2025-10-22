@@ -11,9 +11,15 @@ namespace TagTool.Cache.Eldorado
     {
         public CachedTagEldorado() : base() { }
 
-        public CachedTagEldorado(int index, string name = null) : base(index, name) { }
+        public CachedTagEldorado(TagCache tagCache, int index, string name = null) : base(index, name) 
+        { 
+            TagCache = tagCache; 
+        }
 
-        public CachedTagEldorado(int index, TagGroup group, string name = null) : base(index, group, name) { }
+        public CachedTagEldorado(TagCache tagCache, int index, TagGroup group, string name = null) : base(index, group, name) 
+        {
+            TagCache = tagCache;
+        }
 
         public override uint DefinitionOffset => Offset;
 
@@ -27,6 +33,10 @@ namespace TagTool.Cache.Eldorado
         private List<uint> _resourceOffsets = new List<uint>();
         private List<uint> _tagReferenceOffsets = new List<uint>();
 
+        /// <summary>
+        /// The tag cache this instance belongs to
+        /// </summary>
+        public TagCache TagCache;
 
         /// <summary>
         /// Gets the offset of the tag's header, or -1 if the tag is not in a file.

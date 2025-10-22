@@ -48,19 +48,19 @@ namespace TagTool.Audio.Utils
 
                 if (cache.Platform == CachePlatform.MCC)
                 {
-                    var info = cache.FMODSoundCache.GetSoundInfo(permutation.FsbSoundHash);
-                    BlamSound blamSound = cache.FMODSoundCache.ExtractSound(permutation.FsbSoundHash);
-                    if (blamSound == null) 
-                    {
-                        Log.Warning($"Failed to find sound \"{tagName}\" permutation {permutationIndex} in FMOD sound cache!");
-                        blamSound = new BlamSound();
-                    }
+                    cache.LoadSoundBanks();
+                    var info = cache.SoundBanks.GetSoundInfo(permutation.FsbSoundHash);
+                    BlamSound blamSound = cache.SoundBanks.ExtractSound(permutation.FsbSoundHash);
+                    if (blamSound == null)
+                        return null;
 
                     return blamSound;
                 }
                 else
                 {
                     SoundResourceDefinition resourceDefinition = cache.ResourceCache.GetSoundResourceDefinition(sound.GetResource(cache.Version, cache.Platform));
+                    if (resourceDefinition == null)
+                        return null;
 
                     byte[] permutationData = new byte[permutationSize];
                     Array.Copy(resourceDefinition.Data.Data, permutationOffset, permutationData, 0, permutationSize);

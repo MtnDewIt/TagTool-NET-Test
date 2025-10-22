@@ -6,11 +6,18 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Bitmaps.Utils
 {
+    public enum BitmapConverterMode
+    {
+        None,
+        DiffuseToNormal
+    }
+
     public class BitmapConverterGen3
     {
         public GameCache Cache { get; }
         public bool HqNormalMapCompression { get; set; }
         public bool ForceDxt5nm { get; set; }
+        public BitmapConverterMode Mode { get; set; }
 
         public BitmapConverterGen3(GameCache cache)
         {
@@ -59,13 +66,25 @@ namespace TagTool.Bitmaps.Utils
             resultBitmap.MipMapCount = mipCount;
             if (resultBitmap.Type == BitmapType.Array)
                 resultBitmap.Type = BitmapType.Texture3D;
+
+            if (Mode == BitmapConverterMode.DiffuseToNormal)
+            {
+                bitmap.Usage = Bitmap.BitmapUsageGlobalEnum.BumpMapfromHeightMap;
+                bitmap.UsageOverrides.Clear();
+                bitmap.ForceBitmapFormat = Bitmap.BitmapUsageFormat.UseDefaultDefinedByUsage;
+                resultBitmap.Curve = BitmapImageCurve.Linear;
+            }
+
             resultBitmap.UpdateFormat(destFormat);
 
             return resultBitmap;
         }
 
         private BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex)
-        {  
+        {
+            if (Mode == BitmapConverterMode.DiffuseToNormal)
+                return GetNormalMapFormat(format);
+
             // array textures will be converted to texture3d which does not support v8u8
             if (bitmap.Usage == Bitmap.BitmapUsageGlobalEnum.WaterArray)
                 return BitmapFormat.A8R8G8B8;
@@ -112,6 +131,8 @@ namespace TagTool.Bitmaps.Utils
 
         private byte[] ConvertBitmapData(byte[] data, int width, int height, BitmapFormat format, BitmapFormat destFormat, Bitmap bitmap, int imageIndex, string tagName)
         {
+            CompressionQuality quality = GetCompressionQuality(destFormat);
+
             if (Cache.Platform == CachePlatform.MCC && format == destFormat)
                 return ConvertDXGIFormats(data, width, height, format);
 
@@ -119,21 +140,25 @@ namespace TagTool.Bitmaps.Utils
             if (Cache.Platform == CachePlatform.Original && format == BitmapFormat.Dxn && destFormat == BitmapFormat.Dxn)
                 return BitmapDecoder.SwapXYDxn(data, width, height);
 
-            CompressionQuality quality = GetCompressionQuality(destFormat);
-
             // fix dxt5 bumpmaps (h3 wraith bump)
-            if (format == BitmapFormat.Dxt5 && tagName == @"objects\vehicles\wraith\bitmaps\wraith_bump")
+            if ((format == BitmapFormat.Dxt5 && tagName == @"objects\vehicles\wraith\bitmaps\wraith_bump") || Mode == BitmapConverterMode.DiffuseToNormal)
             {
                 data = BitmapDecoder.DecodeBitmap(data, format, width, height, Cache.Version, Cache.Platform);
+                
+                var curve = BitmapCurves.GetCurve(bitmap.Images[imageIndex].Curve);
+                
                 for (int i = 0; i < data.Length; i += 4)
                 {
-                    byte g = (byte)((data[i + 1] + 255) / 2);
-                    byte r = (byte)((data[i + 2] + 255) / 2);
-                    data[i + 0] = BitmapUtils.CalculateNormalZ(r, g);
-                    data[i + 1] = g;
-                    data[i + 2] = r;
+                    float x = curve.ToLinear(data[i + 2] / 255f);
+                    float y = curve.ToLinear(data[i + 1] / 255f);
+                    float z = BitmapUtils.CalculateNormalZ(x, y);
+
+                    data[i + 0] = (byte)((z + 1f) * 127.5f + 0.5f);
+                    data[i + 1] = (byte)((y + 1f) * 127.5f + 0.5f);
+                    data[i + 2] = (byte)((x + 1f) * 127.5f + 0.5f);
                     data[i + 3] = 255;
                 }
+
                 return BitmapDecoder.EncodeBitmap(data, destFormat, width, height, quality);
             }
 

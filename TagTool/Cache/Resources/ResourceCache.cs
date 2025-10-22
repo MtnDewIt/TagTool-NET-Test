@@ -13,6 +13,7 @@ namespace TagTool.Cache.Resources
             return (T)GetResourceDefinition(resourceReference, typeof(T));
         }
 
+        public abstract bool IsResourceValid(TagResourceReference resourceReference);
         public abstract BinkResource GetBinkResource(TagResourceReference resourceReference);
         public abstract BitmapTextureInteropResource GetBitmapTextureInteropResource(TagResourceReference resourceReference);
         public abstract BitmapTextureInterleavedInteropResource GetBitmapTextureInterleavedInteropResource(TagResourceReference resourceReference);

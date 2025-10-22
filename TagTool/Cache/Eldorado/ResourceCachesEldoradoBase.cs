@@ -483,6 +483,11 @@ namespace TagTool.Cache.Eldorado
             return GetResourceDefinition<StructureBspCacheFileTagResources>(resourceReference);
         }
 
+        public override bool IsResourceValid(TagResourceReference resourceReference)
+        {
+            return resourceReference.HaloOnlinePageableResource.Page.Index != -1;
+        }
+
         //
         // Utilities
         //

@@ -17,7 +17,7 @@ namespace TagTool.Cache.Resources
         [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
         public TagResourceTypeGen3 ResourceType;
 
-        public byte DefinitionAlignmentBits;
+        public sbyte DefinitionDataAlignmentBits;
 
         [TagField(Gen = CacheGeneration.Third)]
         public int DefinitionDataOffset;
@@ -28,8 +28,8 @@ namespace TagTool.Cache.Resources
         [TagField(Gen = CacheGeneration.Third)]
         public int SecondaryFixupInformationOffset;
 
-        [TagField(EnumType = typeof(short), Gen = CacheGeneration.Third)]
-        public DataFlags Flags;
+        [TagField(Gen = CacheGeneration.Third)]
+        public ResourceDataFlags Flags;
 
         [TagField(Gen = CacheGeneration.Third)]
         public short SegmentIndex;
@@ -43,14 +43,14 @@ namespace TagTool.Cache.Resources
         public List<ResourceInteropLocation> InteropLocations = new List<ResourceInteropLocation>();
 
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
-        public DataFlags FlagsHO = DataFlags.HasPageableData;
+        public ResourceDataFlags FlagsHO = ResourceDataFlags.HasPageableData;
 
         [Flags]
-        public enum DataFlags : int
+        public enum ResourceDataFlags : short
         {
-            None = 0,
+            Invalid = 0,
             HasPageableData = 1 << 0,
-            HasOptionalData = 1 << 1,
+            HasOptionalData = 1 << 1
         }
     }
 }

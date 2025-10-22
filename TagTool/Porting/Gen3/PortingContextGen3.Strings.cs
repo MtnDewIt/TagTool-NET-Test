@@ -34,7 +34,9 @@ namespace TagTool.Porting.Gen3
             //
 
             Dictionary<int, KeyValuePair<int, List<string>>> table = new Dictionary<int, KeyValuePair<int, List<string>>>();
-            
+
+            BlamCache.LoadLocaleTables(blamCacheStream);
+
             var localeTable = BlamCache.LocaleTables;
 
             for(int i = 0; i < localeTable.Count; i++)
@@ -111,9 +113,8 @@ namespace TagTool.Porting.Gen3
             return unic;
         }
 
-        private void MergeMultilingualUnicodeStringList(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag)
+        private void MergeMultilingualUnicodeStringList(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag, MultilingualUnicodeStringList h3Def)
         {
-            MultilingualUnicodeStringList h3Def = BlamCache.Deserialize<MultilingualUnicodeStringList>(blamCacheStream, h3Tag);
             var edDef = CacheContext.Deserialize<MultilingualUnicodeStringList>(cacheStream, edTag);
 
             ConvertMultilingualUnicodeStringList(cacheStream, blamCacheStream, h3Def);

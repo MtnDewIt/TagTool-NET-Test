@@ -74,7 +74,7 @@ namespace TagTool.Cache.Eldorado
                 if (names.ContainsKey(i))
                     name = names[i];
 
-                var tag = new CachedTagEldorado(i, name) { HeaderOffset = headerOffsets[i] };
+                var tag = new CachedTagEldorado(this, i, name) { HeaderOffset = headerOffsets[i] };
                 Tags.Add(tag);
 
                 reader.BaseStream.Position = tag.HeaderOffset;
@@ -92,7 +92,7 @@ namespace TagTool.Cache.Eldorado
         public override CachedTag AllocateTag(TagGroup type, string name = null)
         {
             var tagIndex = Tags.Count;
-            var tag = new CachedTagEldorado(tagIndex, type, name);
+            var tag = new CachedTagEldorado(this, tagIndex, type, name);
             Tags.Add(tag);
             return tag;
         }
@@ -102,12 +102,12 @@ namespace TagTool.Cache.Eldorado
         /// </summary>
         public override CachedTag CreateCachedTag(int index, TagGroup group, string name = null)
         {
-            return new CachedTagEldorado(index, group, name);
+            return new CachedTagEldorado(this, index, group, name);
         }
 
         public override CachedTag CreateCachedTag()
         {
-            return new CachedTagEldorado(-1, new TagGroupGen3(), null);
+            return new CachedTagEldorado(this, -1, new TagGroupGen3(), null);
         }
 
         /// <summary>
@@ -397,13 +397,10 @@ namespace TagTool.Cache.Eldorado
         /// <param name="offsetTableOffset">The offset table offset.</param>
         private void UpdateFileHeader(EndianWriter writer, uint offsetTableOffset)
         {
-            // TODO: Casting Bad. Make Better
             Header.FileOffsets = offsetTableOffset;
             Header.FileCount = Tags.Count;
             writer.BaseStream.Position = 0;
-            var dataContext = new DataSerializationContext(writer);
-            var serializer = new TagSerializer(Version, CachePlatform);
-            serializer.Serialize(dataContext, Header);
+            CacheFileSectionHeader.WriteHeader(writer, Version, CachePlatform, Header);
         }
 
         public HashSet<CachedTagEldorado> FindDependencies(CachedTagEldorado tag)

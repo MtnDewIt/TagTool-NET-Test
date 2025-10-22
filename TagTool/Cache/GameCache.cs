@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using TagTool.Audio.Bank;
 using TagTool.BlamFile;
 using TagTool.Cache.Eldorado;
 using TagTool.Cache.Monolithic;
@@ -32,9 +33,11 @@ namespace TagTool.Cache
         public IScriptDefinitions ScriptDefinitions => _scriptDefinitions ?? (_scriptDefinitions = ScriptDefinitionsFactory.Create(Version, Platform));
 
         public List<LocaleTable> LocaleTables;
+        public SoundBankCache SoundBanks;
+
         public abstract StringTable StringTable { get; }
         public abstract TagCache TagCache { get; }
-        public abstract ResourceCache ResourceCache { get; }
+        public abstract ResourceCache ResourceCache { get; }     
 
         public abstract Stream OpenCacheRead();
         public abstract Stream OpenCacheReadWrite();
@@ -130,5 +133,8 @@ namespace TagTool.Cache
         }
 
         public abstract void SaveStrings();
+
+        public virtual void LoadLocaleTables(Stream stream) { }
+        public virtual void LoadSoundBanks() { }
     }
 }

@@ -1,6 +1,9 @@
 using System;
+using System.Buffers;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -123,9 +126,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadDouble();
 
-            byte[] bytes = base.ReadBytes(8);
-            Array.Reverse(bytes);
-            return BitConverter.ToDouble(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(double)];
+            Read(buffer);
+            return BinaryPrimitives.ReadDoubleBigEndian(buffer);
         }
 
         /// <summary>
@@ -138,9 +141,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadInt16();
 
-            byte[] bytes = base.ReadBytes(2);
-            Array.Reverse(bytes);
-            return BitConverter.ToInt16(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(short)];
+            Read(buffer);
+            return BinaryPrimitives.ReadInt16BigEndian(buffer);
         }
 
         /// <summary>
@@ -153,9 +156,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadInt32();
 
-            byte[] bytes = base.ReadBytes(4);
-            Array.Reverse(bytes);
-            return BitConverter.ToInt32(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(int)];
+            Read(buffer);
+            return BinaryPrimitives.ReadInt32BigEndian(buffer);
         }
 
         /// <summary>
@@ -168,9 +171,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadInt64();
 
-            byte[] bytes = base.ReadBytes(8);
-            Array.Reverse(bytes);
-            return BitConverter.ToInt64(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(long)];
+            Read(buffer);
+            return BinaryPrimitives.ReadInt64BigEndian(buffer);
         }
 
         /// <summary>
@@ -183,9 +186,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadSingle();
 
-            byte[] bytes = base.ReadBytes(4);
-            Array.Reverse(bytes);
-            return BitConverter.ToSingle(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(float)];
+            Read(buffer);
+            return BinaryPrimitives.ReadSingleBigEndian(buffer);
         }
 
         /// <summary>
@@ -198,9 +201,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadUInt16();
 
-            byte[] bytes = base.ReadBytes(2);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt16(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(ushort)];
+            Read(buffer);
+            return BinaryPrimitives.ReadUInt16BigEndian(buffer);
         }
 
         /// <summary>
@@ -213,9 +216,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadUInt32();
 
-            byte[] bytes = base.ReadBytes(4);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt32(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(uint)];
+            Read(buffer);
+            return BinaryPrimitives.ReadUInt32BigEndian(buffer);
         }
 
         /// <summary>
@@ -228,9 +231,9 @@ namespace TagTool.IO
             if (Type == EndianFormat.LittleEndian)
                 return base.ReadUInt64();
 
-            byte[] bytes = base.ReadBytes(8);
-            Array.Reverse(bytes);
-            return BitConverter.ToUInt64(bytes, 0);
+            Span<byte> buffer = stackalloc byte[sizeof(ulong)];
+            Read(buffer);
+            return BinaryPrimitives.ReadUInt64BigEndian(buffer);
         }
         #endregion
 
@@ -244,11 +247,8 @@ namespace TagTool.IO
         public string ReadString(int Length, bool Trim = true)
         {
             string str = Encoding.UTF8.GetString(ReadBytes(Length));
-
-            if (Trim)
-                str = str.Trim().Replace("\0", "");
-
-            return str;
+            int nullTermIndex = str.AsSpan().IndexOf('\0');
+            return nullTermIndex < 0 ? str : str[..nullTermIndex];
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace TagTool.IO
             while ((b = ReadByte()) != 0)
                 bytes.Add(b);
 
-            return Encoding.UTF8.GetString(bytes.ToArray());
+            return Encoding.UTF8.GetString(CollectionsMarshal.AsSpan(bytes));
         }
 
         /// <summary>
@@ -273,18 +273,25 @@ namespace TagTool.IO
         /// <returns></returns>
         public string ReadNullTerminatedString(int MaxLength, CharSet charSet = CharSet.Ansi)
         {
+            int size = charSet == CharSet.Ansi ? MaxLength : MaxLength * 2;
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(size);
+            Read(buffer, 0, size);
+
             string str;
             if (charSet == CharSet.Ansi)
-                str = Encoding.UTF8.GetString(ReadBytes(MaxLength));
+                str = Encoding.UTF8.GetString(buffer);
             else if (charSet == CharSet.Unicode)
                 if(Format == EndianFormat.LittleEndian)
-                    str = Encoding.Unicode.GetString(ReadBytes(MaxLength * 2));
+                    str = Encoding.Unicode.GetString(buffer);
                 else
-                    str = Encoding.BigEndianUnicode.GetString(ReadBytes(MaxLength * 2));
+                    str = Encoding.BigEndianUnicode.GetString(buffer);
             else
                 str = "";
+
+            ArrayPool<byte>.Shared.Return(buffer);
+
             var nullTermIndex = str.IndexOf('\0');
-            return nullTermIndex < 0 ? str : str.Substring(0, nullTermIndex);
+            return nullTermIndex < 0 ? str : str[..nullTermIndex];
         }
         #endregion
 
@@ -310,9 +317,9 @@ namespace TagTool.IO
                 val = base.ReadUInt16();
             else
             {
-                byte[] bytes = base.ReadBytes(2);
-                Array.Reverse(bytes);
-                val = BitConverter.ToUInt16(bytes, 0);
+                Span<byte> buffer = stackalloc byte[sizeof(ushort)];
+                BaseStream.ReadExactly(buffer);
+                val = BinaryPrimitives.ReadUInt16BigEndian(buffer);
             }
 
             Skip(-2);
@@ -324,8 +331,8 @@ namespace TagTool.IO
         /// </summary>
         /// <param name="length">The number of bytes to decrypt.</param>
         /// <param name="key">The decryption key as a string.</param>
-        /// <returns>A new <see cref="MemoryStream"/> containing the decrypted segment.</returns>
-        public MemoryStream DecryptAesSegment(int length, string key)
+        /// <returns>A new byte array containing the decrypted segment.</returns>
+        public byte[] DecryptAesSegment(int length, string key)
         {
             if (length % 16 != 0)
                 length += 16 - (length % 16);
@@ -347,7 +354,7 @@ namespace TagTool.IO
             aes.IV = iv;
             aes.Padding = PaddingMode.Zeros;
 
-            return new MemoryStream(aes.CreateDecryptor(aes.Key, aes.IV).TransformFinalBlock(data, 0, data.Length));
+            return aes.CreateDecryptor(aes.Key, aes.IV).TransformFinalBlock(data, 0, data.Length);
         }
 
         public int ReadBlock(byte[] buffer, int offset, int size)

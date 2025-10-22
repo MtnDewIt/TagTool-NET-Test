@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Shaders;
 using static TagTool.Tags.TagFieldFlags;
+using static TagTool.Tags.TagFieldInfo;
 
 namespace TagTool.Tags
 {
@@ -14,15 +17,17 @@ namespace TagTool.Tags
 	/// Class for pairing of <see cref="System.Reflection.FieldInfo"/> and <see cref="TagFieldAttribute"/>.
 	/// </summary>
 	public class TagFieldInfo
-	{
-		/// <summary>
-		/// Constructs a <see cref="TagFieldInfo"/> from a <see cref="System.Reflection.FieldInfo"/> and <see cref="TagFieldAttribute"/>.
-		/// </summary>
-		/// <param name="field">The <see cref="System.Reflection.FieldInfo"/> for the field.</param>
-		/// <param name="attribute">The <see cref="TagFieldAttribute"/> for the field.</param>
-		/// <param name="offset">The offset (in bytes) of the field in it's structure.</param>
-		/// <param name="size">The size of the field (in bytes).</param>
-		public TagFieldInfo(FieldInfo field, TagFieldAttribute attribute, uint offset, uint size)
+    {
+        private readonly TypedValueSetter _typedValueSetter;
+        private readonly TypedValueGetter _typedValueGetter;
+        /// <summary>
+        /// Constructs a <see cref="TagFieldInfo"/> from a <see cref="System.Reflection.FieldInfo"/> and <see cref="TagFieldAttribute"/>.
+        /// </summary>
+        /// <param name="field">The <see cref="System.Reflection.FieldInfo"/> for the field.</param>
+        /// <param name="attribute">The <see cref="TagFieldAttribute"/> for the field.</param>
+        /// <param name="offset">The offset (in bytes) of the field in it's structure.</param>
+        /// <param name="size">The size of the field (in bytes).</param>
+        public TagFieldInfo(FieldInfo field, TagFieldAttribute attribute, uint offset, uint size)
 		{
 			FieldInfo = field;
 			Size = size;
@@ -30,7 +35,9 @@ namespace TagTool.Tags
 			Attribute = attribute;
 			SetValue = CreateSetter(this);
 			GetValue = CreateGetter(this);
-		}
+			_typedValueSetter = CreateTypedSetter(this.FieldInfo);
+			_typedValueGetter = CreateTypedGetter(this.FieldInfo);
+        }
 
 		/// <summary>
 		/// Gets the <see cref="System.Reflection.FieldInfo"/> that was used in construction.
@@ -73,12 +80,25 @@ namespace TagTool.Tags
 		/// </summary>
 		public readonly ValueGetter GetValue;
 
-		/// <summary>
-		/// A <see cref="Delegate"/> for SETTING the value of a field on it's owner.
-		/// </summary>
-		/// <param name="owner">The <see cref="object"/> that owns the field.</param>
-		/// <param name="value">The <see cref="object"/> to SET the value of the field to.</param>
-		public delegate void ValueSetter(object owner, object value);
+
+        public void SetValueTyped<T>(object instance, T value)
+        {
+            _typedValueSetter(instance, __makeref(value));
+        }
+
+        public T GetValueTyped<T>(object instance)
+        {
+			T val = default;
+            _typedValueGetter(instance, __makeref(val));
+			return val;
+        }
+
+        /// <summary>
+        /// A <see cref="Delegate"/> for SETTING the value of a field on it's owner.
+        /// </summary>
+        /// <param name="owner">The <see cref="object"/> that owns the field.</param>
+        /// <param name="value">The <see cref="object"/> to SET the value of the field to.</param>
+        public delegate void ValueSetter(object owner, object value);
 
 		/// <summary>
 		/// A <see cref="Delegate"/> for GETTING the value of a field on it's owner.
@@ -140,6 +160,126 @@ namespace TagTool.Tags
 			var getter = Expression.Lambda<ValueGetter>(boxedExp, ownerParam).Compile();
 			return getter;
 		}
+
+
+        public delegate void TypedValueSetter(object instance, TypedReference value);
+        public delegate void TypedValueGetter(object instance, TypedReference value);
+
+
+        private static TypedValueGetter CreateTypedGetter(FieldInfo fieldInfo)
+        {
+            var dm = new DynamicMethod(
+                $"{fieldInfo.Name}_GetValueTyped",
+                typeof(void),
+                [typeof(object), typeof(TypedReference)],
+                fieldInfo.Module,
+                skipVisibility: true);
+
+            ILGenerator il = dm.GetILGenerator();
+
+            il.Emit(OpCodes.Ldarg_1); // Load TypedReference
+            il.Emit(OpCodes.Refanyval, fieldInfo.FieldType); // Get the TypedReference's value address
+            il.Emit(OpCodes.Ldarg_0); // Load instance
+            il.Emit(OpCodes.Ldfld, fieldInfo); // Load the field value
+
+            if (fieldInfo.FieldType == typeof(byte) || fieldInfo.FieldType == typeof(sbyte))
+                il.Emit(OpCodes.Stind_I1);
+            else if (fieldInfo.FieldType == typeof(short) || fieldInfo.FieldType == typeof(ushort))
+                il.Emit(OpCodes.Stind_I2);
+            else if (fieldInfo.FieldType == typeof(int) || fieldInfo.FieldType == typeof(uint))
+                il.Emit(OpCodes.Stind_I4);
+            else if (fieldInfo.FieldType == typeof(long) || fieldInfo.FieldType == typeof(ulong))
+                il.Emit(OpCodes.Stind_I8);
+            else if (fieldInfo.FieldType == typeof(float))
+                il.Emit(OpCodes.Stind_R4);
+            else if (fieldInfo.FieldType == typeof(double))
+                il.Emit(OpCodes.Stind_R8);
+            else if (fieldInfo.FieldType.IsValueType)
+                il.Emit(OpCodes.Stobj, fieldInfo.FieldType);
+            else if (fieldInfo.FieldType.IsClass || fieldInfo.FieldType.IsInterface)
+                il.Emit(OpCodes.Stind_Ref);
+            else
+                throw new NotSupportedException($"Field type {fieldInfo.FieldType} is not supported.");
+
+            il.Emit(OpCodes.Ret);
+
+            return (TypedValueGetter)dm.CreateDelegate(typeof(TypedValueGetter));
+        }
+
+        private static TypedValueSetter CreateTypedSetter(FieldInfo fieldInfo)
+        {
+            var dm = new DynamicMethod($"{fieldInfo.Name}_SetValueTyped", typeof(void), [typeof(object), typeof(TypedReference)]);
+
+            ILGenerator il = dm.GetILGenerator();
+
+            il.Emit(OpCodes.Ldarg_0); // load instance
+            il.Emit(OpCodes.Ldflda, fieldInfo); // load the field address
+
+            il.Emit(OpCodes.Ldarg_1); // TypedReference
+            il.Emit(OpCodes.Refanyval, fieldInfo.FieldType); // load address
+
+            if (fieldInfo.FieldType == typeof(byte))
+            {
+                il.Emit(OpCodes.Ldind_U1);
+                il.Emit(OpCodes.Stind_I1);
+            }
+            else if (fieldInfo.FieldType == typeof(sbyte))
+            {
+                il.Emit(OpCodes.Ldind_I1);
+                il.Emit(OpCodes.Stind_I1);
+            }
+            else if (fieldInfo.FieldType == typeof(short))
+            {
+                il.Emit(OpCodes.Ldind_I2);
+                il.Emit(OpCodes.Stind_I2);
+            }
+            else if (fieldInfo.FieldType == typeof(ushort))
+            {
+                il.Emit(OpCodes.Ldind_U2);
+                il.Emit(OpCodes.Stind_I2);
+            }
+            else if (fieldInfo.FieldType == typeof(int))
+            {
+                il.Emit(OpCodes.Ldind_I4);
+                il.Emit(OpCodes.Stind_I4);
+            }
+            else if (fieldInfo.FieldType == typeof(uint))
+            {
+                il.Emit(OpCodes.Ldind_U4);
+                il.Emit(OpCodes.Stind_I4);
+            }
+            else if (fieldInfo.FieldType == typeof(long) || fieldInfo.FieldType == typeof(ulong))
+            {
+                il.Emit(OpCodes.Ldind_I8);
+                il.Emit(OpCodes.Stind_I8);
+            }
+            else if (fieldInfo.FieldType == typeof(float))
+            {
+                il.Emit(OpCodes.Ldind_R4);
+                il.Emit(OpCodes.Stind_R4);
+            }
+            else if (fieldInfo.FieldType == typeof(double))
+            {
+                il.Emit(OpCodes.Ldind_R8);
+                il.Emit(OpCodes.Stind_R8);
+            }
+            else if (fieldInfo.FieldType.IsValueType)
+            {
+                il.Emit(OpCodes.Ldobj, fieldInfo.FieldType);
+                il.Emit(OpCodes.Stobj, fieldInfo.FieldType);
+            }
+            else if (fieldInfo.FieldType.IsClass || fieldInfo.FieldType.IsInterface)
+            {
+                il.Emit(OpCodes.Ldind_Ref);
+                il.Emit(OpCodes.Stind_Ref);
+            }
+            else
+                throw new NotSupportedException($"Field type {fieldInfo.FieldType} is not supported.");
+
+            il.Emit(OpCodes.Ret);
+
+            return (TypedValueSetter)dm.CreateDelegate(typeof(TypedValueSetter));
+        }
 
         /// <summary>
         /// Gets the size of a tag-field.
@@ -271,6 +411,7 @@ namespace TagTool.Tags
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static uint GetFieldAlignment(Type type, TagFieldAttribute attr, CacheVersion targetVersion, CachePlatform cachePlatform)
         {
 			// We could do implicit alignment for all fields, however for now, for performance, and to reduce the chance of regression, 
@@ -279,13 +420,10 @@ namespace TagTool.Tags
 			if (attr.Align > 0)
 				return attr.Align;
 
-			switch(Type.GetTypeCode(type))
-            {
-				case TypeCode.Object when type == typeof(PlatformUnsignedValue) || type == typeof(PlatformSignedValue):
-					return CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._64Bit ? 8u : 4u;
-				default:
-					return 0;
-            }
+			if (type == typeof(PlatformUnsignedValue) || type == typeof(PlatformSignedValue))
+				return cachePlatform == CachePlatform.MCC ? 8u : 4u;
+
+            return 0;
         }
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.BlamFile;
@@ -109,35 +108,24 @@ namespace TagTool.Cache.Gen3
             for (var i = 0; i < stringCount; i++)
             {
                 stringOffset[i] = reader.ReadInt32();
-                Add("");
             }
 
-            reader.SeekTo(stringIdDataOffset);
-
-            EndianReader newReader;
-
-            if (StringKey == "")
-                newReader = new EndianReader(new MemoryStream(reader.ReadBytes(dataCount)), reader.Format);
-            else
-                newReader = new EndianReader(reader.DecryptAesSegment(dataCount, StringKey), reader.Format);
 
             //
             // Read strings
             //
 
+            reader.SeekTo(stringIdDataOffset);
+
+            StringBuffer strings = StringKey == ""
+                ? new StringBuffer(reader.ReadBytes(dataCount))
+                : new StringBuffer(reader.DecryptAesSegment(dataCount, StringKey));
+
+            EnsureCapacity(stringOffset.Length);
             for (var i = 0; i < stringOffset.Length; i++)
             {
-                if (stringOffset[i] == -1)
-                {
-                    this[i] = "<null>";
-                    continue;
-                }
-
-                newReader.SeekTo(stringOffset[i]);
-                this[i] = newReader.ReadNullTerminatedString();
+                Add(stringOffset[i] == -1 ? "<null>" : strings.GetString(stringOffset[i]));
             }
-            newReader.Close();
-            newReader.Dispose();
         }
 
         /*

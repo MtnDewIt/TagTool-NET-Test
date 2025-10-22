@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Tags.Definitions;
@@ -30,9 +32,8 @@ namespace TagTool.Porting.Gen3
             return flags;
         }
 
-        private GameObject ConvertGameObject(Stream cacheStream, Stream blamCacheStream, GameObject gameobject)
+        private void FixAIAvoidance(Stream cacheStream, Stream blamCacheStream, GameObject gameobject)
         {
-            //fix AI object avoidance
             if (gameobject.Model != null)
             {
                 var childmodeltag = CacheContext.TagCache.GetTag(gameobject.Model.Index);
@@ -79,6 +80,34 @@ namespace TagTool.Porting.Gen3
                     }
                 }
             }
+        }
+
+        private void FixBipedTargetTracking(Stream cacheStream, Stream blamCacheStream, Biped biped)
+        {
+            var hlmt = CacheContext.Deserialize<Model>(cacheStream, biped.Model);
+
+            foreach (var target in hlmt.Targets)
+            {
+                if (target.LockOnData.TrackingType == StringId.Empty && CacheContext.StringTable.GetString(target.MarkerName) == "target_main")
+                {
+                    target.LockOnData.TrackingType = CacheContext.StringTable.GetStringId("bipeds");
+                    if (target.LockOnData.TrackingType == StringId.Invalid)
+                        target.LockOnData.TrackingType = StringId.Empty;
+                }
+            }
+
+            CacheContext.Serialize(cacheStream, biped.Model, hlmt);
+        }
+
+        private GameObject ConvertGameObject(Stream cacheStream, Stream blamCacheStream, GameObject gameobject)
+        {
+            // TODO: we should come up with a better solution for these fixups that rely on deserializing the model. Preserved the same behavior for now
+
+            //fix AI object avoidance
+            if (gameobject.Model != null)
+            {
+                FixAIAvoidance(cacheStream, blamCacheStream, gameobject);
+            }
 
             //all gameobjects are handled within this subswitch now
             switch (gameobject)
@@ -90,19 +119,7 @@ namespace TagTool.Porting.Gen3
                     // add bipeds filter to "target_main" (fixes needler tracking)
                     if (biped.Model != null)
                     {
-                        var hlmt = CacheContext.Deserialize<Model>(cacheStream, biped.Model);
-
-                        foreach (var target in hlmt.Targets)
-                        {
-                            if (target.LockOnData.TrackingType == StringId.Empty && CacheContext.StringTable.GetString(target.MarkerName) == "target_main")
-                            {
-                                target.LockOnData.TrackingType = CacheContext.StringTable.GetStringId("bipeds");
-                                if (target.LockOnData.TrackingType == StringId.Invalid)
-                                    target.LockOnData.TrackingType = StringId.Empty;
-                            }
-                        }
-
-                        CacheContext.Serialize(cacheStream, biped.Model, hlmt);
+                        FixBipedTargetTracking(cacheStream, blamCacheStream, biped);
                     }
                     break;
             }

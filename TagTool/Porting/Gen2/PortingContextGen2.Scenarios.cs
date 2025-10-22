@@ -158,6 +158,9 @@ namespace TagTool.Porting.Gen2
 
         private short GetPaletteIndexOrAdd(Scenario scnr, CachedTag tag)
         {
+            if (tag == null)
+                return -1;
+
             List<ScenarioPaletteEntry> palette = scnr.CratePalette;
             if (tag.Group.Tag.ToString() == "scen")
                 palette = scnr.SceneryPalette;

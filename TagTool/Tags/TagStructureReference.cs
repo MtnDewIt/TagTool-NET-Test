@@ -28,14 +28,24 @@ namespace TagTool.Tags
         public uint DefinitionAddress;
     }
 
+
+    public interface ID3DStructure
+    {
+        public CacheAddressType AddressType { get; set; }
+        public object Definition { get; set; }
+    }
+
     /// <summary>
     /// D3Dstructure, size is 0xC, enforced in the deserializer
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [TagStructure(Size = 0xC)]
-    public class D3DStructure<T> : TagStructure
+    public class D3DStructure<T> : TagStructure, ID3DStructure
     {
         public T Definition;
         public CacheAddressType AddressType = CacheAddressType.Definition;
+
+        CacheAddressType ID3DStructure.AddressType { get => AddressType; set => AddressType = value; }
+        object ID3DStructure.Definition { get => Definition; set => Definition = (T)value; }
     }
 }

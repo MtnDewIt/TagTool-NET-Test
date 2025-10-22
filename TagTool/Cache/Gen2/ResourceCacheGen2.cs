@@ -194,5 +194,9 @@ namespace TagTool.Cache.Gen2
             throw new NotImplementedException();
         }
 
+        public override bool IsResourceValid(TagResourceReference resourceReference)
+        {
+            return resourceReference.Gen2ResourceAddress != 0 && resourceReference.Gen2ResourceAddress != uint.MaxValue;
+        }
     }
 }

@@ -124,10 +124,9 @@ namespace TagTool.Porting.Gen3
                 edEvent.PolishSound = ConvertTag(cacheStream, blamCacheStream,  h3Event.PolishSound);
         }
 
-        private void MergeMultiplayerGlobals(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag)
+        private void MergeMultiplayerGlobals(Stream cacheStream, Stream blamCacheStream, CachedTag edTag, CachedTag h3Tag, MultiplayerGlobals h3Def)
         {
             var edDef = CacheContext.Deserialize<MultiplayerGlobals>(cacheStream, edTag);
-            var h3Def = BlamCache.Deserialize<MultiplayerGlobals>(blamCacheStream, h3Tag);
 
             if (h3Def.Runtime == null || h3Def.Runtime.Count == 0)
                 return;

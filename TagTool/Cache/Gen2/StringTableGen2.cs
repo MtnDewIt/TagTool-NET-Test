@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache.Gen2.Resolvers;
 using TagTool.Common;
@@ -27,30 +26,22 @@ namespace TagTool.Cache.Gen2
             for (var i = 0; i < stringCount; i++)
             {
                 stringOffset[i] = reader.ReadInt32();
-                Add("");
             }
 
-            reader.SeekTo(dataOffset);
-
-            EndianReader newReader = new EndianReader(new MemoryStream(reader.ReadBytes(stringCount)), reader.Format);
 
             //
             // Read strings
             //
 
+            reader.SeekTo(dataOffset);
+
+            var stringsBuffer = new StringBuffer(reader.ReadBytes(stringCount));
+
+            EnsureCapacity(stringOffset.Length);
             for (var i = 0; i < stringOffset.Length; i++)
             {
-                if (stringOffset[i] == -1)
-                {
-                    this[i] = "<null>";
-                    continue;
-                }
-
-                newReader.SeekTo(stringOffset[i]);
-                this[i] = newReader.ReadNullTerminatedString();
+                Add(stringOffset[i] == -1 ? "<null>" : stringsBuffer.GetString(stringOffset[i]));
             }
-            newReader.Close();
-            newReader.Dispose();
         }
 
 

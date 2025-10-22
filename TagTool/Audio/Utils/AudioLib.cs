@@ -25,6 +25,8 @@ namespace TagTool.Audio.Utils
         public struct ALTranscodeInfo
         {
             public long sample_count; // returned sample count
+            public int channels;
+            public int sample_rate;
         }
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]

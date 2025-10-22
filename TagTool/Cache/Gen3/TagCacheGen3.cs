@@ -203,23 +203,21 @@ namespace TagTool.Cache.Gen3
 
             reader.SeekTo(debugTagNameDataOffset);
 
-            using (var newReader = (TagsKey == "" || TagsKey == null) ?
-                new EndianReader(new MemoryStream(reader.ReadBytes(dataSize)), EndianFormat.BigEndian) :
-                new EndianReader(reader.DecryptAesSegment(dataSize, TagsKey), EndianFormat.BigEndian))
+            StringBuffer tagNames = (TagsKey == "" || TagsKey == null)
+                ? new StringBuffer(reader.ReadBytes(dataSize))
+                : new StringBuffer(reader.DecryptAesSegment(dataSize, TagsKey));
+
+            for (int i = 0; i < stringOffsets.Length; i++)
             {
-                for (int i = 0; i < stringOffsets.Length; i++)
+                if (stringOffsets[i] == -1)
                 {
-                    if (stringOffsets[i] == -1)
-                    {
-                        Instances[i].Name = null;
-                        continue;
-                    }
-
-                    newReader.SeekTo(stringOffsets[i]);
-                    Instances[i].Name = newReader.ReadNullTerminatedString().Replace(' ', '_');
+                    Instances[i].Name = null;
+                    continue;
                 }
-            }
 
+                Instances[i].Name = tagNames.GetString(stringOffsets[i]).Replace(' ', '_');
+            }
+   
             #endregion
 
             #region Read Global Tags

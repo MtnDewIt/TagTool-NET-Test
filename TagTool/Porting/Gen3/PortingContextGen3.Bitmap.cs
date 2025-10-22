@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
@@ -12,19 +14,9 @@ namespace TagTool.Porting.Gen3
 {
     partial class PortingContextGen3
     {
-        class BitmapConversionResult
-        {
-            public Bitmap Definition;
-            public List<BaseBitmap> BaseBitmaps;
-        }
+        private BitmapConverterMode BitmapMode = BitmapConverterMode.None;
 
-        public void WaitForPendingBitmapConversion()
-        {
-            WaitForPendingTasks();
-            ProcessDeferredActions();
-        }
-
-        private Bitmap ConvertBitmapAsync(Stream cacheStream, CachedTag edTag, CachedTag blamTag, Bitmap bitmap)
+        private Bitmap ConvertBitmap(Stream cacheStream, CachedTag edTag, CachedTag blamTag, Bitmap bitmap)
         {
             bitmap.Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource;
             bitmap.UnknownB4 = 0;
@@ -49,47 +41,28 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
-            RunAsync(
-                onExecute: () =>
-                {
-                    BitmapConversionResult result = new BitmapConversionResult();
-                    result.Definition = bitmap;
-                    result.BaseBitmaps = new List<BaseBitmap>();
+            BitmapConverterMode bitmapMode = BitmapMode;
 
-                    for (int i = 0; i < bitmap.Images.Count; i++)
-                        result.BaseBitmaps.Add(ConvertBitmapAsync(bitmap, i, blamTag.Name));
+            var tasks = new List<Task<BaseBitmap>>();
+            for (int i = 0; i < bitmap.Images.Count; i++)
+            {
+                int imageIndex = i;
+                tasks.Add(RunOnThreadPool(() => ConvertBitmapInternal(bitmap, imageIndex, blamTag.Name, bitmapMode)));
+            }
 
-                    return result;
-                },
-                onSuccess: (BitmapConversionResult result) =>
-                {
-                    bitmap = FinishConvertBitmap(bitmap, result, blamTag.Name);
-                    CacheContext.Serialize(cacheStream, edTag, bitmap);
-
-                    if (FlagIsSet(PortingFlags.Print))
-                        Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag.Name}.{(edTag.Group as TagGroupGen3).Name}");
-                });
+            AddTask(Task.WhenAll(tasks)
+                .ContinueWith(task => FinishConvertBitmap(bitmap, blamTag.Name, task.GetAwaiter().GetResult()), MainThreadScheduler));
 
             return bitmap;
         }
 
-        private BaseBitmap ConvertBitmapAsync(Bitmap bitmap, int imageIndex, string tagName)
+        private Bitmap FinishConvertBitmap(Bitmap bitmap, string tagName, BaseBitmap[] convertedBitmaps)
         {
-            var bitmapConverter = new BitmapConverterGen3(BlamCache)
+            var resources = new List<TagResourceReference>();
+            for (int i = 0; i < convertedBitmaps.Length; i++)
             {
-                ForceDxt5nm = Options.UseExperimentalDxt5nm,
-                HqNormalMapCompression = Options.HqNormalMapConversion
-            };
-            return bitmapConverter.ConvertBitmap(bitmap, imageIndex, tagName);
-        }
-
-        private Bitmap FinishConvertBitmap(Bitmap bitmap, BitmapConversionResult result, string tagName)
-        {
-            List<TagResourceReference> resources = new List<TagResourceReference>();
-            for (int i = 0; i < result.BaseBitmaps.Count; i++)
-            {
-                BitmapUtils.SetBitmapImageData(result.BaseBitmaps[i], bitmap.Images[i]);
-                var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(result.BaseBitmaps[i]);
+                BitmapUtils.SetBitmapImageData(convertedBitmaps[i], bitmap.Images[i]);
+                var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(convertedBitmaps[i]);
                 var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
                 resources.Add(resourceReference);
             }
@@ -103,6 +76,17 @@ namespace TagTool.Porting.Gen3
             }
 
             return bitmap;
+        }
+
+        private BaseBitmap ConvertBitmapInternal(Bitmap bitmap, int imageIndex, string tagName, BitmapConverterMode mode)
+        {
+            var bitmapConverter = new BitmapConverterGen3(BlamCache)
+            {
+                ForceDxt5nm = Options.UseExperimentalDxt5nm,
+                HqNormalMapCompression = Options.HqNormalMapConversion,
+                Mode = mode
+            };
+            return bitmapConverter.ConvertBitmap(bitmap, imageIndex, tagName);
         }
     }
 }

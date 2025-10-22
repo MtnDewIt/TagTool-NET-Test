@@ -131,7 +131,7 @@ namespace TagTool.Commands
             {
                 if (destCacheContext.TagCacheEldorado.Tags[i] == null)
                 {
-                    destCacheContext.TagCacheEldorado.Tags[i] = destTag = new CachedTagEldorado(i, (TagGroupGen3)srcTag.Group);
+                    destCacheContext.TagCacheEldorado.Tags[i] = destTag = new CachedTagEldorado(destCacheContext.TagCache, i, (TagGroupGen3)srcTag.Group);
                     break;
                 }
             }

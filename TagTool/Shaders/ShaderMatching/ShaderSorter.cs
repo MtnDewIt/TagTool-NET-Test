@@ -13,19 +13,7 @@ namespace TagTool.Shaders.ShaderMatching
 
     public static class Sorter
     {
-        public static List<int> GetTemplateOptions(string name)
-        {
-            List<int> options = new List<int>();
-            var optionStrings = name.Split('\\').ToList().Last().Split('_').ToList();
-            optionStrings.RemoveAt(0);
-            foreach (var optStr in optionStrings)
-            {
-                options.Add(int.Parse(optStr));
-            }
-            return options;
-        }
-        
-        public static long GetValue(SortingInterface shaderInterface, List<int> current)
+        public static long GetValue(SortingInterface shaderInterface, ReadOnlySpan<byte> options)
         {
             // assumes target and shaderInterface are from the same shader type
             int baseStepSize = 17; // max number of option + 1
@@ -34,7 +22,7 @@ namespace TagTool.Shaders.ShaderMatching
             for(int i = 0; i < shaderInterface.GetTypeCount(); i++)
             {
                 long typeScale = (long)Math.Pow(baseStepSize, shaderInterface.GetTypeIndex(i));
-                value += typeScale * (shaderInterface.GetOptionIndex(i, current[i]) + 1);
+                value += typeScale * (shaderInterface.GetOptionIndex(i, options[i]) + 1);
             }
             return value;
         }
