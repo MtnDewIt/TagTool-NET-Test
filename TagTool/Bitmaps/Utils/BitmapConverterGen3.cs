@@ -83,7 +83,7 @@ namespace TagTool.Bitmaps.Utils
         private BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex)
         {
             if (Mode == BitmapConverterMode.DiffuseToNormal)
-                return GetNormalMapFormat(format);
+                return GetNormalMapFormat(bitmap, format);
 
             // array textures will be converted to texture3d which does not support v8u8
             if (bitmap.Usage == Bitmap.BitmapUsageGlobalEnum.WaterArray)

@@ -391,7 +391,7 @@ namespace TagTool.Cache.Eldorado
             pageableResource.Page = new ResourcePage();
             pageableResource.Resource = new ResourceData();
             pageableResource.ChangeLocation(location);
-            pageableResource.Resource.FlagsHO = ResourceData.DataFlags.HasPageableData;
+            pageableResource.Resource.FlagsHO = ResourceData.ResourceDataFlags.HasPageableData;
             pageableResource.Resource.ResourceType = resourceType;
 
             resourceReference.EldoradoPageableResource = pageableResource;
@@ -485,7 +485,7 @@ namespace TagTool.Cache.Eldorado
 
         public override bool IsResourceValid(TagResourceReference resourceReference)
         {
-            return resourceReference.HaloOnlinePageableResource.Page.Index != -1;
+            return resourceReference.EldoradoPageableResource.Page.Index != -1;
         }
 
         //
