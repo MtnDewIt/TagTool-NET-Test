@@ -228,7 +228,7 @@ namespace TagTool.Cache
             var dataChunkSize = BaseMapFile.Header.GetCompressedDataChunkSize();
             var chunkCount = BaseMapFile.Header.GetCompressedChunkCount();
 
-            if (compressed)
+            if (compressed && Platform == CachePlatform.MCC)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
                 {

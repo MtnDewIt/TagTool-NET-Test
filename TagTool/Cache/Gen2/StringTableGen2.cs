@@ -17,6 +17,7 @@ namespace TagTool.Cache.Gen2
             //
 
             var stringCount = baseMapFile.Header.GetStringIdCount();
+            var dataCount = baseMapFile.Header.GetStringIdDataCount();
             var indexOffset = baseMapFile.Header.GetStringIdIndexOffset();
             var dataOffset = baseMapFile.Header.GetStringIdDataOffset();
 
@@ -35,7 +36,7 @@ namespace TagTool.Cache.Gen2
 
             reader.SeekTo(dataOffset);
 
-            var stringsBuffer = new StringBuffer(reader.ReadBytes(stringCount));
+            var stringsBuffer = new StringBuffer(reader.ReadBytes(dataCount));
 
             EnsureCapacity(stringOffset.Length);
             for (var i = 0; i < stringOffset.Length; i++)
