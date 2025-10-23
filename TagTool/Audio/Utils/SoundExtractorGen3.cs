@@ -49,10 +49,13 @@ namespace TagTool.Audio.Utils
                 if (cache.Platform == CachePlatform.MCC)
                 {
                     cache.LoadSoundBanks();
-                    var info = cache.SoundBanks.GetSoundInfo(permutation.FsbSoundHash);
                     BlamSound blamSound = cache.SoundBanks.ExtractSound(permutation.FsbSoundHash);
+
                     if (blamSound == null)
-                        return null;
+                    {
+                        Log.Warning($"Failed to find sound \"{tagName}\" permutation {permutationIndex} in FMOD sound cache!");
+                        blamSound = new BlamSound();
+                    }
 
                     return blamSound;
                 }
