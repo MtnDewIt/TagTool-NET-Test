@@ -26,26 +26,32 @@ namespace TagTool.Cache
         public TagDeserializer Deserializer;
         public DirectoryInfo Directory;
 
-        // TODO: cleanup. the reason I'm doing this is because GameCache doesn't have a constructor
-        // where the version and platform is available, and I don't want to have to call 
-        // ScriptDefinitionsFactory.Create in every GameCache implementation
         private IScriptDefinitions _scriptDefinitions;
-        public IScriptDefinitions ScriptDefinitions => _scriptDefinitions ?? (_scriptDefinitions = ScriptDefinitionsFactory.Create(Version, Platform));
+        public IScriptDefinitions ScriptDefinitions => _scriptDefinitions ??= ScriptDefinitionsFactory.Create(Version, Platform);
 
         public List<LocaleTable> LocaleTables;
         public SoundBankCache SoundBanks;
 
         public abstract StringTable StringTable { get; }
         public abstract TagCache TagCache { get; }
-        public abstract ResourceCache ResourceCache { get; }     
+        public abstract ResourceCache ResourceCache { get; }
 
         public abstract Stream OpenCacheRead();
         public abstract Stream OpenCacheReadWrite();
         public abstract Stream OpenCacheWrite();
 
         public abstract void Serialize(Stream stream, CachedTag instance, object definition);
-        public abstract object Deserialize(Stream stream, CachedTag instance);
-        public abstract T Deserialize<T>(Stream stream, CachedTag instance);
+        public abstract object Deserialize(Stream stream, CachedTag instance, Type type);
+
+        public object Deserialize(Stream stream, CachedTag instance)
+        {
+            return Deserialize(stream, instance, TagCache.TagDefinitions.GetTagDefinitionType(instance.Group));
+        }
+
+        public T Deserialize<T>(Stream stream, CachedTag instance)
+        {
+            return (T)Deserialize(stream, instance, typeof(T));
+        }
 
         public static GameCache Open(string filePath) => Open(new FileInfo(filePath));
 

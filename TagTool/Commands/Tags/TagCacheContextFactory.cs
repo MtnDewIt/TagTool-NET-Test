@@ -75,7 +75,6 @@ namespace TagTool.Commands.Tags
             {
                 var hoCache = cache as GameCacheHaloOnlineBase;
                 context.AddCommand(new SaveTagNamesCommand(hoCache));
-                context.AddCommand(new SaveModdedTagsCommand(hoCache));
                 context.AddCommand(new CreateTagCommand(hoCache));
                 context.AddCommand(new ReplaceTagCommand(hoCache));
                 context.AddCommand(new ImportTagCommand(hoCache));

@@ -12,6 +12,11 @@ namespace TagTool.Tags
             if (!info.Attribute.IsVersioned)
                 throw new InvalidOperationException("Cannot import to an non-versioned enum.");
 
+            return ImportValue(info, value);
+        }
+
+        public static object ImportValue(TagEnumInfo info, int value)
+        {
             var enumerable = TagEnum.GetMemberEnumerable(info);
             var members = enumerable.VersionedMembers;
 
@@ -32,6 +37,11 @@ namespace TagTool.Tags
             if (!info.Attribute.IsVersioned)
                 throw new InvalidOperationException("Cannot import to an non-versioned enum.");
 
+            return ExportValue(info, enumValue);
+        }
+
+        public static int ExportValue(TagEnumInfo info, object enumValue)
+        {
             var members = TagEnum.GetMemberEnumerable(info).Members;
             int actualMemberIndex = 0;
             for (int i = 0; i < members.Count; i++)

@@ -99,6 +99,12 @@ namespace TagTool.Serialization
             throw new NotImplementedException();
         }
 
+
+        protected virtual PageableResource PreSerializeTagResource(PageableResource resource)
+        {
+            return resource;
+        }
+
         private class TagDataBlock : IDataBlock
         {
             private readonly HaloOnlineSerializationContext _context;
@@ -132,7 +138,7 @@ namespace TagTool.Serialization
                 Writer.Write(_context.Tag.OffsetToPointer(targetOffset));
             }
 
-            public object PreSerialize(TagFieldAttribute info, object obj)
+            public virtual object PreSerialize(TagFieldAttribute info, object obj)
             {
                 if (obj == null)
                     return null;
@@ -143,9 +149,11 @@ namespace TagTool.Serialization
                     (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagStructureReference<>)))
                     throw new InvalidOperationException(type + " cannot be serialized as tag data");
 
-                // HACK: If the object is a ResourceReference, fix the Owner property
                 if (obj is PageableResource resource)
+                {
                     resource.Resource.ParentTag = _context.Tag;
+                    _context.PreSerializeTagResource(resource);
+                }
 
                 if (type == typeof(CachedTag) || type.BaseType == typeof(CachedTag))
                 {

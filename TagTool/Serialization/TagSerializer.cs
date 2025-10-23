@@ -8,13 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using TagTool.Tags;
-using static TagTool.Tags.TagFieldFlags;
 using TagTool.Commands.Common;
 using TagTool.Geometry.BspCollisionGeometry;
 using System.Runtime.InteropServices;
 using TagTool.Common.Logging;
 using System.Collections;
-using static TagTool.IO.ConsoleHistory;
 
 namespace TagTool.Serialization
 {
@@ -24,9 +22,11 @@ namespace TagTool.Serialization
     {
         public const int DefaultBlockAlign = 4;
 
-        public CacheVersion Version { get; protected set; }
-        public EndianFormat Format { get; protected set; }
-        public CachePlatform CachePlatform { get; }
+        public readonly CacheVersion Version;
+        public readonly EndianFormat Format;
+        public readonly CachePlatform CachePlatform;
+        protected readonly TagStructure.VersionedCache StructCache;
+        protected readonly TagEnum.VersionedCache EnumCache;
 
         /// <summary>
         /// Constructs a tag serializer for a specific engine version.
@@ -34,11 +34,13 @@ namespace TagTool.Serialization
         /// <param name="version">The engine version to target.</param>
         /// <param name="cachePlatform">Cache platform of the engine</param>
         /// <param name="format">EndianFormat, default to little endian</param>
-        public TagSerializer(CacheVersion version, CachePlatform cachePlatform, EndianFormat format=EndianFormat.LittleEndian)
+        public TagSerializer(CacheVersion version, CachePlatform cachePlatform, EndianFormat format = EndianFormat.LittleEndian)
         {
             Version = version;
             Format = format;
             CachePlatform = cachePlatform;
+            StructCache = TagStructure.GetVersonedCache(version, cachePlatform);
+            EnumCache = TagEnum.GetVersonedCache(version, cachePlatform);
         }
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace TagTool.Serialization
         public virtual void Serialize(ISerializationContext context, object tagStructure, uint? offset = null)
         {
             // Serialize the structure to a data block
-            var info = TagStructure.GetTagStructureInfo(tagStructure.GetType(), Version, CachePlatform);
+            var info = StructCache.GetTagStructureInfo(tagStructure.GetType());
             context.BeginSerialize(info);
             var tagStream = new MemoryStream();
             var structBlock = context.CreateBlock();
@@ -76,7 +78,7 @@ namespace TagTool.Serialization
         {
             var baseOffset = block.Stream.Position;
 
-			foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(info))
+			foreach (var tagFieldInfo in info.TagFields)
 				SerializeProperty(context, tagStream, block, structure, tagFieldInfo, baseOffset);
 
             // Honor the struct size if it's defined
@@ -104,7 +106,7 @@ namespace TagTool.Serialization
         /// <exception cref="System.InvalidOperationException">Offset for property \ + property.Name + \ is outside of its structure</exception>
         private void SerializeProperty(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object instance, TagFieldInfo tagFieldInfo, long baseOffset)
         {
-            if ((tagFieldInfo.Attribute.Flags & Runtime) != 0)
+            if ((tagFieldInfo.Attribute.Flags & TagFieldFlags.Runtime) != 0)
                 return;
 
             uint align = TagFieldInfo.GetFieldAlignment(tagFieldInfo.FieldType, tagFieldInfo.Attribute, Version, CachePlatform);
@@ -120,31 +122,15 @@ namespace TagTool.Serialization
 
             if (tagFieldInfo.FieldType.IsPrimitive)
             {
-                if (SerializePropertyDirect(context, block.Writer, tagFieldInfo, instance))
+                if (SerializePrimitiveProperty(context, block.Writer, tagFieldInfo, instance))
                     return;
             }
 
             object objectValue = tagFieldInfo.GetValue(instance);
-
-            // second condition is a hack to prevent exceptions when encountering cached tags
-            if (objectValue != null)
-            {
-                if (objectValue.GetType() == tagFieldInfo.FieldType || tagFieldInfo.FieldType == typeof(CachedTag))
-                {
-                    SerializeValue(context, tagStream, block,
-                                    objectValue, tagFieldInfo.Attribute, tagFieldInfo.FieldType);
-                }
-                else
-                    throw new Exception($"TagFieldInfo.GetValue return type {objectValue.GetType()} is not the same as the FieldInfo Type {tagFieldInfo.FieldType}!");
-            }
-            else
-            {
-                SerializeValue(context, tagStream, block,
-                                    objectValue, tagFieldInfo.Attribute, tagFieldInfo.FieldType);
-            }
+            SerializeValue(context, tagStream, block, objectValue, tagFieldInfo.Attribute, tagFieldInfo.FieldType);
         }
 
-        private bool SerializePropertyDirect(ISerializationContext context, EndianWriter writer, TagFieldInfo tagFieldInfo, object instance)
+        private bool SerializePrimitiveProperty(ISerializationContext context, EndianWriter writer, TagFieldInfo tagFieldInfo, object instance)
         {
             switch (Type.GetTypeCode(tagFieldInfo.FieldType))
             {
@@ -200,8 +186,6 @@ namespace TagTool.Serialization
         {
             // Call the data block's PreSerialize callback to determine if the value should be mutated
             val = block.PreSerialize(valueInfo, val);
-            if (val != null)
-                valueType = val.GetType(); // TODO: Fix hax
 
             if (valueType.IsPrimitive)
                 SerializePrimitiveValue(block.Writer, val, valueType);
@@ -268,7 +252,7 @@ namespace TagTool.Serialization
         /// <param name="valueType">Type of the value.</param>
         private void SerializeComplexValue(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object value, TagFieldAttribute valueInfo, Type valueType)
         {
-            if (valueInfo != null && (valueInfo.Flags & Pointer) != 0)
+            if (valueInfo != null && (valueInfo.Flags & TagFieldFlags.Pointer) != 0)
                 SerializeIndirectValue(context, tagStream, block, value, valueType);
             else if (valueType.IsEnum)
                 SerializeEnum(block.Writer, value, valueInfo, valueType);
@@ -276,13 +260,13 @@ namespace TagTool.Serialization
                 SerializeString(block.Writer, (string)value, valueInfo);
             else if (valueType == typeof(Tag))
                 SerializeTag(block, (Tag)value);
-            else if (valueType.BaseType == typeof(CachedTag) || (valueType == typeof(CachedTag) && value == null))
+            else if (valueType == typeof(CachedTag))
                 SerializeTagReference(context, block, (CachedTag)value, valueInfo);
             else if (valueType == typeof(CacheAddress))
                 block.Writer.Write(((CacheAddress)value).Value);
             else if (valueType == typeof(byte[]))
             {
-                if ((valueInfo.Flags & Padding) != 0 || (value == null && valueInfo.Length > 0))
+                if ((valueInfo.Flags & TagFieldFlags.Padding) != 0 || (value == null && valueInfo.Length > 0))
                     SerializePadding(block, valueInfo.Length);
                 else if (valueInfo.Length > 0)
                     block.Writer.Write((byte[])value);
@@ -352,7 +336,7 @@ namespace TagTool.Serialization
             else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(D3DStructure<>))
                 SerializeD3DStructure(context, tagStream, block, (ID3DStructure)value, valueType);
             else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Bounds<>))
-                SerializeRange(context, tagStream, block, value);
+                SerializeRange(context, tagStream, block, (IBounds)value);
             else if (valueType == typeof(PlatformUnsignedValue))
                 SerializePlatformUnsignedValue(block, (PlatformUnsignedValue)value);
             else if (valueType == typeof(PlatformSignedValue))
@@ -365,7 +349,7 @@ namespace TagTool.Serialization
                 SerializeFlagBits(block.Writer, (IFlagBits)value, valueInfo, valueType);
             else
             {
-                var info = TagStructure.GetTagStructureInfo(valueType, Version, CachePlatform);
+                var info = StructCache.GetTagStructureInfo(valueType);
                 SerializeStruct(context, tagStream, block, info, value ?? info.CreateInstance());
             }
         }
@@ -394,7 +378,7 @@ namespace TagTool.Serialization
 
         private void SerializeEnum(EndianWriter writer, object value, TagFieldAttribute valueInfo, Type valueType)
         {
-            var enumInfo = TagEnum.GetInfo(valueType, Version, CachePlatform);
+            var enumInfo = EnumCache.GetInfo(valueType);
             if (enumInfo.Attribute.IsVersioned)
                 value = ConvertVersionedEnumValue(value, valueInfo, valueType, enumInfo);
 
@@ -408,7 +392,7 @@ namespace TagTool.Serialization
         {
             try
             {
-                int exportedValue = VersionedEnum.ExportValue(valueType, value, Version, CachePlatform);
+                int exportedValue = VersionedEnum.ExportValue(enumInfo, value);
                 return Convert.ChangeType(exportedValue, valueInfo.EnumType ?? valueType.GetEnumUnderlyingType());
             }
             catch (ArgumentOutOfRangeException)
@@ -483,33 +467,35 @@ namespace TagTool.Serialization
             if (referencedTag != null && referencedTag.Group.IsNull())
                 referencedTag = null;
 
-            if (referencedTag != null && valueInfo != null && valueInfo.ValidTags != null)
-            {
-                bool invalid = true;
+#if DEBUG
+            CheckTagReference(referencedTag, valueInfo);
+#endif
+            bool isShort = valueInfo != null && (valueInfo.Flags & TagFieldFlags.Short) != 0;
 
-                foreach (string tag in valueInfo.ValidTags)
-                    if (referencedTag.IsInGroup(tag))
-                        invalid = false;
+            block.AddTagReference(referencedTag, isShort);
 
-                if (invalid)
-                {
-                    var groups = string.Join(", ", valueInfo.ValidTags);
-                    Log.Warning($"Tag reference with invalid group found during serialization:"
-                        + $"\n - {referencedTag.Name}.{referencedTag.Group.Tag}"
-                        + $"\n - valid groups: {groups}");
-                }
-            }
-
-            block.AddTagReference(referencedTag, valueInfo == null ? false : (valueInfo.Flags & Short) != 0);
-
-            if (valueInfo == null || (valueInfo.Flags & Short) == 0)
+            if (!isShort)
             {
                 block.Writer.Write((referencedTag != null) ? referencedTag.Group.Tag.Value : -1);
                 block.Writer.Write(0);
                 block.Writer.Write(0);
             }
-            
+
             block.Writer.Write((referencedTag != null) ? referencedTag.Index : -1);
+        }
+
+        private static void CheckTagReference(CachedTag referencedTag, TagFieldAttribute valueInfo)
+        {
+            if (referencedTag == null || valueInfo == null || valueInfo.ValidTags == null)
+                return;
+
+            if (!valueInfo.ValidTags.Any(x => referencedTag.IsInGroup(x)))
+            {
+                var groups = string.Join(", ", valueInfo.ValidTags);
+                Log.Warning($"Tag reference with invalid group found during serialization:"
+                    + $"\n - {referencedTag.Name}.{referencedTag.Group.Tag}"
+                    + $"\n - valid groups: {groups}");
+            }
         }
 
         /// <summary>
@@ -618,11 +604,8 @@ namespace TagTool.Serialization
         public virtual void SerializeTagBlock(ISerializationContext context, MemoryStream tagStream, IDataBlock block, ITagBlock list, Type listType, TagFieldAttribute valueInfo)
         {
             var writer = block.Writer;
-            var count = 0;
-            if (list != null)
-            {
-                count = list.Count;
-            }
+            int count = list?.Count ?? 0;
+
             if (count == 0)
             {
                 writer.Write(0);
@@ -659,11 +642,8 @@ namespace TagTool.Serialization
         private void SerializeTagBlockAsList(ISerializationContext context, MemoryStream tagStream, IDataBlock block, IList list, Type listType, TagFieldAttribute valueInfo)
         {
             var writer = block.Writer;
-            var count = 0;
-            if (list != null)
-            {
-                count = list.Count;
-            }
+            int count = list?.Count ?? 0;
+
             if (count == 0)
             {
                 writer.Write(0);
@@ -700,7 +680,7 @@ namespace TagTool.Serialization
             }
             else if (elementType.IsClass && !elementType.IsGenericType && elementType.IsSubclassOf(typeof(TagStructure)) )
             {
-                var info = TagStructure.GetTagStructureInfo(elementType, Version, CachePlatform);
+                var info = StructCache.GetTagStructureInfo(elementType);
                 foreach (var val in list)
                    SerializeStruct(context, tagStream, tagBlock, info, val ?? info.CreateInstance());
             }
@@ -923,14 +903,12 @@ namespace TagTool.Serialization
             block.Writer.Write(mat.m43);
         }
 
-        private void SerializeRange(ISerializationContext context, MemoryStream tagStream, IDataBlock block, object val)
+        private void SerializeRange(ISerializationContext context, MemoryStream tagStream, IDataBlock block, IBounds val)
         {
             var type = val.GetType();
             var boundsType = type.GenericTypeArguments[0];
-            var lower = type.GetProperty("Lower").GetValue(val);
-            var upper = type.GetProperty("Upper").GetValue(val);
-            SerializeValue(context, tagStream, block, lower, null, boundsType);
-            SerializeValue(context, tagStream, block, upper, null, boundsType);
+            SerializeValue(context, tagStream, block, val.Lower, null, boundsType);
+            SerializeValue(context, tagStream, block, val.Upper, null, boundsType);
         }
 
         protected virtual void SerializeIndexBufferIndex(IDataBlock block, IndexBufferIndex val)

@@ -92,8 +92,7 @@ namespace TagTool.Tags
 			// hierarchy and add any fields belonging to tag structures.
 			foreach (var type in Info.Types.Reverse<Type>())
 			{
-				// Ensure that fields are in declaration order - GetFields does NOT guarantee 
-				foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).OrderBy(i => i.MetadataToken))
+				foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly))
 				{
 					var attr = GetTagFieldAttribute(field, Info.Version, Info.CachePlatform);
 					if (attr == null)

@@ -62,15 +62,9 @@ namespace TagTool.Cache.Monolithic
 
         public override ResourceCache ResourceCache => ResourceCacheMono;
 
-        public override object Deserialize(Stream stream, CachedTag instance)
+        public override object Deserialize(Stream stream, CachedTag instance, Type type)
         {
-            var definitionType = TagCache.TagDefinitions.GetTagDefinitionType(instance.Group);
-            return DeserializeInternal(stream, instance, definitionType);
-        }
-
-        public override T Deserialize<T>(Stream stream, CachedTag instance)
-        {
-            return (T)DeserializeInternal(stream, instance, typeof(T));
+            return DeserializeInternal(stream, instance, type);
         }
 
         private object DeserializeInternal(Stream stream, CachedTag instance, Type definitionType)

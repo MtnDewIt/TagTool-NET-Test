@@ -33,12 +33,11 @@ namespace TagTool.Serialization
             var resourceContext = context as ResourceDefinitionSerializationContext;
 
             // Serialize the structure to a data block
-            var info = TagStructure.GetTagStructureInfo(tagStructure.GetType(), Version, CachePlatform);
+            var info = StructCache.GetTagStructureInfo(tagStructure.GetType());
             context.BeginSerialize(info);
             var tagStream = new MemoryStream();
             var structBlock = (ResourceDefinitionSerializationContext.ResourceDefinitionDataBlock)context.CreateBlock();
             structBlock.BlockType = resourceContext.InitialAddressType;
-            structBlock.Writer.Format = Format;
             SerializeStruct(context, tagStream, structBlock, info, tagStructure);
 
             // Finalize the block and write all of the tag data out
