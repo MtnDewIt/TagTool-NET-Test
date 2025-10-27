@@ -424,7 +424,7 @@ namespace TagTool.Tags.Definitions
         public CachedTag MissionVisionMode;
 
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
-        public List<TagReferenceBlock> HaloOnlineReferences;
+        public List<TagReferenceBlock> BackgroundReferences;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<TagReferenceBlock> ModelReferences;
@@ -1238,6 +1238,7 @@ namespace TagTool.Tags.Definitions
                 NoParentLighting = 1 << 13
             }
 
+            [Flags]
             public enum ObjectLocationPlacementFlagsMCC : uint
             {
                 NotAutomatically = 1 << 0,

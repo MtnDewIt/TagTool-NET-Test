@@ -1,8 +1,9 @@
+using System;
+using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Common;
-using System.Collections.Generic;
+using TagTool.Tags.Definitions.Common;
 using static TagTool.Tags.TagFieldFlags;
-using System;
 
 namespace TagTool.Tags.Definitions
 {
@@ -14,7 +15,7 @@ namespace TagTool.Tags.Definitions
     public class SurvivalModeGlobals : TagStructure
     {
         [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-        public uint Unknown;
+        public float RespawnTime;
 
         [TagField(ValidTags = new [] { "unic" })] public CachedTag SurvivalModeStrings;
         [TagField(ValidTags = new [] { "scmb", "snd!" })] public CachedTag CountdownSound;
@@ -32,10 +33,10 @@ namespace TagTool.Tags.Definitions
         public List<TeamColor> TeamColors;
 
         [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        public List<SurvivalEvent> GeneralEvents;
+        public List<MultiplayerEventResponse> GeneralEvents;
 
         [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-        public List<SurvivalEvent> SurvivalEvents;
+        public List<MultiplayerEventResponse> SurvivalEvents;
 
         [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         public List<ArmorCustomization> ArmorCustomizations;
@@ -50,123 +51,6 @@ namespace TagTool.Tags.Definitions
         public uint UnknownHO;
         [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint UnknownHO_1;
-
-        [TagStructure(Size = 0x108, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x10C, MinVersion = CacheVersion.HaloOnlineED)]
-        public class SurvivalEvent : TagStructure
-		{
-            public GameEngineEventFlagsDefinition Flags;
-            public TypeValue Type;
-            [TagField(Flags = Label)]
-            public StringId Event;
-            public AudienceValue Audience;
-            public short DisplayPriority;
-            public short SubPriority;
-            public TeamValue Team;
-            public StringId DisplayString;
-            public StringId DisplayMedal; // This is only valid on Flavor Events and will not award a medal for Engine Events
-
-            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
-            public uint UnknownHO;
-
-            public float DisplayTime; // seconds
-            public RequiredFieldValue RequiredField;
-            public RequiredFieldValue ExcludedAudience;
-            public GameEngineEventSplitscreenSuppressionEnumDefinition SplitscreenSuppression;
-
-            [TagField(Length = 0x2, Flags = Padding)]
-            public byte[] Padding0;
-
-            public StringId PrimaryString;
-            public int PrimaryStringDuration; // seconds
-            public StringId PluralDisplayString;
-            public float SoundDelayAnnouncerOnly;
-            public GameEngineSoundResponseFlagsDefinition SoundFlags;
-
-            [TagField(Length = 0x2, Flags = Padding)]
-            public byte[] Padding1;
-
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag EnglishSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag JapaneseSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag GermanSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag FrenchSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag SpanishSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag LatinAmericanSpanishSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag ItalianSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag KoreanSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag ChineseTraditionalSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag ChineseSimplifiedSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag PortugueseSound;
-            [TagField(ValidTags = new [] { "snd!" })] public CachedTag PolishSound;
-            
-            public CachedTag ProbablyRussianSound; // cfgt is referenced here?
-
-            [Flags]
-            public enum GameEngineEventFlagsDefinition : ushort
-            {
-                QuantityMessage = 1 << 0,
-                SuppressText = 1 << 1
-            }
-
-            public enum TypeValue : short
-            {
-                General,
-                Flavor,
-                Slayer,
-                CaptureTheFlag,
-                Oddball,
-                Unused,
-                KingOfTheHill,
-                Vip,
-                Juggernaut,
-                Territories,
-                Assault,
-                Infection,
-                Survival,
-                Unknown
-            }
-
-            public enum AudienceValue : short
-            {
-                CausePlayer,
-                CauseTeam,
-                EffectPlayer,
-                EffectTeam,
-                All
-            }
-
-            public enum TeamValue : short
-            {
-                NonePlayerOnly,
-                Cause,
-                Effect,
-                All
-            }
-
-            public enum RequiredFieldValue : short
-            {
-                None,
-                CausePlayer,
-                CauseTeam,
-                EffectPlayer,
-                EffectTeam
-            }
-
-            [Flags]
-            public enum GameEngineSoundResponseFlagsDefinition : ushort
-            {
-                AnnouncerSound = 1 << 0
-            }
-
-            public enum GameEngineEventSplitscreenSuppressionEnumDefinition : short
-            {
-                None,
-                SuppressAudio,
-                SuppressAudioIfOverlapping,
-                SuppressText,
-                SuppressAudioAndText
-            }
-        }
 
         [TagStructure(Size = 0x10)]
         public class ArmorCustomization : TagStructure
