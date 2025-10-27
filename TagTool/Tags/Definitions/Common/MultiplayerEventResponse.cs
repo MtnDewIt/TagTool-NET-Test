@@ -10,8 +10,8 @@ namespace TagTool.Tags.Definitions.Common
 {
     [TagStructure(Size = 0x104, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0x108, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x10C, MaxVersion = CacheVersion.HaloOnline449175)]
-    [TagStructure(Size = 0x20C, MinVersion = CacheVersion.HaloOnline498295)]
+    [TagStructure(Size = 0x10C, MaxVersion = CacheVersion.Eldorado449175)]
+    [TagStructure(Size = 0x20C, MinVersion = CacheVersion.Eldorado498295)]
     public class MultiplayerEventResponse : TagStructure
     {
         public GameEngineEventFlags Flags;
@@ -23,7 +23,7 @@ namespace TagTool.Tags.Definitions.Common
         [TagField(Flags = TagFieldFlags.Label, MinVersion = CacheVersion.Halo3ODST)]
         public StringId Event;
 
-        [TagField(Length = 256, MinVersion = CacheVersion.HaloOnline498295)]
+        [TagField(Length = 256, MinVersion = CacheVersion.Eldorado498295)]
         public string Unknown1;
 
         public AudienceValue Audience;
@@ -37,9 +37,9 @@ namespace TagTool.Tags.Definitions.Common
         public StringId DisplayString;
         public StringId MedalAward;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.EldoradoED)]
         public short EarnedWp; // earned wp/exp
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloOnlineED)]
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.EldoradoED)]
         public byte[] Padding1;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST)]

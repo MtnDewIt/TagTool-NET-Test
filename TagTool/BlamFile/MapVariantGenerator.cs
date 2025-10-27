@@ -433,7 +433,7 @@ namespace TagTool.BlamFile
             mapVariant.SpentBudget = 0;
             mapVariant.HelpersEnabled = true;
             mapVariant.Objects = Enumerable.Range(0, 640).Select(x => CreateDefaultPlacement()).ToArray();
-            mapVariant.ObjectTypeStartIndex = Enumerable.Range(0, 16).Select(x => (short)0).ToArray();
+            mapVariant.ObjectTypeStartIndex = Enumerable.Range(0, 15).Select(x => (short)0).ToArray();
             mapVariant.Quotas = Enumerable.Range(0, 256).Select(x => CreateDefaultPaletteItem()).ToArray();
             mapVariant.SimulationEntities = Enumerable.Range(0, 80).Select(x => -1).ToArray();
             return mapVariant;
