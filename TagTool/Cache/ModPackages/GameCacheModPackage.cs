@@ -58,42 +58,20 @@ namespace TagTool.Cache
             SetActiveTagCache(0);
         }
 
-        public override object Deserialize(Stream stream, CachedTag instance)
+        public override object Deserialize(Stream stream, CachedTag instance, Type type)
         {
-            var modStream = (ModPackageStream)stream;
-
-            var definitionType = TagCache.TagDefinitions.GetTagDefinitionType(instance.Group);
-            var modCachedTag = TagCache.GetTag(instance.Index) as CachedTagEldorado;
-            // deserialization can happen in the base cache if the tag in the mod pack is only a reference
-            if (modCachedTag.IsEmpty())
-            {
-                var baseInstance = BaseCacheReference.TagCache.GetTag(instance.Index);
-                return BaseCacheReference.Deserialize(modStream.BaseStream, baseInstance);
-            }
-            else
-            {
-                var context = CreateTagSerializationContext(modStream, modCachedTag);
-                return Deserializer.Deserialize(context, definitionType);
-            }
-        }
-
-        public override T Deserialize<T>(Stream stream, CachedTag instance)
-        {
-            var modStream = (ModPackageStream)stream;
-
             var modCachedTag = TagCache.GetTag(instance.Index) as CachedTagEldorado;
             if (modCachedTag.IsEmpty())
             {
                 var baseInstance = BaseCacheReference.TagCache.GetTag(instance.Index);
-                return BaseCacheReference.Deserialize<T>(modStream.BaseStream, baseInstance);
+                return BaseCacheReference.Deserialize(((ModPackageStream)stream).BaseStream, baseInstance, type);
             }
             else
-                return Deserializer.Deserialize<T>(CreateTagSerializationContext(stream, modCachedTag));
+                return Deserializer.Deserialize(CreateTagSerializationContext(stream, modCachedTag), type);
         }
 
         public override void Serialize(Stream stream, CachedTag instance, object definition)
         {
-            definition = ConvertResources(definition);
             Serializer.Serialize(CreateTagSerializationContext(stream, instance), definition);
         }
 
@@ -199,39 +177,6 @@ namespace TagTool.Cache
                 BaseModPackage.Files.Add(path, file);
                 Console.WriteLine("Overwriting Existing file: " + path);
             }
-        }
-
-        private object ConvertResources(object data)
-        {
-            switch (data)
-            {
-                case PageableResource resource:
-                    return ConvertResource(resource);
-                case TagStructure tagStruct:
-                    foreach (var field in tagStruct.GetTagFieldEnumerable(Version, Platform))
-                        field.SetValue(data, ConvertResources(field.GetValue(tagStruct)));
-                    break;
-                case IList collection:
-                    for (var i = 0; i < collection.Count; i++)
-                        collection[i] = ConvertResources(collection[i]);
-                    break;
-            }
-            return data;
-        }
-           
-        private PageableResource ConvertResource(PageableResource resource)
-        {
-            resource.GetLocation(out ResourceLocation location);
-            if (location == ResourceLocation.None)
-                return resource;
-            if (location == ResourceLocation.Mods)
-                return resource;
-
-            // Console.WriteLine($"Converting resource {resource.Page.Index}");
-            var rawResource = BaseCacheReference.ResourceCaches.ExtractRawResource(resource);
-            resource.ChangeLocation(ResourceLocation.Mods);
-            ResourceCaches.AddRawResource(resource, rawResource);
-            return resource;
         }
     }
 }

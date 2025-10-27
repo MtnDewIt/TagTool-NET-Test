@@ -1,7 +1,8 @@
-using TagTool.Cache;
-using TagTool.Common;
 using System;
 using System.Collections.Generic;
+using TagTool.Cache;
+using TagTool.Common;
+using TagTool.Tags.Definitions.Common;
 using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
@@ -369,21 +370,21 @@ namespace TagTool.Tags.Definitions
             public CachedTag CommunicationSounds;
 
             [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
-            public List<EventBlock> EarnWpEvents;
+            public List<MultiplayerEventResponse> EarnWpEvents;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> GeneralEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> FlavorEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> SlayerEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> CtfEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> OddballEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> KingOfTheHillEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> VipEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> JuggernautEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> TerritoriesEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> AssaultEvents;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<EventBlock> InfectionEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> GeneralEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> FlavorEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> SlayerEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> CtfEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> OddballEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> KingOfTheHillEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> VipEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> JuggernautEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> TerritoriesEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> AssaultEvents;
+            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public List<MultiplayerEventResponse> InfectionEvents;
             [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Eldorado700123)]
-            public List<EventBlock> GunGameEvents;
+            public List<MultiplayerEventResponse> GunGameEvents;
 
             public int MaximumFragCount;
             public int MaximumPlasmaCount;
@@ -474,275 +475,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(ValidTags = new[] { "chdt" })] public CachedTag Survival;
             }
 
-            [TagStructure(Size = 0x104, MaxVersion = CacheVersion.Halo3Retail)]
-            [TagStructure(Size = 0x108, MaxVersion = CacheVersion.Halo3ODST)]
-            [TagStructure(Size = 0x10C, MaxVersion = CacheVersion.Eldorado327043)]
-            [TagStructure(Size = 0x20C, MinVersion = CacheVersion.Eldorado372731)]
-            public class EventBlock : TagStructure
-            {
-                public GameEngineEventFlags Flags;
-                public TypeValue RuntimeEventType;
-
-                [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                public GameEngineGeneralEvent Events;
-
-                [TagField(Flags = Label, MinVersion = CacheVersion.Halo3ODST)]
-                public StringId Event;
-
-                [TagField(Length = 256, MinVersion = CacheVersion.Eldorado372731)]
-                public string Unknown1;
-
-                public AudienceValue Audience;
-                public short DisplayPriority;
-                public short SubPriority;
-                public EventResponseContext DisplayContext;
-
-                [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Halo3Retail)]
-                public byte[] Padding0;
-
-                public StringId DisplayString;
-                public StringId MedalAward;
-
-                [TagField(MinVersion = CacheVersion.EldoradoED)]
-                public short EarnedWp; // earned wp/exp
-                [TagField(Length = 2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.EldoradoED)]
-                public byte[] Padding1;
-
-                [TagField(MinVersion = CacheVersion.Halo3ODST)]
-                public float SurvivalDisplayTime; // seconds
-
-                public EventInputEnum RequiredField;
-                public EventInputEnum ExcludedAudience;
-                public EventInputEnum SplitscreenSuppression;
-
-                [TagField(Length = 2, Flags = Padding)]
-                public byte[] Padding2;
-
-                public StringId PrimaryString;
-                public int PrimaryStringDuration;
-                public StringId PluralDisplayString;
-                public float SoundDelayAnnouncerOnly;
-                public SoundResponseFlags SoundFlags;
-
-                [TagField(Length = 2, Flags = Padding)]
-                public byte[] Padding3;
-
-                public CachedTag EnglishSound;
-                public CachedTag JapaneseSound;
-                public CachedTag GermanSound;
-                public CachedTag FrenchSound;
-                public CachedTag SpanishSound;
-                public CachedTag LatinAmericanSpanishSound;
-                public CachedTag ItalianSound;
-                public CachedTag KoreanSound;
-                public CachedTag ChineseTraditionalSound;
-                public CachedTag ChineseSimplifiedSound;
-                public CachedTag PortugueseSound;
-                public CachedTag PolishSound;
-                public float Probability;
-                public List<SoundResponseDefinitionBlock> SoundPermutations;
-
-                [Flags]
-                public enum GameEngineEventFlags : ushort
-                {
-                    None = 0,
-                    QuantityMessage = 1 << 0,
-                    SuppressText = 1 << 1,
-                }
-
-                public enum TypeValue : short
-                {
-                    General,
-                    Flavor,
-                    Slayer,
-                    CaptureTheFlag,
-                    Oddball,
-                    Unused,
-                    KingOfTheHill,
-                    Vip,
-                    Juggernaut,
-                    Territories,
-                    Assault,
-                    Infection,
-                    Survival,
-                    GunGame,
-                }
-
-                public enum GameEngineGeneralEvent : short 
-                {
-                    Extermination,
-                    Perfection,
-                    DoubleKill,
-                    TripleKill,
-                    Overkill,
-                    Killtacular,
-                    Killtrocity,
-                    Killimanjaro,
-                    Killtastrophe,
-                    Killpocalypse,
-                    Killionaire,
-                    KillingSpree,
-                    KillingFrenzy,
-                    RunningRiot,
-                    Rampage,
-                    Untouchable,
-                    Invincible,
-                    SniperSpree,
-                    Sharpshooter,
-                    ShotgunSpree,
-                    OpenSeason,
-                    SplatterSpree,
-                    VehicularManslaughter,
-                    SwordSpree,
-                    SliceNDice,
-                    JuggernautSpree,
-                    Unstoppable,
-                    InfectionSpree,
-                    MmmmBrains,
-                    ZombieKillingSpree,
-                    HellsJanitor,
-                    IsQuisnamProteroDamno,
-                    HailToTheKing,
-                    Bulltrue,
-                    Splatter,
-                    Highjack,
-                    Skyjack,
-                    DeathFromTheGrave,
-                    Killjoy,
-                    LaserKill,
-                    StickyKill,
-                    SniperKill,
-                    Assassin,
-                    BeatDown,
-                    Incineration,
-                    Wheelman,
-                    BombPlanted,
-                    KilledBombCarrier,
-                    KilledVIP,
-                    KilledJuggernaut,
-                    OddballKill,
-                    FlagScore,
-                    KilledFlagCarrier,
-                    FlagKill,
-                    LastManStanding,
-                    SandboxNotEnoughRoom,
-                    SandboxTooManyOnMap,
-                    TripleDouble,
-                    Steaktacular,
-                    Inconceivable,
-                    Unfrigginbelievable,
-                    BruteShotKill,
-                    FuelRodCannonKill,
-                    GrenadeKill,
-                    GravityHammerKill,
-                    PlasmaGrenadeKill,
-                    RocketLauncherKill,
-                    NeedlerKill,
-                    SentinelBeamKill,
-                    SwordKill,
-                    TurretKill,
-                    ComebackKill,
-                    Headshot,
-                    GenericKill,
-                    VehicleKill,
-                    EnvironmentalKill,
-                    FirstStrike,
-                    LastStrike,
-                    Protector,
-                    Avenger,
-                    CloseCall,
-                    ReloadThis,
-                    Revenge,
-                    Snapshot,
-                    VehicleDestroyed,
-                    Assist,
-                    VehicleDestroyAssist,
-                    BallHold10s,
-                    BallHold20s,
-                    BallHold30s,
-                    BallHold45s,
-                    BallHold60s,
-                    BallMultikillX3,
-                    BallCarrierKill,
-                    BallFirstTouch,
-                    HillFirstPoint,
-                    HillDefense,
-                    HillOffense,
-                    HillDominance,
-                    FlagTaken,
-                    FlagReturned,
-                    FlagRunner,
-                    FlagChampion,
-                    BombDefense,
-                    BombDefused,
-                    Disarmed,
-                    Saboteur,
-                    TerritoryCaptured,
-                    Territorial,
-                    Triumvirate,
-                }
-
-                public enum AudienceValue : short
-                {
-                    CausePlayer,
-                    CauseTeam,
-                    EffectPlayer,
-                    EffectTeam,
-                    All
-                }
-
-                public enum EventResponseContext : short
-                {
-                    Self,
-                    Friendly,
-                    Enemy,
-                    Neutral,
-                    Unknown4, // HO
-                    Unknown5  // HO
-                }
-
-                public enum EventInputEnum : short
-                {
-                    None,
-                    CausePlayer,
-                    CauseTeam,
-                    EffectPlayer,
-                    EffectTeam
-                }
-
-                [Flags]
-                public enum SoundResponseFlags : ushort
-                {
-                    AnnouncerSound = 1 << 0
-                }
-
-                [TagStructure(Size = 0xC8)]
-                public class SoundResponseDefinitionBlock : TagStructure
-                {
-                    public GameEngineSoundResponseFlagsDefinition SoundFlags;
-                    [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
-                    public byte[] AGQD;
-                    public CachedTag EnglishSound;
-                    public CachedTag JapaneseSound;
-                    public CachedTag GermanSound;
-                    public CachedTag FrenchSound;
-                    public CachedTag SpanishSound;
-                    public CachedTag MexicanSound;
-                    public CachedTag ItalianSound;
-                    public CachedTag KoreanSound;
-                    public CachedTag ChineseSoundtraditional;
-                    public CachedTag ChineseSoundsimplified;
-                    public CachedTag PortugueseSound;
-                    public CachedTag PolishSound;
-                    public float Probability;
-
-                    [Flags]
-                    public enum GameEngineSoundResponseFlagsDefinition : ushort
-                    {
-                        AnnouncerSound = 1 << 0
-                    }
-                }
-            }
+ 
 
             [TagStructure(Size = 0x21C, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x1EC, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]

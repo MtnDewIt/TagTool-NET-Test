@@ -425,7 +425,7 @@ namespace TagTool.Tags.Definitions
         public CachedTag MissionVisionMode;
 
         [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
-        public List<BackgroundBitmapReference> BackgroundBitmapReferences;
+        public List<TagReferenceBlock> BackgroundReferences;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<TagReferenceBlock> ModelReferences;

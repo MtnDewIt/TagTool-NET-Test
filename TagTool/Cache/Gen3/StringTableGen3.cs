@@ -13,10 +13,7 @@ namespace TagTool.Cache.Gen3
 
         public StringTableGen3(EndianReader reader, MapFile baseMapFile) : base()
         {
-            Version = baseMapFile.Version;
-
             var gen3Header = baseMapFile.Header;
-            var cachePlatform = baseMapFile.Platform;
             var sectionTable = gen3Header.GetSectionTable();
 
             var stringCount = gen3Header.GetStringIdCount();
@@ -26,9 +23,9 @@ namespace TagTool.Cache.Gen3
             var namespaceCount = gen3Header.GetStringIdNamespaceCount();
             var namespaceOffset = gen3Header.GetStringIdNamespaceOffset();
 
-            if (cachePlatform == CachePlatform.Original)
+            if (baseMapFile.Platform == CachePlatform.Original)
             {
-                switch (Version)
+                switch (baseMapFile.Version)
                 {
                     case CacheVersion.Halo3Beta:
                         Resolver = new StringIdResolverHalo3Beta();
@@ -59,12 +56,12 @@ namespace TagTool.Cache.Gen3
                         break;
 
                     default:
-                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, cachePlatform));
+                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(baseMapFile.Version, baseMapFile.Platform));
                 }
             }
-            else if (cachePlatform == CachePlatform.MCC) 
+            else if (baseMapFile.Platform == CachePlatform.MCC) 
             {
-                switch (Version) 
+                switch (baseMapFile.Version) 
                 {
                     case CacheVersion.Halo3XboxOne when baseMapFile.Header.GetBuildNumber().Equals("Oct  1 2014 16:20:07"):
                         Resolver = new StringIdResolverHalo3XboxOneA();
@@ -86,7 +83,7 @@ namespace TagTool.Cache.Gen3
 
             uint stringIdTableOffset;
             uint stringIdDataOffset;
-            if (Version > CacheVersion.Halo3Beta)
+            if (baseMapFile.Version > CacheVersion.Halo3Beta)
             {
                 stringIdTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
                 stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);

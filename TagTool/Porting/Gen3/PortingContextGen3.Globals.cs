@@ -10,6 +10,7 @@ using TagTool.Common.Logging;
 using TagTool.Serialization;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Porting.Gen3
 {
@@ -85,7 +86,7 @@ namespace TagTool.Porting.Gen3
             return matg;
         }
 
-        private void MergeMultiplayerEvent(Stream cacheStream, Stream blamCacheStream, MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock edEvent, MultiplayerGlobals.MultiplayerRuntimeBlock.EventBlock h3Event)
+        private void MergeMultiplayerEvent(Stream cacheStream, Stream blamCacheStream, MultiplayerEventResponse edEvent, MultiplayerEventResponse h3Event)
         {
             if (h3Event.EnglishSound != null)
                 edEvent.EnglishSound = ConvertTag(cacheStream, blamCacheStream, h3Event.EnglishSound);

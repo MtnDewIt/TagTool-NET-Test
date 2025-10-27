@@ -58,6 +58,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new ForEachCommand(contextStack, cache));
             context.AddCommand(new ListAllStringsCommand(cache));
             context.AddCommand(new StringIdCommand(cache));
+            context.AddCommand(new DumpStringIdNamespacesCommand(cache));
             context.AddCommand(new GenerateAssemblyPluginsCommand());
             context.AddCommand(new DuplicateTagCommand(cache));
             context.AddCommand(new DeleteTagCommand(cache));
@@ -86,7 +87,6 @@ namespace TagTool.Commands.Tags
             {
                 var hoCache = cache as GameCacheEldoradoBase;
                 context.AddCommand(new SaveTagNamesCommand(hoCache));
-                context.AddCommand(new SaveModdedTagsCommand(hoCache));
                 context.AddCommand(new CreateTagCommand(hoCache));
                 context.AddCommand(new ReplaceTagCommand(hoCache));
                 context.AddCommand(new ImportTagCommand(hoCache));

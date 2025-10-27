@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Commands.Editing;
 
 namespace TagTool.Common
 {
@@ -23,6 +22,8 @@ namespace TagTool.Common
         /// </summary>
         public T Length => (T)Convert.ChangeType(Convert.ToDouble(Upper) - Convert.ToDouble(Lower), typeof(T));
 
+        object IBounds.Lower { readonly get => Lower; set => Lower = (T)value; }
+        object IBounds.Upper { readonly get => Upper; set => Upper = (T)value; }
 
         /// <summary>
         /// Creates a new range from a lowerimum and a upperimum value.
@@ -53,36 +54,18 @@ namespace TagTool.Common
         public override int GetHashCode() => 13 * 17 + Lower.GetHashCode() * 17 + Upper.GetHashCode();
 
         public override string ToString() => $"{{ Lower: {Lower}, Upper: {Upper} }}";
-
-        public bool TryParse(GameCache cache, List<string> args, out IBounds result, out string error)
-        {
-            result = null;
-            error = null;
-
-            var argType = GetType().GenericTypeArguments[0];
-            var argCount = SetFieldCommand.RangeArgCount(argType);
-
-            if (argCount * 2 != args.Count)
-            {
-                error = $"{args.Count} arguments supplied; should be {argCount * 2}";
-                return false;
-            }
-
-            var min = SetFieldCommand.ParseArgs(cache, argType, null, args.Take(argCount).ToList());
-            var max = SetFieldCommand.ParseArgs(cache, argType, null, args.Skip(argCount).Take(argCount).ToList());
-            if (min.Equals(false) || max.Equals(false))
-            {
-                error = $"Invalid value parsed.";
-                return false;
-            }
-
-            result = Activator.CreateInstance(this.GetType(), new object[] { min, max }) as IBounds;
-            return true;
-        }
     }
 
-	public interface IBounds 
+	public interface IBounds
     {
-        bool TryParse(GameCache cache, List<string> args, out IBounds result, out string error);
+        /// <summary>
+        /// Gets the lowerimum value within the range. (Boxed)
+        /// </summary>
+        public object Lower { get; set; }
+
+        /// <summary>
+        /// Gets the upperimum value within the range. (Boxed)
+        /// </summary>
+        public object Upper { get; set; }
     }
 }

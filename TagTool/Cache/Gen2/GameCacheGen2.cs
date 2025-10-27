@@ -180,11 +180,8 @@ namespace TagTool.Cache
 
         #region Serialization
 
-        public override T Deserialize<T>(Stream stream, CachedTag instance) =>
-            Deserialize<T>(new Gen2SerializationContext(stream, this, (CachedTagGen2)instance));
-
-        public override object Deserialize(Stream stream, CachedTag instance) =>
-            Deserialize(new Gen2SerializationContext(stream, this, (CachedTagGen2)instance), TagCache.TagDefinitions.GetTagDefinitionType(instance.Group));
+        public override object Deserialize(Stream stream, CachedTag instance, Type type) =>
+            Deserialize(new Gen2SerializationContext(stream, this, (CachedTagGen2)instance), type);
 
         public override void Serialize(Stream stream, CachedTag instance, object definition)
         {

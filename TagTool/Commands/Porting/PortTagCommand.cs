@@ -122,7 +122,7 @@ namespace TagTool.Commands.Porting
 
             var padCount = Enum.GetNames(typeof(PortingFlags)).Max(flagName => flagName.Length);
 
-            foreach (var portingFlagInfo in typeof(PortingFlags).GetMembers(BindingFlags.Public | BindingFlags.Static).OrderBy(m => m.MetadataToken))
+            foreach (var portingFlagInfo in typeof(PortingFlags).GetMembers(BindingFlags.Public | BindingFlags.Static))
             {
                 var attr = portingFlagInfo.GetCustomAttribute<DescriptionAttribute>(false);
 

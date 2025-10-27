@@ -13,8 +13,6 @@ namespace TagTool.Cache.Gen4
 
         public StringTableGen4(EndianReader reader, MapFile baseMapFile) : base()
         {
-            Version = baseMapFile.Version;
-
             var gen4Header = baseMapFile.Header;
             var sectionTable = gen4Header.GetSectionTable();
 
@@ -31,7 +29,7 @@ namespace TagTool.Cache.Gen4
 
             if (baseMapFile.Platform == CachePlatform.Original)
             {
-                switch (Version) 
+                switch (baseMapFile.Version) 
                 {
                     case CacheVersion.Halo4E3:
                         Resolver = new StringIdResolverHalo4E3();
@@ -44,7 +42,7 @@ namespace TagTool.Cache.Gen4
                         break;
 
                     default:
-                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(Version, baseMapFile.Platform));
+                        throw new NotSupportedException(CacheVersionDetection.GetBuildName(baseMapFile.Version, baseMapFile.Platform));
                 }
             }
             else if (baseMapFile.Platform == CachePlatform.MCC)

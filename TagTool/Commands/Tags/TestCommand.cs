@@ -79,7 +79,6 @@ namespace TagTool.Commands
             cache.Version = version;
             cache.TagCacheEldorado.Version = version;
             cache.TagCacheEldorado.Header.CreationDate = LastModificationDate.CreateFromVersion(version);
-            cache.StringTableEldorado.Version = version;
             cache.Serializer = new TagSerializer(version, CachePlatform.Original);
             cache.Deserializer = new TagDeserializer(version, CachePlatform.Original);
             cache.ResourceCaches = new ResourceCachesEldorado(cache);

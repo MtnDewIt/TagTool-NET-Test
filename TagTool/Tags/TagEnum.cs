@@ -165,7 +165,7 @@ namespace TagTool.Tags
         private void Build()
         {
             int memberIndex = 0;
-            foreach (var fieldInfo in Info.Type.GetFields(BindingFlags.Static | BindingFlags.Public).OrderBy(x => x.MetadataToken))
+            foreach (var fieldInfo in Info.Type.GetFields(BindingFlags.Static | BindingFlags.Public))
             {
                 var attributes = fieldInfo.GetCustomAttributes<TagEnumMemberAttribute>(false);
                 var matchingAttributes = attributes.Where(a => CacheVersionDetection.TestAttribute(a, Info.CacheVersion, Info.CachePlatform));

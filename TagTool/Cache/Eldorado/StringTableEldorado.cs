@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using TagTool.Cache.Eldorado.Resolvers;
 using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.IO;
 
 namespace TagTool.Cache.Eldorado
@@ -15,12 +16,11 @@ namespace TagTool.Cache.Eldorado
 
         public StringTableEldorado(CacheVersion version)
         {
-            Version = version;
             Resolver = null;
 
-            if (CacheVersionDetection.Compare(Version, CacheVersion.Eldorado700123) >= 0)
+            if (CacheVersionDetection.Compare(version, CacheVersion.Eldorado700123) >= 0)
                 Resolver = new StringIdResolverMS30();
-            else if (CacheVersionDetection.Compare(Version, CacheVersion.Eldorado498295) >= 0)
+            else if (CacheVersionDetection.Compare(version, CacheVersion.Eldorado498295) >= 0)
                 Resolver = new StringIdResolverMS28();
             else
                 Resolver = new StringIdResolverMS23();
@@ -131,37 +131,20 @@ namespace TagTool.Cache.Eldorado
         private void CreateFromStrings()
         {
             Clear();
-            Add("");    // invalid stringid
+            Add("");
 
-            foreach(var str in Enum.GetNames(typeof(GUIStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(ContentPromptStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(GameplayPromptStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(NetworkStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(MultiplayerEventStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(EventStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(BlfStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(GlobalStrings)))
-                Add(TrimStringID(str));
-
-            foreach (var str in Enum.GetNames(typeof(TagStrings)))
+            string filePath = Path.Combine(DirectoryPaths.Data, "string_ids\\string_ids_ms23.txt");
+            if (!File.Exists(filePath))
             {
-                if (str == "string_id_")  // skip invalid string since we already added it
-                    continue;
-                Add(TrimStringID(str));
+                Log.Warning($"Could not find \"{filePath}\"");
+                return;
+            }
+
+            foreach (string str in File.ReadAllLines(filePath))
+            {
+                string[] parts = str.Split('\"');
+                if (parts.Length == 3)
+                    Add(parts[1]);
             }
         }
 

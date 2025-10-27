@@ -19,13 +19,12 @@ namespace TagTool.Serialization
 	/// </summary>
     public class TagDeserializer
     {
-        public CacheVersion Version { get; protected set; }
-        public CachePlatform CachePlatform { get; protected set; }
-        protected readonly int TagBlockSize;
-        protected readonly int TagDataSize;
+        public readonly CacheVersion Version;
+        public readonly CachePlatform CachePlatform;
+        private readonly int TagBlockSize;
+        private readonly int TagDataSize;
         private readonly TagStructure.VersionedCache StructCache;
         private readonly TagEnum.VersionedCache EnumCache;
-
 
         /// <summary>
         /// Constructs a tag deserializer for a specific engine version.
@@ -50,16 +49,14 @@ namespace TagTool.Serialization
         /// <returns>The object that was read.</returns>
         public T Deserialize<T>(ISerializationContext context)
         {
-            var result = Deserialize(context, typeof(T));
-            return (T)Convert.ChangeType(result, typeof(T));
+            return (T)Deserialize(context, typeof(T));
         }
 
         public IEnumerable<T> Deserialize<T>(ISerializationContext context, int count)
         {
             for (int i = 0; i < count; i++)
             {
-                var result = Deserialize(context, typeof(T));
-                yield return (T)Convert.ChangeType(result, typeof(T));
+                yield return (T)Deserialize(context, typeof(T));
             }
         }
 
@@ -673,24 +670,25 @@ namespace TagTool.Serialization
             }
 
             var result = context.GetTagByIndex(reader.ReadInt32());
+#if DEBUG
+            CheckTagReference(valueInfo, result);
+#endif
 
-            if (group != Tag.Null && group.Value != 0)
+            return result;
+        }
+
+        private static void CheckTagReference(TagFieldAttribute valueInfo, CachedTag result)
+        {
+            if (result == null || valueInfo == null || valueInfo.ValidTags == null)
+                return;
+
+            if (!valueInfo.ValidTags.Any(x => result.IsInGroup(x)))
             {
-                if (result != null && valueInfo != null && valueInfo.ValidTags != null)
-                {
-                    if(!valueInfo.ValidTags.Any(x => result.IsInGroup(x)))
-                    {
-                        var groups = string.Join(", ", valueInfo.ValidTags);
-                        Log.Warning($"Tag reference with invalid group found during deserialization:"
-                            + $"\n - { result.Name }.{ result.Group.Tag}"
-                            + $"\n - valid groups: {groups}");
-                    }
-                }
-
-                return result;
+                var groups = string.Join(", ", valueInfo.ValidTags);
+                Log.Warning($"Tag reference with invalid group found during deserialization:"
+                    + $"\n - {result.Name}.{result.Group.Tag}"
+                    + $"\n - valid groups: {groups}");
             }
-
-            return null;
         }
 
         /// <summary>
