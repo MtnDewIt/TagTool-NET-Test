@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using TagTool.Cache;
-using TagTool.Common;
-using TagTool.Commands.Common;
-using TagTool.Tags.Definitions;
-using System.Text.RegularExpressions;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using TagTool.Cache;
+using TagTool.Commands.Common;
 using TagTool.Commands.Strings;
+using TagTool.Common;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Unicode
 {
@@ -87,6 +88,8 @@ namespace TagTool.Commands.Unicode
                 added = true;
             }
 
+            newValue = newValue != null ? DecodeNonAsciiCharacters(newValue) : null;
+
             // Save the tag data
             Definition.SetString(localizedStr, language, newValue);
 
@@ -96,6 +99,49 @@ namespace TagTool.Commands.Unicode
                 Console.WriteLine("String changed successfully.");
 
             return true;
+        }
+
+        public static string DecodeNonAsciiCharacters(string value)
+        {
+            var specialchars = new Dictionary<string, char>
+            {
+                {"\\r", '\r' },
+                {"\\n", '\n' },
+                {"\\t", '\t' }
+            };
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (value[i] == '\\')
+                {
+                    if (i + 1 < value.Length && value[i + 1] == 'u' && i + 5 < value.Length)
+                    {
+                        string unicodeHex = value.Substring(i + 2, 4);
+                        if (int.TryParse(unicodeHex, NumberStyles.HexNumber, null, out int unicodeValue))
+                        {
+                            sb.Append((char)unicodeValue);
+                            i += 5;
+                            continue;
+                        }
+                    }
+
+                    foreach (var pair in specialchars)
+                    {
+                        if (value.Substring(i).StartsWith(pair.Key))
+                        {
+                            sb.Append(pair.Value);
+                            i += pair.Key.Length - 1;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    sb.Append(value[i]);
+                }
+            }
+            return sb.ToString();
         }
     }
 }

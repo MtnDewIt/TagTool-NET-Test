@@ -1,7 +1,7 @@
-using TagTool.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
@@ -51,24 +51,33 @@ namespace TagTool.Tags.Definitions
         /// <param name="newValue">The new value. Can be <c>null</c>.</param>
         public void SetString(LocalizedString str, GameLanguage language, string newValue)
         {
-            // Replace the string
             var offset = str.Offsets[(int)language];
+
             if (offset < 0 || offset >= Data.Length)
-                offset = Data.Length; // Add the string at the end
-            var oldLength = GetStringLength(offset);
+                offset = Data.Length;
+
+            var endOffset = offset;
+
+            while (endOffset < Data.Length && Data[endOffset] != 0)
+                endOffset++;
+
+            var oldLength = endOffset - offset;
+
             var bytes = (newValue != null) ? Encoding.UTF8.GetBytes(newValue) : new byte[0];
-            if (bytes.Length > 0 && offset == Data.Length)
+
+            if (bytes.Length > 0 || newValue == string.Empty && offset == Data.Length)
             {
-                // If it's a new string, null-terminate it
                 var nullTerminated = new byte[bytes.Length + 1];
                 Buffer.BlockCopy(bytes, 0, nullTerminated, 0, bytes.Length);
                 bytes = nullTerminated;
             }
+
             Data = ArrayUtil.Replace(Data, offset, oldLength, bytes);
-            
-            // Update string offsets
+
             str.Offsets[(int)language] = (bytes.Length > 0) ? offset : -1;
+
             var sizeDelta = bytes.Length - oldLength;
+
             foreach (var adjustStr in Strings)
             {
                 for (var i = 0; i < adjustStr.Offsets.Length; i++)
