@@ -11,8 +11,6 @@ namespace TagTool.Cache.Gen4
 
         public StringTableGen4(EndianReader reader, MapFile baseMapFile) : base()
         {
-            Version = baseMapFile.Version;
-
             var Gen4Header = (CacheFileHeaderGen4)baseMapFile.Header;
             var stringIDHeader = Gen4Header.GetStringIDHeader();
             var sectionTable = Gen4Header.SectionTable;

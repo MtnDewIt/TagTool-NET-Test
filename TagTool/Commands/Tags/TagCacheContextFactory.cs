@@ -56,6 +56,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new ForEachCommand(contextStack, cache));
             context.AddCommand(new ListAllStringsCommand(cache));
             context.AddCommand(new StringIdCommand(cache));
+            context.AddCommand(new DumpStringIdNamespacesCommand(cache));
             context.AddCommand(new GenerateAssemblyPluginsCommand());
             context.AddCommand(new DuplicateTagCommand(cache));
             context.AddCommand(new DeleteTagCommand(cache));
