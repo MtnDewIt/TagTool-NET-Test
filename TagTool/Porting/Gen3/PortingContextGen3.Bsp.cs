@@ -1,7 +1,9 @@
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Geometry;
@@ -215,9 +217,18 @@ namespace TagTool.Porting.Gen3
 
             List<DecoratorData> decoratorData = ParseVertices(vertices);
 
-            foreach(var data in decoratorData)
+            foreach(ref readonly var data in CollectionsMarshal.AsSpan(decoratorData))
             {
-                var newGrid = grid.DeepClone();
+                var newGrid = new ScenarioStructureBsp.Cluster.DecoratorGrid()
+                {
+                    BoundingSphereOffset = grid.BoundingSphereOffset,
+                    GridSize = grid.GridSize,
+                    ModelStartIndex = grid.ModelStartIndex,
+                    Position = grid.Position,
+                    Radius = grid.Radius,
+                    VertexBufferOffset = grid.VertexBufferOffset,
+                    Vertices = grid.Vertices // shallow copy
+                };
 
                 newGrid.HaloOnlineInfo = new ScenarioStructureBsp.Cluster.DecoratorGrid.HaloOnlineDecoratorInfo();
                 newGrid.Amount = data.Amount;
@@ -246,20 +257,21 @@ namespace TagTool.Porting.Gen3
 
         List<DecoratorData> ParseVertices(List<TinyPositionVertex> vertices)
         {
-            List<DecoratorData> decoratorData = new List<DecoratorData>();
+            List<DecoratorData> decoratorData = [];
 
             int currentIndex = 0;
             while (currentIndex < vertices.Count)
             {
                 var currentVariant = (vertices[currentIndex].Variant >> 8) & 0xff;
 
-                DecoratorData data = new DecoratorData(0, (short)currentVariant, currentIndex * 16);
-                decoratorData.Add(data);
+                int amount = 0;
+                int startIndex = currentIndex;
                 while (currentIndex < vertices.Count && currentVariant == ((vertices[currentIndex].Variant >> 8) & 0xff))
                 {
-                    data.Amount++;
+                    amount++;
                     currentIndex++;
                 }
+                decoratorData.Add(new DecoratorData((short)amount, (short)currentVariant, startIndex * 16));
             }
             return decoratorData;
         }
@@ -370,11 +382,11 @@ namespace TagTool.Porting.Gen3
         }
     }
 
-    class DecoratorData
+    struct DecoratorData
     {
-        public short Amount;
-        public short Variant;
-        public int GeometryOffset;
+        public readonly short Amount;
+        public readonly short Variant;
+        public readonly int GeometryOffset;
 
         //Add position data if needed
 

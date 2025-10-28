@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Serialization;
+using System.Runtime.InteropServices;
 
 namespace TagTool.Geometry
 {
@@ -390,7 +391,7 @@ namespace TagTool.Geometry
             {
                 if (mesh.RigidVertices != null)
                 {
-                    foreach (var v in mesh.RigidVertices)
+                    foreach(ref RigidVertex v in mesh.RigidVertices.AsSpan())
                     {
                         v.Position = compressor.CompressPosition(v.Position);
                         v.Texcoord = compressor.CompressUv(v.Texcoord);
@@ -398,7 +399,7 @@ namespace TagTool.Geometry
                 }
                 else if (mesh.SkinnedVertices != null)
                 {
-                    foreach (var v in mesh.SkinnedVertices)
+                    foreach (ref RigidVertex v in mesh.RigidVertices.AsSpan())
                     {
                         v.Position = compressor.CompressPosition(v.Position);
                         v.Texcoord = compressor.CompressUv(v.Texcoord);
