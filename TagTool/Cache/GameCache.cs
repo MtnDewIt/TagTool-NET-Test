@@ -91,6 +91,7 @@ namespace TagTool.Cache
                     return new GameCacheGen2(map, file);
 
                 case CacheVersion.Halo3Beta:
+                case CacheVersion.Halo3Epsilon:
                 case CacheVersion.Halo3Retail:
                 case CacheVersion.Halo3XboxOne:
                 case CacheVersion.Halo3ODST:

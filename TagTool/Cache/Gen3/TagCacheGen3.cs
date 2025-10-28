@@ -101,7 +101,7 @@ namespace TagTool.Cache.Gen3
             uint debugTagNameDataOffset;
             ulong tagDataSectionOffset;
 
-            if (Version > CacheVersion.Halo3Beta)
+            if (Version > CacheVersion.Halo3Epsilon)
             {
                 sectionOffset = sectionTable.GetSectionOffset(CacheFileSectionType.TagSection);
 

@@ -149,17 +149,10 @@ namespace TagTool.BlamFile
                     break;
 
                 case CacheFileVersion.Halo3Beta:
+                case CacheFileVersion.Halo3Epsilon:
                 case CacheFileVersion.Halo3:
                 case CacheFileVersion.Eldorado:
                         reader.SeekTo(0x11C);
-                    break;
-                case CacheFileVersion.HaloMCCUniversal:
-                    {
-                        if(version <= CacheVersion.HaloReach)
-                            reader.SeekTo(0xA0);
-                        else
-                            reader.SeekTo(0x98);
-                    }
                     break;
 
                 case CacheFileVersion.HaloReach:
@@ -185,7 +178,7 @@ namespace TagTool.BlamFile
         {
             var version = GetMapFileVersion(reader);
 
-            if (mapVersion == CacheFileVersion.HaloMCCUniversal)
+            if (mapVersion == CacheFileVersion.HaloMCC)
             {
                 reader.SeekTo(0xC);
                 var engineVersion = (CacheFileEngineType)reader.ReadSByte();

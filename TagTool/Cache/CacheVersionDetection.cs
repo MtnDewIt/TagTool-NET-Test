@@ -44,12 +44,19 @@ namespace TagTool.Cache
         {
             switch (buildName)
             {
+                case "01.01.14.2342":
+                case "01.03.14.0009":
+                case "01.08.15.1749":
                 case "01.09.25.2247":
                 case "01.10.12.2276":
+                case "01.12.09.0135":
                     version = CacheVersion.HaloXbox;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "01.00.00.0564":
+                case "01.00.00.0576":
+                case "01.05.22.0268":
+                case "01.07.30.0452":
                     version = CacheVersion.HaloPC;
                     cachePlatform = CachePlatform.Original;
                     break;
@@ -69,16 +76,45 @@ namespace TagTool.Cache
                     version = CacheVersion.Halo2Xbox;
                     cachePlatform = CachePlatform.Original;
                     break;
+                case "11028.07.03.23.1927.main":
                 case "11081.07.04.30.0934.main":
                 case "11091.07.05.11.1104.main":
                 case "11122.07.08.24.1808.main":
                     version = CacheVersion.Halo2PC;
                     cachePlatform = CachePlatform.Original;
                     break;
-                case "09699.07.05.01.1534.delta":
-                   version = CacheVersion.Halo3Beta;
+                case "05241.06.09.21.1534.first_playt":
+                    version = CacheVersion.Halo3PreAlpha;
                     cachePlatform = CachePlatform.Original;
                     break;
+                case "06481.06.11.17.1330.alpha_relea":
+                    version = CacheVersion.Halo3Alpha;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "09699.07.05.01.1534.delta":
+                    version = CacheVersion.Halo3Beta;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "08117.07.03.07.1702.delta":
+                case "08172.07.03.08.2240.delta":
+                    version = CacheVersion.Halo3MarchDelta;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "Mar  9 2007 22:22:32":
+                case "Mar 10 2007 16:16:44":
+                    version = CacheVersion.Halo3March9Delta;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "11637.07.08.02.2348.release":
+                    version = CacheVersion.Halo3Epsilon;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "11687.07.08.06.1504.main":
+                    version = CacheVersion.Halo3DLC;
+                    cachePlatform = CachePlatform.Original;
+                    break;
+                case "11729.07.08.10.0021.main":
+                case "11856.07.08.20.2332.release":
                 case "11855.07.08.20.2317.halo3_ship":
                 case "12065.08.08.26.0819.halo3_ship":
                     version = CacheVersion.Halo3Retail;
@@ -219,10 +255,7 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.MCC;
                     break;
 
-                case "May 29 2019 00:44:52":
-                case "Jun 24 2019 00:36:03":
-                case "Jul 30 2019 14:17:16":
-                case "Oct 24 2019 15:56:32":
+                case "Jun 21 2023 15:35:31":
                     version = CacheVersion.HaloReach;
                     cachePlatform = CachePlatform.MCC;
                     break;
@@ -787,7 +820,13 @@ namespace TagTool.Cache
         Halo2Beta,
         Halo2Xbox,
         Halo2PC,
+        Halo3PreAlpha,
+        Halo3Alpha,
         Halo3Beta,
+        Halo3MarchDelta,
+        Halo3March9Delta,
+        Halo3Epsilon,
+        Halo3DLC,
         Halo3Retail,
         Halo3XboxOne,
         Halo3ODST,

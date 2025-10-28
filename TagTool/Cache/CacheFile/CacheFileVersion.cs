@@ -2,15 +2,17 @@
 {
     public enum CacheFileVersion : int
     {
-        Invalid = 0x0,
-        HaloXbox = 0x5,
-        HaloPC = 0x7,
-        Halo2 = 0x8,
-        Halo3Beta = 0x9,
-        Halo3 = 0xB,
-        HaloReach = 0xC,
-        Eldorado = 0x12,
-        HaloMCCUniversal = 0xD,
-        HaloCustomEdition = 0x261
+        Invalid = 0,
+        HaloXbox = 5,
+        HaloPCBeta = 6,
+        HaloPC = 7,
+        Halo2 = 8,
+        Halo3Beta = 9,
+        Halo3Epsilon = 10,
+        Halo3 = 11,
+        HaloReach = 12,
+        HaloMCC = 13,
+        Eldorado = 18,
+        HaloCustomEdition = 609
     }
 }

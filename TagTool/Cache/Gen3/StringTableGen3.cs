@@ -31,6 +31,7 @@ namespace TagTool.Cache.Gen3
                         Resolver = new StringIdResolverHalo3Beta();
                         break;
 
+                    case CacheVersion.Halo3Epsilon:
                     case CacheVersion.Halo3Retail:
                         Resolver = new StringIdResolverHalo3();
                         break;
