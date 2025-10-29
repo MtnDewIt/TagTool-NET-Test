@@ -149,10 +149,10 @@ namespace TagTool.Commands.Sounds
                 var pitchRange = new PitchRange
                 {
                     ImportName = new StringId(5221),   //|default|
-                    RuntimePermutationFlags = -1,
+                    XsyncFlags = -1,
                     RuntimeDiscardedPermutationIndex = -1,
                     RuntimeLastPermutationIndex = -1,
-                    PermutationCount = (short)permutationCount,
+                    RuntimeUsablePermutationCount = (sbyte)permutationCount,
                     PitchRangeParameters = new PitchRangeParameter()
                 };
                 pitchRange.PitchRangeParameters.PlaybackBendBounds = new Bounds<short>(-32768, 32767);
@@ -296,10 +296,10 @@ namespace TagTool.Commands.Sounds
                         SampleCount = (uint)sampleCount
                     };
 
-                    perm.PermutationNumber = (uint)i;
+                    perm.RawInfoIndex = (short)i;
 
                     if (i != 0)
-                        perm.IsNotFirstPermutation = 1;
+                        perm.Flags = 1;
 
                     perm.PermutationChunks = new List<PermutationChunk>();
 
@@ -324,8 +324,8 @@ namespace TagTool.Commands.Sounds
                 Definition.PitchRanges.Add(pitchRange);
             }
 
-            Definition.Promotion.LongestPermutationDuration = (uint)(1000 * (double)maxPermutationSampleCount / (Definition.SampleRate.GetSampleRateHz()));
-            Definition.Promotion.TotalSampleSize = (uint)totalSampleCount;
+            Definition.MaximumPlayTime = (int)(1000 * (double)maxPermutationSampleCount / (Definition.SampleRate.GetSampleRateHz()));
+            Definition.TotalSampleCount = (uint)totalSampleCount;
 
 
             // remove extra info for now

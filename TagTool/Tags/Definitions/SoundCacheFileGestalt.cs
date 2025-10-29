@@ -168,7 +168,14 @@ namespace TagTool.Tags.Definitions
         /// <returns></returns>
         public int GetPermutationCount(int pitchRangeIndex, CachePlatform platform)
         {
-            var pitchRange = PitchRanges[pitchRangeIndex];
+            return GetPermutationCount(PitchRanges[pitchRangeIndex], platform);
+        }
+
+        /// <summary>
+        /// Get the number of permutation in the pitch range block.
+        /// </summary>
+        public int GetPermutationCount(PitchRange pitchRange, CachePlatform platform)
+        {
             if (platform == CachePlatform.MCC)
             {
                 return (int)((pitchRange.EncodedPermutationInfoMCC >> 20) & 63);
@@ -176,7 +183,7 @@ namespace TagTool.Tags.Definitions
             else
             {
                 return (pitchRange.EncodedPermutationCount >> 4) & 63;
-            } 
+            }
         }
 
         /// <summary>
@@ -187,6 +194,15 @@ namespace TagTool.Tags.Definitions
         public Permutation GetPermutation(int permutationIndex)
         {
             return Permutations[permutationIndex];
+        }
+
+        /// <summary>
+        /// Get permutation block.
+        /// </summary>
+        public Permutation GetPermutation(PitchRange pitchRange, int permutationIndex, CachePlatform platform)
+        {
+            int firstIndex = GetFirstPermutationIndex(pitchRange, platform);
+            return Permutations[firstIndex + permutationIndex];
         }
 
         /// <summary>
@@ -202,16 +218,13 @@ namespace TagTool.Tags.Definitions
         /// <summary>
         /// Get the total number of audio samples in a pitch range block.
         /// </summary>
-        /// <param name="pitchRangeIndex"></param>
-        /// <param name="platform"></param>
-        /// <returns></returns>
-        public uint GetSamplesPerPitchRange(int pitchRangeIndex, CachePlatform platform)
+        public uint GetSamplesPerPitchRange(PitchRange pitchRange, CachePlatform platform)
         {
             uint samples = 0;
 
-            var firstPermutationIndex = GetFirstPermutationIndex(pitchRangeIndex, platform);
+            var firstPermutationIndex = GetFirstPermutationIndex(pitchRange, platform);
 
-            for(int i = 0; i < GetPermutationCount(pitchRangeIndex, platform); i++)
+            for(int i = 0; i < GetPermutationCount(pitchRange, platform); i++)
             {
                 samples += GetPermutationSamples(firstPermutationIndex + i);
             }
@@ -233,7 +246,7 @@ namespace TagTool.Tags.Definitions
 
             for(int i = 0; i < permutationCount; i++)
             {
-                permutationOrder[i] = Permutations[pitchRange.FirstPermutationIndex + i].OverallPermutationIndex;
+                permutationOrder[i] = Permutations[pitchRange.FirstPermutationIndex + i].PermutationInfoIndex;
             }
             return permutationOrder;
         }
@@ -279,11 +292,9 @@ namespace TagTool.Tags.Definitions
             return PermutationChunks[permutationChunkIndex];
         }
 
-        public PermutationChunk GetFirstPermutationChunk(int permutationIndex)
+        public PermutationChunk GetPermutationChunk(Permutation permutation, int chunkIndex)
         {
-            var permutation = Permutations[permutationIndex];
-            return PermutationChunks[permutation.FirstPermutationChunkIndex];
+            return PermutationChunks[permutation.FirstPermutationChunkIndex + chunkIndex];
         }
-
     }
 }

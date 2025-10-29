@@ -118,7 +118,7 @@ namespace TagTool.Porting.Gen2
 
             sound.ImportType = ImportType.SingleLayer;
             sound.Unknown12 = 0;
-            sound.Promotion.LongestPermutationDuration = (uint)gen2Sound.MaximumPlayTime;
+            sound.MaximumPlayTime = gen2Sound.MaximumPlayTime;
 
             //
             // convert sound flags
@@ -172,9 +172,9 @@ namespace TagTool.Porting.Gen2
 
                 pitchRange.ImportName = ConvertStringId(ugh.ImportNames[gen2PitchRange.Name].Name);
                 pitchRange.PitchRangeParameters = ugh.PitchRangeParameters[gen2PitchRange.Parameters];
-                pitchRange.RuntimePermutationFlags = -1;
+                pitchRange.XsyncFlags = -1;
                 pitchRange.RuntimeDiscardedPermutationIndex = -1;
-                pitchRange.PermutationCount = (byte)ugh.GetPermutationCount(pitchRangeIndex);
+                pitchRange.RuntimeUsablePermutationCount = (sbyte)ugh.GetPermutationCount(pitchRangeIndex);
                 pitchRange.RuntimeLastPermutationIndex = -1;
 
                 // Add pitch range to ED sound
@@ -203,8 +203,8 @@ namespace TagTool.Porting.Gen2
                     permutation.SkipFraction = gen2Permutation.EncodedSkipFraction / 32767.0f;
                     permutation.Gain = gen2Permutation.EncodedGain * 127.0f;  // need proper sbyte decoding
                     permutation.PermutationChunks = new List<PermutationChunk>();
-                    permutation.PermutationNumber = (uint)i;
-                    permutation.IsNotFirstPermutation = (uint)(i == 0 ? 0 : 1);
+                    permutation.RawInfoIndex = (short)i;
+                    permutation.Flags = (ushort)(i == 0 ? 0 : 1);
 
                     BlamSound blamSound = SoundExtractorGen2.ExtractSound((GameCacheGen2)BlamCache, ugh, gen2Sound, relativePitchRangeIndex, i);
                     blamSound = AudioConverter.Convert(blamSound, targetFormat,
@@ -231,7 +231,7 @@ namespace TagTool.Porting.Gen2
                 }
             }
 
-            sound.Promotion.TotalSampleSize = totalSampleCount;
+            sound.TotalSampleCount = totalSampleCount;
 
 
             //
