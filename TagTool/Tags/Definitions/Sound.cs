@@ -63,12 +63,12 @@ namespace TagTool.Tags.Definitions
         public Promotion Promotion;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public int MaximumPlayTime;
 
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint TotalSampleCount;
-        [TagField(Gen = CacheGeneration.HaloOnline)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public uint Unknown11;
 
         [TagField(Gen = CacheGeneration.Eldorado)]
