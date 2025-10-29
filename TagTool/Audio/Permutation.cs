@@ -47,7 +47,7 @@ namespace TagTool.Audio
         public sbyte EncodedGain;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild)]
-        public sbyte OverallPermutationIndex;
+        public sbyte PermutationInfoIndex;
 
         [TagField(MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.ReleaseBuild)]
         public short FirstLayerMarkerIndex;
@@ -56,7 +56,8 @@ namespace TagTool.Audio
         public short LayerMarkerCount;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        public short RawInfoIndex;
+        [TagField(Gen = CacheGeneration.Eldorado)]
+        public short RawInfoIndex; // indexes LanguagePermutations and EncodedPermutationSections
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public short PlayFractionType;
@@ -64,20 +65,19 @@ namespace TagTool.Audio
         [TagField(MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
         public Bounds<short> MissionRange;
 
+        [TagField(Gen = CacheGeneration.Eldorado)]
+        public short Unknown1;
+
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public ushort PermutationFlags;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
+        [TagField(Gen = CacheGeneration.Eldorado)]
         public ushort Flags;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public List<PermutationLanguage> Languages;
-
-        [TagField(Gen = CacheGeneration.Eldorado)]
-        public uint PermutationNumber;
-
-        [TagField(Gen = CacheGeneration.Eldorado)]
-        public uint IsNotFirstPermutation;
 
         [TagField(Gen = CacheGeneration.Eldorado)]
         public List<PermutationChunk> PermutationChunks;

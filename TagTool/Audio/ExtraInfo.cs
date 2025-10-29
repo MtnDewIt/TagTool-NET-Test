@@ -63,13 +63,14 @@ namespace TagTool.Audio
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public List<SoundPermutationMarkerBlock> LayerMarkers;
                 public List<SeekTableBlock> SeekTable;
-                public short Compression;
+                [TagField(EnumType = typeof(short))]
+                public Compression Compression;
                 public byte Language;
                 [TagField(Length = 1, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding1;
                 public uint SampleCount;
-                public uint ResourceSampleOffset;
-                public uint ResourceSampleSize;
+                public int ResourceSampleOffset;
+                public int ResourceSampleSize;
                 [TagField(Gen = CacheGeneration.Eldorado)]
                 public uint Unknown20;
                 [TagField(Gen = CacheGeneration.Eldorado)]

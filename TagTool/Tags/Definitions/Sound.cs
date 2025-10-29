@@ -62,8 +62,14 @@ namespace TagTool.Tags.Definitions
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public Promotion Promotion;
 
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding, Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        public byte[] Padding2;
+        [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
+        public int MaximumPlayTime;
+
+        [TagField(Gen = CacheGeneration.HaloOnline)]
+        public uint TotalSampleCount;
+        [TagField(Gen = CacheGeneration.HaloOnline)]
+        public uint Unknown11;
 
         [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]

@@ -19,6 +19,7 @@ using TagTool.Commands.CollisionModels;
 using TagTool.Porting;
 using static TagTool.Porting.PortingContext;
 using TagTool.Porting.Gen3;
+using System.Runtime.InteropServices;
 
 namespace TagTool.Geometry.Utils
 {
@@ -742,7 +743,7 @@ namespace TagTool.Geometry.Utils
             using (var outStream = new MemoryStream())
             {
                 var outVertexStream = VertexStreamFactory.Create(DestCache.Version, DestCache.Platform, outStream);
-                foreach (var vertex in rigidVertices)
+                foreach(ref RigidVertex vertex in CollectionsMarshal.AsSpan(rigidVertices))
                 {
                     vertex.Position = compressor.CompressPosition(vertex.Position);
                     vertex.Texcoord = compressor.CompressUv(vertex.Texcoord);

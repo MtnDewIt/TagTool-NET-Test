@@ -58,296 +58,273 @@ namespace TagTool.Porting.Gen3
 
         private SoundConversionResult ConvertSoundInternal(Sound sound, string blamTagName)
         {
+            //
+            // WARNING: not on the main thread. Don't touch external state unless you know what you're doing
+            //
+
             var result = new SoundConversionResult();
             result.Definition = sound;
 
-            //
-            // Convert Sound Tag Data
-            //
+            Compression targetFormat = Options.AudioCodec;
 
-            var platformCodec = BlamSoundGestalt.PlatformCodecs[sound.SoundReference.PlatformCodecIndex];
-            var playbackParameters = BlamSoundGestalt.PlaybackParameters[sound.SoundReference.PlaybackParameterIndex];
-            var scale = BlamSoundGestalt.Scales[sound.SoundReference.ScaleIndex];
-            var promotion = sound.SoundReference.PromotionIndex != -1 ? BlamSoundGestalt.Promotions[sound.SoundReference.PromotionIndex] : new Promotion();
-            var customPlayBack = (sound.SoundReference.CustomPlaybackIndex != -1 && BlamSoundGestalt.CustomPlaybacks != null) 
-                ? new List<CustomPlayback> { BlamSoundGestalt.CustomPlaybacks[sound.SoundReference.CustomPlaybackIndex] } : new List<CustomPlayback>();
+            int currentSoundDataOffset = 0;
+            List<BlamSound> convertedAudioList = [];
+            List<PitchRange> newPitchRanges = [];
+            uint totalSampleCount = 0;
 
-            sound.Playback = playbackParameters.DeepClone();
-            sound.Scale = scale;
-            sound.PlatformCodec = platformCodec.DeepClone();
-            sound.Promotion = promotion;
-            sound.CustomPlaybacks = customPlayBack;
-
-            //
-            // Tag fixes
-            //
-            sound.SampleRate = platformCodec.SampleRate;
-            sound.ImportType = ImportType.SingleLayer;
-            // helps looping sound? there is another value, 10 for Unknown2 but I don't know when to activate it.
-            if (sound.SoundReference.PitchRangeCount > 1)
-                sound.ImportType = ImportType.MultiLayer;
-
-            sound.PlatformCodec.LoadMode = 0;
-
-            if (BlamCache.Version >= CacheVersion.HaloReach)
+            for (int pitchRangeIndex = 0; pitchRangeIndex < sound.SoundReference.PitchRangeCount; pitchRangeIndex++)
             {
-                sound.Flags = sound.FlagsReach.ConvertLexical<Sound.FlagsValue>();
-                sound.Playback = ConvertPlaybackReach(playbackParameters);
-            }
+                PitchRange blamPitchRange = BlamSoundGestalt.PitchRanges[sound.SoundReference.PitchRangeIndex + pitchRangeIndex];
 
-            //
-            // Process all the pitch ranges
-            //
+                int permutationCount = BlamSoundGestalt.GetPermutationCount(blamPitchRange, BlamCache.Platform);
 
-            sound.PitchRanges = new List<PitchRange>(sound.SoundReference.PitchRangeCount);
-
-            var soundDataAggregate = new byte[0].AsEnumerable();
-            var currentSoundDataOffset = 0;
-            var totalSampleCount = (uint)0;
-
-            for (int pitchRangeIndex = sound.SoundReference.PitchRangeIndex; pitchRangeIndex < sound.SoundReference.PitchRangeIndex + sound.SoundReference.PitchRangeCount; pitchRangeIndex++)
-            {
-                totalSampleCount += BlamSoundGestalt.GetSamplesPerPitchRange(pitchRangeIndex, BlamCache.Platform);
-
-                //
-                // Convert Blam pitch range to ElDorado format
-                //
-
-                var pitchRange = BlamSoundGestalt.PitchRanges[pitchRangeIndex];
-
-                result.PostConversionOperations.Add(() => pitchRange.ImportName = ConvertStringId(BlamSoundGestalt.ImportNames[pitchRange.ImportNameIndex].Name));
-                pitchRange.PitchRangeParameters = BlamSoundGestalt.PitchRangeParameters[pitchRange.PitchRangeParametersIndex];
-                pitchRange.RuntimePermutationFlags = -1;
-                //I suspect this unknown7 to be a flag to tell if there is a Unknownblock in extrainfo. (See a sound in udlg for example)
-                pitchRange.RuntimeDiscardedPermutationIndex = -1;
-                pitchRange.PermutationCount = (byte)BlamSoundGestalt.GetPermutationCount(pitchRangeIndex, BlamCache.Platform);
+                // Create the new pitch range
+                var pitchRange = new PitchRange();
+                result.PostConversionOperations.Add(() => pitchRange.ImportName = ConvertStringId(BlamSoundGestalt.ImportNames[blamPitchRange.ImportNameIndex].Name));
+                pitchRange.PitchRangeParameters = BlamSoundGestalt.PitchRangeParameters[blamPitchRange.PitchRangeParametersIndex];
+                pitchRange.XsyncFlags = -1;
+                pitchRange.RuntimeUsablePermutationCount = (sbyte)permutationCount;
                 pitchRange.RuntimeLastPermutationIndex = -1;
+                pitchRange.RuntimeDiscardedPermutationIndex = -1;
+                pitchRange.Permutations = new List<Permutation>(permutationCount);
+                newPitchRanges.Add(pitchRange);
 
-                // Add pitch range to ED sound
-                sound.PitchRanges.Add(pitchRange);
-                var newPitchRangeIndex = pitchRangeIndex - sound.SoundReference.PitchRangeIndex;
-                sound.PitchRanges[newPitchRangeIndex].Permutations = new List<Permutation>();
-
-                //
-                // Set compression format
-                //
-
-                var targetFormat = Options.AudioCodec;
-                sound.PlatformCodec.Compression = targetFormat;
-
-                //
-                // Convert Blam permutations to ElDorado format
-                //
-
-                var useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
-                var soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
-
-                var permutationCount = BlamSoundGestalt.GetPermutationCount(pitchRangeIndex, BlamCache.Platform);
-                var permutationOrder = BlamSoundGestalt.GetPermutationOrder(pitchRangeIndex, BlamCache.Platform);
-                var relativePitchRangeIndex = pitchRangeIndex - sound.SoundReference.PitchRangeIndex;
-
-                for (int i = 0; i < permutationCount; i++)
+                for (int permutationIndex = 0; permutationIndex < permutationCount; permutationIndex++)
                 {
-                    var permutationIndex = BlamSoundGestalt.GetFirstPermutationIndex(pitchRangeIndex, BlamCache.Platform) + i;
-                    var permutation = BlamSoundGestalt.GetPermutation(permutationIndex).DeepClone();
+                    Permutation blamPermutation = BlamSoundGestalt.GetPermutation(pitchRange, permutationIndex, BlamCache.Platform);
 
-                    BlamSound blamSound = null;
+                    // Convert the audio audio
+                    BlamSound convertedAudio = ConvertAudio(sound, blamTagName, targetFormat, pitchRangeIndex, permutationIndex, blamPermutation);
+                    convertedAudioList.Add(convertedAudio);
 
-                    if (useCache)
-                    {
-                        int sampleRate = platformCodec.SampleRate.GetSampleRateHz();
-                        int channelCount = Encoding.GetChannelCount(platformCodec.Encoding);
-                        blamSound = AudioCache.Load(soundCachePath, BlamCache.Version, blamTagName, relativePitchRangeIndex, i, targetFormat, sampleRate, permutation.SampleCount, channelCount);
-                    }
+                    // Create the new permutation
+                    var permutation = new Permutation();
+                    result.PostConversionOperations.Add(() => permutation.ImportName = ConvertStringId(BlamSoundGestalt.ImportNames[blamPermutation.ImportNameIndex].Name));
+                    permutation.SampleCount = convertedAudio.SampleCount;
+                    permutation.SkipFraction = blamPermutation.EncodedSkipFraction / 32767.0f;
+                    permutation.Gain = (float)blamPermutation.EncodedGain;
+                    permutation.RawInfoIndex = blamPermutation.RawInfoIndex;
 
-                    if (blamSound == null)
-                    {
-                        blamSound = SoundExtractorGen3.ExtractSound((GameCacheGen3)BlamCache, BlamSoundGestalt, sound, blamTagName, relativePitchRangeIndex, i);
-                        blamSound = AudioConverter.Convert(blamSound, targetFormat);
-                        if (useCache)
-                        {
-                            AudioCache.Store(soundCachePath, BlamCache.Version, blamTagName, relativePitchRangeIndex, i, blamSound);
-                        }
-                    }
-
-                    byte[] permutationData = blamSound.Data;
-                    permutation.SampleCount = blamSound.SampleCount;
-
-                    if (targetFormat == Compression.PCM)
-                    {
-                        // FMOD requires that we add 16 bytes of padding on either side
-                        permutationData = AudioUtils.Pad(permutationData, 16);
-                    }
-
-                    result.PostConversionOperations.Add(() => permutation.ImportName = ConvertStringId(BlamSoundGestalt.ImportNames[permutation.ImportNameIndex].Name));
-                    permutation.SkipFraction = permutation.EncodedSkipFraction / 32767.0f;
-                    permutation.Gain = (float)permutation.EncodedGain;
-                    permutation.PermutationChunks = new List<PermutationChunk>();
-                    permutation.PermutationNumber = (uint)permutationOrder[i];
-                    permutation.IsNotFirstPermutation = (uint)(permutation.PermutationNumber == 0 ? 0 : 1);
-
-                    // fixup dialog indices, might need more work
-                    var firstPermutationChunk = BlamSoundGestalt.GetFirstPermutationChunk(permutationIndex);
-                    var newChunk = new PermutationChunk(currentSoundDataOffset, permutationData.Length, firstPermutationChunk.LastSample, firstPermutationChunk.FirstSample);
-                    permutation.PermutationChunks.Add(newChunk);
-                    currentSoundDataOffset += permutationData.Length;
+                    // Create the chunk (MS23 uses only a single chunk)
+                    var firstBlamChunk = BlamSoundGestalt.GetPermutationChunk(blamPermutation, 0);
+                    var lastBlamChunk = BlamSoundGestalt.GetPermutationChunk(blamPermutation, permutationCount - 1);
+                    var newChunk = new PermutationChunk(currentSoundDataOffset, convertedAudio.Data.Length, firstBlamChunk.LastSample, lastBlamChunk.LastSample);
+                    permutation.PermutationChunks = [newChunk];
                     pitchRange.Permutations.Add(permutation);
 
-                    soundDataAggregate = soundDataAggregate.Concat(permutationData);
+                    // Accumulate
+                    currentSoundDataOffset += convertedAudio.Data.Length;
+                    totalSampleCount += convertedAudio.SampleCount;
                 }
             }
 
-            sound.Promotion.LongestPermutationDuration = (uint)sound.SoundReference.MaximumPlayTime;
-            sound.Promotion.TotalSampleSize = totalSampleCount;
+            result.Data = BuildSoundResourceData(convertedAudioList);
 
-            //
-            // Convert Blam extra info to ElDorado format
-            //
+            ConvertSoundDefinition(sound, targetFormat, newPitchRanges, totalSampleCount);
 
-            var extraInfo = new ExtraInfo()
-            {
-                LanguagePermutations = new List<ExtraInfo.LanguagePermutation>(),
-                EncodedPermutationSections = new List<ExtraInfo.EncodedPermutationSection>()
-            };
-
-            for (int u = 0; u < sound.SoundReference.PitchRangeCount; u++)
-            {
-                var pitchRange = BlamSoundGestalt.PitchRanges[sound.SoundReference.PitchRangeIndex + u];
-
-                for (int i = 0; i < pitchRange.PermutationCount; i++)
-                {
-                    int permutationIndex = BlamSoundGestalt.GetFirstPermutationIndex(pitchRange, BlamCache.Platform) + i;
-                    var permutation = BlamSoundGestalt.GetPermutation(permutationIndex);
-                    var permutationChunk = BlamSoundGestalt.GetPermutationChunk(permutation.FirstPermutationChunkIndex);
-
-                    extraInfo.LanguagePermutations.Add(new ExtraInfo.LanguagePermutation
-                    {
-                        RawInfo = new List<ExtraInfo.LanguagePermutation.RawInfoBlock>
-                        {
-                            new ExtraInfo.LanguagePermutation.RawInfoBlock
-                            {
-                                SkipFractionName = StringId.Empty,
-                                SeekTable = new List<ExtraInfo.LanguagePermutation.RawInfoBlock.SeekTableBlock>
-                                {
-                                    new ExtraInfo.LanguagePermutation.RawInfoBlock.SeekTableBlock
-                                    {
-                                        BlockRelativeSampleEnd = permutationChunk.LastSample,
-                                        BlockRelativeSampleStart = permutationChunk.FirstSample,
-                                        StartingSampleIndex = 0,
-                                        EndingSampleIndex = permutation.SampleCount,
-                                        StartingOffset = 0,
-                                        EndingOffset = (uint)permutationChunk.EncodedSize & 0xFFFF
-                                    }
-                                },
-                                Compression = 8,
-                                ResourceSampleSize = pitchRange.Permutations[i].SampleCount,
-                                ResourceSampleOffset = (uint)pitchRange.Permutations[i].PermutationChunks[0].Offset,
-                                SampleCount = (uint)pitchRange.Permutations[i].PermutationChunks[0].EncodedSize & 0x3FFFFFF,
-                                //SampleCount = (uint)Math.Floor(pitchRange.Permutations[i].SampleSize * 128000.0 / (8 * sound.SampleRate.GetSampleRateHz())),
-                                Unknown24 = 480
-                            }
-                        }
-                    });
-                }
-            }
-
-            if (sound.SoundReference.ExtraInfoIndex != -1 && BlamCache.Version < CacheVersion.HaloReach)
-            {
-                foreach (var section in BlamSoundGestalt.ExtraInfo[sound.SoundReference.ExtraInfoIndex].EncodedPermutationSections)
-                {
-                    var newSection = section.DeepClone();
-                    extraInfo.EncodedPermutationSections.Add(newSection);
-                }
-            }
-
-            sound.ExtraInfo = new List<ExtraInfo> { extraInfo };
-
-            //
-            // Convert Blam languages to ElDorado format
-            //
-
-            if (sound.SoundReference.LanguageIndex != -1)
-            {
-                if (BlamCache.Version < CacheVersion.HaloReach)
-                {
-                    sound.Languages = new List<LanguageBlock>();
-
-                    foreach (var language in BlamSoundGestalt.Languages)
-                    {
-                        sound.Languages.Add(new LanguageBlock
-                        {
-                            Language = language.Language,
-                            PermutationDurations = new List<LanguageBlock.PermutationDurationBlock>(),
-                            PitchRangeDurations = new List<LanguageBlock.PitchRangeDurationBlock>(),
-                        });
-
-                        //Add all the  Pitch Range Duration block (pitch range count dependent)
-
-                        var curLanguage = sound.Languages.Last();
-
-                        for (int i = 0; i < sound.SoundReference.PitchRangeCount; i++)
-                        {
-                            curLanguage.PitchRangeDurations.Add(language.PitchRangeDurations[sound.SoundReference.LanguageIndex + i]);
-                        }
-
-                        //Add all the Permutation Duration Block and adjust offsets
-
-                        for (int i = 0; i < curLanguage.PitchRangeDurations.Count; i++)
-                        {
-                            var curPRD = curLanguage.PitchRangeDurations[i];
-
-                            //Get current block count for new index
-                            short newPermutationIndex = (short)curLanguage.PermutationDurations.Count();
-
-                            for (int j = curPRD.PermutationStartIndex; j < curPRD.PermutationStartIndex + curPRD.PermutationCount; j++)
-                            {
-                                curLanguage.PermutationDurations.Add(language.PermutationDurations[j]);
-                            }
-
-                            //apply new index
-                            curPRD.PermutationStartIndex = newPermutationIndex;
-                        }
-
-                    }
-                }
-                else
-                {
-                    // TODO: reverse reach's facial animation resource
-                }
-            }
-
-            //
-            // Prepare resource
-            //
-
-            result.Data = soundDataAggregate.ToArray();
             return result;
         }
 
-        private PlaybackParameter ConvertPlaybackReach(PlaybackParameter playback)
+        private void ConvertSoundDefinition(Sound sound, Compression targetFormat, List<PitchRange> newPitchRanges, uint totalSampleCount)
         {
+            PlatformCodec platformCodec = BlamSoundGestalt.PlatformCodecs[sound.SoundReference.PlatformCodecIndex];
+            PlaybackParameter playback = BlamSoundGestalt.PlaybackParameters[sound.SoundReference.PlaybackParameterIndex];
+            Scale scale = BlamSoundGestalt.Scales[sound.SoundReference.ScaleIndex];
+            Promotion promotion = sound.SoundReference.PromotionIndex != -1 ? BlamSoundGestalt.Promotions[sound.SoundReference.PromotionIndex] : null;
+            CustomPlayback customPlayBack = sound.SoundReference.CustomPlaybackIndex != -1 ? BlamSoundGestalt.CustomPlaybacks[sound.SoundReference.CustomPlaybackIndex] : null;
+
+            if (BlamCache.Version >= CacheVersion.HaloReach)
+                sound.Flags = sound.FlagsReach.ConvertLexical<Sound.FlagsValue>();
+
+            sound.SampleRate = platformCodec.SampleRate;
+            sound.Playback = ConvertPlayback(playback);
+            sound.Scale = scale;
+            sound.PlatformCodec = new PlatformCodec()
+            {
+                Compression = targetFormat,
+                Encoding = platformCodec.Encoding,
+                SampleRate = platformCodec.SampleRate,
+                LoadMode = 0
+            };
+
+            if (customPlayBack != null)
+                sound.CustomPlaybacks = [customPlayBack];
+
+            sound.Promotion = new Promotion()
+            {
+                Rules = promotion?.Rules,
+                RuntimeTimers = promotion?.RuntimeTimers,
+                RuntimeActivePromotionIndex = promotion?.RuntimeActivePromotionIndex ?? -1,
+                RuntimeLastPromotionTime = promotion?.RuntimeLastPromotionTime ?? 0,
+                RuntimeSuppressionTimeout = promotion?.RuntimeSuppressionTimeout ?? 0,
+            };
+            sound.MaximumPlayTime = sound.SoundReference.MaximumPlayTime;
+            sound.TotalSampleCount = totalSampleCount;
+            sound.PitchRanges = newPitchRanges;
+
+            ConvertExtraInfo(sound);
+            ConvertLanguages(sound);
+        }
+
+        private BlamSound ConvertAudio(Sound sound, string blamTagName, Compression targetFormat, int pitchRangeIndex, int permutationIndex, Permutation blamPermutation)
+        {
+            bool useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
+            string soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
+
+            BlamSound audioData = null;
+
+            // If using an audio cache try to load it from there
+            if (useCache)
+            {
+                int sampleRate = sound.PlatformCodec.SampleRate.GetSampleRateHz();
+                int channelCount = Encoding.GetChannelCount(sound.PlatformCodec.Encoding);
+                audioData = AudioCache.Load(soundCachePath, BlamCache.Version, blamTagName, pitchRangeIndex, permutationIndex, targetFormat, sampleRate, blamPermutation.SampleCount, channelCount);
+            }
+
+            // If no cached audio, extract and convert
+            if (audioData == null)
+            {
+                audioData = SoundExtractorGen3.ExtractSound((GameCacheGen3)BlamCache, BlamSoundGestalt, sound, blamTagName, pitchRangeIndex, permutationIndex);
+                audioData = AudioConverter.Convert(audioData, targetFormat);
+
+                // store the converted audio in the cache
+                if (useCache)
+                    AudioCache.Store(soundCachePath, BlamCache.Version, blamTagName, pitchRangeIndex, permutationIndex, audioData);
+            }
+
+            // FMOD requires that we add 16 bytes of padding on either side
+            if (targetFormat == Compression.PCM)
+                audioData.Data = AudioUtils.Pad(audioData.Data, 16);
+
+            return audioData;
+        }
+
+        private static byte[] BuildSoundResourceData(List<BlamSound> converted)
+        {
+            byte[] soundData = new byte[converted.Sum(s => s.Data.Length)];
+            int dataOffset = 0;
+            foreach (BlamSound sound in converted)
+            {
+                Array.Copy(sound.Data, 0, soundData, dataOffset, sound.Data.Length);
+                dataOffset += sound.Data.Length;
+            }
+            return soundData;
+        }
+
+        private PlaybackParameter ConvertPlayback(PlaybackParameter playback)
+        {
+            if (BlamCache.Version < CacheVersion.HaloReach)
+                return playback;
+
             // Fix playback parameters for reach
 
-            playback.MaximumBendPerSecond = playback.MaximumBendPerSecondReach;
-            playback.SkipFraction = playback.SkipFractionReach;
-
-            playback.FieldDisableFlags = 0;
+            var newPlayback = new PlaybackParameter()
+            {
+                MaximumDistance = playback.MaximumDistance,
+                MininumDistance = playback.MininumDistance,
+                DistanceParameters = playback.DistanceParameters,
+                SkipFraction = playback.SkipFraction,
+                MaximumBendPerSecond = playback.MaximumBendPerSecond,
+                GainBase = playback.GainBase,
+                GainVariance = playback.GainVariance,
+                RandomPitchBounds = playback.RandomPitchBounds,
+                InnerConeAngle = playback.InnerConeAngle,
+                OuterConeAngle = playback.OuterConeAngle,
+                OuterConeGain = playback.OuterConeGain,
+                Flags = playback.Flags,
+                Azimuth = playback.Azimuth,
+                PositionalGain = playback.PositionalGain,
+                FirstPersonGain = playback.FirstPersonGain,
+                FieldDisableFlags = 0
+            };
 
             if (playback.DistanceParameters.DontPlayDistance == 0)
-                playback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceA;
+                newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceA;
 
             if (playback.DistanceParameters.AttackDistance == 0)
-                playback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceB;
+                newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceB;
 
             if (playback.DistanceParameters.MinimumDistance == 0)
-                playback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceC;
+                newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceC;
 
             if (playback.DistanceParameters.MaximumDistance == 0)
-                playback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceD;
+                newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceD;
 
-            playback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.Bit4;
+            newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.Bit4;
 
-            return playback;
+            return newPlayback;
+        }
+
+        private void ConvertLanguages(Sound sound)
+        {
+            if (sound.SoundReference.LanguageIndex == -1)
+                return;
+            
+            if (BlamCache.Version < CacheVersion.HaloReach)
+            {
+                sound.Languages = new List<LanguageBlock>();
+
+                foreach (var language in BlamSoundGestalt.Languages)
+                {
+                    sound.Languages.Add(new LanguageBlock
+                    {
+                        Language = language.Language,
+                        PermutationDurations = [],
+                        PitchRangeDurations = []
+                    });
+
+                    //Add all the  Pitch Range Duration block (pitch range count dependent)
+
+                    var curLanguage = sound.Languages.Last();
+
+                    for (int i = 0; i < sound.SoundReference.PitchRangeCount; i++)
+                    {
+                        curLanguage.PitchRangeDurations.Add(language.PitchRangeDurations[sound.SoundReference.LanguageIndex + i]);
+                    }
+
+                    //Add all the Permutation Duration Block and adjust offsets
+
+                    for (int i = 0; i < curLanguage.PitchRangeDurations.Count; i++)
+                    {
+                        var curPRD = curLanguage.PitchRangeDurations[i];
+
+                        //Get current block count for new index
+                        short newPermutationIndex = (short)curLanguage.PermutationDurations.Count();
+
+                        for (int j = curPRD.PermutationStartIndex; j < curPRD.PermutationStartIndex + curPRD.PermutationCount; j++)
+                        {
+                            curLanguage.PermutationDurations.Add(language.PermutationDurations[j]);
+                        }
+
+                        //apply new index
+                        curPRD.PermutationStartIndex = newPermutationIndex;
+                    }
+
+                }
+            }
+            else
+            {
+                // TODO: reverse reach's facial animation resource
+            }
+        }
+        
+        private void ConvertExtraInfo(Sound sound)
+        {
+            var extraInfo = new ExtraInfo();
+
+            // We can avoid converting LanguagePermutations as it is not needed for runtime
+
+            if (sound.SoundReference.ExtraInfoIndex != -1 && BlamCache.Version < CacheVersion.HaloReach)
+            {
+                // Used for facial animations
+                extraInfo.EncodedPermutationSections = BlamSoundGestalt.ExtraInfo[sound.SoundReference.ExtraInfoIndex].EncodedPermutationSections;
+            }
+            else
+            {
+                // TODO reach facial animations
+            }
+
+            sound.ExtraInfo = [extraInfo];
         }
 
         private SoundLooping ConvertSoundLooping(SoundLooping soundLooping)

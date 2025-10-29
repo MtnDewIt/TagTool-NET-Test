@@ -15,6 +15,7 @@ using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 using static TagTool.Tags.Definitions.Scenario;
 using TagTool.Common.Logging;
+using System.Runtime.InteropServices;
 
 namespace TagTool.Commands.Scenarios
 {
@@ -586,8 +587,8 @@ namespace TagTool.Commands.Scenarios
             GenerateGridMesh(xCells, yCells, cellSize, out WorldVertex[] worldVertices, out ushort[] indices);
 
             var origin = new RealPoint3d(-sbsp.WorldBoundsX.Length / 2, -sbsp.WorldBoundsZ.Length / 2, parameters.Z);
-            foreach (var vertex in worldVertices)
-                vertex.Position = new RealQuaternion(vertex.Position.I + origin.X, vertex.Position.J + origin.Y, vertex.Position.K + origin.Z);
+            foreach(ref WorldVertex v in worldVertices.AsSpan())
+                v.Position = new RealQuaternion(v.Position.I + origin.X, v.Position.J + origin.Y, v.Position.K + origin.Z);
 
             var worldWaterVertices = GenerateWorldWaterVertices(worldVertices, indices);
             var waterParams = GenerateWaterParams(indices, parameters.Tesselation, parameters.Opacity);

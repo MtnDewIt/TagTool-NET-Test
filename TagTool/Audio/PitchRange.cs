@@ -38,19 +38,23 @@ namespace TagTool.Audio
         /// </summary>
         [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        public int RuntimePermutationFlags;
+        public int XsyncFlags;
 
         [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        public short PermutationCount;
+        public sbyte RuntimeUsablePermutationCount;
+
+        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
+        public byte Unknown1; // unused
+
+        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
+        public sbyte RuntimeLastPermutationIndex; 
 
         [TagField(Gen = CacheGeneration.Eldorado)]
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public sbyte RuntimeDiscardedPermutationIndex;
-
-        [TagField(Gen = CacheGeneration.Eldorado)]
-        [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        public sbyte RuntimeLastPermutationIndex;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild)]
         public short EncodedPermutationDataIndex;

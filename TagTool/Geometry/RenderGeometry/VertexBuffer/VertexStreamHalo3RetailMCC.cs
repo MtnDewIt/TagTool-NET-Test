@@ -320,147 +320,147 @@ namespace TagTool.Geometry
             };
         }
 
-        public void WriteAmbientPrtData(AmbientPrtData v)
+        public void WriteAmbientPrtData(in AmbientPrtData v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteBeamVertex(BeamVertex v)
+        public void WriteBeamVertex(in BeamVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteChudVertexFancy(ChudVertexFancy v)
+        public void WriteChudVertexFancy(in ChudVertexFancy v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteChudVertexSimple(ChudVertexSimple v)
+        public void WriteChudVertexSimple(in ChudVertexSimple v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteContrailVertex(ContrailVertex v)
+        public void WriteContrailVertex(in ContrailVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteDebugVertex(DebugVertex v)
+        public void WriteDebugVertex(in DebugVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteDecoratorVertex(DecoratorVertex v)
+        public void WriteDecoratorVertex(in DecoratorVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteDualQuatVertex(DualQuatVertex v)
+        public void WriteDualQuatVertex(in DualQuatVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteFlatRigidVertex(FlatRigidVertex v)
+        public void WriteFlatRigidVertex(in FlatRigidVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteFlatSkinnedVertex(FlatSkinnedVertex v)
+        public void WriteFlatSkinnedVertex(in FlatSkinnedVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteFlatWorldVertex(FlatWorldVertex v)
+        public void WriteFlatWorldVertex(in FlatWorldVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteImplicitVertex(ImplicitVertex v)
+        public void WriteImplicitVertex(in ImplicitVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteLightVolumeVertex(LightVolumeVertex v)
+        public void WriteLightVolumeVertex(in LightVolumeVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteLinearPrtData(LinearPrtData v)
+        public void WriteLinearPrtData(in LinearPrtData v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteParticleModelVertex(ParticleModelVertex v)
+        public void WriteParticleModelVertex(in ParticleModelVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteParticleVertex(ParticleVertex v)
+        public void WriteParticleVertex(in ParticleVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WritePatchyFogVertex(PatchyFogVertex v)
+        public void WritePatchyFogVertex(in PatchyFogVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteQuadraticPrtData(QuadraticPrtData v)
+        public void WriteQuadraticPrtData(in QuadraticPrtData v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteRigidVertex(RigidVertex v)
+        public void WriteRigidVertex(in RigidVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteRippleVertex(RippleVertex v)
+        public void WriteRippleVertex(in RippleVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteScreenVertex(ScreenVertex v)
+        public void WriteScreenVertex(in ScreenVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteSkinnedVertex(SkinnedVertex v)
+        public void WriteSkinnedVertex(in SkinnedVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteStaticPerPixelData(StaticPerPixelData v)
+        public void WriteStaticPerPixelData(in StaticPerPixelData v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteStaticPerVertexColorData(StaticPerVertexColorData v)
+        public void WriteStaticPerVertexColorData(in StaticPerVertexColorData v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteStaticPerVertexData(StaticPerVertexData v)
+        public void WriteStaticPerVertexData(in StaticPerVertexData v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteTinyPositionVertex(TinyPositionVertex v)
+        public void WriteTinyPositionVertex(in TinyPositionVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteTransparentVertex(TransparentVertex v)
+        public void WriteTransparentVertex(in TransparentVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteWaterVertex(WaterVertex v)
+        public void WriteWaterVertex(in WaterVertex v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteWorldVertex(WorldVertex v)
+        public void WriteWorldVertex(in WorldVertex v)
         {
             throw new NotImplementedException();
         }
@@ -484,7 +484,7 @@ namespace TagTool.Geometry
             };
         }
 
-        public void WriteWaterTriangleIndices(WaterTriangleIndices v)
+        public void WriteWaterTriangleIndices(in WaterTriangleIndices v)
         {
             throw new NotImplementedException();
         }
@@ -500,12 +500,12 @@ namespace TagTool.Geometry
             };
         }
 
-        public void WriteWaterTesselatedParameters(WaterTesselatedParameters v)
+        public void WriteWaterTesselatedParameters(in WaterTesselatedParameters v)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteWorldWaterVertex(WorldWaterVertex v)
+        public void WriteWorldWaterVertex(in WorldWaterVertex v)
         {
             throw new NotImplementedException();
         }
