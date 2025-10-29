@@ -319,13 +319,10 @@ namespace TagTool.Commands.Modding
             if (resource.Page.Index == -1)
                 return resource;
 
-            var resourceStream = new MemoryStream();
             var resourceCache = ModCache.ResourceCaches.GetResourceCache(ResourceLocation.Mods);
-            resourceCache.Decompress(modPack.ResourcesStream, resource.Page.Index, resource.Page.CompressedBlockSize, resourceStream);
-            resourceStream.Position = 0;
+            byte[] data = resourceCache.ExtractRaw(modPack.ResourcesStream, resource.Page.Index, resource.Page.CompressedBlockSize);
             resource.ChangeLocation(ResourceLocation.ResourcesB);
-            resource.Page.OldFlags &= ~OldRawPageFlags.InMods;
-            BaseCache.ResourceCaches.AddResource(resource, resourceStream);
+            BaseCache.ResourceCaches.AddRawResource(resource, data);
 
             return resource;
         }

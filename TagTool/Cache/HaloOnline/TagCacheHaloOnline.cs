@@ -159,7 +159,7 @@ namespace TagTool.Cache.HaloOnline
             var result = new byte[tag.TotalSize];
 
             stream.Position = tag.HeaderOffset;
-            stream.ReadAll(result, 0, result.Length);
+            stream.ReadExactly(result);
 
             return result;
         }
@@ -183,7 +183,7 @@ namespace TagTool.Cache.HaloOnline
             // Read the tag data
             stream.Position = tag.HeaderOffset + dataOffset;
             data.Data = new byte[tag.TotalSize - dataOffset];
-            stream.ReadAll(data.Data, 0, data.Data.Length);
+            stream.ReadExactly(data.Data);
 
             // Correct pointers
             using (var dataWriter = new BinaryWriter(new MemoryStream(data.Data)))
