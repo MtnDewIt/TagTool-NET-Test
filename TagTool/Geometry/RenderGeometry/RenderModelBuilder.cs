@@ -399,7 +399,7 @@ namespace TagTool.Geometry
                 }
                 else if (mesh.SkinnedVertices != null)
                 {
-                    foreach (ref RigidVertex v in mesh.RigidVertices.AsSpan())
+                    foreach (ref SkinnedVertex v in mesh.SkinnedVertices.AsSpan())
                     {
                         v.Position = compressor.CompressPosition(v.Position);
                         v.Texcoord = compressor.CompressUv(v.Texcoord);
