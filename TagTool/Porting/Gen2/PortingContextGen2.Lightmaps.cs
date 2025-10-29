@@ -96,7 +96,7 @@ namespace TagTool.Porting.Gen2
                 {
                     Gen2BSPResourceMesh clustermesh = bspMeshes[bsp_index][clusterMeshIndices[clusterindex]];
                     var image = gen2bitmap.Bitmaps[clusterrenderdata.BitmapIndex];
-                    var palette = lgroup.SectionPalette[clusterrenderdata.PaletteIndex];
+                    var palette = lgroup.SectionPalette.Count != 0 ? lgroup.SectionPalette[clusterrenderdata.PaletteIndex] : null;
                     var coefficientsTuple = BuildCoefficients(clustermesh, image, palette);
 
                     packer.AddBitmap(image.Width, image.Height, clusterindex, false, coefficientsTuple.Item1, coefficientsTuple.Item2);
@@ -196,7 +196,7 @@ namespace TagTool.Porting.Gen2
                 //static per pixel lighting
                 if (lgroup.InstanceRenderInfo[instanceindex].BitmapIndex != -1)
                 {
-                    var palette = lgroup.SectionPalette[lgroup.InstanceRenderInfo[instanceindex].PaletteIndex];
+                    var palette = lgroup.SectionPalette.Count != 0 ? lgroup.SectionPalette[lgroup.InstanceRenderInfo[instanceindex].PaletteIndex] : null;
                     var image = gen2bitmap.Bitmaps[lgroup.InstanceRenderInfo[instanceindex].BitmapIndex];
 
                     var coefficients = BuildCoefficients(instancemesh, image, palette);
@@ -470,7 +470,7 @@ namespace TagTool.Porting.Gen2
                         SphericalHarmonics.AmbientSHCoefficientsFromAmbientColor(colorVista, R, G, B);
                         break;
                     case TagTool.Tags.Definitions.Gen2.Bitmap.BitmapDataBlock.FormatValue.P8:
-                        RealRgbColor color = ARGB_to_Real_RGB(palette.PaletteColors[rawBitmapData[c]]);
+                        RealRgbColor color = palette != null ? ARGB_to_Real_RGB(palette.PaletteColors[rawBitmapData[c]]) : new RealRgbColor();
                         SphericalHarmonics.AmbientSHCoefficientsFromAmbientColor(color, R, G, B);
                         break;
                     default:
