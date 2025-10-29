@@ -95,7 +95,7 @@ namespace TagTool.Porting.Gen2
                 "vrtx"
             };
 
-            var group = blamTag.Group.ToString();
+            var group = blamTag.Group.Tag.ToString();
             if (!supportedTagGroups.Contains(group))
             {
                 if (!hiddenTagGroups.Contains(group))

@@ -871,7 +871,7 @@ namespace TagTool.Porting.Gen2
                 {
                     object itemdef = BlamCache.Deserialize(gen2CacheStream, NetgameEquipment.ItemVehicleCollection);
 
-                    switch (NetgameEquipment.ItemVehicleCollection.Group.ToString())
+                    switch (NetgameEquipment.ItemVehicleCollection.Group.Tag.ToString())
                     {
                         case "vehc":
                             vehilayout = (TagTool.Tags.Definitions.Gen2.VehicleCollection)itemdef;
@@ -924,7 +924,7 @@ namespace TagTool.Porting.Gen2
                                 if (!CacheContext.TagCache.TryGetCachedTag(itemlayout.ItemPermutations[0].Item.ToString(), out paletteTag))
                                     break;
 
-                                if (itemlayout.ItemPermutations[0].Item.Group.ToString().Equals("weap"))
+                                if (itemlayout.ItemPermutations[0].Item.Group.Tag.ToString().Equals("weap"))
                                 {
                                     // Convert weapon flags
                                     var WeaponFlags = Scenario.WeaponInstance.ScenarioWeaponDatumFlags.DoesAcceleratemovesDueToExplosions;
