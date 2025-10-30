@@ -40,6 +40,8 @@ namespace TagTool.Shaders.ShaderMatching
 
     public class ShaderSorter : SortingInterface
     {
+        public static readonly ShaderSorter Instance = new();
+
         //
         // TODO: order the list for best matches, the higher the index the higher the importance. (low -> high) (0 -> n). Options that can be easily adapted should have less importance
         // than options that cannot be replaced, same for types (for example, material model is critial, therefore it should have a higher sorted position than other types because when

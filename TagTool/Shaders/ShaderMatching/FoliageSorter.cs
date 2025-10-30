@@ -5,6 +5,8 @@ namespace TagTool.Shaders.ShaderMatching
 {
     public class FoliageSorter : SortingInterface
     {
+        public static readonly FoliageSorter Instance = new();
+
         // these private lists define the order of the types and options in a shader. The matcher will use these when no perfect match exists. 
         private static List<FoliageOptionTypes> TypeOrder = new List<FoliageOptionTypes> {
            FoliageOptionTypes.material_model,

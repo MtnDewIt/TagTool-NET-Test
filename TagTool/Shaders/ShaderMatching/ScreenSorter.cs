@@ -5,6 +5,8 @@ namespace TagTool.Shaders.ShaderMatching
 {
     public class ScreenSorter : SortingInterface
     {
+        public static readonly ScreenSorter Instance = new();
+
         // these private lists define the order of the types and options in a shader. The matcher will use these when no perfect match exists. 
         // TODO: revise these
 

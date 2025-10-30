@@ -6,7 +6,7 @@ using TagTool.Commands.Shaders;
 using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using static TagTool.Shaders.ShaderMatching.ShaderMatcherNew;
+using static TagTool.Shaders.ShaderMatching.ShaderMatcher;
 
 namespace TagTool.Shaders
 {

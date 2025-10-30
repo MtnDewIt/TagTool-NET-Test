@@ -5,6 +5,8 @@ namespace TagTool.Shaders.ShaderMatching
 {
     public class WaterSorter : SortingInterface
     {
+        public static readonly WaterSorter Instance = new();
+
         private static List<WaterOptionTypes> TypeOrder = new List<WaterOptionTypes> {
            WaterOptionTypes.appearance,
            WaterOptionTypes.waveshape,

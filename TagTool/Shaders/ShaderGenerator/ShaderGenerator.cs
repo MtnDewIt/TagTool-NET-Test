@@ -1005,7 +1005,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 parameterTypes[name] = (ParameterTypeFlags)Enum.Parse(typeof(ParameterTypeFlags), constant.RegisterType.ToString());
         }
 
-        public static List<RenderMethodOption.ParameterBlock> GatherParameters(GameCache cache, Stream stream, RenderMethodDefinition rmdf, List<byte> options, bool includeGlobal = true)
+        public static List<RenderMethodOption.ParameterBlock> GatherParameters(GameCache cache, Stream stream, RenderMethodDefinition rmdf, ReadOnlySpan<byte> options, bool includeGlobal = true)
         {
             List<RenderMethodOption.ParameterBlock> allRmopParameters = new List<RenderMethodOption.ParameterBlock>();
 
@@ -1023,7 +1023,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 if (rmdf.Categories[i].ShaderOptions.Count == 0)
                     continue;
 
-                var option = rmdf.Categories[i].ShaderOptions[i < options.Count ? options[i] : 0];
+                var option = rmdf.Categories[i].ShaderOptions[i < options.Length ? options[i] : 0];
 
                 if (option.Option != null)
                 {
@@ -1042,7 +1042,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return allRmopParameters;
         }
 
-        public static List<RenderMethodOption.ParameterBlock> GatherParametersAsync(Dictionary<string, RenderMethodOption> renderMethodOptions, RenderMethodDefinition rmdf, List<byte> options, bool includeGlobal = true)
+        public static List<RenderMethodOption.ParameterBlock> GatherParametersAsync(Dictionary<string, RenderMethodOption> renderMethodOptions, RenderMethodDefinition rmdf, ReadOnlySpan<byte> options, bool includeGlobal = true)
         {
             List<RenderMethodOption.ParameterBlock> allRmopParameters = new List<RenderMethodOption.ParameterBlock>();
 
@@ -1060,7 +1060,7 @@ namespace TagTool.Shaders.ShaderGenerator
                 if (rmdf.Categories[i].ShaderOptions.Count == 0)
                     continue;
 
-                var option = rmdf.Categories[i].ShaderOptions[i < options.Count ? options[i] : 0];
+                var option = rmdf.Categories[i].ShaderOptions[i < options.Length ? options[i] : 0];
 
                 if (option.Option != null)
                 {
@@ -1092,12 +1092,10 @@ namespace TagTool.Shaders.ShaderGenerator
             var glps = cache.Deserialize<GlobalPixelShader>(stream, rmdf.GlobalPixelShader);
             var glvs = cache.Deserialize<GlobalVertexShader>(stream, rmdf.GlobalVertexShader);
 
-            // get options in numeric array
-            List<byte> options = new List<byte>();
-            foreach (var option in shaderName.Split('\\')[2].Remove(0, 1).Split('_'))
-                options.Add(byte.Parse(option));
 
-            var allRmopParameters = GatherParameters(cache, stream, rmdf, options);
+            Rmt2Descriptor rmt2Desc = Rmt2Descriptor.Parse(shaderName);
+
+            var allRmopParameters = GatherParameters(cache, stream, rmdf, rmt2Desc.Options);
 
             var rmt2 = GenerateTemplate(cache, rmdf, glvs, glps, allRmopParameters, shaderName, out pixl, out vtsh);
 

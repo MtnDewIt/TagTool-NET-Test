@@ -220,7 +220,7 @@ namespace TagTool.Porting
             }
 
             Task seriailizeTask = convertTask
-                .ContinueWith(task => FinishConvertTag(cacheStream, blamTag, blamDefinition, edTag), MainThreadScheduler);
+                .ContinueWith(task => FinishConvertTag(cacheStream, blamDefinition, edTag), MainThreadScheduler);
 
             if (!seriailizeTask.IsCompleted)
             {
@@ -231,7 +231,7 @@ namespace TagTool.Porting
             return edTag;
         }
 
-        protected CachedTag FinishConvertTag(Stream cacheStream, CachedTag blamTag, object blamDefinition, CachedTag edTag)
+        protected CachedTag FinishConvertTag(Stream cacheStream, object blamDefinition, CachedTag edTag)
         {
             ArgumentNullException.ThrowIfNull(blamDefinition);
 

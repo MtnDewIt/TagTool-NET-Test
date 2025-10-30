@@ -195,7 +195,7 @@ namespace TagTool.Commands.Shaders
                     Options = aOptions,
                     Tag = tag,
                     Dependants = GetDependantsAsync(Cache, stream, shaderType, aOptions),
-                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, options)
+                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, aOptions)
                 };
 
                 recompileInfo.Add(info);
