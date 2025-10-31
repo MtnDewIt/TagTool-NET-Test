@@ -345,28 +345,33 @@ namespace TagTool.Porting
         /// <returns></returns>
         protected virtual T ConvertStructure<T>(Stream cacheStream, Stream blamCacheStream, T data, object definition, string blamTagName) where T : TagStructure
         {
-            foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), CacheContext.Version, CacheContext.Platform))
+            foreach (TagFieldInfo tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), CacheContext.Version, CacheContext.Platform))
             {
-                var attributes = tagFieldInfo.FieldInfo.GetCustomAttributes(false).OfType<TagFieldAttribute>().ToList();
-                if (attributes.Count == 0 || attributes.Any(attr => CacheVersionDetection.TestAttribute(attr, BlamCache.Version, BlamCache.Platform)))
-                {
-                    // skip the field if no conversion is needed
-                    if ((tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId)) || tagFieldInfo.FieldType == typeof(string))
-                    {
-                        if (!tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
-                            continue;
-                    }
+                if (CanSkipFieldConversion(tagFieldInfo))
+                    continue;
 
-                    var oldValue = tagFieldInfo.GetValue(data);
-                    if (oldValue is null)
-                        continue;
+                object value = tagFieldInfo.GetValue(data);
+                if (value is null)
+                    continue;
 
-                    // convert the field
-                    object newValue = ConvertFieldvalue(cacheStream, blamCacheStream, tagFieldInfo, oldValue, definition, blamTagName);
-                    tagFieldInfo.SetValue(data, newValue);
-                }
+                value = ConvertFieldvalue(cacheStream, blamCacheStream, tagFieldInfo, value, definition, blamTagName);
+                tagFieldInfo.SetValue(data, value);
             }
-            return data;
+
+            return (T)data;
+        }
+        
+        private bool CanSkipFieldConversion(TagFieldInfo tagFieldInfo)
+        {
+            if (!TagFieldInfo.FieldInCacheVersion(tagFieldInfo, BlamCache.Version, BlamCache.Platform))
+                return true;
+
+            if ((tagFieldInfo.Attribute.Flags & TagFieldFlags.GlobalMaterial) != 0)
+                return false;
+
+            Type type = tagFieldInfo.FieldType;
+
+            return (type.IsValueType && type != typeof(StringId)) || type == typeof(string);
         }
 
         /// <summary>

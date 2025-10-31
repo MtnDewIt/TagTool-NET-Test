@@ -3,17 +3,12 @@ using System.Collections;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Xml.Linq;
+using System.Runtime.CompilerServices;
 using TagTool.Cache;
-using TagTool.Scripting;
 
 namespace TagTool.Tags
 {
-    // TODO: merge into TagStructure, just keeping it separate for now while we trial this
-
     public class TagEnum
     {
         private static readonly FrozenDictionary<(CacheVersion, CachePlatform), VersionedCache> VersionedCaches = CreateVersionedCache();
@@ -22,8 +17,8 @@ namespace TagTool.Tags
         {
             var builder = ImmutableDictionary.CreateBuilder<(CacheVersion, CachePlatform), VersionedCache>();
 
-            foreach (var platform in Enum.GetValues(typeof(CachePlatform)) as CachePlatform[])
-                foreach (var version in Enum.GetValues(typeof(CacheVersion)) as CacheVersion[])
+            foreach (var platform in Enum.GetValues<CachePlatform>())
+                foreach (var version in Enum.GetValues<CacheVersion>())
                     builder.Add((version, platform), new VersionedCache(version, platform));
 
             return builder.ToFrozenDictionary();
@@ -143,7 +138,6 @@ namespace TagTool.Tags
         }
 
         public bool IsVersioned => Attribute.IsVersioned;
-
     }
 
     public class TagEnumMemberEnumerable : IEnumerable<TagEnumMemberInfo>
@@ -159,40 +153,62 @@ namespace TagTool.Tags
             Build();
         }
 
-        public IEnumerator<TagEnumMemberInfo> GetEnumerator() => Members.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => Members.GetEnumerator();
-
         private void Build()
         {
-            int memberIndex = 0;
-            foreach (var fieldInfo in Info.Type.GetFields(BindingFlags.Static | BindingFlags.Public))
+            foreach (FieldInfo fieldInfo in Info.Type.GetFields(BindingFlags.Static | BindingFlags.Public))
             {
-                var attributes = fieldInfo.GetCustomAttributes<TagEnumMemberAttribute>(false);
-                var matchingAttributes = attributes.Where(a => CacheVersionDetection.TestAttribute(a, Info.CacheVersion, Info.CachePlatform));
-                var attr = matchingAttributes.FirstOrDefault() ?? attributes.DefaultIfEmpty(TagEnumMemberAttribute.Default).First();
+                var attr = GetMemberAttribute(fieldInfo, Info.CacheVersion, Info.CachePlatform);
+                if (attr == null)
+                    continue;
 
-                if (CacheVersionDetection.TestAttribute(attr, Info.CacheVersion, Info.CachePlatform))
+                var value = fieldInfo.GetValue(null);
+                var memberInfo = new TagEnumMemberInfo(fieldInfo, attr, value);
+
+                if ((attr.Flags & TagEnumMemberFlags.Constant) != 0)
+                    Constants.Add((int)value);
+                else
+                    VersionedMembers.Add(memberInfo);
+
+                Members.Add(memberInfo);
+            }
+
+            static TagEnumMemberAttribute GetMemberAttribute(FieldInfo fieldInfo, CacheVersion version, CachePlatform platform)
+            {
+                var attributes = (TagEnumMemberAttribute[])fieldInfo.GetCustomAttributes<TagEnumMemberAttribute>(false);
+                if (attributes.Length == 0)
+                    return TagEnumMemberAttribute.Default;
+
+                foreach (var attr in attributes)
                 {
-                    var value = fieldInfo.GetValue(null);
-                    if (Info.Attribute.IsVersioned)
-                    {
-                        if (memberIndex.Equals(value))
-                            throw new NotSupportedException("Versioned enums must be sequential.");
-                    }
-
-                    var info = new TagEnumMemberInfo(fieldInfo, attr, value);
-
-                    if ((attr.Flags & TagEnumMemberFlags.Constant) != 0)
-                        Constants.Add(Convert.ToInt32(value));
-                    else
-                        VersionedMembers.Add(info);
-
-                    Members.Add(info);
+                    if (CacheVersionDetection.TestAttribute(attr, version, platform))
+                        return attr;
                 }
 
-                memberIndex++;
+                return null;
             }
         }
+
+        //standard .NET pattern, allows avoidance of boxing, and inlining better
+        public struct Enumerator : IEnumerator<TagEnumMemberInfo>
+        {
+            private List<TagEnumMemberInfo>.Enumerator enumerator;
+            public TagEnumMemberInfo Current => enumerator.Current;
+            object IEnumerator.Current => enumerator.Current;
+            public void Dispose() => enumerator.Dispose();
+            public bool MoveNext() => enumerator.MoveNext();
+            void IEnumerator.Reset() => ((IEnumerator<TagEnumMemberInfo>)enumerator).Reset();
+        }
+
+        public Enumerator GetEnumerator()
+        {
+            var impl = Members.GetEnumerator();
+            //we use Unsafe.As to avoid having to expose a constructor which takes the enumerator, since this would expose implementation details
+            //it's safe since we have a struct with exactly 1 field of the same type
+            return Unsafe.As<List<TagEnumMemberInfo>.Enumerator, Enumerator>(ref impl);
+        }
+
+        IEnumerator<TagEnumMemberInfo> IEnumerable<TagEnumMemberInfo>.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
     public record TagEnumMemberInfo

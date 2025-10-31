@@ -38,6 +38,8 @@ namespace TagTool.Cache.HaloOnline
 
     public class TagCacheHaloOnline : TagCache
     {
+        public const int Headersize = 0x20;
+
         public List<CachedTagHaloOnline> Tags = new List<CachedTagHaloOnline>();
         public TagCacheHaloOnlineHeader Header;
 
@@ -386,7 +388,7 @@ namespace TagTool.Cache.HaloOnline
                     return tag.HeaderOffset + tag.TotalSize;
             }
 
-            return new TagStructureInfo(typeof(TagCacheHaloOnlineHeader)).TotalSize;
+            return Headersize;
         }
 
         /// <summary>
@@ -395,7 +397,7 @@ namespace TagTool.Cache.HaloOnline
         /// <returns>The offset of the first byte past the last tag in the file.</returns>
         private uint GetTagDataEndOffset()
         {
-            uint endOffset = new TagStructureInfo(typeof(TagCacheHaloOnlineHeader)).TotalSize;
+            uint endOffset = Headersize;
             foreach (var tag in Tags)
             {
                 if (tag != null)

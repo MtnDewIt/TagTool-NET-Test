@@ -117,11 +117,17 @@ namespace TagTool.Tags
 
         private static TagFieldAttribute GetTagFieldAttribute(FieldInfo field, CacheVersion version, CachePlatform platform)
         {
-            var attributes = field.GetCustomAttributes<TagFieldAttribute>(false);
-            if (!attributes.Any())
-                return TagFieldAttribute.Default;
+            var attributes = (TagFieldAttribute[])field.GetCustomAttributes<TagFieldAttribute>(false);
+			if (attributes.Length == 0)
+				return TagFieldAttribute.Default;
 
-            return attributes.Where(a => CacheVersionDetection.TestAttribute(a, version, platform)).FirstOrDefault();
+            foreach (var attr in attributes)
+            {
+                if (CacheVersionDetection.TestAttribute(attr, version, platform))
+                    return attr;
+            }
+
+			return null;
         }
 
         /// <summary>
