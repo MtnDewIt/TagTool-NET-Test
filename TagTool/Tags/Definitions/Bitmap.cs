@@ -303,8 +303,8 @@ namespace TagTool.Tags.Definitions
             public Point2d RegistrationPoint; // The 'center' of the bitmap - i.e. for particles
             public sbyte MipmapCount; // DO NOT CHANGE (not counting the highest resolution)
             public BitmapImageCurve Curve; // How to convert from pixel value to linear.
-            public byte InterleavedInterop;
-            public byte InterleavedTextureIndex;
+            public sbyte InterleavedInterop;
+            public sbyte InterleavedTextureIndex;
             public int PixelDataOffset;
             public int PixelDataSize;
             public int HighResPixelsOffsetOffset;

@@ -447,6 +447,9 @@ namespace TagTool.Cache.HaloOnline
 
         public override bool IsResourceValid(TagResourceReference resourceReference)
         {
+            if (resourceReference.HaloOnlinePageableResource == null)
+                return false;
+
             return resourceReference.HaloOnlinePageableResource.Page.Index != -1;
         }
 

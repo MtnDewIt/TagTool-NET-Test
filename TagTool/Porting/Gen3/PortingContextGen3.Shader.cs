@@ -220,7 +220,6 @@ namespace TagTool.Porting.Gen3
 
                         var options = new ConvertTagOptions()
                         {
-                            AllowReentrancy = true,
                             TargetTagName = $"{constant.Bitmap.Name}_dxt5nm"
                         };
                         constant.Bitmap = ConvertTag(cacheStream, blamCacheStream, constant.Bitmap, blamTagName, bitmap, options);    
