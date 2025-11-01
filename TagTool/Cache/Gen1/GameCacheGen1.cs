@@ -128,7 +128,7 @@ namespace TagTool.Cache
                             byte[] decompressedBuffer = new byte[decompressedSize];
 
                             using (DeflateStream deflateStream = new DeflateStream(stream, CompressionMode.Decompress, true))
-                                decompressedSize = deflateStream.ReadAll(decompressedBuffer, 0, decompressedBuffer.Length);
+                                deflateStream.ReadExactly(decompressedBuffer, 0, decompressedBuffer.Length);
 
                             memoryStream.Write(decompressedBuffer, 0, decompressedBuffer.Length);
                         }

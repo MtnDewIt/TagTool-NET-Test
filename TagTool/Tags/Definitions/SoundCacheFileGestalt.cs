@@ -55,7 +55,7 @@ namespace TagTool.Tags.Definitions
         public List<PermutationChunk> PermutationChunks;
         public List<Promotion> Promotions;
 
-        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<ExtraInfo> ExtraInfo;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]

@@ -454,19 +454,16 @@ namespace TagTool.Commands.Modding
 		}
 
 		private PageableResource ConvertPageableResource(ModPackage modPack, PageableResource resource) {
-			if (resource.Page.Index == -1)
-				return resource;
+            if (resource.Page.Index == -1)
+                return resource;
 
-			var resourceStream = new MemoryStream();
-			var resourceCache = ModCache.ResourceCaches.GetResourceCache(ResourceLocation.Mods);
-			resourceCache.Decompress(modPack.ResourcesStream.Stream, resource.Page.Index, resource.Page.CompressedBlockSize, resourceStream);
-			resourceStream.Position = 0;
-			resource.ChangeLocation(ResourceLocation.ResourcesB);
-			resource.Page.OldFlags &= ~OldRawPageFlags.InMods;
-			BaseCache.ResourceCaches.AddResource(resource, resourceStream);
+            var resourceCache = ModCache.ResourceCaches.GetResourceCache(ResourceLocation.Mods);
+            byte[] data = resourceCache.ExtractRaw(modPack.ResourcesStream.Stream, resource.Page.Index, resource.Page.CompressedBlockSize);
+            resource.ChangeLocation(ResourceLocation.ResourcesB);
+            BaseCache.ResourceCaches.AddRawResource(resource, data);
 
-			return resource;
-		}
+            return resource;
+        }
 
 		private IList ConvertCollection(ModPackage modPack, IList collection) {
 			if (collection is null || collection.Count == 0)
