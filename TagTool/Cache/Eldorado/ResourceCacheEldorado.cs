@@ -1,5 +1,6 @@
-﻿using LZ4;
+﻿using K4os.Compression.LZ4;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -107,7 +108,7 @@ namespace TagTool.Cache.Eldorado
         /// <param name="tagResourceData">The data to compress.</param>
         /// <param name="compressedSize">On return, the size of the compressed data.</param>
         /// <returns>The index of the resource that was added.</returns>
-        public int Add(Stream resourceCacheStream, byte[] tagResourceData, out uint compressedSize)
+        public int Add(Stream resourceCacheStream, ReadOnlySpan<byte> tagResourceData, out uint compressedSize)
         {
             var resourceIndex = NewResource();
             compressedSize = Compress(resourceCacheStream, resourceIndex, tagResourceData);
@@ -120,7 +121,7 @@ namespace TagTool.Cache.Eldorado
         /// <param name="resourceCacheStream">The stream open on the resource cache.</param>
         /// <param name="rawData">The raw data to add.</param>
         /// <returns>The index of the resource that was added.</returns>
-        public int AddRaw(Stream resourceCacheStream, byte[] rawData)
+        public int AddRaw(Stream resourceCacheStream, ReadOnlySpan<byte> rawData)
         {
             var resourceIndex = NewResource();
             ImportRaw(resourceCacheStream, resourceIndex, rawData);
@@ -142,7 +143,7 @@ namespace TagTool.Cache.Eldorado
             var resource = Resources[resourceIndex];
             resourceCacheStream.Position = resource.Offset;
             var result = new byte[compressedSize];
-            resourceCacheStream.ReadAll(result, 0, result.Length);
+            resourceCacheStream.ReadExactly(result);
             return result;
         }
 
@@ -152,22 +153,22 @@ namespace TagTool.Cache.Eldorado
         /// <param name="resourceCacheStream">The stream open on the resource cache.</param>
         /// <param name="resourceIndex">The index of the resource to overwrite.</param>
         /// <param name="data">The raw, pre-compressed data to overwrite it with.</param>
-        public void ImportRaw(Stream resourceCacheStream, int resourceIndex, byte[] data)
+        public void ImportRaw(Stream resourceCacheStream, int resourceIndex, ReadOnlySpan<byte> data)
         {
             if (resourceIndex < 0 || resourceIndex >= Resources.Count)
-                throw new ArgumentOutOfRangeException("resourceIndex");
+                throw new ArgumentOutOfRangeException(nameof(resourceIndex));
 
             var roundedSize = ResizeResource(resourceCacheStream, resourceIndex, (uint)data.Length);
             var resource = Resources[resourceIndex];
             resourceCacheStream.Position = resource.Offset;
-            resourceCacheStream.Write(data, 0, data.Length);
+            resourceCacheStream.Write(data);
             StreamUtil.Fill(resourceCacheStream, 0, (int)(roundedSize - data.Length)); // Padding
         }
 
         public void NullResource(Stream resourceStream, int resourceIndex)
         {
             if (resourceIndex < 0 || resourceIndex >= Resources.Count)
-                throw new ArgumentOutOfRangeException("resourceIndex");
+                throw new ArgumentOutOfRangeException(nameof(resourceIndex));
 
             var resource = Resources[resourceIndex];
             var writer = new BinaryWriter(resourceStream);
@@ -200,30 +201,45 @@ namespace TagTool.Cache.Eldorado
         public void Decompress(Stream resourceStream, int resourceIndex, uint compressedSize, Stream outStream)
         {
             if (resourceIndex < 0 || resourceIndex >= Resources.Count)
-                throw new ArgumentOutOfRangeException("resourceIndex");
+                throw new ArgumentOutOfRangeException(nameof(resourceIndex));
 
             var reader = new BinaryReader(resourceStream);
             var resource = Resources[resourceIndex];
             reader.BaseStream.Position = resource.Offset;
 
             // Compressed resources are split into chunks, so decompress each chunk until the complete data is decompressed
-            var totalProcessed = 0U;
+            int totalProcessed = 0;
             compressedSize = Math.Min(compressedSize, resource.ChunkSize);
-            while (totalProcessed < compressedSize)
-            {
-                // Each chunk begins with a 32-bit decompressed size followed by a 32-bit compressed size
-                var chunkDecompressedSize = reader.ReadInt32();
-                var chunkCompressedSize = reader.ReadInt32();
-                totalProcessed += 8;
-                if (totalProcessed >= compressedSize)
-                    break;
 
-                // Decompress the chunk and write it to the output stream
-                var compressedData = new byte[chunkCompressedSize];
-                reader.Read(compressedData, 0, chunkCompressedSize);
-                var decompressedData = LZ4Codec.Decode(compressedData, 0, chunkCompressedSize, chunkDecompressedSize);
-                outStream.Write(decompressedData, 0, chunkDecompressedSize);
-                totalProcessed += (uint)chunkCompressedSize;
+            byte[] compressedBuffer = ArrayPool<byte>.Shared.Rent(LZ4Codec.MaximumOutputSize(MaxDecompressedBlockSize));
+            byte[] decompressedBuffer = ArrayPool<byte>.Shared.Rent(MaxDecompressedBlockSize);
+
+            try
+            {
+                while (totalProcessed < compressedSize)
+                {
+                    // Each chunk begins with a 32-bit uncompressed size followed by a 32-bit compressed size
+                    int chunkUncompressedSize = reader.ReadInt32();
+                    int chunkCompressedSize = reader.ReadInt32();
+                    totalProcessed += 8;
+                    if (totalProcessed >= compressedSize)
+                        break;
+
+                    // Decompress the chunk and write it to the output stream
+                    reader.BaseStream.ReadExactly(compressedBuffer, 0, chunkCompressedSize);
+
+                    int decompressedSize = LZ4Codec.Decode(compressedBuffer, 0, chunkCompressedSize, decompressedBuffer, 0, chunkUncompressedSize);
+                    if (decompressedSize < 0)
+                        throw new IOException("LZ4 decompression failed.");
+
+                    outStream.Write(decompressedBuffer, 0, decompressedSize);
+                    totalProcessed += chunkCompressedSize;
+                }
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(compressedBuffer);
+                ArrayPool<byte>.Shared.Return(decompressedBuffer);
             }
         }
 
@@ -234,40 +250,54 @@ namespace TagTool.Cache.Eldorado
         /// <param name="resourceIndex">The index of the resource to edit.</param>
         /// <param name="data">The data to compress.</param>
         /// <returns>The total size of the compressed resource in bytes.</returns>
-        public uint Compress(Stream resourceStream, int resourceIndex, byte[] data)
+        public uint Compress(Stream resourceStream, int resourceIndex, ReadOnlySpan<byte> data)
         {
             if (resourceIndex < 0 || resourceIndex >= Resources.Count)
-                throw new ArgumentOutOfRangeException("resourceIndex");
+                throw new ArgumentOutOfRangeException(nameof(resourceIndex));
 
-            // Divide the data into chunks with decompressed sizes no larger than the maximum allowed size
-            var chunks = new List<byte[]>();
-            var startOffset = 0;
+            // Divide the data into chunks with uncompressed sizes no larger than the maximum allowed size
+            var chunks = new List<(byte[] Buffer, int UncompressedSize, int CompressedSize)>();
+            int totalProcessed = 0;
             uint newSize = 0;
-            while (startOffset < data.Length)
+            int compressedBufferSize = LZ4Codec.MaximumOutputSize(MaxDecompressedBlockSize);
+
+            try
             {
-                var chunkSize = Math.Min(data.Length - startOffset, MaxDecompressedBlockSize);
-                var chunk = LZ4Codec.Encode(data, startOffset, chunkSize);
-                chunks.Add(chunk);
-                startOffset += chunkSize;
-                newSize += (uint)(ChunkHeaderSize + chunk.Length);
+                while (totalProcessed < data.Length)
+                {
+                    int chunkUncompressedSize = Math.Min(data.Length - totalProcessed, MaxDecompressedBlockSize);
+                    byte[] compressedBuffer = ArrayPool<byte>.Shared.Rent(compressedBufferSize);
+
+                    int chunkCompressedSize = LZ4Codec.Encode(data.Slice(totalProcessed, chunkUncompressedSize), compressedBuffer.AsSpan(0, compressedBufferSize));
+                    if (chunkCompressedSize < 0)
+                        throw new IOException("LZ4 compression failed.");
+
+                    chunks.Add((compressedBuffer, chunkUncompressedSize, chunkCompressedSize));
+                    totalProcessed += chunkUncompressedSize;
+                    newSize += (uint)(ChunkHeaderSize + chunkCompressedSize);
+                }
+
+                // Write the chunks in
+                var writer = new EndianWriter(resourceStream, true, EndianFormat.LittleEndian);
+                var roundedSize = ResizeResource(writer.BaseStream, resourceIndex, newSize);
+                var resource = Resources[resourceIndex];
+                resourceStream.Position = resource.Offset;
+                foreach (var chunk in chunks)
+                {
+                    writer.Write(chunk.UncompressedSize);
+                    writer.Write(chunk.CompressedSize);
+                    writer.Write(chunk.Buffer, 0, chunk.CompressedSize);
+                }
+
+                StreamUtil.Fill(resourceStream, 0, (int)(roundedSize - newSize)); // Padding
+            }
+            finally
+            {
+                // cleanup
+                foreach (var chunk in chunks)
+                    ArrayPool<byte>.Shared.Return(chunk.Buffer);
             }
 
-            // Write the chunks in
-            //var writer = new BinaryWriter(resourceStream);
-            var writer = new EndianWriter(resourceStream, true, EndianFormat.LittleEndian);
-            var roundedSize = ResizeResource(writer.BaseStream, resourceIndex, newSize);
-            var resource = Resources[resourceIndex];
-            resourceStream.Position = resource.Offset;
-            var sizeRemaining = data.Length;
-            foreach (var chunk in chunks)
-            {
-                var decompressedSize = Math.Min(sizeRemaining, MaxDecompressedBlockSize);
-                writer.Write(decompressedSize);
-                writer.Write(chunk.Length);
-                writer.Write(chunk);
-                sizeRemaining -= decompressedSize;
-            }
-            StreamUtil.Fill(resourceStream, 0, (int)(roundedSize - newSize)); // Padding
             return newSize;
         }
 

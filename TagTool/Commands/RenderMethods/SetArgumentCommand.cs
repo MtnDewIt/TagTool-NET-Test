@@ -7,6 +7,7 @@ using TagTool.Commands.Common;
 using TagTool.Shaders.ShaderMatching;
 using TagTool.Tags.Definitions;
 using TagTool.Common.Logging;
+using TagTool.Shaders;
 
 namespace TagTool.Commands.RenderMethods
 {
@@ -60,8 +61,8 @@ namespace TagTool.Commands.RenderMethods
                     if (index == -1)
                         return new TagToolError(CommandError.ArgInvalid, $"The argument \"{args[0]}\" does not exist");
 
-                    ShaderMatcherNew.Rmt2Descriptor.TryParse(Definition.ShaderProperties[0].Template.Name, out var rmt2Descriptor);
-
+                    Rmt2Descriptor.TryParse(Definition.ShaderProperties[0].Template.Name, out var rmt2Descriptor);
+              
                     for (int methodIndex = 0; methodIndex < rmt2Descriptor.Options.Length; methodIndex++)
                     {
                         var optionTag = rmdf.Categories[methodIndex].ShaderOptions[rmt2Descriptor.Options[methodIndex]].Option;

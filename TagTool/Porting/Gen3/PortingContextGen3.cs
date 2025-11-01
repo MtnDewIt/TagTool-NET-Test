@@ -419,11 +419,6 @@ namespace TagTool.Porting.Gen3
                     MergeMultilingualUnicodeStringList(cacheStream, blamCacheStream, edTag, blamTag, unic);
                     break;
             }
-
-            if (blamTag.IsInGroup("rm  ") || PortingConstants.EffectGroups.Contains(blamTag.Group.Tag))
-            {
-                new RenderMethodMerger(this).MergeRenderMethods(cacheStream, blamCacheStream, edTag, blamTag, blamDefinition);
-            }
         }
 
         protected override bool TagIsValid(CachedTag blamTag, Stream cacheStream, Stream blamCacheStream, object blamDefinition, out CachedTag resultTag)
@@ -495,28 +490,6 @@ namespace TagTool.Porting.Gen3
                     if (sound.Resource.Gen3ResourceID == DatumHandle.None)
                     {
                         Log.Warning($"Invalid resource for sound {blamTag.Name}");
-                        return false;
-                    }
-                }
-            }
-            else if (blamTag.Group.Tag == "bitm")
-            {
-                var bitmap = (Bitmap)blamDefinition;
-
-                for (int i = 0; i < bitmap.Images.Count; i++)
-                {
-                    var image = bitmap.Images[i];
-
-                    TagResourceReference bitmapResource;
-
-                    if (image.XboxFlags.HasFlag(TagTool.Bitmaps.BitmapFlagsXbox.Xbox360UseInterleavedTextures))
-                        bitmapResource = bitmap.InterleavedHardwareTextures[image.InterleavedInterop];
-                    else
-                        bitmapResource = bitmap.HardwareTextures[i];
-
-                    if (!BlamCache.ResourceCache.IsResourceValid(bitmapResource))
-                    {
-                        Log.Warning($"Invalid resource for bitm {blamTag.Name}");
                         return false;
                     }
                 }

@@ -14,33 +14,27 @@ using TagTool.Common.Logging;
 using TagTool.BlamFile;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Collections.Frozen;
 
 namespace TagTool.Shaders.ShaderMatching
 {
-    public class ShaderMatcherNew
+    public class ShaderMatcher
     {
         private GameCache BaseCache;
         private GameCache PortingCache;
         private Stream BaseCacheStream;
         private PortingContextGen3 PortContext;
         // shader type, definition
-        private Dictionary<string, RenderMethodDefinition> RenderMethodDefinitions;
-        private Dictionary<string, RenderMethodDefinition> PortingRenderMethodDefinitions;
+        public Dictionary<string, RenderMethodDefinition> RenderMethodDefinitions;
+        public Dictionary<string, RenderMethodDefinition> PortingRenderMethodDefinitions;
         // tag name, definition
-        private Dictionary<string, RenderMethodOption> RenderMethodOptions;
-        private Dictionary<string, RenderMethodOption> PortingRenderMethodOptions;
+        public Dictionary<string, RenderMethodOption> RenderMethodOptions;
+        public Dictionary<string, RenderMethodOption> PortingRenderMethodOptions;
+        private Dictionary<string, Rmt2Descriptor> TemplateDescriptors;
 
         public bool IsInitialized { get; private set; } = false;
         public bool UseMs30 { get; set; } = false;
         public bool PerfectMatchesOnly { get; set; } = false;
-
-        public class TemplateConversionResult
-        {
-            public RenderMethodTemplate Definition;
-            public PixelShader PixelShaderDefinition;
-            public VertexShader VertexShaderDefinition;
-            public CachedTag Tag;
-        }
 
         public void Init(GameCache baseCache, 
             GameCache portingCache, 
@@ -50,6 +44,10 @@ namespace TagTool.Shaders.ShaderMatching
             bool useMS30 = false, 
             bool perfectMatchesOnly = false)
         {
+
+            if (IsInitialized)
+                return;
+
             UseMs30 = useMS30;
             PerfectMatchesOnly = perfectMatchesOnly;
             BaseCache = baseCache;
@@ -166,8 +164,6 @@ namespace TagTool.Shaders.ShaderMatching
             // if using a shader cache, try and find it there
             if (ShaderCache.ExportTemplate(BaseCacheStream, BaseCache, tagName, out CachedTag cachedRmt2Tag))
             {
-                if (PortContext.FlagIsSet(PortingFlags.Print))
-                    Console.WriteLine($"['{cachedRmt2Tag.Group.Tag}', 0x{cachedRmt2Tag.Index:X4}] {cachedRmt2Tag.Name}.{(cachedRmt2Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
                 isExactMatch = true;
                 return cachedRmt2Tag;
             }
@@ -177,11 +173,8 @@ namespace TagTool.Shaders.ShaderMatching
             CachedTag bestTag = null;
 
             // search
-            foreach (CachedTag rmt2Tag in BaseCache.TagCache.TagTable)
+            foreach (CachedTag rmt2Tag in BaseCache.TagCache.FindAllInGroup("rmt2"))
             {
-                if (rmt2Tag == null || rmt2Tag.Group.Tag != "rmt2")
-                    continue;
-
                 if (!Rmt2Descriptor.TryParse(rmt2Tag.Name, out Rmt2Descriptor destRmt2Desc))
                     continue;
 
@@ -217,93 +210,30 @@ namespace TagTool.Shaders.ShaderMatching
             return bestTag;
         }
 
-
-        public Task<TemplateConversionResult> GenerateTemplateAsync(Stream cacheStream, string tagName, out CachedTag generatedRmt2)
+        private static readonly FrozenDictionary<string, SortingInterface> _sorters = new Dictionary<string, SortingInterface>()
         {
-            generatedRmt2 = null;
+            { "beam", BeamSorter.Instance },
+            { "contrail", ContrailSorter.Instance },
+            { "shader", ShaderSorter.Instance },
+            { "halogram", HalogramSorter.Instance },
+            { "terrain", TerrainSorter.Instance },
+            { "particle", ParticleSorter.Instance },
+            { "light_volume", LightVolumeSorter.Instance },
+            { "foliage", FoliageSorter.Instance },
+            { "decal", DecalSorter.Instance },
+            { "screen", ScreenSorter.Instance },
+            { "water", WaterSorter.Instance }
+        }.ToFrozenDictionary();
 
-            if (!Rmt2Descriptor.TryParse(tagName, out Rmt2Descriptor rmt2Desc))
-            {
-                Log.Error($"Invalid rmt2 tag name {tagName}");
-                throw new InvalidOperationException();
-            }
-
-            if (!RenderMethodDefinitions.ContainsKey(rmt2Desc.Type))
-            {
-                Log.Error($"No rmdf tag present for {rmt2Desc.Type}");
-                throw new InvalidOperationException();
-            }
-
-            RenderMethodDefinition rmdf = RenderMethodDefinitions[rmt2Desc.Type];
-      
-            var glps = BaseCache.Deserialize<GlobalPixelShader>(BaseCacheStream, rmdf.GlobalPixelShader);
-            var glvs = BaseCache.Deserialize<GlobalVertexShader>(BaseCacheStream, rmdf.GlobalVertexShader);
-
-            // get options in numeric array
-            List<byte> options = new List<byte>();
-            foreach (var option in tagName.Split('\\')[2].Remove(0, 1).Split('_'))
-                options.Add(byte.Parse(option));
-
-            var allRmopParameters = ShaderGenerator.ShaderGeneratorNew.GatherParametersAsync(RenderMethodOptions, rmdf, options);
-
-            CachedTag rmt2Tag = BaseCache.TagCache.AllocateTag<RenderMethodTemplate>(tagName);
-            generatedRmt2 = rmt2Tag;
-
-
-            return PortContext.RunOnThreadPool(() => 
-                {
-                    var result = new TemplateConversionResult();
-
-                    result.Tag = rmt2Tag;
-                    result.Definition = ShaderGenerator.ShaderGeneratorNew.GenerateTemplate(BaseCache,
-                        rmdf, glvs, glps, allRmopParameters, tagName, out result.PixelShaderDefinition, out result.VertexShaderDefinition);
-
-                    return result;
-                })
-                .ContinueWith(task =>
-                    {
-                        TemplateConversionResult result = task.Result;
-                        var asyncRmt2 = result.Definition;
-                        var asyncPixl = result.PixelShaderDefinition;
-                        var asyncVtsh = result.VertexShaderDefinition;
-
-                        if (!BaseCache.TagCache.TryGetTag(tagName + ".pixl", out asyncRmt2.PixelShader))
-                            asyncRmt2.PixelShader = BaseCache.TagCache.AllocateTag<PixelShader>(tagName);
-                        if (!BaseCache.TagCache.TryGetTag(tagName + ".vtsh", out asyncRmt2.VertexShader))
-                            asyncRmt2.VertexShader = BaseCache.TagCache.AllocateTag<VertexShader>(tagName);
-
-                        BaseCache.Serialize(cacheStream, asyncRmt2.PixelShader, asyncPixl);
-                        BaseCache.Serialize(cacheStream, asyncRmt2.VertexShader, asyncVtsh);
-                        BaseCache.Serialize(cacheStream, result.Tag, asyncRmt2);
-
-                        if (PortContext.FlagIsSet(PortingFlags.Print))
-                            Console.WriteLine($"['{result.Tag.Group.Tag}', 0x{result.Tag.Index:X4}] {result.Tag.Name}.{(result.Tag.Group as Cache.Gen3.TagGroupGen3).Name}");
-
-                        return result;
-                    },
-                    PortContext.MainThreadScheduler);
+        private static SortingInterface GetSorter(string type)
+        {
+            return _sorters.GetValueOrDefault(type, null);
         }
-
-        private static SortingInterface GetSorter(string type) => type switch
-        {
-            "beam" => new BeamSorter(),
-            "contrail" => new ContrailSorter(),
-            "shader" => new ShaderSorter(),
-            "halogram" => new HalogramSorter(),
-            "terrain" => new TerrainSorter(),
-            "particle" => new ParticleSorter(),
-            "light_volume" => new LightVolumeSorter(),
-            "foliage" => new FoliageSorter(),
-            "decal" => new DecalSorter(),
-            "screen" => new ScreenSorter(),
-            "water" => new WaterSorter(),
-            _ => null,
-        };
 
         /// <summary>
         /// Rebuilds an rmt2's options in memory so indices match up with the base cache
         /// </summary>
-        private Rmt2Descriptor RebuildRmt2Options(Rmt2Descriptor srcRmt2Descriptor, string renderMethodName)
+        public Rmt2Descriptor RebuildRmt2Options(Rmt2Descriptor srcRmt2Descriptor, string renderMethodName)
         {
             if (srcRmt2Descriptor.Type != "black" && PortingCache.Version >= CacheVersion.Halo3Beta)
             {
@@ -455,6 +385,14 @@ namespace TagTool.Shaders.ShaderMatching
             return srcRmt2Descriptor;
         }
 
+        public CachedTag FindRmdf(CachedTag matchedRmt2Tag)
+        {
+            if (!Rmt2Descriptor.TryParse(matchedRmt2Tag.Name, out Rmt2Descriptor rmt2Description))
+                throw new ArgumentException($"Invalid rmt2 name '{matchedRmt2Tag.Name}'", nameof(matchedRmt2Tag));
+
+            return BaseCache.TagCache.GetTag(rmt2Description.GetRmdfName(), "rmdf");
+        }
+
         public class Rmt2Pairing
         {
             public Rmt2ParameterMatch RealParams;
@@ -492,76 +430,6 @@ namespace TagTool.Shaders.ShaderMatching
             public int Common;
             public int SourceCount;
             public int DestCount;
-        }
-
-        public struct Rmt2Descriptor
-        {
-            public DescriptorFlags Flags;
-            public string Type;
-            public byte[] Options;
-            private bool HasParsed;
-
-            [Flags]
-            public enum DescriptorFlags
-            {
-                None = 0,
-                Ms30 = (1 << 0)
-            }
-
-            public Rmt2Descriptor(string type, byte[] options)
-            {
-                Type = type;
-                Options = options;
-                HasParsed = true;
-                Flags = DescriptorFlags.None;
-            }
-
-            public bool IsMs30 => Flags.HasFlag(DescriptorFlags.Ms30);
-
-            public string GetRmdfName()
-            {
-                if (!HasParsed)
-                    return null;
-                return $"{(IsMs30 ? "ms30\\" : "")}shaders\\{Type}";
-            }
-
-            public static bool TryParse(string name, out Rmt2Descriptor descriptor)
-            {
-                descriptor = new Rmt2Descriptor();
-
-                descriptor.HasParsed = false;
-
-                var parts = name.Split(new string[] { "shaders\\" }, StringSplitOptions.None);
-
-                var prefixParts = parts[0].Split('\\');
-                if (prefixParts.Length > 0 && prefixParts[0] == "ms30")
-                    descriptor.Flags |= DescriptorFlags.Ms30;
-
-                if (parts.Length < 2)
-                    return false;
-                var nameParts = parts[1].Split('\\');
-                if (nameParts.Length < 2)
-                    return false;
-
-                descriptor.Type = nameParts[0].Substring(0, nameParts[0].Length-10);
-                descriptor.Options = nameParts[1].Split('_').Skip(1).Select(x => byte.Parse(x)).ToArray();
-                descriptor.HasParsed = true;
-
-                return true;
-            }
-        }
-
-        public CachedTag FindRmdf(CachedTag matchedRmt2Tag)
-        {
-            Rmt2Descriptor rmt2Description;
-            if (!Rmt2Descriptor.TryParse(matchedRmt2Tag.Name, out rmt2Description))
-                throw new ArgumentException($"Invalid rmt2 name '{matchedRmt2Tag.Name}'", nameof(matchedRmt2Tag));
-
-            string prefix = matchedRmt2Tag.Name.StartsWith("ms30") ? "ms30\\" : "";
-            string type = rmt2Description.Type; // remove _templates
-            string rmdfName = $"{prefix}shaders\\{type}";
-
-            return BaseCache.TagCache.GetTag(rmdfName, "rmdf");
         }
     }
 }

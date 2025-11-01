@@ -41,7 +41,7 @@ namespace TagTool.Commands.Tags
             using (var inStream = File.OpenRead(path))
             {
                 data = new byte[inStream.Length];
-                inStream.ReadAll(data, 0, data.Length);
+                inStream.ReadExactly(data);
             }
 
             using (var stream = Cache.OpenCacheReadWrite())

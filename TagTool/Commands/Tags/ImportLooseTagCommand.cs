@@ -79,7 +79,7 @@ namespace TagTool.Commands.Tags
             using (var inStream = File.OpenRead(path))
             {
                 tagData = new byte[inStream.Length];
-                inStream.ReadAll(tagData, 0, tagData.Length);
+                inStream.ReadExactly(tagData);
             }
 
             var singleFileTagReader = new SingleTagFileReader(new PersistChunkReader(new MemoryStream(tagData), TagEndianness));

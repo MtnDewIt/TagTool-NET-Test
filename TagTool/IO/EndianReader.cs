@@ -359,7 +359,8 @@ namespace TagTool.IO
 
         public int ReadBlock(byte[] buffer, int offset, int size)
         {
-            return BaseStream.ReadAll(buffer, offset, size);
+            base.BaseStream.ReadExactly(buffer, offset, size);
+            return size;
         }
 
         public void SeekTo(long offset)

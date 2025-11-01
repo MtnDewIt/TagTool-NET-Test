@@ -5,6 +5,8 @@ namespace TagTool.Shaders.ShaderMatching
 {
     public class ContrailSorter : SortingInterface
     {
+        public static readonly ContrailSorter Instance = new();
+
         private static List<ContrailOptionTypes> TypeOrder = new List<ContrailOptionTypes> {
            ContrailOptionTypes.black_point,
            ContrailOptionTypes.fog,

@@ -10,7 +10,7 @@ using TagTool.Commands.Common;
 using TagTool.Shaders.ShaderFunctions;
 using TagTool.Shaders.ShaderGenerator;
 using System.Diagnostics;
-using static TagTool.Shaders.ShaderMatching.ShaderMatcherNew;
+using static TagTool.Shaders.ShaderMatching.ShaderMatcher;
 using static TagTool.Tags.Definitions.RenderMethod;
 using static TagTool.Tags.Definitions.RenderMethodOption;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
@@ -26,10 +26,8 @@ namespace TagTool.Shaders.ShaderConverter
         private RenderMethod RenderMethod; // do not change fields in this definition
         private RenderMethod BlamRenderMethod;
 
-        private CachedTag RmdfTag;
-
         private Rmt2Descriptor BaseRmt2Descriptor;
-        private ShaderMatcherNew Matcher;
+        private ShaderMatcher Matcher;
 
         private List<ParameterBlock> Parameters; // from all included rmop
         private RenderMethodDefinition Rmdf; // base
@@ -55,24 +53,25 @@ namespace TagTool.Shaders.ShaderConverter
             Stream blamStream,
             RenderMethod renderMethod,
             RenderMethod blamRenderMethod,
-            ShaderMatcherNew matcher)
+            RenderMethodDefinition rmdf,
+            RenderMethodTemplate rmt2,
+            RenderMethodTemplate blamRmt2,
+            ShaderMatcher matcher)
         {
             Cache = cache;
             BlamCache = blamCache;
             RenderMethod = renderMethod;
             BlamRenderMethod = blamRenderMethod;
             Matcher = matcher;
-            RmdfTag = Matcher.FindRmdf(renderMethod.ShaderProperties[0].Template);
-            Rmdf = Cache.Deserialize<RenderMethodDefinition>(stream, RmdfTag);
-            Rmt2 = Cache.Deserialize<RenderMethodTemplate>(stream, renderMethod.ShaderProperties[0].Template);
-            BlamRmt2 = BlamCache.Deserialize<RenderMethodTemplate>(blamStream, blamRenderMethod.ShaderProperties[0].Template);
+            Rmdf = rmdf;
+            Rmt2 = rmt2;
+            BlamRmt2 = blamRmt2;
             BlamToBaseTextureIndices = new List<int>();
             BlamToBaseRealIndices = new List<int>();
 
-            Rmt2Descriptor.TryParse(renderMethod.ShaderProperties[0].Template.Name,
-                out BaseRmt2Descriptor);
+            Rmt2Descriptor.TryParse(renderMethod.ShaderProperties[0].Template.Name, out BaseRmt2Descriptor);
 
-            Parameters = ShaderGeneratorNew.GatherParameters(Cache, stream, Rmdf, BaseRmt2Descriptor.Options.ToList(), false);
+            Parameters = ShaderGeneratorNew.GatherParameters(Cache, stream, Rmdf, BaseRmt2Descriptor.Options, false);
 
             foreach (var blamTexture in BlamRmt2.TextureParameterNames)
             {
@@ -201,7 +200,7 @@ namespace TagTool.Shaders.ShaderConverter
         {
             RenderMethod newRm = new RenderMethod();
 
-            newRm.BaseRenderMethod = RmdfTag;
+            newRm.BaseRenderMethod = RenderMethod.BaseRenderMethod;
             newRm.Options = BuildRenderMethodOptionIndices(BaseRmt2Descriptor);
             newRm.RenderFlags = RenderMethod.RenderFlags;
             newRm.SortLayer = RenderMethod.SortLayer;

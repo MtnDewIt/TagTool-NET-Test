@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.IO;
 using TagTool.Extensions;
 
@@ -6,6 +7,8 @@ namespace TagTool.IO
 {
     public static class StreamUtil
     {
+        const int BufferSize = 8192;
+
         /// <summary>
         /// Copies data between two different streams.
         /// </summary>
@@ -14,19 +17,27 @@ namespace TagTool.IO
         /// <param name="size">The size of the data to copy.</param>
         public static void Copy(Stream input, Stream output, long size)
         {
-            const int bufferSize = 0x1000;
-            var buffer = new byte[bufferSize];
-            while (size > 0)
-            {
-                long chunkSize = bufferSize;
-                if (size < chunkSize)
-                    chunkSize = size;
+            if (size == 0)
+                return;
+            if (size < 0)
+                throw new ArgumentOutOfRangeException("The size of the data to remove must be >= 0");
 
-                var read = input.ReadAll(buffer, 0, (int)chunkSize);
-                if (read != chunkSize)
-                    throw new EndOfStreamException("Failed to copy stream");
-                output.Write(buffer, 0, read);
-                size -= read;
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(BufferSize);
+
+            try
+            {
+                long remaining = size;
+                while (remaining > 0)
+                {
+                    long chunkSize = Math.Min(BufferSize, remaining);
+                    input.ReadExactly(buffer, 0, (int)chunkSize);
+                    output.Write(buffer, 0, (int)chunkSize);
+                    remaining -= chunkSize;
+                }
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
 
@@ -43,54 +54,36 @@ namespace TagTool.IO
             if (size == 0)
                 return;
             if (size < 0)
-                throw new ArgumentException("The size of the data to copy must be >= 0");
+                throw new ArgumentException("The size of the data to remove must be >= 0");
 
-            const int bufferSize = 0x1000;
-            var buffer = new byte[bufferSize];
-            var remaining = size;
-            while (remaining > 0)
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(BufferSize);
+
+            try
             {
-                var read = (int)Math.Min(bufferSize, remaining);
+                var remaining = size;
+                while (remaining > 0)
+                {
+                    var read = (int)Math.Min(BufferSize, remaining);
 
-                if (targetPos > originalPos)
-                    stream.Position = originalPos + remaining - read; // Seek backward
-                else
-                    stream.Position = originalPos + size - remaining; // Seek forward
+                    if (targetPos > originalPos)
+                        stream.Position = originalPos + remaining - read; // Seek backward
+                    else
+                        stream.Position = originalPos + size - remaining; // Seek forward
 
-                stream.ReadAll(buffer, 0, read);
+                    stream.ReadExactly(buffer, 0, read);
 
-                if (targetPos > originalPos)
-                    stream.Position = targetPos + remaining - read; // Seek backward
-                else
-                    stream.Position = targetPos + size - remaining; // Seek forward
+                    if (targetPos > originalPos)
+                        stream.Position = targetPos + remaining - read; // Seek backward
+                    else
+                        stream.Position = targetPos + size - remaining; // Seek forward
 
-                stream.Write(buffer, 0, read);
-                remaining -= read;
+                    stream.Write(buffer, 0, read);
+                    remaining -= read;
+                }
             }
-        }
-
-        public static void Copy(EndianReader input, EndianWriter output)
-        {
-            const int BufferSize = 0x1000;
-
-            var buffer = new byte[BufferSize];
-            int read;
-
-            while ((read = input.ReadBlock(buffer, 0, BufferSize)) > 0)
-                output.WriteBlock(buffer, 0, read);
-        }
-
-        public static void Copy(EndianReader input, EndianWriter output, int size)
-        {
-            const int BufferSize = 0x1000;
-
-            var buffer = new byte[BufferSize];
-
-            while (size > 0)
+            finally
             {
-                int read = input.ReadBlock(buffer, 0, Math.Min(BufferSize, size));
-                output.WriteBlock(buffer, 0, read);
-                size -= BufferSize;
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
 
@@ -107,7 +100,7 @@ namespace TagTool.IO
             if (size < 0)
                 throw new ArgumentException("The size of the data to insert must be >= 0");
 
-            var startPos = stream.Position;
+            long startPos = stream.Position;
             if (startPos < stream.Length)
             {
                 Copy(stream, startPos, startPos + size, stream.Length - startPos);
@@ -129,7 +122,7 @@ namespace TagTool.IO
             if (size < 0)
                 throw new ArgumentException("The size of the data to remove must be >= 0");
 
-            var startPos = stream.Position;
+            long startPos = stream.Position;
             if (startPos + size >= stream.Length)
             {
                 stream.SetLength(startPos);
@@ -152,23 +145,24 @@ namespace TagTool.IO
             if (size < 0)
                 throw new ArgumentException("The size of the data to insert must be >= 0");
 
-            const int bufferSize = 0x1000;
-            var buffer = new byte[bufferSize];
-            var pos = stream.Position;
-            var endPos = pos + size;
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(BufferSize);
 
-            // Fill the buffer
-            if (b != 0)
+            try
             {
-                for (var i = 0; i < buffer.Length; i++)
-                    buffer[i] = b;
+                // Fill the buffer
+                buffer.AsSpan().Fill(b);
+
+                long remaining = size;
+                while (remaining > 0)
+                {
+                    int chunkSize = (int)Math.Min(remaining, BufferSize);
+                    stream.Write(buffer, 0, chunkSize);
+                    remaining -= chunkSize;
+                }
             }
-
-            // Write it
-            while (pos < endPos)
+            finally
             {
-                stream.Write(buffer, 0, (int)Math.Min(endPos - pos, bufferSize));
-                pos += bufferSize;
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
 
@@ -179,8 +173,8 @@ namespace TagTool.IO
         /// <param name="align">The power of two to align to.</param>
         public static void Align(Stream stream, int align)
         {
-            var currentPos = stream.Position;
-            var alignedPos = (currentPos + align - 1) & ~(align - 1);
+            long currentPos = stream.Position;
+            long alignedPos = (currentPos + align - 1) & ~((long)align - 1);
             if (alignedPos > currentPos)
                 Insert(stream, (int)(alignedPos - currentPos), 0);
         }

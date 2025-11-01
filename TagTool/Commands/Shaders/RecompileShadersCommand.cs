@@ -197,7 +197,7 @@ namespace TagTool.Commands.Shaders
                     Options = aOptions,
                     Tag = tag,
                     Dependants = GetDependantsAsync(Cache, stream, tag.Name),
-                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, options),
+                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(Cache, stream, rmdf, aOptions),
                     PixelShaderName = rmt2.PixelShader != null ? rmt2.PixelShader.Name : tag.Name,
                     VertexShaderName = rmt2.VertexShader != null ? rmt2.VertexShader.Name : tag.Name, 
                 };

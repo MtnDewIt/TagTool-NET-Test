@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using TagTool.Bitmaps.DDS;
 using TagTool.Bitmaps.Utils;
@@ -160,6 +161,13 @@ namespace TagTool.Bitmaps
                 image.Flags |= BitmapFlags.Unknown3;
 
         }
+
+        public static bool IsBitmapResourceValid(GameCache cache, Bitmap bitmap)
+        {
+            return bitmap.HardwareTextures.All(cache.ResourceCache.IsResourceValid) &&
+                   bitmap.InterleavedHardwareTextures.All(cache.ResourceCache.IsResourceValid);
+        }
+
 
         /// <summary>
         /// When converting xbox bitmap formats (and other rare formats), get the standard format that it can be converted it without loss

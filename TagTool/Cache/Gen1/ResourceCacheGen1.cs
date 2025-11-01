@@ -99,10 +99,7 @@ namespace TagTool.Cache.Gen1
 
             CacheStream.Position = offset;
 
-            var readSize = CacheStream.ReadAll(result, 0, size);
-
-            if (readSize != size)
-                return null;
+            CacheStream.ReadExactly(result);
 
             return result;
         }

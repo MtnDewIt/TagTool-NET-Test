@@ -425,5 +425,23 @@ namespace TagTool.Tags
 
             return 0;
         }
-	}
+
+		/// <summary>
+		/// Check whether a field is in the given cache version and platform
+		/// </summary>
+        public static bool FieldInCacheVersion(TagFieldInfo field, CacheVersion version, CachePlatform platform)
+        {
+            var attributes = (TagFieldAttribute[])field.FieldInfo.GetCustomAttributes<TagFieldAttribute>(false);
+            if (attributes.Length == 0)
+                return true;
+
+            foreach (TagFieldAttribute attr in attributes)
+            {
+                if (CacheVersionDetection.TestAttribute(attr, version, platform))
+                    return true;
+            }
+
+            return false;
+        }
+    }
 }

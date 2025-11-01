@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TagTool.Bitmaps;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.Eldorado;
@@ -19,11 +20,13 @@ namespace TagTool.Porting
 {
     public abstract partial class PortingContext : IDisposable
     {
+        protected record struct CacheKey(int Index, string Name);
+
         public readonly GameCacheEldoradoBase CacheContext;
         public readonly GameCache BlamCache;
         protected readonly TagDefinitionCache TagDefinitionCache = new();
         private readonly HashSet<int> ReplacedTags = [];
-        private readonly Dictionary<int, CachedTag> PortedTags = [];
+        private readonly Dictionary<CacheKey, CachedTag> PortedTags = [];
         private readonly Dictionary<uint, StringId> PortedStringIds = [];
         private bool ShouldGenerateCampaignFile = false;
 
@@ -88,14 +91,6 @@ namespace TagTool.Porting
             /// If non null, overrides the ported tag name.
             /// </summary>
             public string TargetTagName = null;
-
-            /// <summary>
-            /// If true, doesn't cache the ported tag.
-            /// </summary>
-            /// <remarks>
-            /// WARNING: If a tag references itself either directly (or indirectly) it would cause a stack overflow.
-            /// </remarks>
-            public bool AllowReentrancy = false;
         }
 
         /// <summary>
@@ -119,8 +114,10 @@ namespace TagTool.Porting
             if (blamTag is CachedTagEldorado hoTag && hoTag.TagCache == CacheContext.TagCache)
                 return blamTag;
 
+            var cacheKey = new CacheKey(blamTag.Index, options.TargetTagName ?? blamTag.Name);
+
             // Ignore tags that have already been ported
-            if (!options.AllowReentrancy && PortedTags.TryGetValue(blamTag.Index, out CachedTag portedTag) )
+            if (PortedTags.TryGetValue(cacheKey, out CachedTag portedTag))
                 return portedTag;
 
             // Ignore tags that we don't have a definition for
@@ -132,7 +129,7 @@ namespace TagTool.Porting
 
             if (TagIsValid(blamTag, cacheStream, blamCacheStream, blamDefinition, out CachedTag result))
             {
-                result = ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName, options);
+                result = ConvertTagInternal(cacheStream, blamCacheStream, blamTag, blamDefinition, blamParentTagName, cacheKey, options);
 
                 if (result == null)
                     Log.Warning($"null tag allocated for reference \"{blamTag}\"");
@@ -143,8 +140,7 @@ namespace TagTool.Porting
                     Log.Warning($"using bitm tag reference \"{blamTag}\" from source cache");
             }
 
-            if(!options.AllowReentrancy)
-                PortedTags[blamTag.Index] = result;
+            PortedTags[cacheKey] = result;
 
             return result;
         }
@@ -160,7 +156,7 @@ namespace TagTool.Porting
             return (blamTag.Name, blamTag.Group.Tag);
         }
 
-        protected virtual CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName, in ConvertTagOptions options)
+        protected virtual CachedTag ConvertTagInternal(Stream cacheStream, Stream blamCacheStream, CachedTag blamTag, object blamDefinition, string blamParentTagName, CacheKey cacheKey, in ConvertTagOptions options)
         {
             (string targetTagName, Tag targetGroupTag) = GetTargetTagNameAndGroup(blamTag, blamDefinition);
             if (options.TargetTagName != null)
@@ -180,15 +176,14 @@ namespace TagTool.Porting
                 edTag = FindExistingTag(targetGroupTag, targetTagName);
                 if (edTag != null)
                 {
-                    if (ShouldReplaceTag(edTag))
+                    if (ShouldReplaceTag(cacheStream, edTag, blamDefinition))
                     {
                         if (!ReplacedTags.Add(edTag.Index)) // Avoid replacing the tag multiple times
                             return edTag;
                     }
                     else
                     {
-                        if (!options.AllowReentrancy)
-                            PortedTags[blamTag.Index] = edTag; // Avoid re-entrancy
+                        PortedTags[cacheKey] = edTag; // Avoid re-entrancy
 
                         if (FlagIsSet(PortingFlags.Merge))
                             MergeTags(cacheStream, blamCacheStream, blamTag, edTag, blamDefinition);
@@ -199,8 +194,7 @@ namespace TagTool.Porting
             }
 
             edTag ??= AllocateNewTag(targetGroupTag, targetTagName);
-            if (!options.AllowReentrancy)
-                PortedTags[blamTag.Index] = edTag; // Avoid re-entrancy
+            PortedTags[cacheKey] = edTag; // Avoid re-entrancy
 
             //
             // Convert the Blam tag definition
@@ -220,7 +214,7 @@ namespace TagTool.Porting
             }
 
             Task seriailizeTask = convertTask
-                .ContinueWith(task => FinishConvertTag(cacheStream, blamTag, blamDefinition, edTag), MainThreadScheduler);
+                .ContinueWith(task => FinishConvertTag(cacheStream, blamDefinition, edTag), MainThreadScheduler);
 
             if (!seriailizeTask.IsCompleted)
             {
@@ -231,22 +225,22 @@ namespace TagTool.Porting
             return edTag;
         }
 
-        protected CachedTag FinishConvertTag(Stream cacheStream, CachedTag blamTag, object blamDefinition, CachedTag edTag)
+        protected CachedTag FinishConvertTag(Stream cacheStream, object definition, CachedTag edTag)
         {
-            ArgumentNullException.ThrowIfNull(blamDefinition);
+            ArgumentNullException.ThrowIfNull(definition);
 
             //
             // Finalize and serialize the new ElDorado tag definition
             //
-
             _tagConvertTasks.Remove(edTag.Index);
             TagDefinitionCache.Evict(edTag);
-            CacheContext.Serialize(cacheStream, edTag, blamDefinition);
+            CacheContext.Serialize(cacheStream, edTag, definition);
 
+  
             if (FlagIsSet(PortingFlags.Print))
                 Console.WriteLine($"['{edTag.Group.Tag}', 0x{edTag.Index:X4}] {edTag}");
 
-            if (blamDefinition is Scenario scnr && FlagIsSet(PortingFlags.UpdateMapFiles))
+            if (definition is Scenario scnr && FlagIsSet(PortingFlags.UpdateMapFiles))
             {
                 string mapInfoDir = BlamCache.Directory == null ? "" : Path.Combine(BlamCache.Directory.FullName, "info");
                 MapFileUpdater.UpdateMapFile(CacheContext, edTag, scnr, mapInfoDir);
@@ -258,8 +252,28 @@ namespace TagTool.Porting
             return edTag;
         }
 
-        protected bool ShouldReplaceTag(CachedTag existingTag)
+        protected bool ShouldReplaceTag(Stream cacheStream, CachedTag existingTag, object blamDefinition)
         {
+            if (blamDefinition is Bitmap blamBitmap)
+            {
+                // Do not replace if the source bitmap is invalid
+                if (!BitmapUtils.IsBitmapResourceValid(BlamCache, blamBitmap))
+                {
+                    if (FlagIsSet(PortingFlags.Replace))
+                        Log.Warning($"Skipping bitmap that has an invalid resource '{existingTag.Name}'");
+
+                    return false;
+                }
+
+                // Always replace if the existing bitmap is invalid
+                var edBitmap = TagDefinitionCache.Deserialize<Bitmap>(CacheContext, cacheStream, existingTag);
+                if (!BitmapUtils.IsBitmapResourceValid(CacheContext, edBitmap))
+                {
+                    Log.Info($"Replacing bitmap that has an invalid resource '{existingTag}'");
+                    return true;
+                }
+            }
+
             return FlagIsSet(PortingFlags.Replace)
                     && !PortingConstants.DoNotReplaceGroups.Contains(existingTag.Group.Tag)
                     && !DoNotReplaceGroups.Contains(existingTag.Group.Tag);
@@ -345,28 +359,33 @@ namespace TagTool.Porting
         /// <returns></returns>
         protected virtual T ConvertStructure<T>(Stream cacheStream, Stream blamCacheStream, T data, object definition, string blamTagName) where T : TagStructure
         {
-            foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), CacheContext.Version, CacheContext.Platform))
+            foreach (TagFieldInfo tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), CacheContext.Version, CacheContext.Platform))
             {
-                var attributes = tagFieldInfo.FieldInfo.GetCustomAttributes(false).OfType<TagFieldAttribute>().ToList();
-                if (attributes.Count == 0 || attributes.Any(attr => CacheVersionDetection.TestAttribute(attr, BlamCache.Version, BlamCache.Platform)))
-                {
-                    // skip the field if no conversion is needed
-                    if ((tagFieldInfo.FieldType.IsValueType && tagFieldInfo.FieldType != typeof(StringId)) || tagFieldInfo.FieldType == typeof(string))
-                    {
-                        if (!tagFieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.GlobalMaterial))
-                            continue;
-                    }
+                if (CanSkipFieldConversion(tagFieldInfo))
+                    continue;
 
-                    var oldValue = tagFieldInfo.GetValue(data);
-                    if (oldValue is null)
-                        continue;
+                object value = tagFieldInfo.GetValue(data);
+                if (value is null)
+                    continue;
 
-                    // convert the field
-                    object newValue = ConvertFieldvalue(cacheStream, blamCacheStream, tagFieldInfo, oldValue, definition, blamTagName);
-                    tagFieldInfo.SetValue(data, newValue);
-                }
+                value = ConvertFieldvalue(cacheStream, blamCacheStream, tagFieldInfo, value, definition, blamTagName);
+                tagFieldInfo.SetValue(data, value);
             }
-            return data;
+
+            return (T)data;
+        }
+        
+        private bool CanSkipFieldConversion(TagFieldInfo tagFieldInfo)
+        {
+            if (!TagFieldInfo.FieldInCacheVersion(tagFieldInfo, BlamCache.Version, BlamCache.Platform))
+                return true;
+
+            if ((tagFieldInfo.Attribute.Flags & TagFieldFlags.GlobalMaterial) != 0)
+                return false;
+
+            Type type = tagFieldInfo.FieldType;
+
+            return (type.IsValueType && type != typeof(StringId)) || type == typeof(string);
         }
 
         /// <summary>

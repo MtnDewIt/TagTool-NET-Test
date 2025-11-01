@@ -14,6 +14,8 @@ namespace TagTool.Cache.Eldorado
 {
     public class TagCacheEldorado : TagCache
     {
+        public const int Headersize = 0x20;
+
         public List<CachedTagEldorado> Tags = new List<CachedTagEldorado>();
         public CacheFileSectionHeader Header;
 
@@ -126,7 +128,7 @@ namespace TagTool.Cache.Eldorado
             var result = new byte[tag.TotalSize];
 
             stream.Position = tag.HeaderOffset;
-            stream.ReadAll(result, 0, result.Length);
+            stream.ReadExactly(result);
 
             return result;
         }
@@ -150,7 +152,7 @@ namespace TagTool.Cache.Eldorado
             // Read the tag data
             stream.Position = tag.HeaderOffset + dataOffset;
             data.Data = new byte[tag.TotalSize - dataOffset];
-            stream.ReadAll(data.Data, 0, data.Data.Length);
+            stream.ReadExactly(data.Data);
 
             // Correct pointers
             using (var dataWriter = new BinaryWriter(new MemoryStream(data.Data)))
@@ -353,7 +355,7 @@ namespace TagTool.Cache.Eldorado
                     return tag.HeaderOffset + tag.TotalSize;
             }
 
-            return new TagStructureInfo(typeof(CacheFileSectionHeader)).TotalSize;
+            return Headersize;
         }
 
         /// <summary>
@@ -362,7 +364,7 @@ namespace TagTool.Cache.Eldorado
         /// <returns>The offset of the first byte past the last tag in the file.</returns>
         private uint GetTagDataEndOffset()
         {
-            uint endOffset = new TagStructureInfo(typeof(CacheFileSectionHeader)).TotalSize;
+            uint endOffset = Headersize;
             foreach (var tag in Tags)
             {
                 if (tag != null)

@@ -14,13 +14,14 @@ using TagTool.Common;
 using TagTool.Shaders.ShaderGenerator;
 using TagTool.Shaders.ShaderMatching;
 using TagTool.Tags.Definitions;
-using static TagTool.Shaders.ShaderMatching.ShaderMatcherNew;
+using static TagTool.Shaders.ShaderMatching.ShaderMatcher;
 using static TagTool.Tags.Definitions.MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using ShaderGen2 = TagTool.Tags.Definitions.Gen2.Shader;
 using TagGroupGen3 = TagTool.Cache.Gen3.TagGroupGen3;
 using TagTool.Cache.Eldorado;
 using TagTool.Common.Logging;
+using TagTool.Shaders;
 
 namespace TagTool.Porting.Gen2
 {
@@ -1422,7 +1423,7 @@ namespace TagTool.Porting.Gen2
 
             string rmt2TagName = $"shaders\\{new_shader_type}_templates\\_" + string.Join("_", shaderCategories);
 
-            ShaderMatcherNew.Rmt2Descriptor rmt2Desc = new ShaderMatcherNew.Rmt2Descriptor(new_shader_type, shaderCategories);
+            var rmt2Desc = new Rmt2Descriptor(new_shader_type, shaderCategories);
 
             CachedTag rmdfTag = CacheContext.TagCache.GetTag<RenderMethodDefinition>($"shaders\\{rmt2Desc.Type}");
             RenderMethodDefinition rmdf;
@@ -1430,7 +1431,7 @@ namespace TagTool.Porting.Gen2
             RenderMethodTemplate rmt2Definition;
             if (!CacheContext.TagCacheEldorado.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
             {
-                if (CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
+                if (!CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
                 {
                     rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
                     rmt2Definition = ShaderGeneratorNew.GenerateTemplateSafe(CacheContext, cacheStream, rmdf, rmt2TagName, out _, out _);

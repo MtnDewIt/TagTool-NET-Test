@@ -131,8 +131,7 @@ namespace TagTool.Porting.Gen3
             PlaybackParameter playback = BlamSoundGestalt.PlaybackParameters[sound.SoundReference.PlaybackParameterIndex];
             Scale scale = BlamSoundGestalt.Scales[sound.SoundReference.ScaleIndex];
             Promotion promotion = sound.SoundReference.PromotionIndex != -1 ? BlamSoundGestalt.Promotions[sound.SoundReference.PromotionIndex] : null;
-            CustomPlayback customPlayBack = sound.SoundReference.CustomPlaybackIndex != -1 ? BlamSoundGestalt.CustomPlaybacks[sound.SoundReference.CustomPlaybackIndex] : null;
-
+    
             if (BlamCache.Version >= CacheVersion.HaloReach)
                 sound.Flags = sound.FlagsReach.ConvertLexical<Sound.FlagsValue>();
 
@@ -147,8 +146,11 @@ namespace TagTool.Porting.Gen3
                 LoadMode = 0
             };
 
-            if (customPlayBack != null)
-                sound.CustomPlaybacks = [customPlayBack];
+            if (BlamCache.Version < CacheVersion.HaloReach)
+            {
+                if (sound.SoundReference.CustomPlaybackIndex != -1)
+                    sound.CustomPlaybacks = [BlamSoundGestalt.CustomPlaybacks[sound.SoundReference.CustomPlaybackIndex]];
+            }
 
             sound.Promotion = new Promotion()
             {
@@ -264,7 +266,7 @@ namespace TagTool.Porting.Gen3
             {
                 sound.Languages = new List<LanguageBlock>();
 
-                foreach (var language in BlamSoundGestalt.Languages)
+                foreach (var language in BlamSoundGestalt.LanguageDurations)
                 {
                     sound.Languages.Add(new LanguageBlock
                     {

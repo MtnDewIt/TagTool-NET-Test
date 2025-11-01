@@ -7,6 +7,7 @@ using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
 using TagTool.Cache.Gen3;
+using TagTool.Common.Logging;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -59,13 +60,32 @@ namespace TagTool.Porting.Gen3
         private Bitmap FinishConvertBitmap(Bitmap bitmap, string tagName, BaseBitmap[] convertedBitmaps)
         {
             var resources = new List<TagResourceReference>();
-            for (int i = 0; i < convertedBitmaps.Length; i++)
+            bool hasInvalidResource = false;
+
+            for (int i = 0; i < bitmap.Images.Count; i++)
             {
-                BitmapUtils.SetBitmapImageData(convertedBitmaps[i], bitmap.Images[i]);
-                var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(convertedBitmaps[i]);
-                var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
-                resources.Add(resourceReference);
+                var image = bitmap.Images[i];
+                image.XboxFlags = BitmapFlagsXbox.None;
+                image.InterleavedInterop = -1;
+                image.InterleavedTextureIndex = -1;
+
+                if (convertedBitmaps[i] == null)
+                {
+                    resources.Add(new TagResourceReference());
+                    hasInvalidResource = true;
+                }
+                else
+                {
+                    BitmapUtils.SetBitmapImageData(convertedBitmaps[i], bitmap.Images[i]);
+                    var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(convertedBitmaps[i]);
+                    var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
+                    resources.Add(resourceReference);
+                }
             }
+
+            if(hasInvalidResource)
+                Log.Warning($"Invalid resource for bitm {tagName}");
+
             bitmap.HardwareTextures = resources;
 
             //fixup for HO expecting 6 sequences in sensor_blips bitmap

@@ -221,7 +221,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return BlendModeValue.Opaque;
         }
 
-        public BlendModeValue GetAlphaBlendMode(ShaderMatcherNew.Rmt2Descriptor rmt2Descriptor, RenderMethodDefinition rmdf, GameCacheEldoradoBase Cache)
+        public BlendModeValue GetAlphaBlendMode(Rmt2Descriptor rmt2Descriptor, RenderMethodDefinition rmdf, GameCacheEldoradoBase Cache)
         {
             return GetAlphaBlendMode(rmt2Descriptor.Options, rmdf, Cache);
         }

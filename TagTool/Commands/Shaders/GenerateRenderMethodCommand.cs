@@ -6,10 +6,10 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Shaders.ShaderMatching;
 using TagTool.Shaders.ShaderGenerator;
-using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 using System.IO;
-using static TagTool.Shaders.ShaderMatching.ShaderMatcherNew;
 using System.Text.RegularExpressions;
+using TagTool.Shaders;
+using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
 
 namespace TagTool.Commands.Shaders
 {
@@ -55,7 +55,7 @@ namespace TagTool.Commands.Shaders
                 return new TagToolError(CommandError.TagInvalid, $"Could not find \"{args[1]}.rmt2\"");
 
             // easier to get the type, and cleaner to check if ms30
-            ShaderMatcherNew.Rmt2Descriptor.TryParse(rmt2Tag.Name, out var rmt2Descriptor);
+            Rmt2Descriptor.TryParse(rmt2Tag.Name, out var rmt2Descriptor);
 
             // check if tag already exists, or allocate new one
             string rmGroup = ShaderTypeGroups[rmt2Descriptor.Type];

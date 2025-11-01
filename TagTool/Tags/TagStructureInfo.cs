@@ -21,15 +21,6 @@ namespace TagTool.Tags
         /// Constructs a <see cref="TagStructureInfo"/> object which contains info about a tag structure type.
         /// </summary>
         /// <param name="structureType">The tag structure type to analyze.</param>
-        public TagStructureInfo(Type structureType)
-            : this(structureType, CacheVersion.Unknown, CachePlatform.All)
-        {
-        }
-
-        /// <summary>
-        /// Constructs a <see cref="TagStructureInfo"/> object which contains info about a tag structure type.
-        /// </summary>
-        /// <param name="structureType">The tag structure type to analyze.</param>
         /// <param name="version">The engine version to compare attributes against.</param>
         /// <param name="cachePlatform"></param>
         public TagStructureInfo(Type structureType, CacheVersion version, CachePlatform cachePlatform)
@@ -142,8 +133,13 @@ namespace TagTool.Tags
 
         private static TagStructureAttribute GetStructureAttribute(Type type, CacheVersion version, CachePlatform platform)
         {
-            return type.GetCustomAttributes<TagStructureAttribute>(false)
-                .FirstOrDefault(a => CacheVersionDetection.TestAttribute(a, version, platform));
+            foreach (var attr in type.GetCustomAttributes<TagStructureAttribute>(false))
+            {
+                if (CacheVersionDetection.TestAttribute(attr, version, platform))
+                    return attr;
+            }
+
+            return null;
         }
     }
 }

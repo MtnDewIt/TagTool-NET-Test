@@ -1,6 +1,9 @@
-using TagTool.Cache;
+using System;
 using System.Collections.Generic;
 using TagTool.Audio;
+using TagTool.Cache;
+using TagTool.Common;
+using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Tags.Definitions
 {
@@ -30,20 +33,20 @@ namespace TagTool.Tags.Definitions
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        public List<LanguagePermutation> LanguagePermutations;
+        public List<LanguagePermutation> PermutationLanguages;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
-        public List<Unknown6C> UnknownReach1;
+        public List<CustomPlaybackReach> CustomPlaybacksReach;
 
         [TagField(MaxVersion = CacheVersion.Eldorado700123)]
         public List<CustomPlayback> CustomPlaybacks;
 
-        public List<LanguageBlock> Languages;
+        public List<LanguageBlock> LanguageDurations;
 
         /// <summary>
         /// Bit vector
         /// </summary>
-        public List<sbyte> RuntimePermutationFlags;
+        public List<byte> RuntimePermutationFlags;
 
         public TagFunction NativeSampleData = new TagFunction { Data = new byte[0] };
         public uint Unknown4;
@@ -51,25 +54,21 @@ namespace TagTool.Tags.Definitions
 
         public List<PermutationChunk> PermutationChunks;
         public List<Promotion> Promotions;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ExtraInfo> ExtraInfo;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
-        public List<int> UnknownReach2;
+        public List<TagResourceReference> FacialAnimations;
 
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public List<LayerMarker> LayerMarkers;
 
-        [TagStructure(MinVersion = CacheVersion.HaloReach, Size = 0x2C)]
-        public class Unknown6C : TagStructure
+        [TagStructure(Size = 0x4)]
+        public class LayerMarker : TagStructure
         {
-            public int Unknown1;
-            public CachedTag Unknown2;
-            public int Unknown3;
-            public int Unknown4;
-            public int Unknown5;
-            public int Unknown6;
-            public int Unknown7;
-            public int Unknown8;
+            public int SampleOffset;
         }
-
 
         //
         // Functions for sound conversion 
