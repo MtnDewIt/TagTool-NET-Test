@@ -270,10 +270,16 @@ namespace TagTool.Commands.Modding
 				var dependencies = GetTagDependencies(modTag);
 				foreach (var dependency in dependencies)
 				{
-					if (!ForceAppliedTags.Contains(dependency))
+					if (!ForceAppliedTags.Contains(dependency) 
+						&& !BlacklistedTags.Contains(dependency)
+						&& !ForceBlacklistedTags.Contains(dependency))
 					{
 						ForceAppliedTags.Add(dependency);
 						Console.WriteLine($"Including dependency: {dependency}");
+					}
+					else
+					{
+						Console.WriteLine($"Excluded dependency due to blacklist: {dependency}");
 					}
 				}
 			}
