@@ -259,7 +259,7 @@ namespace TagTool.Porting.Gen2
             for (var clusterindex = 0; clusterindex < lgroup.Clusters.Count; clusterindex++)
             {
                 var clusterrenderdata = lgroup.ClusterRenderInfo[clusterindex];
-                if (clusterrenderdata.BitmapIndex == -1 && gen2bitmap == null)
+                if (clusterrenderdata.BitmapIndex == -1 || gen2bitmap == null)
                     continue;
                 var image = gen2bitmap.Bitmaps[clusterrenderdata.BitmapIndex];
 
@@ -308,7 +308,7 @@ namespace TagTool.Porting.Gen2
             for (var instanceindex = 0; instanceindex < lgroup.InstanceRenderInfo.Count; instanceindex++)
             {
                 var clusterrenderdata = lgroup.InstanceRenderInfo[instanceindex];
-                if (clusterrenderdata.BitmapIndex == -1 && gen2bitmap == null)
+                if (clusterrenderdata.BitmapIndex == -1 || gen2bitmap == null)
                     continue;
                 var image = gen2bitmap.Bitmaps[clusterrenderdata.BitmapIndex];
 
