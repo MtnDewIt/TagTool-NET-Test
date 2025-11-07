@@ -1431,7 +1431,7 @@ namespace TagTool.Porting.Gen2
             RenderMethodTemplate rmt2Definition;
             if (!CacheContext.TagCacheEldorado.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
             {
-                if (!CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
+                if (CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
                 {
                     rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, rmdfTag);
                     rmt2Definition = ShaderGeneratorNew.GenerateTemplateSafe(CacheContext, cacheStream, rmdf, rmt2TagName, out _, out _);
@@ -1439,7 +1439,7 @@ namespace TagTool.Porting.Gen2
                 else
                 {
                     Log.Error($"No rmdf tag present for {rmt2Desc.Type}");
-                    rmt2Definition = null;
+                    rmt2Definition = new RenderMethodTemplate();
                 }
 
                 rmt2Tag = CacheContext.TagCache.AllocateTag<RenderMethodTemplate>(rmt2TagName);
