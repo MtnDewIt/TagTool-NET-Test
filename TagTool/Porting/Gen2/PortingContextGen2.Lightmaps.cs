@@ -82,7 +82,7 @@ namespace TagTool.Porting.Gen2
             //set up geometry carried over from sbsp
             lbsp.Geometry = sbsp.Geometry;
 
-            var gen2bitmap = BlamCache.Deserialize<TagTool.Tags.Definitions.Gen2.Bitmap>(gen2CacheStream, lgroup.BitmapGroup);
+            var gen2bitmap = lgroup.BitmapGroup != null ? BlamCache.Deserialize<TagTool.Tags.Definitions.Gen2.Bitmap>(gen2CacheStream, lgroup.BitmapGroup) : null;
 
             Bitmap linearSHBitmap = new Bitmap() { Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource, Images = new List<Bitmap.Image>(), HardwareTextures = new List<TagResourceReference>() };
             Bitmap intensityBitmap = new Bitmap() { Flags = BitmapRuntimeFlags.UsingTagInteropAndTagResource, Images = new List<Bitmap.Image>(), HardwareTextures = new List<TagResourceReference>() };
@@ -92,7 +92,7 @@ namespace TagTool.Porting.Gen2
             for (var clusterindex = 0; clusterindex < lgroup.Clusters.Count; clusterindex++)
             {
                 var clusterrenderdata = lgroup.ClusterRenderInfo[clusterindex];
-                if (clusterrenderdata.BitmapIndex != -1)
+                if (clusterrenderdata.BitmapIndex != -1 && gen2bitmap != null)
                 {
                     Gen2BSPResourceMesh clustermesh = bspMeshes[bsp_index][clusterMeshIndices[clusterindex]];
                     var image = gen2bitmap.Bitmaps[clusterrenderdata.BitmapIndex];
@@ -194,7 +194,7 @@ namespace TagTool.Porting.Gen2
                 }
 
                 //static per pixel lighting
-                if (lgroup.InstanceRenderInfo[instanceindex].BitmapIndex != -1)
+                if (lgroup.InstanceRenderInfo[instanceindex].BitmapIndex != -1 && gen2bitmap != null)
                 {
                     var palette = lgroup.SectionPalette.Count != 0 ? lgroup.SectionPalette[lgroup.InstanceRenderInfo[instanceindex].PaletteIndex] : null;
                     var image = gen2bitmap.Bitmaps[lgroup.InstanceRenderInfo[instanceindex].BitmapIndex];
@@ -259,7 +259,7 @@ namespace TagTool.Porting.Gen2
             for (var clusterindex = 0; clusterindex < lgroup.Clusters.Count; clusterindex++)
             {
                 var clusterrenderdata = lgroup.ClusterRenderInfo[clusterindex];
-                if (clusterrenderdata.BitmapIndex == -1)
+                if (clusterrenderdata.BitmapIndex == -1 && gen2bitmap == null)
                     continue;
                 var image = gen2bitmap.Bitmaps[clusterrenderdata.BitmapIndex];
 
@@ -308,7 +308,7 @@ namespace TagTool.Porting.Gen2
             for (var instanceindex = 0; instanceindex < lgroup.InstanceRenderInfo.Count; instanceindex++)
             {
                 var clusterrenderdata = lgroup.InstanceRenderInfo[instanceindex];
-                if (clusterrenderdata.BitmapIndex == -1)
+                if (clusterrenderdata.BitmapIndex == -1 && gen2bitmap == null)
                     continue;
                 var image = gen2bitmap.Bitmaps[clusterrenderdata.BitmapIndex];
 

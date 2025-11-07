@@ -166,6 +166,9 @@ namespace TagTool.Porting.Gen2
 
         private bool NestBitmaps()
         {
+            if (bitmapContainers.Count == 0)
+                return false;
+
             foreach (var container in bitmapContainers)
             {
                 int minSize = container.Size.Min();
