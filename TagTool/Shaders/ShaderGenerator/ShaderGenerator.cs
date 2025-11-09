@@ -22,7 +22,6 @@ namespace TagTool.Shaders.ShaderGenerator
         {
             switch (shaderType)
             {
-            	// TODO: Update Shader Generator
                 case HaloShaderGenerator.Globals.ShaderType.Beam:            return new HaloShaderGenerator.Beam.BeamGenerator();
                 case HaloShaderGenerator.Globals.ShaderType.Black:           return new HaloShaderGenerator.Black.BlackGenerator();
                 case HaloShaderGenerator.Globals.ShaderType.Contrail:        return new HaloShaderGenerator.Contrail.ContrailGenerator();
@@ -86,86 +85,215 @@ namespace TagTool.Shaders.ShaderGenerator
             return false;
         }
 
-        private static List<OptionInfo> BuildOptionInfo(GameCache cache, RenderMethodDefinition rmdf, 
+        public static List<OptionInfo> BuildOptionInfo(GameCache cache, RenderMethodDefinition rmdf, 
             byte[] options, HaloShaderGenerator.Globals.ShaderType shaderType, bool ps = true)
         {
             List<OptionInfo> optionInfo = new List<OptionInfo>();
 
-            if (rmdf.Flags.HasFlag(RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros))
+            IShaderGenerator generator = ShaderGenerator.GetGlobalShaderGenerator(shaderType);
+
+            for (int i = 0; i < generator.GetMethodCount(); i++) 
             {
-                for (int i = 0; i < options.Length; i++)
+                if (i < options.Length && i < rmdf.Categories.Count)
                 {
                     if (options[i] >= rmdf.Categories[i].ShaderOptions.Count)
                         continue;
 
-                    string category = cache.StringTable.GetString(rmdf.Categories[i].Name);
-                    string option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].Name);
+                    string categoryName = ParseInfo(cache, rmdf, generator, i, options[i], OptionInfo.OptionType.Category);
+                    string psMacroName = ParseInfo(cache, rmdf, generator, i, options[i], OptionInfo.OptionType.PsMacro);
+                    string vsMacroName = ParseInfo(cache, rmdf, generator, i, options[i], OptionInfo.OptionType.VsMacro);
+                    string optionName = ParseInfo(cache, rmdf, generator, i, options[i], OptionInfo.OptionType.Option);
+                    string psMacroValueName = ParseInfo(cache, rmdf, generator, i, options[i], OptionInfo.OptionType.PsMacroValue);
+                    string vsMacroValueName = ParseInfo(cache, rmdf, generator, i, options[i], OptionInfo.OptionType.VsMacroValue);
 
-                    if (ps)
+                    if (rmdf.Flags.HasFlag(RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros))
                     {
-                        // TODO: Confirm that this actually is correct
-                        if (AutoMacroIsParameter(category, shaderType))
+                        if (ps)
                         {
+                            if (AutoMacroIsParameter(categoryName, shaderType))
+                            {
+                                optionInfo.Add(new OptionInfo
+                                {
+                                    Category = categoryName,
+                                    PsMacro = psMacroName,
+                                    VsMacro = vsMacroName,
+                                    Option = optionName,
+                                    PsMacroValue = psMacroValueName,
+                                    VsMacroValue = vsMacroValueName
+                                });
+                            }
+
                             optionInfo.Add(new OptionInfo
                             {
-                                Category = cache.StringTable.GetString(rmdf.Categories[i].Name),
-                                PsMacro = cache.StringTable.GetString(rmdf.Categories[i].PixelFunction),
-                                VsMacro = cache.StringTable.GetString(rmdf.Categories[i].VertexFunction),
-                                Option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].Name),
-                                PsMacroValue = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].PixelFunction),
-                                VsMacroValue = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].VertexFunction)
+                                Category = categoryName,
+                                PsMacro = "category_" + categoryName,
+                                //VsMacro = "category_" + categoryName,
+                                VsMacro = "",
+                                Option = optionName,
+                                PsMacroValue = "category_" + categoryName + "_option_" + optionName,
+                                //VsMacroValue = "category_" + categoryName + "_option_" + optionName
+                                VsMacroValue = ""
                             });
                         }
 
-                        optionInfo.Add(new OptionInfo
+                        for (int j = 0; j < generator.GetMethodOptionCount(i); j++) 
                         {
-                            Category = category,
-                            PsMacro = "category_" + category,
-                            //VsMacro = "category_" + category,
-                            VsMacro = "",
-                            Option = option,
-                            PsMacroValue = "category_" + category + "_option_" + option,
-                            //VsMacroValue = "category_" + category + "_option_" + option
-                            VsMacroValue = ""
-                        });
+                            if (j < rmdf.Categories[i].ShaderOptions.Count)
+                            {
+                                optionName = ParseInfo(cache, rmdf, generator, i, j, OptionInfo.OptionType.Option);
+
+                                optionInfo.Add(new OptionInfo
+                                {
+                                    Category = categoryName,
+                                    PsMacro = "category_" + categoryName + "_option_" + optionName,
+                                    //VsMacro = "category_" + categoryName + "_option_" + optionName,
+                                    VsMacro = "",
+                                    Option = optionName,
+                                    PsMacroValue = j.ToString(),
+                                    //VsMacroValue = j.ToString()
+                                    VsMacroValue = ""
+                                });
+                            }
+                            else 
+                            {
+                                categoryName = generator.GetMethodNames().GetValue(i).ToString().ToLower();
+                                optionName = generator.GetMethodOptionNames(i).GetValue(j).ToString().ToLower();
+
+                                optionInfo.Add(new OptionInfo
+                                {
+                                    Category = categoryName,
+                                    PsMacro = "category_" + categoryName + "_option_" + optionName,
+                                    //VsMacro = "category_" + method + "_option_" + optionName,
+                                    VsMacro = "",
+                                    Option = optionName,
+                                    PsMacroValue = j.ToString(),
+                                    //VsMacroValue = j.ToString()
+                                    VsMacroValue = ""
+                                });
+                            }
+                        }
                     }
-                    // definitions
-                    for (int j = 0; j < rmdf.Categories[i].ShaderOptions.Count; j++)
+                    else
                     {
                         optionInfo.Add(new OptionInfo
                         {
-                            Category = category,
-                            PsMacro = "category_" + category + "_option_" + cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
-                            //VsMacro = "category_" + category + "_option_" + cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
-                            VsMacro = "",
-                            Option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[j].Name),
-                            PsMacroValue = j.ToString(),
-                            //VsMacroValue = j.ToString()
-                            VsMacroValue = ""
+                            Category = categoryName,
+                            PsMacro = psMacroName,
+                            VsMacro = vsMacroName,
+                            Option = optionName,
+                            PsMacroValue = psMacroValueName,
+                            VsMacroValue = vsMacroValueName
                         });
                     }
                 }
-            }
-            else
-            {
-                for (int i = 0; i < options.Length; i++)
+                else 
                 {
-                    if (options[i] >= rmdf.Categories[i].ShaderOptions.Count)
-                        continue;
+                    string categoryName = generator.GetMethodNames().GetValue(i).ToString().ToLower();
+                    string psMacroName = generator.GetCategoryPixelFunction(i);
+                    string vsMacroName = generator.GetCategoryVertexFunction(i);
+                    string optionName = generator.GetMethodOptionNames(i).GetValue(0).ToString().ToLower();
+                    string psMacroValueName = generator.GetOptionPixelFunction(i, 0);
+                    string vsMacroValueName = generator.GetOptionVertexFunction(i, 0);
 
-                    optionInfo.Add(new OptionInfo
+                    if (rmdf.Flags.HasFlag(RenderMethodDefinition.RenderMethodDefinitionFlags.UseAutomaticMacros))
                     {
-                        Category = cache.StringTable.GetString(rmdf.Categories[i].Name),
-                        PsMacro = cache.StringTable.GetString(rmdf.Categories[i].PixelFunction),
-                        VsMacro = cache.StringTable.GetString(rmdf.Categories[i].VertexFunction),
-                        Option = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].Name),
-                        PsMacroValue = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].PixelFunction),
-                        VsMacroValue = cache.StringTable.GetString(rmdf.Categories[i].ShaderOptions[options[i]].VertexFunction)
-                    });
+                        if (ps) 
+                        {
+                            if (AutoMacroIsParameter(categoryName, shaderType)) 
+                            {
+                                optionInfo.Add(new OptionInfo
+                                {
+                                    Category = categoryName,
+                                    PsMacro = psMacroName,
+                                    VsMacro = vsMacroName,
+                                    Option = optionName,
+                                    PsMacroValue = psMacroValueName,
+                                    VsMacroValue = vsMacroValueName
+                                });
+                            }
+
+                            optionInfo.Add(new OptionInfo
+                            {
+                                Category = categoryName,
+                                PsMacro = "category_" + categoryName,
+                                //VsMacro = "category_" + methodName,
+                                VsMacro = "",
+                                Option = optionName,
+                                PsMacroValue = "category_" + categoryName + "_option_" + optionName,
+                                //VsMacroValue = "category_" + methodName + "_option_" + optionName
+                                VsMacroValue = ""
+                            });
+                        }
+
+                        for (int j = 0; j < generator.GetMethodOptionCount(i); j++)
+                        {
+                            optionName = generator.GetMethodOptionNames(i).GetValue(j).ToString().ToLower();
+
+                            optionInfo.Add(new OptionInfo
+                            {
+                                Category = categoryName,
+                                PsMacro = "category_" + categoryName + "_option_" + optionName,
+                                //VsMacro = "category_" + methodName + "_option_" + optionName,
+                                VsMacro = "",
+                                Option = optionName,
+                                PsMacroValue = j.ToString(),
+                                //VsMacroValue = j.ToString()
+                                VsMacroValue = ""
+                            });
+                        }
+                    }
+                    else 
+                    {
+                        optionInfo.Add(new OptionInfo 
+                        {
+                            Category = categoryName,
+                            PsMacro = psMacroName,
+                            VsMacro = vsMacroName,
+                            Option = optionName,
+                            PsMacroValue = psMacroValueName,
+                            VsMacroValue = vsMacroValueName
+                        });
+                    }
                 }
             }
 
             return optionInfo;
+        }
+
+        private static string ParseInfo(GameCache cache, RenderMethodDefinition rmdf, IShaderGenerator generator, int categoryIndex, int optionIndex, OptionInfo.OptionType type)
+        {
+            string definitionInfo = string.Empty;
+            string generatorInfo = string.Empty;
+
+            switch (type) 
+            {
+                case OptionInfo.OptionType.Category:
+                    definitionInfo = cache.StringTable.GetString(rmdf.Categories[categoryIndex].Name);
+                    generatorInfo = generator.GetMethodNames().GetValue(categoryIndex).ToString().ToLower();
+                    break;
+                case OptionInfo.OptionType.PsMacro:
+                    definitionInfo = cache.StringTable.GetString(rmdf.Categories[categoryIndex].PixelFunction);
+                    generatorInfo = generator.GetCategoryPixelFunction(categoryIndex);
+                    break;          
+                case OptionInfo.OptionType.VsMacro:
+                    definitionInfo = cache.StringTable.GetString(rmdf.Categories[categoryIndex].VertexFunction);
+                    generatorInfo = generator.GetCategoryVertexFunction(categoryIndex);
+                    break;
+                case OptionInfo.OptionType.Option:
+                    definitionInfo = cache.StringTable.GetString(rmdf.Categories[categoryIndex].ShaderOptions[optionIndex].Name);
+                    generatorInfo = generator.GetMethodOptionNames(categoryIndex).GetValue(optionIndex).ToString().ToLower();
+                    break;
+                case OptionInfo.OptionType.PsMacroValue:
+                    definitionInfo = cache.StringTable.GetString(rmdf.Categories[categoryIndex].ShaderOptions[optionIndex].PixelFunction);
+                    generatorInfo = generator.GetOptionPixelFunction(categoryIndex, optionIndex);
+                    break;           
+                case OptionInfo.OptionType.VsMacroValue:
+                    definitionInfo = cache.StringTable.GetString(rmdf.Categories[categoryIndex].ShaderOptions[optionIndex].VertexFunction);
+                    generatorInfo = generator.GetOptionVertexFunction(categoryIndex, optionIndex);
+                    break;
+            }
+
+            return definitionInfo.Equals(generatorInfo) ? definitionInfo : generatorInfo;
         }
 
         private static GlobalRasterizerConstantTable BuildConstantTable(GameCache cache, ShaderGeneratorResult result, ShaderType shaderType)
@@ -180,7 +308,6 @@ namespace TagTool.Shaders.ShaderGenerator
                     RegisterCount = (byte)register.Size
                 };
 
-                // TODO: Update Shader Generator so I can update this switch :/
                 switch (register.RegisterType)
                 {
                     case ShaderGeneratorResult.ShaderRegister.ShaderRegisterType.Boolean:
@@ -814,7 +941,7 @@ namespace TagTool.Shaders.ShaderGenerator
             return pixl;
         }
 
-        private static List<byte> ApplyGlpsOptionHacks(List<byte> fakeOptions, GameCache cache, RenderMethodDefinition rmdf, HaloShaderGenerator.Globals.ShaderType shaderType)
+        public static List<byte> ApplyGlpsOptionHacks(List<byte> fakeOptions, GameCache cache, RenderMethodDefinition rmdf, HaloShaderGenerator.Globals.ShaderType shaderType)
         {
             // force foliage albedo to 'simple' for glps - we just want a basic sample
             if (shaderType == HaloShaderGenerator.Globals.ShaderType.Foliage)

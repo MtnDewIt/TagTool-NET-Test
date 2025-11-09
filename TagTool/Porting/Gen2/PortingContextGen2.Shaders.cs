@@ -44,19 +44,23 @@ namespace TagTool.Porting.Gen2
         private RenderMethod Definition { get; set; }
         public RenderMethod ConvertShader(ShaderGen2 gen2Shader, ShaderGen2 gen2ShaderH2, String gen2TagName, Stream cacheStream, Stream gen2CacheStream, CachedTag gen2Tag)
         {
-
             string shader_template = gen2ShaderH2.Template.Name;
             shader_template = shader_template.Split('\\').Last();
 
-            byte[] shaderCategoriesRMSH = new byte[Enum.GetValues(typeof(HaloShaderGenerator.Shader.ShaderMethods)).Length];
+            // #TODO: Figure out a way to precompute these arrays
+
+            int RMSHCategoryCount = GetRenderMethodCategoryCount(cacheStream, HaloShaderGenerator.Globals.ShaderType.Shader);
+            byte[] shaderCategoriesRMSH = new byte[RMSHCategoryCount];
             for (var i = 0; i < shaderCategoriesRMSH.Length; i++)
                 shaderCategoriesRMSH[i] = 0;
 
-            byte[] shaderCategoriesRMHG = new byte[Enum.GetValues(typeof(HaloShaderGenerator.Halogram.HalogramMethods)).Length];
+            int RMHGCategoryCount = GetRenderMethodCategoryCount(cacheStream, HaloShaderGenerator.Globals.ShaderType.Halogram);
+            byte[] shaderCategoriesRMHG = new byte[RMHGCategoryCount];
             for (var i = 0; i < shaderCategoriesRMHG.Length; i++)
                 shaderCategoriesRMHG[i] = 0;
 
-            byte[] shaderCategoriesRMD = new byte[Enum.GetValues(typeof(HaloShaderGenerator.Decal.DecalMethods)).Length];
+            int RMDCategoryCount = GetRenderMethodCategoryCount(cacheStream, HaloShaderGenerator.Globals.ShaderType.Decal);
+            byte[] shaderCategoriesRMD = new byte[RMDCategoryCount];
             for (var i = 0; i < shaderCategoriesRMD.Length; i++)
                 shaderCategoriesRMD[i] = 0;
 
@@ -1977,6 +1981,22 @@ namespace TagTool.Porting.Gen2
                 }
             }
             return null;
+        }
+
+        private int GetRenderMethodCategoryCount(Stream cacheStream, HaloShaderGenerator.Globals.ShaderType shaderType) 
+        {
+            string renderMethodName = shaderType.ToString().ToSnakeCase().ToLower();
+
+            if (CacheContext.TagCache.TryGetTag($"shaders\\{renderMethodName}.rmdf", out CachedTag tag))
+            {
+                RenderMethodDefinition rmdf = CacheContext.Deserialize<RenderMethodDefinition>(cacheStream, tag);
+                return rmdf.Categories.Count;
+            }
+            else 
+            {
+                Log.Error($"No rmdf tag present for {renderMethodName}");
+                return -1;
+            }
         }
     }
 }

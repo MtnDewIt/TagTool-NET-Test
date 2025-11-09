@@ -35,11 +35,11 @@ namespace TagTool.Shaders.ShaderGenerator
             return rmdf;
         }
 
-        private static CategoryBlock.ShaderOption BuildCategoryOption(GameCache cache, Stream cacheStream, string categoryName, uint categoryIndex, int optionIndex, IShaderGenerator generator)
+        private static CategoryBlock.ShaderOption BuildCategoryOption(GameCache cache, Stream cacheStream, string categoryName, int categoryIndex, int optionIndex, IShaderGenerator generator)
         {
             CategoryBlock.ShaderOption result = new CategoryBlock.ShaderOption();
 
-            string optionName = FixupMethodOptionName(generator.GetMethodOptionNames((int)categoryIndex).GetValue(optionIndex).ToString().ToLower());
+            string optionName = FixupMethodOptionName(generator.GetMethodOptionNames(categoryIndex).GetValue(optionIndex).ToString().ToLower());
             result.Name = cache.StringTable.GetOrAddString(optionName);
 
             var parameters = generator.GetParametersInOption(categoryName, optionIndex, out string rmopName, out _);
@@ -61,15 +61,16 @@ namespace TagTool.Shaders.ShaderGenerator
                 result.Option = rmopTag;
             }
 
-            generator.GetOptionFunctions(categoryName, optionIndex, out string vertexFunction, out string pixelFunction);
-
-            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Empty;
-            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Empty;
+            string pixelFunction = generator.GetOptionPixelFunction(categoryIndex, optionIndex);
+            string vertexFunction = generator.GetOptionVertexFunction(categoryIndex, optionIndex);
+            
+            result.VertexFunction = string.IsNullOrEmpty(vertexFunction) ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Empty;
+            result.PixelFunction = string.IsNullOrEmpty(pixelFunction) ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Empty;
 
             return result;
         }
 
-        private static CategoryBlock BuildCategory(GameCache cache, Stream cacheStream, uint categoryIndex, IShaderGenerator generator, HaloShaderGenerator.Globals.ShaderType shaderType)
+        private static CategoryBlock BuildCategory(GameCache cache, Stream cacheStream, int categoryIndex, IShaderGenerator generator, HaloShaderGenerator.Globals.ShaderType shaderType)
         {
             CategoryBlock result = new CategoryBlock();
 
@@ -81,16 +82,17 @@ namespace TagTool.Shaders.ShaderGenerator
             if (shaderType == HaloShaderGenerator.Globals.ShaderType.Black)
                 return result;
 
-            for (int i = 0; i < generator.GetMethodOptionCount((int)categoryIndex); i++)
+            for (int i = 0; i < generator.GetMethodOptionCount(categoryIndex); i++)
             {
                 var optionBlock = BuildCategoryOption(cache, cacheStream, categoryName, categoryIndex, i, generator);
                 result.ShaderOptions.Add(optionBlock);
             }
 
-            generator.GetCategoryFunctions(categoryName, out string vertexFunction, out string pixelFunction);
-
-            result.VertexFunction = vertexFunction != "invalid" ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Empty;
-            result.PixelFunction = pixelFunction != "invalid" ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Empty;
+            string pixelFunction = generator.GetCategoryPixelFunction(categoryIndex);
+            string vertexFunction = generator.GetCategoryVertexFunction(categoryIndex);
+            
+            result.VertexFunction = string.IsNullOrEmpty(vertexFunction) ? cache.StringTable.GetOrAddString(vertexFunction) : StringId.Empty;
+            result.PixelFunction = string.IsNullOrEmpty(pixelFunction) ? cache.StringTable.GetOrAddString(pixelFunction) : StringId.Empty;
 
             return result;
         }
@@ -99,7 +101,7 @@ namespace TagTool.Shaders.ShaderGenerator
         {
             List<CategoryBlock> result = new List<CategoryBlock>();
 
-            for (uint i = 0; i < generator.GetMethodCount(); i++)
+            for (int i = 0; i < generator.GetMethodCount(); i++)
             {
                 var categoryBlock = BuildCategory(cache, cacheStream, i, generator, shaderType);
                 result.Add(categoryBlock);
