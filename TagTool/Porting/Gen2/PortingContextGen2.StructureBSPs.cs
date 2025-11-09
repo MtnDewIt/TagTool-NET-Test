@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TagTool.Cache;
+using TagTool.Commands.Scenarios;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Geometry;
@@ -12,6 +13,7 @@ using TagTool.Pathfinding;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
+using static TagTool.Cache.HaloOnline.ResourceCacheHaloOnline;
 using static TagTool.Porting.Gen2.Gen2BspGeometryConverter;
 using Gen2Pathfinding = TagTool.Tags.Definitions.Gen2.ScenarioStructureBsp.PathfindingDataBlock;
 using Gen2ScenarioStructureBsp = TagTool.Tags.Definitions.Gen2.ScenarioStructureBsp;
@@ -395,6 +397,67 @@ namespace TagTool.Porting.Gen2
 
             //write meshes and render model resource
             newSbsp.Geometry = meshbuild.Geometry;
+
+            //generate water meshes if the map has them
+            if (gen2Tag.WaterDefinitions != null && gen2Tag.WaterDefinitions.Count > 0 && gen2Tag.WaterDefinitions[0].Shader != null)
+            {
+                var waterWorldParams = new WorldGenerator.WorldParameters()
+                {
+                    Shader = CacheContext.TagCache.GetTag(@"levels\multi\zanzibar\sky\shaders\water.shader"),
+                    CellSize = 500,
+                    Tesselation = 20,
+                    Opacity = 0.9f,
+                    Z = gen2Tag.WaterDefinitions[0].Height
+                };
+                WorldGenerator.GenerateFlatWorld(CacheContext, newSbsp, waterWorldParams, out var waterGeometry, out var waterResource);
+
+                CollisionResource.InstancedGeometry.Add(new InstancedGeometryBlock
+                {
+                    BoundingSphereOffset = new RealPoint3d(0, 0, gen2Tag.WaterDefinitions[0].Height),
+                    BoundingSphereRadius = 500.0f,
+                    MeshIndex = (short)(newSbsp.Geometry.Meshes.Count)
+                });
+
+                newSbsp.InstancedGeometryInstances.Add(new InstancedGeometryInstance
+                {
+                    Scale = 1.0f,
+                    Matrix = new RealMatrix4x3(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0, 0, gen2Tag.WaterDefinitions[0].Height),
+                    DefinitionIndex = (short)(CollisionResource.InstancedGeometry.Count - 1),
+                    Flags = InstancedGeometryInstance.InstancedGeometryFlags.RenderOnly,
+                    WorldBoundingSphereCenter = new RealPoint3d(0, 0, gen2Tag.WaterDefinitions[0].Height),
+                    BoundingSphereRadiusBounds = new Bounds<float>(500.0f, 500.0f),
+                });
+
+                /*
+                newSbsp.Clusters.Add(new ScenarioStructureBsp.Cluster()
+                {
+                    BoundsX = newSbsp.WorldBoundsX,
+                    BoundsY = newSbsp.WorldBoundsY,
+                    BoundsZ = newSbsp.WorldBoundsZ,
+                    AtmosphereIndex = -1,
+                    CameraFxIndex = -1,
+                    BackgroundSoundEnvironmentIndex = -1,
+                    AcousticsSoundClusterIndex = 0,
+                    Unknown3 = -1,
+                    Unknown4 = -1,
+                    Unknown5 = -1,
+                    RuntimeDecalStartIndex = -1,
+                    MeshIndex = (short)(newSbsp.Geometry.Meshes.Count),
+                });
+                */
+
+                var geometryResource = CacheContext.ResourceCache.GetRenderGeometryApiResourceDefinition(newSbsp.Geometry.Resource);
+                waterGeometry.Meshes[0].IndexBufferIndices[0] = (short)geometryResource.IndexBuffers.Count;
+                waterGeometry.Meshes[0].VertexBufferIndices[0] = (short)geometryResource.VertexBuffers.Count;
+                foreach (var part in waterGeometry.Meshes[0].Parts)
+                    part.MaterialIndex = (short)(newSbsp.Materials.Count - 1);
+                newSbsp.Geometry.Meshes.Add(waterGeometry.Meshes[0]);
+                geometryResource.IndexBuffers.Add(waterResource.IndexBuffers[0]);
+                geometryResource.VertexBuffers.Add(waterResource.VertexBuffers[0]);
+                newSbsp.Geometry.InstancedGeometryPerPixelLighting = new List<RenderGeometry.StaticPerPixelLighting>();
+                newSbsp.Geometry.SetResourceBuffers(geometryResource, false);
+                CacheContext.ResourceCaches.ReplaceResource(newSbsp.Geometry.Resource, geometryResource);
+            }
 
             //add empty meshes for clusters and instances with no mesh
             foreach (var cluster in newSbsp.Clusters)
