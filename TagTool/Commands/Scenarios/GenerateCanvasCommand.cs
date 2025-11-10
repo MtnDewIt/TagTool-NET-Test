@@ -676,7 +676,7 @@ namespace TagTool.Commands.Scenarios
             float cellSize = parameters.CellSize;
             GenerateGridMesh(1, 1, cellSize, out WorldVertex[] worldVertices, out ushort[] indices);
 
-            var origin = new RealPoint3d(0, 0, parameters.Z);
+            var origin = new RealPoint3d(-250, -250, parameters.Z);
             foreach (ref WorldVertex v in worldVertices.AsSpan())
                 v.Position = new RealQuaternion(v.Position.I + origin.X, v.Position.J + origin.Y, v.Position.K + origin.Z);
 
