@@ -57,6 +57,7 @@ namespace TagTool.Porting.Gen2
                 "sbsp",
                 "scnr",
                 "snd!",
+                "lsnd",
                 "mach",
                 "ligh",
                 "eqip",
@@ -239,7 +240,8 @@ namespace TagTool.Porting.Gen2
             {
                 case TagTool.Tags.Definitions.ScenarioStructureBsp sbsp:
                     foreach (var cluster in sbsp.Clusters)
-                        cluster.InstancedGeometryPhysics.StructureBsp = destinationTag;
+                        if(cluster.InstancedGeometryPhysics != null)
+                            cluster.InstancedGeometryPhysics.StructureBsp = destinationTag;
                     break;
                 case TagTool.Tags.Definitions.Scenario scnr:
                     {

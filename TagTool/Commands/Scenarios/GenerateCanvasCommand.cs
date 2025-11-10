@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TagTool.BlamFile;
 using TagTool.Cache;
-using TagTool.Common;
+using TagTool.Cache.Resources;
 using TagTool.Commands.Common;
+using TagTool.Common;
+using TagTool.Common.Logging;
 using TagTool.Geometry;
 using TagTool.Geometry.BspCollisionGeometry;
 using TagTool.Havok;
@@ -14,8 +17,6 @@ using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
 using static TagTool.Tags.Definitions.Scenario;
-using TagTool.Common.Logging;
-using System.Runtime.InteropServices;
 
 namespace TagTool.Commands.Scenarios
 {
@@ -264,7 +265,7 @@ namespace TagTool.Commands.Scenarios
 
             if (type == WorldType.Water)
             {
-                var waterWorldParams = new WaterWorldParameters()
+                var waterWorldParams = new WorldGenerator.WorldParameters()
                 {
                     Shader = Cache.TagCache.GetTag(@"levels\multi\riverworld\shaders\riverworld_water_rough.shader_water"),
                     CellSize = 20,
@@ -272,7 +273,9 @@ namespace TagTool.Commands.Scenarios
                     Opacity = 0.9f,
                     Z = 0
                 };
-                var waterGeometry = GenerateWaterWorld(sbsp, waterWorldParams);
+                WorldGenerator.GenerateWaterWorld(Cache, sbsp, waterWorldParams, out var waterGeometry, out var resource);
+                waterGeometry.SetResourceBuffers(resource, false);
+                waterGeometry.Resource = Cache.ResourceCache.CreateRenderGeometryApiResource(resource);
                 lbsp.Geometry = waterGeometry;
                 sbsp.Geometry = waterGeometry;
                 // temp hack to ensure render geo is visible
@@ -556,9 +559,12 @@ namespace TagTool.Commands.Scenarios
                     map.Write(new EndianWriter(mapFileStream));
                 }
             }
-        }
+        }        
+    }
 
-        class WaterWorldParameters
+    public static class WorldGenerator
+    {
+        public class WorldParameters
         {
             public CachedTag Shader;
             public float Tesselation;
@@ -567,19 +573,21 @@ namespace TagTool.Commands.Scenarios
             public float Z;
         }
 
-        private RenderGeometry GenerateWaterWorld(ScenarioStructureBsp sbsp, WaterWorldParameters parameters)
+        public static void GenerateWaterWorld(GameCache Cache, ScenarioStructureBsp sbsp, WorldParameters parameters, out RenderGeometry resultGeometry, out RenderGeometryApiResourceDefinition resultResource)
         {
-            sbsp.Materials = new List<RenderMaterial>() { new RenderMaterial() { RenderMethod = parameters.Shader } };
-            sbsp.CollisionMaterials = new List<ScenarioStructureBsp.CollisionMaterial>()
-            { 
-                new ScenarioStructureBsp.CollisionMaterial()
-                {
-                    RenderMethod = parameters.Shader,
-                    ConveyorSurfaceIndex = -1,
-                    SeamMappingIndex = -1,
-                    RuntimeGlobalMaterialIndex = 0
-                }
-            };
+            if (sbsp.Materials == null)
+            {
+                sbsp.Materials = new List<RenderMaterial>();
+                sbsp.CollisionMaterials = new List<ScenarioStructureBsp.CollisionMaterial>();
+            }
+            sbsp.Materials.Add(new RenderMaterial() { RenderMethod = parameters.Shader });
+            sbsp.CollisionMaterials.Add(new ScenarioStructureBsp.CollisionMaterial()
+            {
+                RenderMethod = parameters.Shader,
+                ConveyorSurfaceIndex = -1,
+                SeamMappingIndex = -1,
+                RuntimeGlobalMaterialIndex = 0
+            });
 
             float cellSize = parameters.CellSize;
             int xCells = (int)Math.Ceiling(sbsp.WorldBoundsX.Length / cellSize);
@@ -587,7 +595,7 @@ namespace TagTool.Commands.Scenarios
             GenerateGridMesh(xCells, yCells, cellSize, out WorldVertex[] worldVertices, out ushort[] indices);
 
             var origin = new RealPoint3d(-sbsp.WorldBoundsX.Length / 2, -sbsp.WorldBoundsZ.Length / 2, parameters.Z);
-            foreach(ref WorldVertex v in worldVertices.AsSpan())
+            foreach (ref WorldVertex v in worldVertices.AsSpan())
                 v.Position = new RealQuaternion(v.Position.I + origin.X, v.Position.J + origin.Y, v.Position.K + origin.Z);
 
             var worldWaterVertices = GenerateWorldWaterVertices(worldVertices, indices);
@@ -641,19 +649,86 @@ namespace TagTool.Commands.Scenarios
             mesh.VertexBufferIndices[6] = 1;
             mesh.VertexBufferIndices[7] = 2;
 
+            var geometry = new RenderGeometry();
+            geometry.Meshes = new List<Mesh>() { mesh };
+            geometry.InstancedGeometryPerPixelLighting = new List<RenderGeometry.StaticPerPixelLighting>();
+
+            resultResource = resourceDefinition;
+            resultGeometry = geometry;
+        }
+
+        public static void GenerateFlatWorld(GameCache Cache, ScenarioStructureBsp sbsp, WorldParameters parameters, out RenderGeometry resultGeometry, out RenderGeometryApiResourceDefinition resultResource)
+        {
+            if (sbsp.Materials == null)
+            {
+                sbsp.Materials = new List<RenderMaterial>();
+                sbsp.CollisionMaterials = new List<ScenarioStructureBsp.CollisionMaterial>();
+            }
+            sbsp.Materials.Add(new RenderMaterial() { RenderMethod = parameters.Shader });
+            sbsp.CollisionMaterials.Add(new ScenarioStructureBsp.CollisionMaterial()
+            {
+                RenderMethod = parameters.Shader,
+                ConveyorSurfaceIndex = -1,
+                SeamMappingIndex = -1,
+                RuntimeGlobalMaterialIndex = 0
+            });
+
+            float cellSize = parameters.CellSize;
+            GenerateGridMesh(1, 1, cellSize, out WorldVertex[] worldVertices, out ushort[] indices);
+
+            var origin = new RealPoint3d(0, 0, parameters.Z);
+            foreach (ref WorldVertex v in worldVertices.AsSpan())
+                v.Position = new RealQuaternion(v.Position.I + origin.X, v.Position.J + origin.Y, v.Position.K + origin.Z);
+
+            var part = new Part()
+            {
+                MaterialIndex = 0,
+                TransparentSortingIndex = -1,
+                FirstIndex = 0,
+                IndexCount = indices.Length,
+
+            };
+            var mesh = new Mesh()
+            {
+                Type = VertexType.World,
+                RigidNodeIndex = -1,
+                Parts = new List<Part>() { part },
+                VertexBufferIndices = new short[] { -1, -1, -1, -1, -1, -1, -1, -1 },
+                IndexBufferIndices = new short[] { -1, -1 },
+                IndexBufferType = PrimitiveType.TriangleList
+            };
+
+            var indexBuffer = new IndexBufferDefinition();
+            var worldBuffer = new VertexBufferDefinition();
+
+            WriteIndices(indexBuffer, indices, IndexBufferFormat.TriangleList);
+            WriteWorldVertices(worldBuffer, worldVertices);
+
+            var resourceDefinition = new RenderGeometryApiResourceDefinition();
+            resourceDefinition.IndexBuffers = new TagBlock<D3DStructure<IndexBufferDefinition>>(CacheAddressType.Definition)
+            {
+                new D3DStructure<IndexBufferDefinition>() { AddressType = CacheAddressType.Definition, Definition = indexBuffer }
+            };
+
+            resourceDefinition.VertexBuffers = new TagBlock<D3DStructure<VertexBufferDefinition>>(CacheAddressType.Definition)
+            {
+                new D3DStructure<VertexBufferDefinition>() { AddressType = CacheAddressType.Definition, Definition = worldBuffer }
+            };
+
+            mesh.IndexBufferIndices[0] = 0;
+            mesh.VertexBufferIndices[0] = 0;
 
             var geometry = new RenderGeometry();
             geometry.Meshes = new List<Mesh>() { mesh };
             geometry.InstancedGeometryPerPixelLighting = new List<RenderGeometry.StaticPerPixelLighting>();
-            geometry.SetResourceBuffers(resourceDefinition, false);
-            geometry.Resource = Cache.ResourceCache.CreateRenderGeometryApiResource(resourceDefinition);
 
-            return geometry;
+            resultResource = resourceDefinition;
+            resultGeometry = geometry;
         }
 
         private static WaterTesselatedParameters[] GenerateWaterParams(ushort[] indices, float tessellation, float opacity)
         {
-            return indices.Select(x => new WaterTesselatedParameters() 
+            return indices.Select(x => new WaterTesselatedParameters()
             {
                 LocalInfo = new RealVector2d(tessellation, opacity)
             }).ToArray();
@@ -682,7 +757,7 @@ namespace TagTool.Commands.Scenarios
             return worldWaterVertices.ToArray();
         }
 
-        private void GenerateGridMesh(int xCells, int yCells, float cellSize, out WorldVertex[] outVertices, out ushort[] outIndices)
+        private static void GenerateGridMesh(int xCells, int yCells, float cellSize, out WorldVertex[] outVertices, out ushort[] outIndices)
         {
             var vertices = new List<WorldVertex>();
             var indices = new List<ushort>();
@@ -737,7 +812,7 @@ namespace TagTool.Commands.Scenarios
             outIndices = indices.ToArray();
         }
 
-        void WriteIndices(IndexBufferDefinition def, ushort[] indices, IndexBufferFormat format)
+        private static void WriteIndices(IndexBufferDefinition def, ushort[] indices, IndexBufferFormat format)
         {
             using (var outputStream = new MemoryStream())
             {
@@ -748,7 +823,7 @@ namespace TagTool.Commands.Scenarios
             }
         }
 
-        void WriteWorldVertices(VertexBufferDefinition def, WorldVertex[] vertices)
+        private static void WriteWorldVertices(VertexBufferDefinition def, WorldVertex[] vertices)
         {
             using (var outputStream = new MemoryStream())
             {
@@ -763,7 +838,7 @@ namespace TagTool.Commands.Scenarios
             }
         }
 
-        void WriteWorldWaterVertices(VertexBufferDefinition def, WorldWaterVertex[] vertices)
+        private static void WriteWorldWaterVertices(VertexBufferDefinition def, WorldWaterVertex[] vertices)
         {
             using (var outputStream = new MemoryStream())
             {
@@ -778,7 +853,7 @@ namespace TagTool.Commands.Scenarios
             }
         }
 
-        void WriteUnknown1BVertices(VertexBufferDefinition def, WaterTesselatedParameters[] vertices)
+        private static void WriteUnknown1BVertices(VertexBufferDefinition def, WaterTesselatedParameters[] vertices)
         {
             using (var outputStream = new MemoryStream())
             {
