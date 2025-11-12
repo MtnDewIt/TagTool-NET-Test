@@ -244,12 +244,6 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.MCC;
                     break;
 
-                case "Oct  1 2014 16:20:07":
-                case "Oct 30 2014 19:01:55":
-                    version = CacheVersion.Halo3XboxOne;
-                    cachePlatform = CachePlatform.MCC;
-                    break;
-
                 case "May 16 2023 11:44:41":
                     version = CacheVersion.Halo3ODST;
                     cachePlatform = CachePlatform.MCC;
@@ -330,8 +324,6 @@ namespace TagTool.Cache
                         return "09699.07.05.01.1534.delta";
                     case CacheVersion.Halo3Retail:
                         return "11855.07.08.20.2317.halo3_ship";
-                    case CacheVersion.Halo3XboxOne:
-                        return "Oct  1 2014 16:20:07";
                     case CacheVersion.Halo3ODST:
                         return "13895.09.04.27.2201.atlas_relea";
                     case CacheVersion.EldoradoED:
@@ -669,7 +661,6 @@ namespace TagTool.Cache
 
                 case CacheVersion.Halo3Beta:
                 case CacheVersion.Halo3Retail:
-                case CacheVersion.Halo3XboxOne:
                 case CacheVersion.Halo3ODST:
                 case CacheVersion.HaloReachAlpha:
                 case CacheVersion.HaloReachPreBeta:
@@ -740,7 +731,6 @@ namespace TagTool.Cache
                     return GameTitle.Halo2;
                 case CacheVersion.Halo3Beta:
                 case CacheVersion.Halo3Retail:
-                case CacheVersion.Halo3XboxOne:
                     return GameTitle.Halo3;
                 case CacheVersion.Halo3ODST:
                     return GameTitle.Halo3ODST;
@@ -828,7 +818,6 @@ namespace TagTool.Cache
         Halo3Epsilon,
         Halo3DLC,
         Halo3Retail,
-        Halo3XboxOne,
         Halo3ODST,
         EldoradoED,
         Eldorado106708,

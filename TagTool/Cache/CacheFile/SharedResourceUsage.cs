@@ -2,7 +2,7 @@
 
 namespace TagTool.Cache
 {
-    [TagStructure(Size = 0x25DC, MinVersion = CacheVersion.Halo3Epsilon, MaxVersion = CacheVersion.Halo3XboxOne)]
+    [TagStructure(Size = 0x25DC, MinVersion = CacheVersion.Halo3Epsilon, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0x2980, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloReachBeta)]
     [TagStructure(Size = 0x82BC, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
     [TagStructure(Size = 0x1D27C, MinVersion = CacheVersion.Halo4E3, MaxVersion = CacheVersion.Halo2AMP)]
@@ -24,7 +24,7 @@ namespace TagTool.Cache
         [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
         public byte[] Padding;
 
-        [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3Epsilon, MaxVersion = CacheVersion.Halo3XboxOne)]
+        [TagField(Length = 0x4, MinVersion = CacheVersion.Halo3Epsilon, MaxVersion = CacheVersion.Halo3Retail)]
         [TagField(Length = 0x9, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloReachBeta)]
         [TagField(Length = 0xC, MinVersion = CacheVersion.HaloReach)]
         public InsertionPointResourceUsage[] InsertionPointUsages;
@@ -44,7 +44,7 @@ namespace TagTool.Cache
             public NetworkRequestHash EntireChecksum;
         }
 
-        [TagStructure(Size = 0xAC, MinVersion = CacheVersion.Halo3Epsilon, MaxVersion = CacheVersion.Halo3XboxOne)]
+        [TagStructure(Size = 0xAC, MinVersion = CacheVersion.Halo3Epsilon, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0xB4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloReachBeta)]
         [TagStructure(Size = 0x18C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
         [TagStructure(Size = 0x60C, MinVersion = CacheVersion.Halo4E3, MaxVersion = CacheVersion.Halo2AMP)] 

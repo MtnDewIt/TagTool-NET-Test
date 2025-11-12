@@ -60,23 +60,8 @@ namespace TagTool.Cache.Gen3
                         throw new NotSupportedException(CacheVersionDetection.GetBuildName(baseMapFile.Version, baseMapFile.Platform));
                 }
             }
-            else if (baseMapFile.Platform == CachePlatform.MCC) 
-            {
-                switch (baseMapFile.Version) 
-                {
-                    case CacheVersion.Halo3XboxOne when baseMapFile.Header.GetBuildNumber().Equals("Oct  1 2014 16:20:07"):
-                        Resolver = new StringIdResolverHalo3XboxOneA();
-                        break;
-
-                    case CacheVersion.Halo3XboxOne when baseMapFile.Header.GetBuildNumber().Equals("Oct 30 2014 19:01:55"):
-                        Resolver = new StringIdResolverHalo3XboxOneB();
-                        break;
-
-                    default:
-                        Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
-                        break;
-                }
-            }
+            else if (baseMapFile.Platform == CachePlatform.MCC)
+                Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
 
             // means no strings
             if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.StringSection].Size == 0)

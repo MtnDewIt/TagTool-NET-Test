@@ -102,11 +102,6 @@ namespace TagTool.Cache
                     NetworkKey = "SneakerNetReigns";
                     break;
             }
-
-            if (Version != CacheVersion.Halo3XboxOne && Platform == CachePlatform.MCC)
-            {
-                
-            }
         }
 
         #region Serialization
@@ -152,69 +147,7 @@ namespace TagTool.Cache
 
         public override Stream OpenCacheRead() 
         {
-            Stream resultStream = null;
-
-            if (Version == CacheVersion.Halo3XboxOne && IsCompressed(BaseMapFile.Header))
-            {
-                var sectionTable = BaseMapFile.Header.GetSectionTable();
-                var offsets = BaseMapFile.Header.GetCompressedSectionOffset();
-                var sizes = BaseMapFile.Header.GetCompressedSectionSize();
-                var codecs = BaseMapFile.Header.GetCompressedSectionCodec();
-
-                using (MemoryStream memoryStream = new MemoryStream()) 
-                {
-                    using (Stream stream = CacheFile.OpenRead()) 
-                    {
-                        using (EndianReader reader = new EndianReader(stream, Endianness)) 
-                        {
-                            byte[] header = reader.ReadBytes(0x4000);
-
-                            memoryStream.Write(header, 0, 0x4000);
-
-                            int[] order = new int[4] { 0, 1, 3, 2 };
-
-                            for (int i = 0; i < 4; i++) 
-                            {
-                                int index = order[i];
-
-                                var offset = offsets[index].Value;
-                                var compressedSize = sizes[index].Value;
-                                var codec = codecs[index].Codec;
-                                var decompressedSize = sectionTable.OriginalSectionBounds[index].Size;
-                                var address = sectionTable.OriginalSectionBounds[index].Offset;
-                                var mask = sectionTable.SectionOffsets[index];
-
-                                if (codec == CompressedSectionCodec.None)
-                                {
-                                    reader.SeekTo(offset);
-
-                                    byte[] buffer = new byte[decompressedSize];
-
-                                    int bufferSize = reader.Read(buffer, 0, decompressedSize);
-
-                                    memoryStream.Write(buffer, 0, bufferSize);
-                                }
-                                else if (codec == CompressedSectionCodec.LZMALib)
-                                {
-                                    // TODO: Implement LZMA decompression
-                                }
-                                else 
-                                {
-                                    throw new ArgumentException($"Unsupported Compressed Secion Codec {codec}");
-                                }
-                            }
-                        }
-                    }
-
-                    resultStream = new MemoryStream(memoryStream.ToArray());
-                }
-            }
-            else 
-            {
-                resultStream = CacheFile.OpenRead();
-            }
-
-            return resultStream;
+            return CacheFile.OpenRead();
         }
 
         public override Stream OpenCacheReadWrite() 
@@ -230,19 +163,6 @@ namespace TagTool.Cache
         public override void SaveStrings()
         {
             throw new NotImplementedException();
-        }
-
-        public static bool IsCompressed(CacheFileHeader header) 
-        {
-            var compressedSizes = header.GetCompressedSectionSize();
-
-            foreach (var size in compressedSizes) 
-            {
-                if (size.Value > 0)
-                    return true;
-            }
-
-            return false;
         }
 
         public void ResizeSection(CacheFileSectionType type, int requestedAdditionalSpace)
