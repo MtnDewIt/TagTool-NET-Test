@@ -4,11 +4,8 @@ using TagTool.Cache;
 
 namespace TagTool.Common
 {
-    // m11 m12 m13
-    // m21 m22 m23
-    // m31 m32 m33
-    public struct RealMatrix3x3
-	{
+    public struct RealMatrix3x3 : IBlamType
+    {
         public float m11 { get; set; }
         public float m12 { get; set; }
         public float m13 { get; set; }
@@ -108,5 +105,70 @@ namespace TagTool.Common
             $"{m21}, {m22}, {m23} |" +
             $"{m31}, {m32}, {m33} }}";
 
+        public bool TryParse(GameCache cache, List<string> args, out IBlamType result, out string error)
+        {
+            result = null;
+
+            if (args.Count != 9)
+            {
+                error = $"{args.Count} arguments supplied; should be 9";
+                return false;
+            }
+            else if (!float.TryParse(args[0], out float M11))
+            {
+                error = $"Unable to parse \"{args[0]}\" (M11) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[1], out float M12))
+            {
+                error = $"Unable to parse \"{args[1]}\" (M12) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[2], out float M13))
+            {
+                error = $"Unable to parse \"{args[2]}\" (M13) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[3], out float M21))
+            {
+                error = $"Unable to parse \"{args[3]}\" (M21) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[4], out float M22))
+            {
+                error = $"Unable to parse \"{args[4]}\" (M22) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[5], out float M23))
+            {
+                error = $"Unable to parse \"{args[5]}\" (M23) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[6], out float M31))
+            {
+                error = $"Unable to parse \"{args[6]}\" (M31) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[7], out float M32))
+            {
+                error = $"Unable to parse \"{args[7]}\" (M32) as `float`.";
+                return false;
+            }
+            else if (!float.TryParse(args[8], out float M33))
+            {
+                error = $"Unable to parse \"{args[8]}\" (M33) as `float`.";
+                return false;
+            }
+            else
+            {
+                result = new RealMatrix3x3(
+                    M11, M12, M13,
+                    M21, M22, M23,
+                    M31, M32, M33);
+
+                error = null;
+                return true;
+            }
+        }
     }
 }

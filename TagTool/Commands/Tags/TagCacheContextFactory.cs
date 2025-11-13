@@ -18,7 +18,6 @@ using TagTool.Commands.Forge;
 using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
-using TagTool.Commands.JSON;
 using TagTool.Commands.Mod;
 using TagTool.Scripting.CSharp;
 
@@ -73,12 +72,8 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new GuessTagDefCommand(cache));
             context.AddCommand(new DiffTagCommand(cache, cache));
 
-            context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
-            context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
-            context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheHaloOnline));
-            context.AddCommand(new ConvertVariantCommand(cache));
-
             context.AddCommand(new EditBlfCommand(contextStack, cache as GameCacheHaloOnline, cache));
+            context.AddCommand(new ConvertVariantCommand(cache));
             context.AddCommand(new ConvertReachMapVariantCommand(cache as GameCacheHaloOnline));
             context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheHaloOnline));
 
@@ -138,7 +133,6 @@ namespace TagTool.Commands.Tags
             if(cache is GameCacheHaloOnline)
             {
                 var hoCache = cache as GameCacheHaloOnline;
-                context.AddCommand(new UpdateShaderDataCommand(cache, hoCache));
                 context.AddCommand(new UpdateTagListCommand(hoCache));
                 context.AddCommand(new RebuildCacheFileCommand(hoCache));
                 context.AddCommand(new CreateModPackageCommand(contextStack, hoCache));
@@ -173,12 +167,8 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddSkyBoxCommand(cache as GameCacheHaloOnlineBase));
 
-                context.AddCommand(new UpdateShaderDataCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new EditMapCommand(contextStack, cache as GameCacheHaloOnlineBase, modCache));
                 context.AddCommand(new ExitModPackageCommand(contextStack, modCache));
-                context.AddCommand(new GenerateBlfObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
-                context.AddCommand(new GenerateMapObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
-                context.AddCommand(new GenerateTagObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new EditModMetadataCommand(contextStack, modCache));
             }
 

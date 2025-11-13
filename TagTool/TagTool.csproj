@@ -30,8 +30,6 @@
     <None Include="Commands\Porting\PortArmorVariantCommand.cs" />
     <Compile Remove="Commands\Tags\ConvertTagCommand.cs" />
     <None Include="Commands\Tags\ConvertTagCommand.cs" />
-    <Compile Remove="Common\RealMatrix3x3.cs" />
-    <None Include="Common\RealMatrix3x3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\data\**\*" Link="data\%(RecursiveDir)\%(FileName)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
