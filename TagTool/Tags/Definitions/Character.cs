@@ -13,7 +13,7 @@ using TagTool.Tags.Definitions.Common;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "character", Tag = "char", Size = 0x1D4, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Name = "character", Tag = "char", Size = 0x1F8, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "character", Tag = "char", Size = 0x1F8, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "character", Tag = "char", Size = 0x270, MinVersion = CacheVersion.HaloReach)]
     public class Character : TagStructure
     {
@@ -115,7 +115,7 @@ namespace TagTool.Tags.Definitions
             Bit6 = 1 << 6
         }
 
-        [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x14, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach)]
         public class CharacterVariant : TagStructure
         {
@@ -138,7 +138,7 @@ namespace TagTool.Tags.Definitions
             public List<CharacterVoice> DialogueVariations;
         }
 
-        [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x18, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach)]
         public class CharacterVoice : TagStructure
         {
@@ -192,13 +192,13 @@ namespace TagTool.Tags.Definitions
             CannotBeAssassinated = 1 << 21 // This overrides all other character assassination modifications.
         }
 
-        [TagStructure(Size = 0x1C, MaxVersion = Cache.CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x1C, MaxVersion = Cache.CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x2C, MinVersion = Cache.CacheVersion.HaloReach)]
         public class CharacterGeneralProperties : TagStructure
         {
             public CharacterGeneralFlags Flags;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public ActorTypeEnum ActorType;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public ActorTypeEnumReach ActorTypeReach;
@@ -243,7 +243,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x80, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x80, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x64, MinVersion = CacheVersion.HaloReach)]
         public class CharacterVitalityProperties : TagStructure
         {
@@ -256,24 +256,24 @@ namespace TagTool.Tags.Definitions
             public float SoftPingShieldedThreshold; // damage necessary to trigger a soft ping when shields are up
             public float SoftPingUnshieldedThreshold; // damage necessary to trigger a soft ping when shields are down
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float SoftPingMinInterruptTime; // minimum time before a soft ping can be interrupted
             
             public float HardPingShieldedThreshold; // damage necessary to trigger a hard ping when shields are up
             public float HardPingUnshieldedThreshold; // damage necessary to trigger a hard ping when shields are down
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float HardPingMinInterruptTime; // minimum time before a hard ping can be interrupted
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float HardPingCooldownTime;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float CurrentDamageDecayDelay; // current damage begins to fall after a time delay has passed since last the damage (MAX 4.1, because timer is stored in a char so 127 ticks maximum)
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float CurrentDamageDecayTime; // amount of time it would take for 100% current damage to decay to 0
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float RecentDamageDecayDelay; // recent damage begins to fall after a time delay has passed since last the damage (MAX 4.1, because timer is stored in a char so 127 ticks maximum)
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float RecentDamageDecayTime; // amount of time it would take for 100% recent damage to decay to 0
             
             public float BodyRechargeDelayTime; // amount of time delay before a shield begins to recharge
@@ -281,9 +281,9 @@ namespace TagTool.Tags.Definitions
             public float ShieldRechargeDelayTime; // amount of time delay before a shield begins to recharge
             public float ShieldRechargeTime; // amount of time for shields to recharge completely
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float StunThreshold; // stun level that triggers the stunned state (currently, the 'stunned' behavior)
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> StunTimeBounds; // seconds
             
             public float ExtendedShieldDamageThreshold; // Amount of shield damage sustained before it is considered 'extended' (percent)
@@ -324,14 +324,14 @@ namespace TagTool.Tags.Definitions
             public float ManyUpgradeChanceLegendary;
         }
 
-        [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xA0, MinVersion = CacheVersion.HaloReach)]
         public class CharacterPerceptionProperties : TagStructure
         {
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public CharacterPerceptionMode PerceptionMode;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123, EnumType = typeof(uint))]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, EnumType = typeof(uint))]
             [TagField(MinVersion = CacheVersion.HaloReach, EnumType = typeof(ushort))]
             public CharacterPerceptionFlags Flags;
 
@@ -355,14 +355,14 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public Angle FocusExteriorAngle; // horizontal angle within which we can see targets between max and min range
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Angle CentralVisionAngle; // horizontal angle within which we see targets out to our maximum range
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Angle MaxVisionAngle; // maximum horizontal angle within which we see targets at range
             
             public Angle PeripheralVisionAngle; // maximum horizontal angle within which we can see targets out of the corner of our eye
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float PeripheralDistance; // maximum range at which we can see targets our of the corner of our eye (world units)
             
             public float HearingDistance; // maximum range at which sounds can be heard (world units)
@@ -370,7 +370,7 @@ namespace TagTool.Tags.Definitions
             public float NoticeVehicleChance; // random chance of noticing a dangerous vehicle (0-1)
             public float PerceptionTime; // time required to acknowledge a visible enemy (seconds)
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float FirstAcknowledgeSurpriseDistance; // If a new prop is acknowledged within the given distance, surprise is registered
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -450,11 +450,11 @@ namespace TagTool.Tags.Definitions
             public Bounds<float> CombatIdleAiming; // rate at which we change aiming directions when looking around randomly when searching or in combat (seconds)
         }
 
-        [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xA4, MinVersion = CacheVersion.HaloReach)]
         public class CharacterMovementProperties : TagStructure
         {
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public CharacterMovementFlagsH3 FlagsH3;
             [TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
             public CharacterMovementFlagsReach FlagsReach;
@@ -500,11 +500,11 @@ namespace TagTool.Tags.Definitions
 
             public CharacterMovementHintFlags MovementHints;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float ThrottleScale;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float ThrottleDampening; // 0 = slow change in throttle, 1 = fast change in throttle
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float WalkDistance; // Under this distance, actors will walk instead of run (world units)
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -653,7 +653,7 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0x38, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x38, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloReach)]
         public class CharacterEngageProperties : TagStructure
         {
@@ -708,7 +708,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x7C, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x7C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x9C, MinVersion = CacheVersion.HaloReach)]
         public class CharacterChargeProperties : TagStructure
         {
@@ -799,7 +799,7 @@ namespace TagTool.Tags.Definitions
             public float DiveRetreatChance; // Chance of retreating (fleeing) after danger avoidance dive
         }
 
-        [TagStructure(Size = 0x54, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x54, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x58, MinVersion = CacheVersion.HaloReach)]
         public class CharacterCoverProperties : TagStructure
         {
@@ -814,17 +814,17 @@ namespace TagTool.Tags.Definitions
             public float CoverShieldFraction; // Only cover when shield falls below this level
             public float CoverVitalityThreshold; // Only cover when vitality falls below this level
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float DisallowCoverDistance; // Disallow covering from visible target closer than this distance (world units)
             
             public float CoverDangerThreshold; // Danger must be this high to cover. At a danger level of 'danger threshold', the chance of seeking cover is the cover chance lower bound (below)
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float DangerUpperThreshold; // At or above danger level of upper threshold, the chance of seeking cover is the cover chance upper bound (below)
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> CoverChanceBounds; // Bounds on the chances of seeking cover, given the above conditions are valid.
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> ShieldedCoverChance; // Bounds on the chances of seeking cover when shielded, given the above conditions are valid.
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -849,7 +849,7 @@ namespace TagTool.Tags.Definitions
 
             public float ScaryTargetThreshold; // When target is aware of me and surpasses the given scariness, self-preserve (assuming scary_target_cover_impulse is enabled)
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float ShieldDepletedCoverChance; // Probability of going straight into cover when shield is depleted (assuming shield_depleted_cover_impulse is enabled)
             
             public float VitalityFractionShieldEquipment; // Fraction of vitality below which an equipped shield equipment (instant cover/bubbleshield) will be activated (once damage has died down, and assuming shield_equipment_impulse is enabled)
@@ -893,7 +893,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x20, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
         public class CharacterSearchProperties : TagStructure
         {
@@ -928,7 +928,7 @@ namespace TagTool.Tags.Definitions
         {
             public CharacterPreSearchFlags Flags;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> MinimumPreSearchTime; // If the min presearch time expires and the target is (actually) outside the min-certainty radius, presearch turns off (seconds)
             
             public Bounds<float> MaximumPreSearchTime; // Presearch turns off after the given time (seconds)
@@ -936,15 +936,15 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float MaximumSuppressTime;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float MinimumCertaintyRadius;
-            [TagField(Platform = CachePlatform.Original, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
             public float DEPRECATED;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> MinimumSuppressingTime; // if the min suppressing time expires and the target is outside the min-certainty radius, suppressing fire turns off
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public short MaxSuppressCount; // the maximum number of guys allowed to be suppressing at one time
-            [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -989,7 +989,7 @@ namespace TagTool.Tags.Definitions
             public float LookLongCommentTime; // How long does the player look at the AI before he responds with his 'long look' comment? (seconds)
         }
 
-        [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x14, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
         public class CharacterBoardingProperties : TagStructure
         {
@@ -1059,13 +1059,13 @@ namespace TagTool.Tags.Definitions
             public float DeathDetonationTime; // spend this time detonating (seconds)
             public float ShieldBoostRadiusMax; // Boost the shields of allies within this radius during combat
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float ShieldBoostRadiusMin; // Allies within this radius get maximum shield boost
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float ShieldBoostPeriod;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float ShieldBoostVitality; // Boost allies' shields by this amount during combat
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -1104,7 +1104,7 @@ namespace TagTool.Tags.Definitions
             public float SnapForwardAngleMax; // When moving forward within this dot of our desired facing, just move forward [0-1]
         }
 
-        [TagStructure(Size = 0xE0, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0xE0, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xC4, MinVersion = CacheVersion.HaloReach)]
         public class CharacterWeaponsProperties : TagStructure
         {
@@ -1119,9 +1119,9 @@ namespace TagTool.Tags.Definitions
             public float BombardmentRange; // we offset our burst targets randomly by this range when firing at non-visible enemies (zero = never)
             public float MaxSpecialTargetDistance; // Specific target regions on a vehicle or unit will be fired upon only under the given distance
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> TimidCombatRange; // (world units)
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> AggressiveCombatRange; // (world units)
             
             public float SuperBallisticRange; // we try to aim our shots super-ballistically if target is outside this range (zero = never)
@@ -1149,7 +1149,7 @@ namespace TagTool.Tags.Definitions
             public Bounds<float> LegendaryAccuracyBounds; // indicates starting and ending accuracies at legendary difficulty
             public float LegendaryAccuracyTime; // the amount of time it takes the accuracy to go from starting to ending
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<CharacterFiringPattern> FiringPatterns;
 
             public CachedTag WeaponMeleeDamage;
@@ -1253,7 +1253,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0xD0, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0xD0, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x138, MinVersion = CacheVersion.HaloReach)]
         public class CharacterVehicleProperties : TagStructure
         {

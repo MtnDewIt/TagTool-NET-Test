@@ -9,7 +9,7 @@ namespace TagTool.Geometry
     /// </summary>
     [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x1C, MinVersion = CacheVersion.HaloReach)]
-    [TagStructure(Size = 0x20, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class IndexBufferDefinition : TagStructure
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace TagTool.Geometry
         [TagField(DataAlign = 0x4)]
         public TagData Data;
 
-        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = Padding, Length = 8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Unused;
     }
 }

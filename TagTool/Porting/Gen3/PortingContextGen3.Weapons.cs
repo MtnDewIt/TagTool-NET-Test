@@ -46,7 +46,7 @@ namespace TagTool.Porting.Gen3
         {
             // TODO: refactor for Halo 2
 
-            if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, BlamCache.Version))
+            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
                 return weaponFlags;
 
             if (BlamCache.Platform == CachePlatform.MCC)
@@ -70,7 +70,7 @@ namespace TagTool.Porting.Gen3
 
         private object ConvertWeaponTrigger(Weapon.Trigger trigger)
         {
-            if (BlamCache.Version <= CacheVersion.Eldorado235640)
+            if (BlamCache.Version <= CacheVersion.HaloOnline235640)
                 return trigger;
 
             if (!Enum.TryParse(trigger.BehaviorHO.ToString(), out trigger.Behavior))
@@ -85,10 +85,10 @@ namespace TagTool.Porting.Gen3
             if (barrelflags.Halo3.HasFlag(BarrelFlags.Halo3Value.FiresLockedProjectiles))
                 barrelflags.Halo3 &= ~BarrelFlags.Halo3Value.FiresLockedProjectiles;
 
-            if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, BlamCache.Version))
+            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
                 return barrelflags;
 
-            if (!Enum.TryParse(barrelflags.Halo3.ToString(), out barrelflags.Eldorado))
+            if (!Enum.TryParse(barrelflags.Halo3.ToString(), out barrelflags.HaloOnline))
                 throw new NotSupportedException(barrelflags.Halo3.ToString());
 
             return barrelflags;
@@ -96,7 +96,7 @@ namespace TagTool.Porting.Gen3
 
         private object ConvertTargetLockOnData(Model.TargetLockOnData data)
         {
-            if (BlamCache.Version < CacheVersion.EldoradoED)
+            if (BlamCache.Version < CacheVersion.HaloOnlineED)
                 data.Flags = data.FlagsOld.ConvertLexical<Model.TargetLockOnData.FlagsValue>();
             return data;
         }

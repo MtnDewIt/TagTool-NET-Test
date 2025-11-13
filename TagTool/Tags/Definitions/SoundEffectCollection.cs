@@ -11,31 +11,31 @@ namespace TagTool.Tags.Definitions
 	{
         public List<PlatformSoundPlaybackBlock> SoundEffects;
 
-        [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x4C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloReach)]
         public class PlatformSoundPlaybackBlock : TagStructure
 		{
             public StringId Name;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<PlatformSoundOverrideMixbinsBlock> OverrideMixbins;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public PlatformSoundPlaybackFlagsDefinition Flags;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public uint RadioChannel;
 
-            [TagField(Length = 0x4, Flags = Padding, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Length = 0x4, Flags = Padding, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding0;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<FilterBlock> Filter;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<PitchLFOBlock> PitchLFO;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<FilterLFOBlock> FilterLFO;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<SoundEffectBlock> SoundEffect;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -146,7 +146,7 @@ namespace TagTool.Tags.Definitions
                     public CachedTag Sound;
                     public uint Gain;
 
-                    [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+                    [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                     public SoundEffectComponentFlags Flags;
                     [TagField(MinVersion = CacheVersion.HaloReach)]
                     public SoundEffectComponentFlagsReach FlagsReach;

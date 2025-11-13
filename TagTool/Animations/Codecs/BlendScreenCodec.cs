@@ -75,7 +75,7 @@ namespace TagTool.Animations.Codecs
             }
         }
 
-        public override byte[] Write(GameCacheEldoradoBase CacheContext)
+        public override byte[] Write(GameCacheHaloOnlineBase CacheContext)
         {
             using (MemoryStream stream = new MemoryStream())
             using (EndianWriter writer = new EndianWriter(stream, EndianFormat.LittleEndian))

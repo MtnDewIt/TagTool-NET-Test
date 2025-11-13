@@ -6,7 +6,7 @@ using TagTool.Tags;
 namespace TagTool.BlamFile.Chunks.GameVariants
 {
     [TagStructure(Size = 0x160, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x140, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x140, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class GameVariantBase : TagStructure
     {
         public VariantMiscellaneousOptions MiscellaneousOptions;
@@ -58,27 +58,27 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         }
 
         [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x28, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public class VariantRespawnOptions : TagStructure
         {
             public RespawnFlags Flags;
             public byte LivesPerRound;
             public byte TeamLivesPerRound;
 
-            [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
             public byte UnknownTime;
 
             public byte RespawnTime;
             public byte SuicidePenalty;
             public byte BetrayalPenalty;
 
-            [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte UnknownPenalty;
 
             public byte RespawnGrowth;
             public byte RespawnPlayerTraitsDuration;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding;
 
             public GameVariantPlayerTraits RespawnPlayerTraits;

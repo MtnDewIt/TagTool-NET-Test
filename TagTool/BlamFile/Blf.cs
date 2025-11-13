@@ -413,7 +413,7 @@ namespace TagTool.BlamFile
                                     reader.SeekTo(startOfFile);
                                     return;
                                 case 0x5530:
-                                    version = CacheVersion.Halo2AMP;
+                                    version = CacheVersion.H2AMP;
                                     platform = CachePlatform.MCC;
                                     reader.SeekTo(startOfFile);
                                     return;
@@ -437,7 +437,7 @@ namespace TagTool.BlamFile
                                     return;
                                 case 0x89:
                                 case 0x34:
-                                    version = CacheVersion.Halo2AMP;
+                                    version = CacheVersion.H2AMP;
                                     platform = CachePlatform.MCC;
                                     reader.SeekTo(startOfFile);
                                     return;
@@ -461,7 +461,7 @@ namespace TagTool.BlamFile
 
                         if (buildVersion == -24364)
                         {
-                            version = CacheVersion.EldoradoED;
+                            version = CacheVersion.HaloOnlineED;
                             platform = CachePlatform.Original;
                             reader.SeekTo(startOfFile);
                             return;
@@ -530,7 +530,7 @@ namespace TagTool.BlamFile
                     else if (contentMinorVersion == 0x1) 
                     {
                         // TODO: Fully validate (Need extra formats and files tho)
-                        version = CacheVersion.Eldorado106708;
+                        version = CacheVersion.HaloOnline106708;
                         platform = CachePlatform.Original;
                         reader.SeekTo(startOfFile);
                         return;
@@ -641,8 +641,8 @@ namespace TagTool.BlamFile
                     switch (targetVersion)
                     {
                         case CacheVersion.Halo3ODST:
-                        case CacheVersion.EldoradoED:
-                        case CacheVersion.Eldorado106708:
+                        case CacheVersion.HaloOnlineED:
+                        case CacheVersion.HaloOnline106708:
                             ConvertHalo3ToODSTScenarioChunk();
                             Version = targetVersion;
                             if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
@@ -654,8 +654,8 @@ namespace TagTool.BlamFile
                     break;
 
                 case CacheVersion.Halo3ODST:
-                case CacheVersion.EldoradoED:
-                case CacheVersion.Eldorado106708:
+                case CacheVersion.HaloOnlineED:
+                case CacheVersion.HaloOnline106708:
                     if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))
                         Format = EndianFormat.LittleEndian;
                     return;
@@ -664,8 +664,8 @@ namespace TagTool.BlamFile
                     switch (targetVersion)
                     {
                         case CacheVersion.Halo3ODST:
-                        case CacheVersion.EldoradoED:
-                        case CacheVersion.Eldorado106708:
+                        case CacheVersion.HaloOnlineED:
+                        case CacheVersion.HaloOnline106708:
                             ConvertReachToODSTScenarioChunk();
                             Version = targetVersion;
                             if (CacheVersionDetection.IsLittleEndian(targetVersion, platform))

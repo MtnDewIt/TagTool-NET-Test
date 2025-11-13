@@ -11,8 +11,8 @@ namespace TagTool.Common
     /// This is treated by the serialization system as a special type of tag element.
     /// </summary>
     [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.Eldorado155080)]
-    [TagStructure(Size = 0x70, MinVersion = CacheVersion.Eldorado235640, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.HaloOnline155080)]
+    [TagStructure(Size = 0x70, MinVersion = CacheVersion.HaloOnline235640, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloReach)]
     public class PageableResource : TagStructure
 	{

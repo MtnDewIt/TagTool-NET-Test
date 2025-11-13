@@ -95,7 +95,7 @@ namespace TagTool.Common
             uint c1 = (color >> 16) & 0xFF;
             uint c4 = (color >> 24) & 0xFF;
 
-            if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, version) || platform == CachePlatform.MCC)
+            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, version) || platform == CachePlatform.MCC)
             {
                 c1 = (c1 - 0x7F) & 0xFF;
                 c2 = (c2 - 0x7F) & 0xFF;
@@ -113,7 +113,7 @@ namespace TagTool.Common
             uint c1 = (color >> 16) & 0xFF;
             uint c4 = (color >> 24) & 0xFF;
 
-            if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, version) || platform == CachePlatform.MCC)
+            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, version) || platform == CachePlatform.MCC)
             {
                 c1 = (c1 + 0x7F) & 0xFF;
                 c2 = (c2 + 0x7F) & 0xFF;

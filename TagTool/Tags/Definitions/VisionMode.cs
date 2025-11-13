@@ -5,7 +5,7 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "vision_mode", Tag = "vmdx", Size = 0x188, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "vision_mode", Tag = "vmdx", Size = 0x194, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "vision_mode", Tag = "vmdx", Size = 0x194, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "vision_mode", Tag = "vmdx", Size = 0x144, MinVersion = CacheVersion.HaloReach)]
     public class VisionMode : TagStructure
     {
@@ -17,12 +17,12 @@ namespace TagTool.Tags.Definitions
 
         public PingParametersBlock OnFootPing;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public PingParametersBlock InVehiclePing;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public PingParametersBlock FlyingCameraPing;
 
-        [TagField(ValidTags = new[] { "snd!" }, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(ValidTags = new[] { "snd!" }, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag PingSound;
 
         public PingColorBlock WeaponPingColor; // Neutral Bipeds in Reach
@@ -39,14 +39,14 @@ namespace TagTool.Tags.Definitions
 
             // This controls timing and distance of the pulse animation when VISR is active.
 
-        [TagStructure(Size = 0x18, MinVersion = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloOnlineED)]
         [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0x1C, MinVersion = CacheVersion.HaloReach)]
         public class PingParametersBlock : TagStructure
         {
             public float PingRadius; // maximum distance affected (world units)
 
-            [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public float VisionThroughWallsDistance;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -62,7 +62,7 @@ namespace TagTool.Tags.Definitions
 
             // This controls the color and intensity of the pulse animation when VISR is active.
 
-        [TagStructure(Size = 0x38, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x38, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x34, MinVersion = CacheVersion.HaloReach)]
         public class PingColorBlock : TagStructure
         {
@@ -72,7 +72,7 @@ namespace TagTool.Tags.Definitions
             public float DefaultIntensity;
             public float PingIntensity;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float OverlappingDimmingFactor; // behaves differently in ODST
         }
 

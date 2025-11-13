@@ -9,11 +9,11 @@ using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
 {
-    [TagStructure(Size = 0xE094, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0xE094, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0xD9C8, MinVersion = CacheVersion.HaloReach)]
     public class BlfMapVariant : BlfChunkHeader
     {
-        [TagField(Length = 0x4, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 0x4, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -22,7 +22,7 @@ namespace TagTool.BlamFile.Chunks
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public int Size;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public MapVariant MapVariant;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -52,7 +52,7 @@ namespace TagTool.BlamFile.Chunks
 
                 blfChunk.ReachMapVariant = ReachMapVariant.Decode(bitStream);
             }
-            else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.Halo2AMP)
+            else if (deserializer.Version == CacheVersion.Halo4 || deserializer.Version == CacheVersion.H2AMP)
             {
                 blfChunk.Hash = deserializer.Deserialize<NetworkRequestHash>(dataContext);
                 blfChunk.Size = reader.ReadInt32();
@@ -101,7 +101,7 @@ namespace TagTool.BlamFile.Chunks
 
                 writer.Write(buffer);
             }
-            else if (serializer.Version == CacheVersion.Halo4 || serializer.Version == CacheVersion.Halo2AMP)
+            else if (serializer.Version == CacheVersion.Halo4 || serializer.Version == CacheVersion.H2AMP)
             {
                 serializer.Serialize(dataContext, mapVariant.Hash);
                 writer.Write(mapVariant.Size);

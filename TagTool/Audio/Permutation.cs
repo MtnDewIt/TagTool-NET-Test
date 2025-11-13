@@ -8,7 +8,7 @@ namespace TagTool.Audio
 {
     [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-    [TagStructure(Size = 0x2C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original, BuildType = CacheBuildType.ReleaseBuild)]
     [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original, BuildType = CacheBuildType.TagsBuild)]
     [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
@@ -17,7 +17,7 @@ namespace TagTool.Audio
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild)]
         public short ImportNameIndex;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public StringId ImportName;
 
@@ -25,15 +25,15 @@ namespace TagTool.Audio
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.ReleaseBuild)]
         public short EncodedSkipFraction;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public float SkipFraction;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         [TagField(BuildType = CacheBuildType.TagsBuild)]
         public float Gain;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(Version = CacheVersion.HaloReach)]
         public uint SampleCount;
 
@@ -56,7 +56,7 @@ namespace TagTool.Audio
         public short LayerMarkerCount;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public short RawInfoIndex; // indexes LanguagePermutations and EncodedPermutationSections
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
@@ -65,37 +65,37 @@ namespace TagTool.Audio
         [TagField(MinVersion = CacheVersion.HaloReach, BuildType = CacheBuildType.TagsBuild)]
         public Bounds<short> MissionRange;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public short Unknown1;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public ushort PermutationFlags;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public ushort Flags;
 
         [TagField(Gen = CacheGeneration.Third, BuildType = CacheBuildType.TagsBuild)]
         public List<PermutationLanguage> Languages;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public List<PermutationChunk> PermutationChunks;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
-        public PermutationFlagsEldorado PermutationFlagsHO;
+        [TagField(Gen = CacheGeneration.HaloOnline)]
+        public PermutationFlagsHaloOnline PermutationFlagsHO;
 
-        [TagField(Gen = CacheGeneration.Eldorado, Flags = TagFieldFlags.Padding, Length = 2)]
+        [TagField(Gen = CacheGeneration.HaloOnline, Flags = TagFieldFlags.Padding, Length = 2)]
         public byte[] Padding;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public uint FirstSample;
 
         [TagField(Platform = CachePlatform.MCC)]
         public uint FsbSoundHash;
 
         [Flags]
-        public enum PermutationFlagsEldorado : short
+        public enum PermutationFlagsHaloOnline : short
         {
             /// <summary>
             /// Wait for the currently playing permutation to finish

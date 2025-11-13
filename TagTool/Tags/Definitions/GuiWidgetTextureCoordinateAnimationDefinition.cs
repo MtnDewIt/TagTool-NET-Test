@@ -6,16 +6,16 @@ using TagTool.Common;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "gui_widget_texture_coordinate_animation_definition", Tag = "wtuv", Size = 0x24, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "gui_widget_texture_coordinate_animation_definition", Tag = "wtuv", Size = 0x2C, MinVersion = CacheVersion.EldoradoED)]
+    [TagStructure(Name = "gui_widget_texture_coordinate_animation_definition", Tag = "wtuv", Size = 0x2C, MinVersion = CacheVersion.HaloOnlineED)]
     public class GuiWidgetTextureCoordinateAnimationDefinition : TagStructure
     {
         public WidgetComponentAnimationFlags Flags;
         public List<WidgetTextureCoordinateAnimationKeyframeBlock> Keyframes;
         public TagFunction DefaultFunction;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public uint Unknown;
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public uint Unknown2;
 
         [Flags]

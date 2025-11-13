@@ -186,7 +186,7 @@ namespace TagTool.Porting.Gen3
                 //convert flags
                 if (BlamCache.Version == CacheVersion.Halo3Retail)
                     Enum.TryParse(screenEffect.Flags_H3.ToString(), out screenEffect.Flags_ODST);
-                else if (BlamCache.Version >= CacheVersion.Eldorado106708 && BlamCache.Version <= CacheVersion.Eldorado700123)
+                else if (BlamCache.Version >= CacheVersion.HaloOnline106708 && BlamCache.Version <= CacheVersion.HaloOnline700123)
                     Enum.TryParse(screenEffect.Flags.ToString(), out screenEffect.Flags_ODST);
 
                 if (CacheContext.StringTable.GetString(screenEffect.InputVariable) == "saved_film_vision_mode_intensity")

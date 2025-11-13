@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.IO;
@@ -37,9 +37,9 @@ namespace TagTool.BlamFile
             var serializer = new TagSerializer(Version, Platform, EndianFormat);
             serializer.Serialize(dataContext, Header);
 
-            if (MapVersion == CacheFileVersion.Eldorado) 
+            if (MapVersion == CacheFileVersion.HaloOnline) 
             {
-                if (Version == CacheVersion.EldoradoED)
+                if (Version == CacheVersion.HaloOnlineED)
                 {
                     MapFileBlf?.Write(writer);
                 }
@@ -67,9 +67,9 @@ namespace TagTool.BlamFile
                 Log.Warning($"Invalid map file header or footer detected. Verify definition");
             }
 
-            if (MapVersion == CacheFileVersion.Eldorado)
+            if (MapVersion == CacheFileVersion.HaloOnline)
             {
-                if (Version == CacheVersion.EldoradoED)
+                if (Version == CacheVersion.HaloOnlineED)
                 {
                     var mapFileHeaderSize = (int)TagStructure.GetTagStructureInfo(Header.GetType(), Version, Platform).TotalSize;
 
@@ -151,7 +151,7 @@ namespace TagTool.BlamFile
                 case CacheFileVersion.Halo3Beta:
                 case CacheFileVersion.Halo3Epsilon:
                 case CacheFileVersion.Halo3:
-                case CacheFileVersion.Eldorado:
+                case CacheFileVersion.HaloOnline:
                         reader.SeekTo(0x11C);
                     break;
 
@@ -188,7 +188,7 @@ namespace TagTool.BlamFile
                     CacheFileEngineType.Halo2 => CacheVersion.Halo2PC,
                     CacheFileEngineType.Halo3 => CacheVersion.Halo3Retail,
                     CacheFileEngineType.Halo4 => CacheVersion.Halo4,
-                    CacheFileEngineType.Halo2AMP => CacheVersion.Halo2AMP,
+                    CacheFileEngineType.Halo2AMP => CacheVersion.H2AMP,
                     CacheFileEngineType.Halo3ODST => CacheVersion.Halo3ODST,
                     CacheFileEngineType.HaloReach => CacheVersion.HaloReach,
                     _ => throw new NotSupportedException("Unsupported engine version"),

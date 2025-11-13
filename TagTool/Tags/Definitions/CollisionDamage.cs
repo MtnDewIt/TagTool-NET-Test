@@ -4,7 +4,7 @@ using TagTool.Common;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "collision_damage", Tag = "cddf", Size = 0x28, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "collision_damage", Tag = "cddf", Size = 0x30, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "collision_damage", Tag = "cddf", Size = 0x30, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "collision_damage", Tag = "cddf", Size = 0x50, MinVersion = CacheVersion.HaloReach)]
     public class CollisionDamage : TagStructure
 	{
@@ -20,13 +20,13 @@ namespace TagTool.Tags.Definitions
 
         public Bounds<float> GameAccelerationBounds;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public Bounds<float> GameDamageScaleBounds;
 
         /* Applying absolute collision damage */
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public float ApplyAbsoluteCollisionDamageScale; // 0 means 1.  1 is standard scale.  Some things may want to apply more damage
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public float FriendlyApplyAbsoluteCollisionDamageScale; // 0 means 1.  1 is standard scale.  Some things may want to apply more damage, yet go soft on their friends
 
         /* Absolute collision damage parameters */
@@ -37,7 +37,7 @@ namespace TagTool.Tags.Definitions
 
         public Bounds<float> AbsoluteDamageAccelerationBounds;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public Bounds<float> AbsoluteDamageScaleBounds;
     }
 }

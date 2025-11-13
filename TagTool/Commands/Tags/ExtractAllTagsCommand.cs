@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Monolithic;
 using TagTool.Tags;
 using TagTool.Common;
@@ -87,8 +87,8 @@ namespace TagTool.Commands.Tags
         {
             switch(Cache)
             {
-                case GameCacheEldoradoBase hoCache:
-                    return hoCache.TagCacheEldorado.ExtractTagRaw(cacheStream, (CachedTagEldorado)instance);
+                case GameCacheHaloOnlineBase hoCache:
+                    return hoCache.TagCacheGenHO.ExtractTagRaw(cacheStream, (CachedTagHaloOnline)instance);
                 case GameCacheMonolithic monolithicCache:
                     return monolithicCache.Backend.ExtractTagRaw(instance.Index);
                 default:

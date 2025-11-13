@@ -536,7 +536,7 @@ namespace TagTool.Porting.Gen3
             {
                 switch (opName)
                 {
-                    case "mp_wake_script" when CacheContext.Version == CacheVersion.EldoradoED:
+                    case "mp_wake_script" when CacheContext.Version == CacheVersion.HaloOnlineED:
                         expr.Opcode = 0x6A7; // -> mp_wake_script
                         UpdateMpWakeScript(cacheStream, scnr, expr);
                         return true;
@@ -565,22 +565,22 @@ namespace TagTool.Porting.Gen3
                         expr.Opcode = 0x391; // -> cinematic_object_get
                         return true;
 
-                    case "cinematic_scripting_create_object" when CacheContext.Version == CacheVersion.EldoradoED:
+                    case "cinematic_scripting_create_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
                         expr.Opcode = 0x6A2; // -> cinematic_scripting_create_object_legacy
                         return true;
-                    case "cinematic_scripting_start_animation" when CacheContext.Version == CacheVersion.EldoradoED:
+                    case "cinematic_scripting_start_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
                         expr.Opcode = 0x6A1; // -> cinematic_scripting_start_animation_legacy
                         return true;
-                    case "cinematic_scripting_destroy_object" when CacheContext.Version == CacheVersion.EldoradoED:
+                    case "cinematic_scripting_destroy_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
                         expr.Opcode = 0x6A6; // -> cinematic_scripting_destroy_object_legacy
                         return true;
-                    case "cinematic_scripting_create_and_animate_object" when CacheContext.Version == CacheVersion.EldoradoED:
+                    case "cinematic_scripting_create_and_animate_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
                         expr.Opcode = 0x6A3; // -> cinematic_scripting_create_and_animate_object_legacy
                         return true;
-                    case "cinematic_scripting_create_and_animate_cinematic_object" when CacheContext.Version == CacheVersion.EldoradoED:
+                    case "cinematic_scripting_create_and_animate_cinematic_object" when CacheContext.Version == CacheVersion.HaloOnlineED:
                         expr.Opcode = 0x6A5; // -> cinematic_scripting_create_and_animate_cinematic_object_legacy
                         return true;
-                    case "cinematic_scripting_create_and_animate_object_no_animation" when CacheContext.Version == CacheVersion.EldoradoED:
+                    case "cinematic_scripting_create_and_animate_object_no_animation" when CacheContext.Version == CacheVersion.HaloOnlineED:
                         expr.Opcode = 0x6A4; // -> cinematic_scripting_create_and_animate_object_no_animation_legacy
                         return true;
 

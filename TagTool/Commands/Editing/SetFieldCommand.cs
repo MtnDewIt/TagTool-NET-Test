@@ -7,7 +7,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock.TextureConstant;
 using TagTool.Common.Logging;
 
@@ -108,9 +108,9 @@ namespace TagTool.Commands.Editing
                 return new TagToolError(CommandError.OperationFailed, $"Field value could not be parsed for type \"{field.FieldType.ToString()}\"");
             }
 
-            if (Cache is GameCacheEldoradoBase && field.FieldType == typeof(PageableResource))
+            if (Cache is GameCacheHaloOnlineBase && field.FieldType == typeof(PageableResource))
             {
-                var eldoradoGameCache = (GameCacheEldoradoBase)Cache;
+                var haloOnlineGameCache = (GameCacheHaloOnlineBase)Cache;
 
                 var ownerValue = field.GetValue(Owner);
 
@@ -141,12 +141,12 @@ namespace TagTool.Commands.Editing
                             throw new FormatException(fieldValue.ToString());
                     }
 
-                    ResourceCacheEldorado oldCache = null;
+                    ResourceCacheHaloOnline oldCache = null;
 
                     if (pageable.GetLocation(out var oldLocation))
-                        oldCache = eldoradoGameCache.ResourceCaches.GetResourceCache(oldLocation);
+                        oldCache = haloOnlineGameCache.ResourceCaches.GetResourceCache(oldLocation);
 
-                    var newCache = eldoradoGameCache.ResourceCaches.GetResourceCache(newLocation);
+                    var newCache = haloOnlineGameCache.ResourceCaches.GetResourceCache(newLocation);
 
                     var data = File.ReadAllBytes(resourceFile.FullName);
 
@@ -154,14 +154,14 @@ namespace TagTool.Commands.Editing
 
                     if (oldLocation == newLocation && pageable.Page.Index != -1)
                     {
-                        using (var stream = eldoradoGameCache.ResourceCaches.OpenCacheReadWrite(oldLocation))
+                        using (var stream = haloOnlineGameCache.ResourceCaches.OpenCacheReadWrite(oldLocation))
                         {
                             pageable.Page.CompressedBlockSize = oldCache.Compress(stream, pageable.Page.Index, data);
                         }
                     }
                     else
                     {
-                        using (var destStream = eldoradoGameCache.ResourceCaches.OpenCacheReadWrite(newLocation))
+                        using (var destStream = haloOnlineGameCache.ResourceCaches.OpenCacheReadWrite(newLocation))
                         {
                             pageable.Page.Index = newCache.Add(destStream, data, out pageable.Page.CompressedBlockSize);
                         }
@@ -491,7 +491,7 @@ namespace TagTool.Commands.Editing
 
                 output = new PackedSamplerAddressMode() { AddressU = parsedU, AddressV = parsedV };
             }
-            else if (cache is GameCacheEldoradoBase && type == typeof(PageableResource))
+            else if (cache is GameCacheHaloOnlineBase && type == typeof(PageableResource))
             {
                 if (args.Count < 1 || args.Count > 2)
                     return false;
@@ -537,11 +537,11 @@ namespace TagTool.Commands.Editing
                             resourceLocation = ResourceLocation.ResourcesB;
                             break;
 
-                        case "render_models" when cache.Version >= CacheVersion.Eldorado235640:
+                        case "render_models" when cache.Version >= CacheVersion.HaloOnline235640:
                             resourceLocation = ResourceLocation.RenderModels;
                             break;
 
-                        case "lightmaps" when cache.Version >= CacheVersion.Eldorado235640:
+                        case "lightmaps" when cache.Version >= CacheVersion.HaloOnline235640:
                             resourceLocation = ResourceLocation.Lightmaps;
                             break;
 

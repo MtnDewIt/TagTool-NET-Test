@@ -198,7 +198,7 @@ namespace TagTool.Animations
             return true;
         }
 
-        public void ProcessNodeFrames(GameCacheEldoradoBase CacheContext, ModelAnimationGraph Animation, ModelAnimationGraph.FrameType AnimationType, ModelAnimationTagResource.GroupMemberMovementDataType FrameInfoType)
+        public void ProcessNodeFrames(GameCacheHaloOnlineBase CacheContext, ModelAnimationGraph Animation, ModelAnimationGraph.FrameType AnimationType, ModelAnimationTagResource.GroupMemberMovementDataType FrameInfoType)
         {
             List<Node> defaultNodes = GetNodeDefaultValues(CacheContext, Animation);
             for (var i = 0; i < defaultNodes.Count; i++)
@@ -267,7 +267,7 @@ namespace TagTool.Animations
             }
         }
 
-        public ModelAnimationTagResource.GroupMember SerializeAnimationData(GameCacheEldoradoBase CacheContext)
+        public ModelAnimationTagResource.GroupMember SerializeAnimationData(GameCacheHaloOnlineBase CacheContext)
         {
             var groupmember = new ModelAnimationTagResource.GroupMember
             {
@@ -376,7 +376,7 @@ namespace TagTool.Animations
             return groupmember;
         }
 
-        public int SerializeStaticData(GameCacheEldoradoBase CacheContext, DataSerializationContext dataContext, MemoryStream stream)
+        public int SerializeStaticData(GameCacheHaloOnlineBase CacheContext, DataSerializationContext dataContext, MemoryStream stream)
         {
             var staticcodecheader = new AnimationCodecHeader
             {
@@ -490,7 +490,7 @@ namespace TagTool.Animations
             }
         }
 
-        public void WriteScaleFrameData(GameCacheEldoradoBase CacheContext, DataSerializationContext dataContext)
+        public void WriteScaleFrameData(GameCacheHaloOnlineBase CacheContext, DataSerializationContext dataContext)
         {
             for (int node_index = 0; node_index < AnimationNodes.Count; node_index++)
             {
@@ -505,7 +505,7 @@ namespace TagTool.Animations
             }
         }
 
-        public void WriteRotationFrameData(GameCacheEldoradoBase CacheContext, DataSerializationContext dataContext)
+        public void WriteRotationFrameData(GameCacheHaloOnlineBase CacheContext, DataSerializationContext dataContext)
         {
             for (int node_index = 0; node_index < AnimationNodes.Count; node_index++)
             {
@@ -551,7 +551,7 @@ namespace TagTool.Animations
             }
         }
 
-        public void WriteTranslationFrameData(GameCacheEldoradoBase CacheContext, DataSerializationContext dataContext)
+        public void WriteTranslationFrameData(GameCacheHaloOnlineBase CacheContext, DataSerializationContext dataContext)
         {
             for (int node_index = 0; node_index < AnimationNodes.Count; node_index++)
             {
@@ -660,7 +660,7 @@ namespace TagTool.Animations
             return new RealEulerAngles3d(Angle.FromRadians((float)Yaw), Angle.FromRadians((float)Pitch), Angle.FromRadians((float)Roll));
         }
 
-        public int SerializeMovementData(GameCacheEldoradoBase CacheContext, DataSerializationContext dataContext, MemoryStream stream)
+        public int SerializeMovementData(GameCacheHaloOnlineBase CacheContext, DataSerializationContext dataContext, MemoryStream stream)
         {
             //record the offset at the beginning of the movementdata
             var datastartoffset = stream.Position.DeepClone();
@@ -782,7 +782,7 @@ namespace TagTool.Animations
             }
         }
 
-        public bool CompareSingleNode(List<ModelAnimationGraph.SkeletonNode> jmadNodes, GameCacheEldoradoBase CacheContext, int index)
+        public bool CompareSingleNode(List<ModelAnimationGraph.SkeletonNode> jmadNodes, GameCacheHaloOnlineBase CacheContext, int index)
         {
             string Node = CacheContext.StringTable.GetString(jmadNodes[index].Name);
             string NextSibling = "null";

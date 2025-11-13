@@ -5,7 +5,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "scenario_structure_lighting_info", Tag = "stli", Size = 0x34, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "scenario_structure_lighting_info", Tag = "stli", Size = 0x34, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "scenario_structure_lighting_info", Tag = "stli", Size = 0x4C, MinVersion = CacheVersion.HaloReach)]
     public class ScenarioStructureLightingInfo : TagStructure
     {
@@ -22,17 +22,17 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<InstanceImposterInfo> InstanceImposterInfos;
 
-        [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x50, MinVersion = CacheVersion.HaloReach)]
         public class GenericLightDefinition : TagStructure
         {
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public GenericLightInstanceType Type;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public GenericLightInstanceTypeReach TypeReach;
 
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public GenericLightInstanceFlags Flags;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -114,7 +114,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x28, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x28, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x84, MinVersion = CacheVersion.HaloReach)]
         public class GenericLightInstance : TagStructure
         {
@@ -207,7 +207,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x30, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x30, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
         public class LightingMaterialInfo : TagStructure
         {
@@ -216,7 +216,7 @@ namespace TagTool.Tags.Definitions
             public float EmissiveQuality;
             public float EmissiveFocus;
 
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public LightingMaterialFlags Flags;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -225,11 +225,11 @@ namespace TagTool.Tags.Definitions
             public float AttenuationFalloff;
             public float AttenuationCutoff;
 
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public float FrustumBlend;
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public Angle FrustumFalloffAngle;
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public Angle FrustumCutoffAngle;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]

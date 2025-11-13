@@ -9,7 +9,7 @@ using TagTool.Tags;
 
 namespace TagTool.Geometry.BspCollisionGeometry
 {
-    [TagStructure(Size = 0x60, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x60, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x6C, MinVersion = CacheVersion.HaloReach)]
     public class LargeCollisionBspBlock : TagStructure
     {

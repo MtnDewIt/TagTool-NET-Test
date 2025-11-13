@@ -99,7 +99,7 @@ namespace TagTool.Cache.Gen3.Headers
         public RSASignature RSASignature;
 
         [TagField(Length = 0x20)]
-        public byte[] Something;
+        public byte[] Unknown1;
 
         public CacheFileSectionTable SectionTable;
 

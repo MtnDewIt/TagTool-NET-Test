@@ -15,7 +15,7 @@ using TagTool.Commands.Shaders;
 using TagTool.Commands.GUI;
 using TagTool.Commands.HUD;
 using TagTool.Commands.Forge;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
 using TagTool.Commands.JSON;
@@ -73,19 +73,19 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new GuessTagDefCommand(cache));
             context.AddCommand(new DiffTagCommand(cache, cache));
 
-            context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheEldorado));
-            context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheEldorado));
-            context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheEldorado));
+            context.AddCommand(new GenerateBlfObjectCommand(cache, cache as GameCacheHaloOnline));
+            context.AddCommand(new GenerateMapObjectCommand(cache, cache as GameCacheHaloOnline));
+            context.AddCommand(new GenerateTagObjectCommand(cache, cache as GameCacheHaloOnline));
             context.AddCommand(new ConvertVariantCommand(cache));
 
-            context.AddCommand(new EditBlfCommand(contextStack, cache as GameCacheEldorado, cache));
-            context.AddCommand(new ConvertReachMapVariantCommand(cache as GameCacheEldorado));
-            context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheEldorado));
+            context.AddCommand(new EditBlfCommand(contextStack, cache as GameCacheHaloOnline, cache));
+            context.AddCommand(new ConvertReachMapVariantCommand(cache as GameCacheHaloOnline));
+            context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheHaloOnline));
 
             // Halo Online Specific Commands
-            if (cache is GameCacheEldoradoBase)
+            if (cache is GameCacheHaloOnlineBase)
             {
-                var hoCache = cache as GameCacheEldoradoBase;
+                var hoCache = cache as GameCacheHaloOnlineBase;
                 context.AddCommand(new SaveTagNamesCommand(hoCache));
                 context.AddCommand(new CreateTagCommand(hoCache));
                 context.AddCommand(new ReplaceTagCommand(hoCache));
@@ -135,17 +135,17 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ListMapsCommand(hoCache));
             }
 
-            if(cache is GameCacheEldorado)
+            if(cache is GameCacheHaloOnline)
             {
-                var hoCache = cache as GameCacheEldorado;
+                var hoCache = cache as GameCacheHaloOnline;
                 context.AddCommand(new UpdateShaderDataCommand(cache, hoCache));
                 context.AddCommand(new UpdateTagListCommand(hoCache));
                 context.AddCommand(new RebuildCacheFileCommand(hoCache));
                 context.AddCommand(new CreateModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new UpdateModPackageCommand(contextStack, hoCache));
-                context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheEldoradoBase));
-                context.AddCommand(new AddForgeItemCommand(cache as GameCacheEldoradoBase));
-                context.AddCommand(new AddSkyBoxCommand(cache as GameCacheEldoradoBase));
+                context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new AddSkyBoxCommand(cache as GameCacheHaloOnlineBase));
             }
 
             if (cache is GameCacheModPackage)
@@ -169,16 +169,16 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new UpdateDescriptionCommand(modCache));
                 context.AddCommand(new SetModTypeCommand(modCache));
                 context.AddCommand(new MapFileCommand(modCache));
-                context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheEldoradoBase));
-                context.AddCommand(new AddForgeItemCommand(cache as GameCacheEldoradoBase));
-                context.AddCommand(new AddSkyBoxCommand(cache as GameCacheEldoradoBase));
+                context.AddCommand(new AddForgeCategoryCommand(cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new AddSkyBoxCommand(cache as GameCacheHaloOnlineBase));
 
-                context.AddCommand(new UpdateShaderDataCommand(modCache, cache as GameCacheEldoradoBase));
-                context.AddCommand(new EditMapCommand(contextStack, cache as GameCacheEldoradoBase, modCache));
+                context.AddCommand(new UpdateShaderDataCommand(modCache, cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new EditMapCommand(contextStack, cache as GameCacheHaloOnlineBase, modCache));
                 context.AddCommand(new ExitModPackageCommand(contextStack, modCache));
-                context.AddCommand(new GenerateBlfObjectCommand(modCache, cache as GameCacheEldoradoBase));
-                context.AddCommand(new GenerateMapObjectCommand(modCache, cache as GameCacheEldoradoBase));
-                context.AddCommand(new GenerateTagObjectCommand(modCache, cache as GameCacheEldoradoBase));
+                context.AddCommand(new GenerateBlfObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new GenerateMapObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
+                context.AddCommand(new GenerateTagObjectCommand(modCache, cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new EditModMetadataCommand(contextStack, modCache));
             }
 

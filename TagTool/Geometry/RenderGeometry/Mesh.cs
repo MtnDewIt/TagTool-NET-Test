@@ -229,7 +229,7 @@ namespace TagTool.Geometry
     /// <summary>
     /// A 3D mesh which can be rendered.
     /// </summary>
-    [TagStructure(Size = 0x4C, MaxVersion = Eldorado700123)]
+    [TagStructure(Size = 0x4C, MaxVersion = HaloOnline700123)]
     [TagStructure(Size = 0x5C, MinVersion = HaloReach)]
     public class Mesh : TagStructure
 	{
@@ -254,7 +254,7 @@ namespace TagTool.Geometry
         [TagField(Flags = Runtime)]
         public IndexBufferDefinition[] ResourceIndexBuffers;
 
-        [TagField(MinVersion = Halo3Beta, MaxVersion = Eldorado700123)]
+        [TagField(MinVersion = Halo3Beta, MaxVersion = HaloOnline700123)]
         public MeshFlags Flags;
         [TagField(MinVersion = HaloReach, Downgrade = nameof(Flags))]
         public MeshFlagsReach FlagsReach;
@@ -262,7 +262,7 @@ namespace TagTool.Geometry
         [TagField(MinVersion = Halo3Beta, Format = nameof(Flags))]
         public sbyte RigidNodeIndex;
 
-        [TagField(MinVersion = Halo3Beta, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123)]
         public VertexType Type;
 
         [TagField(MinVersion = HaloReach)]
@@ -277,7 +277,7 @@ namespace TagTool.Geometry
         [TagField(MinVersion = Halo3Beta)]
         public PrimitiveType IndexBufferType;
 
-        [TagField(Flags = Padding, Length = 3, MinVersion = Halo3Beta, MaxVersion = Eldorado700123)]
+        [TagField(Flags = Padding, Length = 3, MinVersion = Halo3Beta, MaxVersion = HaloOnline700123)]
         public byte[] Unused3;
         [TagField(Flags = Padding, Length = 1, MinVersion = HaloReach)]
         public byte[] Unused4;
@@ -318,8 +318,8 @@ namespace TagTool.Geometry
     /// </summary>
     [TagStructure(Size = 0x48, MaxVersion = Halo2PC)]
     [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x14, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.EldoradoED)]
-    [TagStructure(Size = 0x10, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloReach)]
     public class Part : TagStructure
     {
@@ -372,7 +372,7 @@ namespace TagTool.Geometry
         /// <summary>
         /// The flags of the mesh part.
         /// </summary>
-        [TagField(MinVersion = Halo3Beta, MaxVersion = CacheVersion.Eldorado700123, Downgrade = nameof(FlagsOld))]
+        [TagField(MinVersion = Halo3Beta, MaxVersion = CacheVersion.HaloOnline700123, Downgrade = nameof(FlagsOld))]
         public PartFlagsNew FlagsNew;
         [TagField(MinVersion = HaloReach)]
         public PartFlagsReach FlagsReach;
@@ -490,8 +490,8 @@ namespace TagTool.Geometry
     /// A subpart of a mesh which can be rendered selectively.
     /// </summary>
     [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0xC, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.EldoradoED)]
-    [TagStructure(Size = 0x8, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+    [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach)]
     public class SubPart : TagStructure
     {

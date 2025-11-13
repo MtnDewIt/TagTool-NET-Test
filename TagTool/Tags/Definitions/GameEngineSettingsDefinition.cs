@@ -7,7 +7,7 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "game_engine_settings_definition", Tag = "wezr", Size = 0x88, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "game_engine_settings_definition", Tag = "wezr", Size = 0x8C, MinVersion = CacheVersion.EldoradoED)]
+    [TagStructure(Name = "game_engine_settings_definition", Tag = "wezr", Size = 0x8C, MinVersion = CacheVersion.HaloOnlineED)]
     public class GameEngineSettingsDefinition : TagStructure
 	{
         public FlagsValue Flags;
@@ -23,7 +23,7 @@ namespace TagTool.Tags.Definitions
         public List<VipVariant> VipVariants;
         public List<SandboxEditorVariant> SandboxEditorVariants;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public uint Unknown2;
 
         [Flags]
@@ -299,10 +299,10 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x58, MinVersion = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0x58, MinVersion = CacheVersion.HaloOnlineED)]
         public abstract class BaseVariant : TagStructure
 		{
-            [TagField(Flags = Label, Length = 32, MinVersion = CacheVersion.EldoradoED)]
+            [TagField(Flags = Label, Length = 32, MinVersion = CacheVersion.HaloOnlineED)]
             public string NameAscii;
             [TagField(Flags = Label)]
             public StringId Name;
@@ -338,17 +338,17 @@ namespace TagTool.Tags.Definitions
             }
 
             [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo3ODST)]
-            [TagStructure(Size = 0x14, MinVersion = CacheVersion.EldoradoED)]
+            [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloOnlineED)]
             public class RespawnSetting : TagStructure
             {
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
                 public RespawnFlagsH3 FlagsH3;
-                [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public RespawnFlags Flags;
                 public sbyte LivesPerRound;
                 public sbyte SharedTeamLives;
 
-                [TagField(MinVersion = CacheVersion.EldoradoED)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public byte Unknown;
 
                 public byte RespawnTime;
@@ -356,11 +356,11 @@ namespace TagTool.Tags.Definitions
                 public byte BetrayalPenalty;
                 public byte RespawnTimeGrowth;
 
-                [TagField(MinVersion = CacheVersion.EldoradoED)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public sbyte Unknown1;
-                [TagField(MinVersion = CacheVersion.EldoradoED)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public sbyte Unknown2;
-                [TagField(MinVersion = CacheVersion.EldoradoED)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public sbyte Unknown3;
 
                 public StringId RespawnTraitProfile;
@@ -395,7 +395,7 @@ namespace TagTool.Tags.Definitions
 			{
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
                 public SocialFlagsH3 FlagsH3;
-                [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public SocialFlags Flags;
 
                 [Flags]
@@ -457,7 +457,7 @@ namespace TagTool.Tags.Definitions
         {
             public TeamScoringValue TeamScoring;
             public short PointsToWin;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown;
             public sbyte KillPoints;
             public sbyte AssistPoints;
@@ -494,7 +494,7 @@ namespace TagTool.Tags.Definitions
             public FlagsValue Flags;
             public TeamScoringValue TeamScoring;
             public short PointsToWin;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown;
             public sbyte CarryingPoints;
             public sbyte KillPoints;
@@ -537,7 +537,7 @@ namespace TagTool.Tags.Definitions
             public short FlagReturnTime;
             public short SuddenDeathTime;
             public short ScoreToWin;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown;
             public short FlagResetTime;
             [TagField(MaxVersion = CacheVersion.Halo3ODST)]
@@ -578,25 +578,25 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x28, MinVersion = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED)]
         public class AssaultVariant : BaseVariant
         {
             [TagField(MaxVersion = CacheVersion.Halo3ODST)]
             public FlagsValue FlagsH3;
-            [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public FlagsValueHO FlagsHO;
             public RespawnOnCaptureValue RespawnOnCapture;
             public GameModeValue GameMode;
             public EnemyBombWaypointValue EnemyBombWaypoint;
             public short SuddenDeathTime;
             public short DetonationsToWin;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown2;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown3;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown4;
             public short BombResetTime;
             public short BombArmingTime;
@@ -689,17 +689,17 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x18, MinVersion = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloOnlineED)]
         public class KingOfTheHillVariant : BaseVariant
         {
             public FlagsValue Flags;
             public short ScoreToWin;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown;
             public TeamScoringValue TeamScoring;
             public HillMovementValue HillMovement;
             public HillMovementOrderValue HillMovementOrder;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown2;
             public sbyte OnHillPoints;
             public sbyte UncontestedControlPoints;
@@ -779,7 +779,7 @@ namespace TagTool.Tags.Definitions
             public GoalZoneMovementValue GoalZoneMovement;
             public GoalZoneOrderValue GoalZoneOrder;
             public short ScoreToWin;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown;
             public sbyte KillPoints;
             public sbyte TakedownPoints;
@@ -846,7 +846,7 @@ namespace TagTool.Tags.Definitions
         {
             public FlagsValue Flags;
             public short ScoreToWin;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public short Unknown;
             public NextVipValue NextVip;
             public GoalZoneMovementValue GoalZoneMovement;

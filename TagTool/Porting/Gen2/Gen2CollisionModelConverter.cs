@@ -2,7 +2,7 @@
 using System.Numerics;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Tags.Definitions;
 using TagTool.Geometry.Jms;
 using TagTool.Common;
@@ -15,7 +15,7 @@ namespace TagTool.Porting.Gen2
     public class ObjConvexHullProcessor
     {
 
-        public CachedTag ConvertCollisionModelToPhysics(CollisionModel collisionModel, Stream cacheStream, CachedTag tag, GameCacheEldoradoBase Cache)
+        public CachedTag ConvertCollisionModelToPhysics(CollisionModel collisionModel, Stream cacheStream, CachedTag tag, GameCacheHaloOnlineBase Cache)
         {
             JmsFormat jms = new JmsFormat();
 
@@ -74,9 +74,9 @@ namespace TagTool.Porting.Gen2
             return newTag;
         }
 
-        private Model GetHlmtFromCollisionModel(CachedTag tag, Stream cacheStream, GameCacheEldoradoBase Cache)
+        private Model GetHlmtFromCollisionModel(CachedTag tag, Stream cacheStream, GameCacheHaloOnlineBase Cache)
         {
-            var dependsOn = Cache.TagCacheEldorado.NonNull().Where(t => ((CachedTagEldorado)t).Dependencies.Contains(tag.Index));
+            var dependsOn = Cache.TagCacheGenHO.NonNull().Where(t => ((CachedTagHaloOnline)t).Dependencies.Contains(tag.Index));
             CachedTag modelTag = null;
 
             foreach (var dependency in dependsOn)
@@ -85,7 +85,7 @@ namespace TagTool.Porting.Gen2
 
                 if (dependency.Group.ToString() == "model")
                 {
-                    modelTag = Cache.TagCacheEldorado.GetTag($"{tagName}.{dependency.Group}");
+                    modelTag = Cache.TagCacheGenHO.GetTag($"{tagName}.{dependency.Group}");
                 }
             }
             return Cache.Deserialize<Model>(cacheStream, modelTag);
@@ -101,7 +101,7 @@ namespace TagTool.Porting.Gen2
             return rot;
         }
 
-        public void BuildNodesFromHlmt(JmsFormat jms, Model hlmt, GameCacheEldoradoBase Cache)
+        public void BuildNodesFromHlmt(JmsFormat jms, Model hlmt, GameCacheHaloOnlineBase Cache)
         {
             foreach (var node in hlmt.Nodes)
             {

@@ -10,7 +10,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
 {
     [TagStructure(Size = 0xC4, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Size = 0xB8, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0xC8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+    [TagStructure(Size = 0xC8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
     [TagStructure(Size = 0x144, MinVersion = CacheVersion.HaloReach)]
     public class InstancedGeometryBlock : TagStructure
     {
@@ -19,9 +19,9 @@ namespace TagTool.Geometry.BspCollisionGeometry
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public InstancedGeometryDefinitionFlags Flags; // Taken from h4, might not be correct
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public RealPoint3d BoundingSphereOffset;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float BoundingSphereRadius;
 
         public CollisionGeometry CollisionInfo;
@@ -47,17 +47,17 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public short MeshIndex;
         public short CompressionIndex;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float GlobalLightmapResolutionScale;
 
-        [TagField(Version = CacheVersion.EldoradoED)]
+        [TagField(Version = CacheVersion.HaloOnlineED)]
         public TagBlock<ExtraDataBlock> ExtraData;
-        [TagField(Length = 4, Flags = TagFieldFlags.Padding, Version = CacheVersion.EldoradoED)]
+        [TagField(Length = 4, Flags = TagFieldFlags.Padding, Version = CacheVersion.HaloOnlineED)]
         public byte[] Unused2;
 
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
         public TagBlock<TagHkpMoppCode> MeshMopp;
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint MeshMoppBvTreePointer; // Runtime
 
         [Flags]
@@ -78,7 +78,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
             public TagBlock<PolyhedronPlaneEquation> PolyhedraPlaneEquations;
         }
 
-        [TagStructure(Size = 0x70, Align = 16, Version = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0x70, Align = 16, Version = CacheVersion.HaloOnlineED)]
         [TagStructure(Size = 0x80, Align = 16, MinVersion = CacheVersion.HaloReach)]
         public class PolyhedronBlock : TagStructure
         {
@@ -105,7 +105,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
     }
 
     [TagStructure(Size = 0x78, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x74, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x74, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x9C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach)]
     [TagStructure(Size = 0xA0, MinVersion = CacheVersion.HaloReach11883)]
     public class InstancedGeometryInstance : TagStructure
@@ -114,14 +114,14 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public RealMatrix4x3 Matrix;
         public short DefinitionIndex;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public InstancedGeometryFlags Flags;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public InstancedGeometryFlagsReach FlagsReach;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public short LightmapTexcoordBlockIndex;
-        [TagField(Flags = TagFieldFlags.Padding, Length = 2, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 2, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding = new byte[2];
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -129,7 +129,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public short CompressionIndex;
 
-        [TagField(Length = 1, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 1, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(Length = 4, MinVersion = CacheVersion.HaloReach)]
         public uint[] SeamBitVector;
 
@@ -139,14 +139,14 @@ namespace TagTool.Geometry.BspCollisionGeometry
         public RealPoint3d WorldBoundingSphereCenter;
         public Bounds<float> BoundingSphereRadiusBounds;
 
-        [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = TagFieldFlags.Label, MaxVersion = CacheVersion.HaloOnline700123)]
         public StringId Name;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public uint ChecksumReach;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public Scenery.PathfindingPolicyValue PathfindingPolicy;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public InstancedGeometryLightmappingPolicy LightmappingPolicy;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -162,15 +162,15 @@ namespace TagTool.Geometry.BspCollisionGeometry
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public float SinglePassRenderDistance;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<InstancedGeometryPhysics> BspPhysics;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<InstancedGeometryPhysicsReach> BspPhysicsReach;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public ushort FadePixelsStart;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public ushort FadePixelsEnd;
 
         public CubemapSampleStruct CubemapSample;
@@ -250,7 +250,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
         }
 
         [TagStructure(Size = 0x8, Gen = CacheGeneration.Third)]
-        [TagStructure(Size = 0x4, Gen = CacheGeneration.Eldorado)]
+        [TagStructure(Size = 0x4, Gen = CacheGeneration.HaloOnline)]
         public class CubemapSampleStruct : TagStructure
         {
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -262,7 +262,7 @@ namespace TagTool.Geometry.BspCollisionGeometry
 
             public short BitmapIndex0;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public short BitmapIndex1;
             [TagField(MaxVersion = CacheVersion.Halo3ODST)]
             public float BlendFactor;

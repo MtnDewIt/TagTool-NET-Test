@@ -1138,19 +1138,19 @@ namespace TagTool.Tags.Definitions.Gen4
             }
             
             [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo4)]
-            [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2AMP)]
+            [TagStructure(Size = 0x10, MinVersion = CacheVersion.H2AMP)]
             public class PlayerTraitsAppearanceBlock : TagStructure
             {
-                [TagField(MinVersion = CacheVersion.Halo2AMP)]
+                [TagField(MinVersion = CacheVersion.H2AMP)]
                 public StringId DeathEffectH2;
-                [TagField(MinVersion = CacheVersion.Halo2AMP)]
+                [TagField(MinVersion = CacheVersion.H2AMP)]
                 public StringId AttachedEffectH2;
 
                 public PlayerTraitActiveCamo ActiveCamo;
 
-                [TagField(MinVersion = CacheVersion.Halo2AMP)]
+                [TagField(MinVersion = CacheVersion.H2AMP)]
                 public PlayerTraitColor PrimaryColor;
-                [TagField(MinVersion = CacheVersion.Halo2AMP)]
+                [TagField(MinVersion = CacheVersion.H2AMP)]
                 public PlayerTraitColor SecondaryColor;
 
                 public PlayerTraitWaypoint Waypoint;
@@ -1162,7 +1162,7 @@ namespace TagTool.Tags.Definitions.Gen4
                 [TagField(MaxVersion = CacheVersion.Halo4)]
                 public StringId AttachedEffect;
 
-                [TagField(MinVersion = CacheVersion.Halo2AMP)]
+                [TagField(MinVersion = CacheVersion.H2AMP)]
                 public short Unknown;
                 
                 public enum PlayerTraitActiveCamo : sbyte

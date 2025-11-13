@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Commands.Scenarios;
 using TagTool.Common;
@@ -74,7 +74,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
             if (tagResources == null)
                 return false;
             GenerateStructureSurfaces(tagResources, renderGeometry);           
-            ((GameCacheEldoradoBase)Cache).ResourceCaches.ReplaceResource(Definition.CollisionBspResource.EldoradoPageableResource, tagResources);
+            ((GameCacheHaloOnlineBase)Cache).ResourceCaches.ReplaceResource(Definition.CollisionBspResource.HaloOnlinePageableResource, tagResources);
 
             //optionally generate structure surfaces for sbsp if none are present
             var cacheFileTagResources = Cache.ResourceCache.GetStructureBspCacheFileTagResources(Definition.PathfindingResource);
@@ -83,7 +83,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
             if (cacheFileTagResources.SurfacePlanes == null || cacheFileTagResources.SurfacePlanes.Count == 0)
             {
                 GenerateStructureBspStructureSurfaces(tagResources, cacheFileTagResources, renderGeometry);
-                ((GameCacheEldoradoBase)Cache).ResourceCaches.ReplaceResource(Definition.PathfindingResource.EldoradoPageableResource, cacheFileTagResources);
+                ((GameCacheHaloOnlineBase)Cache).ResourceCaches.ReplaceResource(Definition.PathfindingResource.HaloOnlinePageableResource, cacheFileTagResources);
             }
             Console.WriteLine("Finished.");
             return true;

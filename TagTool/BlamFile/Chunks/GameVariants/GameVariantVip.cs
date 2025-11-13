@@ -10,7 +10,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
     {
         public short ScoreToWinRound;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreToWinEarly;
 
         public VipFlags VariantFlags;
@@ -35,7 +35,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public GameVariantPlayerTraits VipTraits;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x4A, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x28, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x28, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 
         [Flags]

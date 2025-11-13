@@ -2,7 +2,7 @@
 using System.Linq;
 using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado.Headers;
+using TagTool.Cache.HaloOnline.Headers;
 using TagTool.Common;
 using TagTool.IO;
 using TagTool.Tags;
@@ -40,7 +40,7 @@ namespace TagTool.BlamFile
             Version = version;
             CachePlatform = CachePlatform.Original;
 
-            if (!CacheVersionDetection.IsBetween(Version, CacheVersion.EldoradoED, CacheVersion.Eldorado106708))
+            if (!CacheVersionDetection.IsBetween(Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline106708))
                 throw new ArgumentOutOfRangeException(nameof(Version), "Cache File version not supported");
         }
 
@@ -54,7 +54,7 @@ namespace TagTool.BlamFile
             map.Version = Version;
             map.Platform = CachePlatform;
             map.EndianFormat = EndianFormat.LittleEndian;
-            map.MapVersion = CacheFileVersion.Eldorado;
+            map.MapVersion = CacheFileVersion.HaloOnline;
             map.Header = GenerateCacheFileHeader(scnrTag, scnr, scenarioName);
             map.MapFileBlf = GenerateMapBlf(scnr, scenarioName);
             return map;
@@ -97,14 +97,14 @@ namespace TagTool.BlamFile
             }
         }
 
-        private CacheFileHeaderEldoradoED GenerateCacheFileHeader(CachedTag scnrTag, Scenario scnr, string scenarioName)
+        private CacheFileHeaderHaloOnlineED GenerateCacheFileHeader(CachedTag scnrTag, Scenario scnr, string scenarioName)
         {
             // TODO: Add dynamic versioning somehow :/
-            var header = new CacheFileHeaderEldoradoED();
+            var header = new CacheFileHeaderHaloOnlineED();
 
             header.HeaderSignature = new Tag("head");
             header.FooterSignature = new Tag("foot");
-            header.Version = CacheFileVersion.Eldorado;
+            header.Version = CacheFileVersion.HaloOnline;
             header.BuildNumber = CacheVersionDetection.GetBuildName(Version, CachePlatform);
 
             switch (scnr.MapType)
@@ -120,7 +120,7 @@ namespace TagTool.BlamFile
                     break;
             }
 
-            header.Size = TagStructure.GetStructureSize(typeof(CacheFileHeaderEldoradoED), Version, CachePlatform);
+            header.Size = TagStructure.GetStructureSize(typeof(CacheFileHeaderHaloOnlineED), Version, CachePlatform);
             header.SharedCacheFileType = CacheFileSharedType.None;
             header.MapId = scnr.MapId;
             header.Name = scenarioName;

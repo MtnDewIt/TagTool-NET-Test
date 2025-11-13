@@ -6,7 +6,7 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Ai
 {
-    [TagStructure(Size = 0x34, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x34, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach)]
     public class VocalizationPattern : TagStructure
     {
@@ -21,7 +21,7 @@ namespace TagTool.Ai
         public HostilityEnum Hostility;
         public PatternFlags Flags;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public ActorTypeEnum CauseActorType;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public ActorTypeEnumReach CauseActorTypeReach;
@@ -34,7 +34,7 @@ namespace TagTool.Ai
 
         public DialogueObjectTypesEnum SpeakerObjectType;
 
-        [TagField(Length = 2, Flags = Padding, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 2, Flags = Padding, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Unused;
 
         public SpeakerBehaviorEnum SpeakerBehavior;
@@ -46,7 +46,7 @@ namespace TagTool.Ai
         [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public DangerEnumMCC DangerLevelMCC;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public StyleAttitudeEnum Attitude;
 
         public SpatialRelationEnum SpeakerSubjectPosition;
@@ -66,7 +66,7 @@ namespace TagTool.Ai
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public GameTypeEnum GameType;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public ActorTypeEnum SubjectActorType;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public ActorTypeEnumReach SubjectActorTypeReach;

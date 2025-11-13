@@ -26,7 +26,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public WidgetFontValue_ODST CustomFont_ODSTMCC;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public WidgetFontValue CustomFont;
 
         [TagField(Length = 2, Flags = TagFieldFlags.Padding, Platform = CachePlatform.Original)]

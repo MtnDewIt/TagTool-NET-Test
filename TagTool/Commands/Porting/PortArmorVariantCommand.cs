@@ -16,11 +16,11 @@ namespace TagTool.Commands.Porting
 {
     public class PortArmorVariantCommand : Command
     {
-        private GameCacheContextEldorado CacheContext { get; }
+        private GameCacheContextHaloOnline CacheContext { get; }
         private GameCache BlamCache;
         private RenderGeometryConverter GeometryConverter { get; }
 
-        public PortArmorVariantCommand(GameCacheContextEldorado cacheContext, GameCache blamCache) :
+        public PortArmorVariantCommand(GameCacheContextHaloOnline cacheContext, GameCache blamCache) :
             base(true,
 
                 "PortArmorVariant",
@@ -407,7 +407,7 @@ namespace TagTool.Commands.Porting
 
                 Console.Write("Writing resource data...");
 
-                edModeDefinition.Geometry.Resource.EldoradoPageableResource = new PageableResource
+                edModeDefinition.Geometry.Resource.HaloOnlinePageableResource = new PageableResource
                 {
                     Page = new RawPage(),
                     Resource = new TagResourceGen3
@@ -421,10 +421,10 @@ namespace TagTool.Commands.Porting
 
                 edResourceStream.Position = 0;
 
-                var resourceContext = new ResourceSerializationContext(CacheContext, edModeDefinition.Geometry.Resource.EldoradoPageableResource);
+                var resourceContext = new ResourceSerializationContext(CacheContext, edModeDefinition.Geometry.Resource.HaloOnlinePageableResource);
                 CacheContext.Serializer.Serialize(resourceContext, resourceDefinition);
-                edModeDefinition.Geometry.Resource.EldoradoPageableResource.ChangeLocation(ResourceLocation.ResourcesB);
-                CacheContext.AddResource(edModeDefinition.Geometry.Resource.EldoradoPageableResource, edResourceStream);
+                edModeDefinition.Geometry.Resource.HaloOnlinePageableResource.ChangeLocation(ResourceLocation.ResourcesB);
+                CacheContext.AddResource(edModeDefinition.Geometry.Resource.HaloOnlinePageableResource, edResourceStream);
 
                 Console.WriteLine("done.");
             }
@@ -570,7 +570,7 @@ namespace TagTool.Commands.Porting
                         Halo2 = GameObjectTypeHalo2.Scenery,
                         Halo3Retail = GameObjectTypeHalo3Retail.Scenery,
                         Halo3ODST = GameObjectTypeHalo3ODST.Scenery,
-                        Eldorado = GameObjectTypeEldorado.Scenery
+                        HaloOnline = GameObjectTypeHaloOnline.Scenery
                     },
                     BoundingRadius = 0.44f,
                     BoundingOffset = new RealPoint3d(-0.02f, 0.0f, 0.0f),

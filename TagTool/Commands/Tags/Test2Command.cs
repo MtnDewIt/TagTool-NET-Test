@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Porting;
 using TagTool.Common;
 using TagTool.Porting;
@@ -15,9 +15,9 @@ namespace TagTool.Commands.Tags
 {
     class Test2Command : Command
     {
-        private readonly GameCacheEldoradoBase Cache;
+        private readonly GameCacheHaloOnlineBase Cache;
 
-        public Test2Command(GameCacheEldoradoBase cache)
+        public Test2Command(GameCacheHaloOnlineBase cache)
             : base(false, "Test2", "Test2", "Test2", "Test2")
         {
             Cache = cache;
@@ -246,7 +246,7 @@ namespace TagTool.Commands.Tags
             var mapsDir = new DirectoryInfo(args[0]);
 
             if (args.Count > 1)
-                ResourceCachesEldorado.ResourceCacheNames[ResourceLocation.Textures] = args[1];
+                ResourceCachesHaloOnline.ResourceCacheNames[ResourceLocation.Textures] = args[1];
 
             var converted = new List<(CachedTag tag, long resourcesSize)>();
 

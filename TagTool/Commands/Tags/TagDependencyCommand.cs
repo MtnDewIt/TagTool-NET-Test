@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Tags;
 using System.IO;
 using TagTool.BlamFile;
@@ -18,7 +18,7 @@ namespace TagTool.Commands.Tags
     class TagDependencyCommand : Command
     {
         public GameCache Cache { get; }
-        public GameCacheEldoradoBase HOCache { get; set; }
+        public GameCacheHaloOnlineBase HOCache { get; set; }
 
         public TagDependencyCommand(GameCache cache) : base(
             true,
@@ -51,21 +51,21 @@ namespace TagTool.Commands.Tags
             if (!Cache.TagCache.TryGetCachedTag(args[1], out var tag))
                 return new TagToolError(CommandError.TagInvalid);
 
-            if (Cache is GameCacheEldoradoBase)
+            if (Cache is GameCacheHaloOnlineBase)
             {
-                HOCache = (GameCacheEldoradoBase)Cache;
+                HOCache = (GameCacheHaloOnlineBase)Cache;
                 switch (args[0].ToLower())
                 {
                     case "add":
                     case "remove":
-                        return ExecuteAddRemove((CachedTagEldorado)tag, args);
+                        return ExecuteAddRemove((CachedTagHaloOnline)tag, args);
 
                     case "list":
                     case "listall":
-                        return ExecuteList((CachedTagEldorado)tag, (args[0] == "listall"), args.Skip(2).ToArray());
+                        return ExecuteList((CachedTagHaloOnline)tag, (args[0] == "listall"), args.Skip(2).ToArray());
 
                     case "liston":
-                        return ExecuteListDependsOn((CachedTagEldorado)tag);
+                        return ExecuteListDependsOn((CachedTagHaloOnline)tag);
 
                     default:
                         return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\"");
@@ -84,7 +84,7 @@ namespace TagTool.Commands.Tags
             
         }
 
-        private object ExecuteAddRemove(CachedTagEldorado tag, List<string> args)
+        private object ExecuteAddRemove(CachedTagHaloOnline tag, List<string> args)
         {
             if (args.Count < 3)
                 return new TagToolError(CommandError.ArgCount);
@@ -96,7 +96,7 @@ namespace TagTool.Commands.Tags
 
             using (var stream = Cache.OpenCacheReadWrite())
             {
-                var data = HOCache.TagCacheEldorado.ExtractTag(stream, tag);
+                var data = HOCache.TagCacheGenHO.ExtractTag(stream, tag);
 
                 if (args[0].ToLower() == "add")
                 {
@@ -119,13 +119,13 @@ namespace TagTool.Commands.Tags
                     }
                 }
 
-                HOCache.TagCacheEldorado.SetTagData(stream, tag, data);
+                HOCache.TagCacheGenHO.SetTagData(stream, tag, data);
             }
 
             return true;
         }
 
-        private object ExecuteList(CachedTagEldorado tag, bool all, params string[] groups)
+        private object ExecuteList(CachedTagHaloOnline tag, bool all, params string[] groups)
         {
             if (tag.Dependencies.Count == 0)
             {
@@ -133,12 +133,12 @@ namespace TagTool.Commands.Tags
                 return true;
             }
 
-            IEnumerable<CachedTagEldorado> dependencies;
+            IEnumerable<CachedTagHaloOnline> dependencies;
 
             if (all)
-                dependencies = HOCache.TagCacheEldorado.FindDependencies(tag);
+                dependencies = HOCache.TagCacheGenHO.FindDependencies(tag);
             else
-                dependencies = tag.Dependencies.Where(i => i >= 0 && i <= Cache.TagCache.Count).Select(i => HOCache.TagCacheEldorado.Tags[i]);
+                dependencies = tag.Dependencies.Where(i => i >= 0 && i <= Cache.TagCache.Count).Select(i => HOCache.TagCacheGenHO.Tags[i]);
 
             var groupTags = groups.Select(group => Cache.TagCache.ParseGroupTag(group)).ToArray();
 
@@ -159,9 +159,9 @@ namespace TagTool.Commands.Tags
             return true;
         }
 
-        private object ExecuteListDependsOn(CachedTagEldorado tag)
+        private object ExecuteListDependsOn(CachedTagHaloOnline tag)
         {
-            var dependsOn = HOCache.TagCacheEldorado.NonNull().Where(t => ((CachedTagEldorado)t).Dependencies.Contains(tag.Index));
+            var dependsOn = HOCache.TagCacheGenHO.NonNull().Where(t => ((CachedTagHaloOnline)t).Dependencies.Contains(tag.Index));
 
             foreach (var dependency in dependsOn)
             {

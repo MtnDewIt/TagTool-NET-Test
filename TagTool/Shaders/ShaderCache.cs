@@ -68,7 +68,7 @@ namespace TagTool.Shaders
         //        var rmdf = ShaderGenerator.RenderMethodDefinitionGenerator.GenerateRenderMethodDefinition(destCache, destCacheStream, generator, rmt2Desc.Type, out _, out _);
         //        rmdfTag = destCache.TagCache.AllocateTag<RenderMethodDefinition>(rmdfName);
         //        destCache.Serialize(destCacheStream, rmdfTag, rmdf);
-        //        (destCache as GameCacheEldoradoBase).SaveTagNames();
+        //        (destCache as GameCacheHaloOnlineBase).SaveTagNames();
         //    }
         //}
 

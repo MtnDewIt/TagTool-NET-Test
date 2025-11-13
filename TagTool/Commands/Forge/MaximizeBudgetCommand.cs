@@ -7,7 +7,7 @@ using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Common.Logging;
@@ -21,11 +21,11 @@ namespace TagTool.Commands.Forge
 {
     class MaximizeBudgetCommand : Command
     {
-        private GameCacheEldoradoBase Cache;
+        private GameCacheHaloOnlineBase Cache;
         private ForgeGlobalsDefinition Definition;
         private HashSet<CachedTag> ForgePalette = new HashSet<CachedTag>();
 
-        public MaximizeBudgetCommand(GameCacheEldoradoBase cache, ForgeGlobalsDefinition definition) : base(true,
+        public MaximizeBudgetCommand(GameCacheHaloOnlineBase cache, ForgeGlobalsDefinition definition) : base(true,
             "MaximizeBudget",
             "Moves placements for objects that are in the global forge palette into a map variant to maximize the number of objects that can be placed",
 
@@ -61,7 +61,7 @@ namespace TagTool.Commands.Forge
                 foreach (var stream in modCache.BaseModPackage.MapFileStreams)
                     MaximizeMapForgeBudget(stream);
             }
-            else if (Cache is GameCacheEldorado hoCache)
+            else if (Cache is GameCacheHaloOnline hoCache)
             {
                 foreach (var file in hoCache.Directory.GetFiles("*.map"))
                 {

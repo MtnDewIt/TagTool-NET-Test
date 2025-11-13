@@ -10,9 +10,9 @@ namespace TagTool.Commands.Tags
 {
     class ListMapsCommand : Command 
     {
-        private GameCacheEldoradoBase CacheContext { get; }
+        private GameCacheHaloOnlineBase CacheContext { get; }
 
-        public ListMapsCommand(GameCacheEldoradoBase cacheContext)
+        public ListMapsCommand(GameCacheHaloOnlineBase cacheContext)
             : base(true,
 
                 "ListMaps",

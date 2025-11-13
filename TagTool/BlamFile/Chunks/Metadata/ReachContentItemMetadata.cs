@@ -7,7 +7,7 @@ using System;
 
 namespace TagTool.BlamFile.Chunks.Metadata
 {
-    [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.Halo2AMP)]
+    [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.H2AMP)]
     public class ReachContentItemMetadata : TagStructure
     {
         public ContentItemTypeReach ContentTypeReach;

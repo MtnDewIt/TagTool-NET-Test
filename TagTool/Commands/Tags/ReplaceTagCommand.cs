@@ -8,9 +8,9 @@ namespace TagTool.Commands.Tags
 {
     public class ReplaceTagCommand : Command
     {
-        private readonly GameCacheEldoradoBase Cache;
+        private readonly GameCacheHaloOnlineBase Cache;
 
-        public ReplaceTagCommand(GameCacheEldoradoBase cache)
+        public ReplaceTagCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
                 "ReplaceTag",

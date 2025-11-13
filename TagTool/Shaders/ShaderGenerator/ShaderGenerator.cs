@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Tags.Definitions;
@@ -63,7 +63,7 @@ namespace TagTool.Shaders.ShaderGenerator
         {   
             // TODO: not thread safe
 
-            var sTable = (StringTableEldorado)cache.StringTable;
+            var sTable = (StringTableHaloOnline)cache.StringTable;
 
             var stringId = sTable.GetStringId(str);
             if (stringId == StringId.Invalid)

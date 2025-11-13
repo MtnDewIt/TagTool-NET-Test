@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "item", Tag = "item", Size = 0xB4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "item", Tag = "item", Size = 0xB4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
     [TagStructure(Name = "item", Tag = "item", Size = 0x94, MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "item", Tag = "item", Size = 0xBC, MinVersion = CacheVersion.HaloReach)]
     public class Item : GameObject
@@ -46,13 +46,13 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "effe" })]
         public CachedTag DetonationEffect;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float CampaignOnGroundScale; // reach has unified ground scale for sp+mp
         public float MultiplayerOnGroundScale;
 
         public ItemUnitScalesStruct ItemUnitScales;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public GroundedDampingStruct GroundedDamping;
 
         // If not present, the default from global.globals is used.

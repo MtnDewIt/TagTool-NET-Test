@@ -3,7 +3,7 @@ using TagTool.Tags;
 
 namespace TagTool.Cache.MCC.Headers
 {
-    [TagStructure(Size = 0x1E000, MinVersion = CacheVersion.Halo2AMP, MaxVersion = CacheVersion.Halo2AMP, Platform = CachePlatform.MCC)]
+    [TagStructure(Size = 0x1E000, MinVersion = CacheVersion.H2AMP, MaxVersion = CacheVersion.H2AMP, Platform = CachePlatform.MCC)]
     public class CacheFileHeaderHalo2AMPMCC : CacheFileHeader
     {
         //

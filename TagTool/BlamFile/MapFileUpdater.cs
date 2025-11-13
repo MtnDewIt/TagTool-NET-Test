@@ -5,7 +5,7 @@ using System.Linq;
 using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.MCC;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Common.Logging;
 using TagTool.IO;
@@ -30,7 +30,7 @@ namespace TagTool.BlamFile
             foreach (CachedTag scnrTag in cache.TagCache.FindAllInGroup<Scenario>())
             {
                 // ignore base cache references for mod paks
-                if ((scnrTag as CachedTagEldorado).IsEmpty())
+                if ((scnrTag as CachedTagHaloOnline).IsEmpty())
                     continue;
 
                 var scnr = cache.Deserialize<Scenario>(cacheStream, scnrTag);
@@ -120,7 +120,7 @@ namespace TagTool.BlamFile
                 {
                     return _cache switch
                     {
-                        GameCacheEldorado hoCache => LoadMapFile(Path.Combine(_cache.Directory.FullName, $"{scnrTag.Name.Split('\\').Last()}.map")),
+                        GameCacheHaloOnline hoCache => LoadMapFile(Path.Combine(_cache.Directory.FullName, $"{scnrTag.Name.Split('\\').Last()}.map")),
                         GameCacheModPackage modCache => LoadMapFile(modCache.BaseModPackage.MapFileStreams[modCache.BaseModPackage.MapIds.IndexOf(scnr.MapId)]),
                         _ => throw new NotSupportedException("Unsupported cache"),
                     };
@@ -143,7 +143,7 @@ namespace TagTool.BlamFile
                         }
                         break;
 
-                    case GameCacheEldorado hoCache:
+                    case GameCacheHaloOnline hoCache:
                         {
                             string mapFilePath = Path.Combine(_cache.Directory.FullName, $"{mapName}.map");
                             SaveMapFile(map, mapFilePath);

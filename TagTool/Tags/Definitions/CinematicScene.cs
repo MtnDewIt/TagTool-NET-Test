@@ -6,12 +6,12 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "cinematic_scene", Tag = "cisc", Size = 0x78, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "cinematic_scene", Tag = "cisc", Size = 0x78, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "cinematic_scene", Tag = "cisc", Size = 0x5C, MinVersion = CacheVersion.HaloReach)]
     public class CinematicScene : TagStructure
     {
         public StringId Name;
-        [TagField(Length = 32, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
         public string AnchorName;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId Anchor;
@@ -36,11 +36,11 @@ namespace TagTool.Tags.Definitions
             ResetLighting
         }
 
-        [TagStructure(Size = 0x74, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x74, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x5C, MinVersion = CacheVersion.HaloReach)]
         public class ObjectBlock : TagStructure
         {
-            [TagField(Length = 32, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
             public string ImportName;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public StringId Name;
@@ -87,7 +87,7 @@ namespace TagTool.Tags.Definitions
                 _4PlayerCoop = 1 << 3
             }
 
-            [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagStructure(Size = 0x38, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
             public class AttachmentsBlock : TagStructure
             {
@@ -97,7 +97,7 @@ namespace TagTool.Tags.Definitions
                 public byte[] Pad;
 
                 public StringId ObjectMarkerName;
-                [TagField(Length = 32, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(Length = 32, MaxVersion = CacheVersion.HaloOnline700123)]
                 public string AttachmentObjectName;
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public StringId AttachmentObjectId;
@@ -114,7 +114,7 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0xA4, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0xBC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0xBC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xD0, MinVersion = CacheVersion.HaloReach)]
         public class ShotBlock : TagStructure
         {
@@ -142,7 +142,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public List<ScreenEffectBlock> ScreenEffects;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<CortanaEffectBlock> CortanaEffects;
 
             public List<ImportScriptBlock> ImportScripts;
@@ -213,7 +213,7 @@ namespace TagTool.Tags.Definitions
                 }
             }
 
-            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloReach)]
             public class DialogueBlock : TagStructure
             {
@@ -248,7 +248,7 @@ namespace TagTool.Tags.Definitions
                 }
             }
 
-            [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
             public class EffectBlock : TagStructure
             {
@@ -327,7 +327,7 @@ namespace TagTool.Tags.Definitions
                 public uint Frame;
             }
 
-            [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagStructure(Size = 0x18, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach)]
             public class ImportScriptBlock : TagStructure
             {
@@ -385,7 +385,7 @@ namespace TagTool.Tags.Definitions
             {
                 public List<FrameBlock> Frames;
 
-                [TagStructure(Size = 0x48, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagStructure(Size = 0x48, MaxVersion = CacheVersion.HaloOnline700123)]
                 [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloReach)]
                 public class FrameBlock : TagStructure
                 {
@@ -401,7 +401,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x44, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x44, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x3C, MinVersion = CacheVersion.HaloReach)]
         public class CameraFrame : TagStructure
         {
@@ -409,9 +409,9 @@ namespace TagTool.Tags.Definitions
             public RealVector3d CameraForward;
             public RealVector3d CameraUp;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float HorizontalFieldOfView;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float HorizontalFilmAperture;
 
             public float FocalLength;

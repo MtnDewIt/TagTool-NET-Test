@@ -813,7 +813,7 @@ namespace TagTool.Serialization
 
         public IndexBufferIndex DeserializeIndexBufferIndex(EndianReader reader)
         {
-            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.EldoradoED)
+            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.HaloOnlineED)
                 return new IndexBufferIndex(reader.ReadInt32());
             else
                 return new IndexBufferIndex(reader.ReadUInt16());
@@ -821,7 +821,7 @@ namespace TagTool.Serialization
 
         public object DeserializePlaneReference(EndianReader reader)
         {
-            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.EldoradoED)
+            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.HaloOnlineED)
             {
                 var value = reader.ReadUInt32();
                 return new StructureSurfaceToTriangleMapping((int)(value >> 12), (int)(value & 0xFFF));

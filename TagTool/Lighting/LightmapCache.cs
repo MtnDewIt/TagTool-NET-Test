@@ -103,7 +103,7 @@ namespace TagTool.Lighting
                 dds.Write(writer);
         }
 
-        public void ImportIntoLbsp(GameCacheEldoradoBase cache, Stream stream, ScenarioLightmapBspData Lbsp)
+        public void ImportIntoLbsp(GameCacheHaloOnlineBase cache, Stream stream, ScenarioLightmapBspData Lbsp)
         {
             var linearSHBitmap = cache.Deserialize<Bitmap>(stream, Lbsp.LightmapSHCoefficientsBitmap);
             var intensityBitmap = cache.Deserialize<Bitmap>(stream, Lbsp.LightmapDominantLightDirectionBitmap);
@@ -132,7 +132,7 @@ namespace TagTool.Lighting
             ImportBitmap(cache, stream, Lbsp.LightmapDominantLightDirectionBitmap, intensityBitmap, 0, intensity);
         }
 
-        private static void ImportBitmap(GameCacheEldoradoBase cache, Stream stream, CachedTag tag, Bitmap bitmap, int imageIndex, BaseBitmap bitmapImport)
+        private static void ImportBitmap(GameCacheHaloOnlineBase cache, Stream stream, CachedTag tag, Bitmap bitmap, int imageIndex, BaseBitmap bitmapImport)
         {
             BitmapTextureInteropResource resource = BitmapUtils.CreateEmptyBitmapTextureInteropResource();
             resource.Texture.Definition.PrimaryResourceData = new TagData(bitmapImport.Data);

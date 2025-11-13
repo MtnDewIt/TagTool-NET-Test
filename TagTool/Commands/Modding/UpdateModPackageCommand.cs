@@ -1,6 +1,6 @@
 ﻿using TagTool.Cache;
 using System.Collections.Generic;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using System;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
@@ -23,13 +23,13 @@ namespace TagTool.Commands.Modding
 {
     class UpdateModPackageCommand : Command
     {
-        private readonly GameCacheEldorado Cache;
+        private readonly GameCacheHaloOnline Cache;
         private CommandContextStack ContextStack { get; }
         private GameCacheModPackage oldMod { get; set; }
         private GameCacheModPackage newMod { get; set; }
         private bool hasError = false;
 
-        public UpdateModPackageCommand(CommandContextStack contextStack, GameCacheEldorado cache) :
+        public UpdateModPackageCommand(CommandContextStack contextStack, GameCacheHaloOnline cache) :
             base(true,
 
                 "UpdateModPackage",
@@ -99,15 +99,15 @@ namespace TagTool.Commands.Modding
                 List<CachedTag> moddedTags = new List<CachedTag>();
                 List<CachedTag> newTags = new List<CachedTag>();
                 //allocate modded tags in new mod package
-                foreach (var tag in oldMod.TagCacheEldorado.Tags)
+                foreach (var tag in oldMod.TagCacheGenHO.Tags)
                 {
-                    var modCachedTag = oldMod.TagCache.GetTag(tag.Index) as CachedTagEldorado;
+                    var modCachedTag = oldMod.TagCache.GetTag(tag.Index) as CachedTagHaloOnline;
                     if (modCachedTag.IsEmpty())
                         continue;
                     if (newMod.TagCache.TryGetCachedTag($"{modCachedTag.Name}.{modCachedTag.Group}", out CachedTag newTag))
                         newTags.Add(newTag);
                     else
-                        newTags.Add((CachedTagEldorado)newMod.TagCache.AllocateTag(modCachedTag.Group, modCachedTag.Name));
+                        newTags.Add((CachedTagHaloOnline)newMod.TagCache.AllocateTag(modCachedTag.Group, modCachedTag.Name));
                     moddedTags.Add(modCachedTag);
                 }
                 //now fixup and copy over
@@ -173,10 +173,10 @@ namespace TagTool.Commands.Modding
                     }
                     return stringId;
                 case TagResourceReference resource:
-                    if (resource.EldoradoPageableResource == null)
+                    if (resource.HaloOnlinePageableResource == null)
                         return resource;
-                    var resourceDef = oldMod.ResourceCaches.GetResourceDefinition(resource, resource.EldoradoPageableResource.GetDefinitionType());
-                    newMod.ResourceCaches.ReplaceResource(resource.EldoradoPageableResource, resourceDef);
+                    var resourceDef = oldMod.ResourceCaches.GetResourceDefinition(resource, resource.HaloOnlinePageableResource.GetDefinitionType());
+                    newMod.ResourceCaches.ReplaceResource(resource.HaloOnlinePageableResource, resourceDef);
                     return resource;
                 case TagStructure tagStruct:
                     foreach (var field in tagStruct.GetTagFieldEnumerable(Cache.Version, Cache.Platform))

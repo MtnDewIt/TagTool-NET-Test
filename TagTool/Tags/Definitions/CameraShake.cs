@@ -3,7 +3,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "camera_shake", Tag = "csdt", Size = 0x34, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "camera_shake", Tag = "csdt", Size = 0x34, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "camera_shake", Tag = "csdt", Size = 0x68, MinVersion = CacheVersion.HaloReach)]
     public class CameraShake : TagStructure
     {
@@ -11,15 +11,15 @@ namespace TagTool.Tags.Definitions
         public CameraShakeStruct CameraShakeData;
     }
 
-    [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x18, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
     public class CameraImpulseStruct : TagStructure
     {
         public float ImpulseDuration; // seconds
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public TransitionFunctionEnum FadeFunction;
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding0;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -42,16 +42,16 @@ namespace TagTool.Tags.Definitions
         }
     }
 
-    [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x1C, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloReach)]
     public class CameraShakeStruct : TagStructure
     {
         // the effect will last for this duration.
         public float ShakeDuration; // seconds
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public TransitionFunctionEnum FadeFunction;
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding0;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -63,9 +63,9 @@ namespace TagTool.Tags.Definitions
         public Angle RandomRotation; // degrees
 
         // a function to perturb the effect's behavior over time
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public GlobalPeriodicFunctionsEnum WobbleFunction;
-        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 2, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding1;
         // and rotational magnitudes.  The less the weight, the less the effect wobble has.
         public float WobbleFunctionPeriod; // seconds

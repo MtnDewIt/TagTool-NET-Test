@@ -945,7 +945,7 @@ namespace TagTool.Serialization
 
         protected virtual void SerializeIndexBufferIndex(IDataBlock block, IndexBufferIndex val)
         {
-            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.EldoradoED)
+            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.HaloOnlineED)
             {
                 block.Writer.Write(val.Value);
             }
@@ -960,7 +960,7 @@ namespace TagTool.Serialization
 
         private void SerializePlaneReference(IDataBlock block, StructureSurfaceToTriangleMapping val)
         {
-            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.EldoradoED)
+            if (Version >= CacheVersion.HaloReach || Version == CacheVersion.HaloOnlineED)
             {
                 uint value = ((uint)val.TriangleIndex << 12) | ((uint)val.ClusterIndex & 0xFFF);
                 block.Writer.Write(value);

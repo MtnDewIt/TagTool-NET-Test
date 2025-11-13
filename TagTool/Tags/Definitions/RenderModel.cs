@@ -8,7 +8,7 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "render_model", Tag = "mode", Size = 0x1B4, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Beta)]
-    [TagStructure(Name = "render_model", Tag = "mode", Size = 0x1CC, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "render_model", Tag = "mode", Size = 0x1CC, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "render_model", Tag = "mode", Size = 0x258, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "render_model", Tag = "mode", Size = 0x264, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class RenderModel : TagStructure
@@ -349,7 +349,7 @@ namespace TagTool.Tags.Definitions
             public StringId Name;
             public List<Marker> Markers;
 
-            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloReach)]
             public class Marker : TagStructure
 			{
@@ -360,7 +360,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(MaxVersion = CacheVersion.Halo3ODST, Length = 0x1, Flags = Padding)]
                 public byte[] Padding0;
 
-                [TagField(MinVersion = CacheVersion.EldoradoED)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public ReachMarkerFlagsDefinition Flags;
 
                 public RealPoint3d Translation;

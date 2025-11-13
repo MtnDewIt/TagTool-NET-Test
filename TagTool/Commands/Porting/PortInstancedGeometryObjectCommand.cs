@@ -15,7 +15,7 @@ namespace TagTool.Commands.Porting
 {
     class PortInstancedGeometryObjectCommand : Command
     {
-        private readonly GameCacheEldoradoBase HoCache;
+        private readonly GameCacheHaloOnlineBase HoCache;
         private readonly GameCache BlamCache;
         private readonly PortingContext PortContext;
         private int sbspIndex = 0;
@@ -25,7 +25,7 @@ namespace TagTool.Commands.Porting
         private string newCategoryName;
         private int globalCategoryIndex = -1;
 
-        public PortInstancedGeometryObjectCommand(GameCacheEldoradoBase cache, GameCache blamCache, PortingContext portContext) :
+        public PortInstancedGeometryObjectCommand(GameCacheHaloOnlineBase cache, GameCache blamCache, PortingContext portContext) :
             base(true,
 
                 "PortInstancedGeometryObject",

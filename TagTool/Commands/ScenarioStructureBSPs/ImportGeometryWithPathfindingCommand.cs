@@ -88,7 +88,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				CachedTag cachedCopy = Cache.TagCache.AllocateTag(toCopy.Group, newName);
 				T definition = Cache.Deserialize<T>(cacheStream, toCopy);
 				Cache.Serialize(cacheStream, cachedCopy, definition);
-				( Cache as GameCacheEldoradoBase ).SaveTagNames();
+				( Cache as GameCacheHaloOnlineBase ).SaveTagNames();
 				//if (TryGetTag<T>(newName, out tag)) { return true; }
 				DeserializedTags[definition] = cachedCopy;
 				tag = definition;
@@ -271,7 +271,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 			// -- ImportCollisionGeometry "{daeModelPath}" {tagName} , and Edit the newly created tag
 			//CommandRunner.Current.RunCommand($"ImportCollisionGeometryCommand {DaeModelPath} {TagName}", true, true);
 			CollisionModel collisionModel = null;
-			ImportCollisionGeometryCommand importCollisionCommand = new ImportCollisionGeometryCommand((Cache as GameCacheEldoradoBase));
+			ImportCollisionGeometryCommand importCollisionCommand = new ImportCollisionGeometryCommand((Cache as GameCacheHaloOnlineBase));
 			object importCollisionCommandResult = importCollisionCommand.Execute(new List<string> { "overwrite", DaeModelPath, TagName });
 			if (importCollisionCommandResult is bool importCollisionCommandSuccess) {
 				if (importCollisionCommandSuccess) { 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
-using TagTool.BlamFile.Eldorado;
+using TagTool.BlamFile.HaloOnline;
 using TagTool.Cache;
 using TagTool.IO;
 
@@ -12,10 +12,10 @@ namespace TagTool.Commands.Editing
         private CacheVersion Version { get; }
         private CachePlatform Platform { get; }
 
-        private EldoradoBlf Blf { get; }
+        private HaloOnlineBlf Blf { get; }
         private string FilePath { get; }
 
-        public SaveBlfChangesCommand(CacheVersion version, CachePlatform platform, EldoradoBlf blf, string filePath)
+        public SaveBlfChangesCommand(CacheVersion version, CachePlatform platform, HaloOnlineBlf blf, string filePath)
             : base(true,
                   "SaveBlfChanges",
                   $"Saves changes made to the current {Path.GetFileName(filePath)} file instance.",

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.JSON;
 using TagTool.JSON.Parsers;
@@ -16,7 +16,7 @@ namespace TagTool.Commands.Shaders
     class UpdateShaderDataCommand : Command
     {
         public GameCache Cache { get; set; }
-        public GameCacheEldoradoBase CacheContext { get; set; }
+        public GameCacheHaloOnlineBase CacheContext { get; set; }
         public static DirectoryInfo SourceDirectoryInfo { get; set; }
 
         public static List<string> TagObjectList;
@@ -47,7 +47,7 @@ namespace TagTool.Commands.Shaders
             ExplicitShader.double_gradient,
         };
 
-        public UpdateShaderDataCommand(GameCache cache, GameCacheEldoradoBase cacheContext) : base
+        public UpdateShaderDataCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             true,
             "UpdateShaderData",

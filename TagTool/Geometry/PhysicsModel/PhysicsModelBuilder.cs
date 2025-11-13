@@ -42,7 +42,7 @@ namespace TagTool.Geometry
             return Math.Sqrt(dx * dx + dy * dy + dz * dz);
         }
 
-        public bool ConvertJmsToJson(JmsFormat jms, bool moppFlag, GameCacheEldoradoBase cache, Stream cacheStream)
+        public bool ConvertJmsToJson(JmsFormat jms, bool moppFlag, GameCacheHaloOnlineBase cache, Stream cacheStream)
         {
             var output = new List<object>();
             var shapeToNodeIndexMap = new Dictionary<int, int>();
@@ -191,7 +191,7 @@ namespace TagTool.Geometry
             return new List<float> { halfExtentX, halfExtentY, halfExtentZ };
         }
 
-        public bool ParseFromFile(string jsonString, bool mopps, JmsFormat jms, GameCacheEldoradoBase cache, Stream cacheStream, Dictionary<int, int> shapeToNodeIndexMap)
+        public bool ParseFromFile(string jsonString, bool mopps, JmsFormat jms, GameCacheHaloOnlineBase cache, Stream cacheStream, Dictionary<int, int> shapeToNodeIndexMap)
         {
             BlenderPhmoReader reader = new BlenderPhmoReader(jsonString);
             fileStruct = reader.ReadFile();
@@ -206,7 +206,7 @@ namespace TagTool.Geometry
             }
 
             // deserialize globals tag
-            cache.TagCacheEldorado.TryGetTag("globals\\globals.globals", out CachedTag globals);
+            cache.TagCacheGenHO.TryGetTag("globals\\globals.globals", out CachedTag globals);
             Globals globalsInstance = cache.Deserialize<Globals>(cacheStream, globals);
 
             //create a rigidbody for the phmo
@@ -460,7 +460,7 @@ namespace TagTool.Geometry
         /// <param name="globals">the globals tag from which we can calculate mass and stuff</param>
         /// <param name="cache">the cache reference for deserializing the globals tag</param>
         /// <returns>shape type added, 'Unused0' is used to represent failure.</returns>
-        private BlamShapeType AddShape(PhysicsModel phmo, JSONNode n, Globals globals, GameCacheEldoradoBase cache)
+        private BlamShapeType AddShape(PhysicsModel phmo, JSONNode n, Globals globals, GameCacheHaloOnlineBase cache)
         {
             if (n == null)
             {
@@ -506,7 +506,7 @@ namespace TagTool.Geometry
             }
         }
 
-        public (float friction, float restitution, float density) GetMaterialProperties(Globals globals, string materialName, GameCacheEldoradoBase cache)
+        public (float friction, float restitution, float density) GetMaterialProperties(Globals globals, string materialName, GameCacheHaloOnlineBase cache)
         {
             foreach (var material in globals.Materials)
             {
@@ -520,7 +520,7 @@ namespace TagTool.Geometry
             return (0.85f, 0.3f, 2500f);
         }
 
-        private bool AddPolyhedron(PhysicsModel phmo, JSONNode n, Globals globals, GameCacheEldoradoBase cache)
+        private bool AddPolyhedron(PhysicsModel phmo, JSONNode n, Globals globals, GameCacheHaloOnlineBase cache)
         {
             if (n == null)
                 return false;

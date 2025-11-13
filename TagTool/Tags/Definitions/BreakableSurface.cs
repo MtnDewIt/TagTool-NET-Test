@@ -4,7 +4,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "breakable_surface", Tag = "bsdt", Size = 0x54, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "breakable_surface", Tag = "bsdt", Size = 0x54, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "breakable_surface", Tag = "bsdt", Size = 0x68, MinVersion = CacheVersion.HaloReach)]
     public class BreakableSurface : TagStructure
     {
@@ -14,7 +14,7 @@ namespace TagTool.Tags.Definitions
         public Bounds<float> CollisionDamageImpulseThresholds;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public Bounds<float> AoeDamageVitality;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float MaximumVitality;
         [TagField(ValidTags = new[] { "effe" })]
         public CachedTag Effect;

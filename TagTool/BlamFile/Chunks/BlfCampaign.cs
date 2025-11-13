@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace TagTool.BlamFile.Chunks
 {
     [TagStructure(Size = 0x130C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloReach)]
-    [TagStructure(Size = 0x1ACC, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.Halo2AMP)]
+    [TagStructure(Size = 0x1ACC, MinVersion = CacheVersion.Halo4, MaxVersion = CacheVersion.H2AMP)]
     public class BlfCampaign : BlfChunkHeader
     {
         public int CampaignId;

@@ -9,7 +9,7 @@ namespace TagTool.Tags.Definitions
 {
 	[TagStructure(Name = "damage_effect", Tag = "jpt!", Size = 0xE8, MaxVersion = CacheVersion.Halo3Beta)]
 	[TagStructure(Name = "damage_effect", Tag = "jpt!", Size = 0xF0, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "damage_effect", Tag = "jpt!", Size = 0xF4, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "damage_effect", Tag = "jpt!", Size = 0xF4, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "damage_effect", Tag = "jpt!", Size = 0xE8, MinVersion = CacheVersion.HaloReach)]
     public class DamageEffect : TagStructure
 	{
@@ -20,7 +20,7 @@ namespace TagTool.Tags.Definitions
         public DamageCategories Category;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public DamageDeathVocalizations DeathVocalization;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public DamageFlags Flags;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public DamageFlagsReach FlagsReach;
@@ -47,7 +47,7 @@ namespace TagTool.Tags.Definitions
         public float SoftPingPainScreenScale; // [0,1]
         public StringId GeneralDamage;
         public StringId SpecificDamage;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public StringId CustomResponseLabel;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<CustomDamageResponseLabelBlock> CustomResponseLabels;
@@ -59,17 +59,17 @@ namespace TagTool.Tags.Definitions
         public float AoeSpikeRadius;
 		[TagField(MinVersion = CacheVersion.Halo3Retail)]
 		public float AoeSpikeDamageBump;   
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public float ShieldRenderEffectsScale = 1.0f; 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<PlayerResponseBlock> PlayerResponses;
 
         [TagField(ValidTags = new[] { "drdf" })]
         public CachedTag DamageResponse;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CameraImpulseStruct CameraImpulse;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CameraShakeStruct CameraShake;
 
         [TagField(ValidTags = new[] { "scmb", "snd!" })]

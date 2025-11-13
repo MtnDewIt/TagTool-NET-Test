@@ -9,14 +9,14 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "camera_fx_settings", Tag = "cfxs", Size = 0xE4, Platform = CachePlatform.Original, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Name = "camera_fx_settings", Tag = "cfxs", Size = 0x170, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "camera_fx_settings", Tag = "cfxs", Size = 0xE4, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "camera_fx_settings", Tag = "cfxs", Size = 0x170, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "camera_fx_settings", Tag = "cfxs", Size = 0x170, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "camera_fx_settings", Tag = "cfxs", Size = 0xDC, MinVersion = CacheVersion.HaloReach)]
     public class CameraFxSettings : TagStructure
 	{
         public ExposureBlock Exposure;
 
         public CameraFxValue AutoExposureSensitivity;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CameraFxValue AutoExposureAntiBloom;
 
         public CameraFxStrength BloomPoint; // aka highlight bloom
@@ -35,15 +35,15 @@ namespace TagTool.Tags.Definitions
         public CameraFxStrength SelfIllumPreferred;
         public CameraFxStrength SelfIllumScale;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public SsaoPropertiesBlock Ssao;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public ColorGradingBlock ColorGrading;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public LightshaftsBlock Lightshafts;
 

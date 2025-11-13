@@ -4,19 +4,19 @@ using System.IO;
 using System.Linq;
 using TagTool.Cache;
 using TagTool.Common;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Analysis
 {
     public class TagAnalyzer
     {
-        private readonly TagCacheEldorado _cache;
+        private readonly TagCacheHaloOnline _cache;
         private MemoryMap _tagMap;
         private readonly HashSet<Tag> _tagGroups = new HashSet<Tag>();
         private Dictionary<uint, CachedTagData.PointerFixup> _dataFixupsByWriteOffset;
         private HashSet<uint> _resourceFixupsByWriteOffset;
 
-        public TagAnalyzer(TagCacheEldorado cache)
+        public TagAnalyzer(TagCacheHaloOnline cache)
         {
             _cache = cache;
             foreach (var group in cache.NonNull().Select(t => t.Group.Tag).Distinct())

@@ -10,7 +10,7 @@ using TagTool.Geometry.BspCollisionGeometry;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "structure_design", Tag = "sddt", Size = 0x40, MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Name = "structure_design", Tag = "sddt", Size = 0x44, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "structure_design", Tag = "sddt", Size = 0x44, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "structure_design", Tag = "sddt", Size = 0x154, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "structure_design", Tag = "sddt", Size = 0x160, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class StructureDesign : TagStructure
@@ -41,7 +41,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<TagHkpMoppCode> RainBlockerMoppCodeBlock;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public float PdaZPlaneMin; // meters
 
         public enum SoftCeilingType : short
@@ -94,7 +94,7 @@ namespace TagTool.Tags.Definitions
             public RealPoint3d Point3;
         }
 
-        [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x54, MinVersion = CacheVersion.HaloReach)]
         public class WaterInstance : TagStructure
 		{

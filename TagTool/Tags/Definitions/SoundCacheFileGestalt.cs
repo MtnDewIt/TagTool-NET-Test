@@ -38,7 +38,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<CustomPlaybackReach> CustomPlaybacksReach;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<CustomPlayback> CustomPlaybacks;
 
         public List<LanguageBlock> LanguageDurations;
@@ -55,7 +55,7 @@ namespace TagTool.Tags.Definitions
         public List<PermutationChunk> PermutationChunks;
         public List<Promotion> Promotions;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ExtraInfo> ExtraInfo;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.BlamFile;
-using TagTool.BlamFile.Eldorado;
+using TagTool.BlamFile.HaloOnline;
 using TagTool.BlamFile.MCC;
 using TagTool.Cache;
 using TagTool.Commands.Common;
@@ -17,9 +17,9 @@ namespace TagTool.Commands.Files
     class ImportMapInfoCommand : Command 
     {
         private GameCache Cache { get; }
-        private EldoradoMapFile MapFile { get; }
+        private HaloOnlineMapFile MapFile { get; }
 
-        public ImportMapInfoCommand(GameCache cache, EldoradoMapFile mapFile)
+        public ImportMapInfoCommand(GameCache cache, HaloOnlineMapFile mapFile)
             : base(true,
 
                   $"ImportMapInfo",

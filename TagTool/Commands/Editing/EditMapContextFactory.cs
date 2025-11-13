@@ -1,5 +1,5 @@
 ﻿using TagTool.BlamFile;
-using TagTool.BlamFile.Eldorado;
+using TagTool.BlamFile.HaloOnline;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Commands.Files;
@@ -15,7 +15,7 @@ namespace TagTool.Commands.Editing
 
             commandContext.AddCommand(new ExecuteCSharpCommand(contextStack));
 
-            var mapDefinition = new EldoradoMapFile(mapFile);
+            var mapDefinition = new HaloOnlineMapFile(mapFile);
 
             var structure = TagStructure.GetTagStructureInfo(mapDefinition.GetType(), mapFile.Version, mapFile.Platform);
 

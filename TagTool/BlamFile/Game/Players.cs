@@ -7,7 +7,7 @@ namespace TagTool.BlamFile.Game
 {
     [TagStructure(Size = 0xC8, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Size = 0x200, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x30, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+    [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
     public class PlayerConfigurationFromClient : TagStructure
     {
         [TagField(Length = 0x10, CharSet = CharSet.Unicode)]
@@ -48,13 +48,13 @@ namespace TagTool.BlamFile.Game
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public bool IsFriendCreatedContentAllowed;
 
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public byte VoteSelectionIndex;
 
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public sbyte ArmorLoadoutIndex;
 
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public sbyte WeaponLoadoutIndex;
 
         public byte PlayerIsGriefer;
@@ -68,7 +68,7 @@ namespace TagTool.BlamFile.Game
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public CampaignProgress CampaignCoopHighestDifficulty;
 
-        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(Length = 0x3, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
         public byte[] Padding2;
 
         // TODO: Come up with a proper name for this :/
@@ -146,10 +146,10 @@ namespace TagTool.BlamFile.Game
     }
 
     [TagStructure(Size = 0x48, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x15F0, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+    [TagStructure(Size = 0x15F0, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
     public class PlayerConfigurationFromHost : TagStructure
     {
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public PlayerIdentifier PlayerIdentifier;
 
         [TagField(Length = 0x10, CharSet = CharSet.Unicode)]
@@ -164,13 +164,13 @@ namespace TagTool.BlamFile.Game
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public CalculatedPlayerHopperStatistics HopperStatistics;
 
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public PlayerAppearance Appearance;
 
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public PlayerConfigurationArmor Armor;
 
-        [TagField(MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public PlayerConfigurationWeapon Weapon;
 
         [TagStructure(Size = 0x10)]
@@ -270,7 +270,7 @@ namespace TagTool.BlamFile.Game
     }
 
     [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Size = 0x660, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+    [TagStructure(Size = 0x660, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
     public class PlayerAppearance : TagStructure
     {
         public PlayerAppearanceFlags AppearanceFlags;
@@ -281,12 +281,12 @@ namespace TagTool.BlamFile.Game
         public PlayerModelChoice PlayerModelChoice;
 
         [TagField(Length = 0x1, Flags = TagFieldFlags.Padding, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Length = 0x2, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(Length = 0x2, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public byte[] Padding1;
 
         public PlayerEmblemInfo EmblemInfo;
 
-        [TagField(Length = 0x648, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(Length = 0x648, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public byte[] EmblemPad;
 
         [TagField(Length = 0x4, MaxVersion = CacheVersion.Halo3ODST)]
@@ -296,11 +296,11 @@ namespace TagTool.BlamFile.Game
         public byte[] EliteModelArea;
 
         [TagField(Length = 0x4, CharSet = CharSet.Unicode, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 0x5, CharSet = CharSet.Unicode, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(Length = 0x5, CharSet = CharSet.Unicode, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline106708)]
         public string ServiceTag;
 
         [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado106708)]
+        [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline106708)]
         public byte[] Padding2;
 
         [TagStructure(Size = 0x3)]

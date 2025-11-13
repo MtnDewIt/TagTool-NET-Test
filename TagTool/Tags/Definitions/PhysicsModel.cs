@@ -10,11 +10,11 @@ namespace TagTool.Tags.Definitions
 	[TagStructure(Name = "physics_model", Tag = "phmo", Size = 0x18C, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Beta)]
 	[TagStructure(Name = "physics_model", Tag = "phmo", Size = 0x1A0, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Name = "physics_model", Tag = "phmo", Size = 0x198, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "physics_model", Tag = "phmo", Size = 0x198, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "physics_model", Tag = "phmo", Size = 0x198, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "physics_model", Tag = "phmo", Size = 0x19C, MinVersion = CacheVersion.HaloReach)]
     public class PhysicsModel : TagStructure
 	{
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public PhysicsModelFlags Flags;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -141,11 +141,11 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
             public Halo3RetailBits Halo3Retail;
 
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
             public Halo3ODSTBits Halo3ODST;
 
-            [TagField(MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
-            public EldoradoBits Eldorado;
+            [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+            public HaloOnlineBits HaloOnline;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public HaloReachBits HaloReach;
@@ -264,7 +264,7 @@ namespace TagTool.Tags.Definitions
             }
 
             [Flags]
-            public enum EldoradoBits : uint
+            public enum HaloOnlineBits : uint
             {
                 None = 0,
                 GeneratesEffects = 1u << 0,
@@ -349,7 +349,7 @@ namespace TagTool.Tags.Definitions
             ExtraHuge
         }
 
-        [TagStructure(Size = 0x68, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x68, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x6C, MinVersion = CacheVersion.HaloReach)]
         public class PhantomType : TagStructure
 		{
@@ -458,7 +458,7 @@ namespace TagTool.Tags.Definitions
 			{
                 public ConstraintType Type;
                 public short Index;
-                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public ConstraintFlags Flags;
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public ReachConstraintFlags FlagsReach;
@@ -513,7 +513,7 @@ namespace TagTool.Tags.Definitions
         }
 
 		[TagStructure(Size = 0x90, MinVersion = CacheVersion.Halo3Beta, MaxVersion = CacheVersion.Halo3Beta, Platform = CachePlatform.Original)]
-		[TagStructure(Size = 0xB0, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+		[TagStructure(Size = 0xB0, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xC0, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)] 
         [TagStructure(Size = 0xC0, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0xD0, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
@@ -526,7 +526,7 @@ namespace TagTool.Tags.Definitions
             public RealPoint3d BoundingSphereOffset;
             public float BoundingSphereRadius;
             public RigidBodyFlags Flags;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public MotionTypeValue MotionType;
             public short NoPhantomPowerAltRigidBody;
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -560,18 +560,18 @@ namespace TagTool.Tags.Definitions
 
 			[TagField(MinVersion = CacheVersion.Halo3Retail)]
 			public uint RuntimeShapePointer;
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             public uint Unknown9;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public BlamShapeType ShapeType;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public short ShapeIndex;
 
             [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
             public uint RuntimeShapePointerPad;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float Mass;
 
             [TagField(Flags = Padding, Length = 0xC, 
@@ -603,7 +603,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public float Mass_Reach;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public uint Unknown10;
 
             public float BoundingSpherePad;
@@ -673,7 +673,7 @@ namespace TagTool.Tags.Definitions
             ForceEnableCollisionWithPlayer = 1 << 1
         }
 
-        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0xC, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach)]
         public class Material : TagStructure
 		{
@@ -737,7 +737,7 @@ namespace TagTool.Tags.Definitions
 		{
             public StringId Name;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public short MaterialIndex;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -829,9 +829,9 @@ namespace TagTool.Tags.Definitions
             public float HavokwExtrusion;
         }
 
-        [TagStructure(Size = 0x4C, Align = 0x10, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x4C, Align = 0x10, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x5C, Align = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x5C, Align = 0x10, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x5C, Align = 0x10, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x6C, Align = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class Polyhedron : Shape
         {
@@ -879,7 +879,7 @@ namespace TagTool.Tags.Definitions
             public RealPlane3d PlaneEquation;
         }
 
-        [TagStructure(Size = 0x50, Align = 0x10, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x50, Align = 0x10, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x60, Align = 0x10, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x70, Align = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x90, Align = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]

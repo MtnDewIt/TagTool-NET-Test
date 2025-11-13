@@ -5,7 +5,7 @@ namespace TagTool.Damage
 {
     [TagStructure(Size = 0x1, MaxVersion = CacheVersion.Halo3ODST)]
     [TagStructure(Size = 0x1, MinVersion = CacheVersion.HaloReach)]
-    [TagStructure(Size = 0x2, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x2, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     public class DamageReportingType : TagStructure
 	{
         [TagField(MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2PC)]
@@ -17,8 +17,8 @@ namespace TagTool.Damage
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
         public Halo3ODSTValue Halo3ODST;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
-        public EldoradoValue Eldorado;
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
+        public HaloOnlineValue HaloOnline;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public HaloReachValue HaloReach;
@@ -205,7 +205,7 @@ namespace TagTool.Damage
             BrutePlasmaRifle,
         }
 
-        public enum EldoradoValue : short
+        public enum HaloOnlineValue : short
         {
             GuardiansUnknown,
             Guardians,

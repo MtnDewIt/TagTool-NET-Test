@@ -22,6 +22,6 @@ namespace TagTool.Animations.Codecs
             Array.Reverse((Array)this.Scales);
         }
 
-        public override byte[] Write(GameCacheEldoradoBase CacheContext) => throw new NotImplementedException();
+        public override byte[] Write(GameCacheHaloOnlineBase CacheContext) => throw new NotImplementedException();
     }
 }

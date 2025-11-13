@@ -12,7 +12,7 @@
         Halo3 = 11,
         HaloReach = 12,
         HaloMCC = 13,
-        Eldorado = 18,
+        HaloOnline = 18,
         HaloCustomEdition = 609
     }
 }

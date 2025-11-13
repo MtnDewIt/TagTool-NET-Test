@@ -4,16 +4,16 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Gen3;
 
 namespace TagTool.Commands.Tags
 {
     public class CreateTagCommand : Command
     {
-        public GameCacheEldoradoBase Cache { get; }
+        public GameCacheHaloOnlineBase Cache { get; }
 
-        public CreateTagCommand(GameCacheEldoradoBase cache)
+        public CreateTagCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
                   "CreateTag",
@@ -114,15 +114,15 @@ namespace TagTool.Commands.Tags
 
                     if (tagIndex < Cache.TagCache.Count)
                     {
-                        if (Cache.TagCacheEldorado.Tags[tagIndex] != null)
+                        if (Cache.TagCacheGenHO.Tags[tagIndex] != null)
                         {
-                            var oldInstance = Cache.TagCacheEldorado.Tags[tagIndex];
-                            Cache.TagCacheEldorado.Tags[tagIndex] = null;
-                            Cache.TagCacheEldorado.SetTagDataRaw(stream, oldInstance, new byte[] { });
+                            var oldInstance = Cache.TagCacheGenHO.Tags[tagIndex];
+                            Cache.TagCacheGenHO.Tags[tagIndex] = null;
+                            Cache.TagCacheGenHO.SetTagDataRaw(stream, oldInstance, new byte[] { });
                         }
 
                         instance = Cache.TagCache.CreateCachedTag(tagIndex, tagGroup);
-                        Cache.TagCacheEldorado.Tags[tagIndex] = (CachedTagEldorado)instance;
+                        Cache.TagCacheGenHO.Tags[tagIndex] = (CachedTagHaloOnline)instance;
                     }
                 }
 

@@ -9,7 +9,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "equipment", Tag = "eqip", Size = 0xD4, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "equipment", Tag = "eqip", Size = 0xE0, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "equipment", Tag = "eqip", Size = 0x1B0, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "equipment", Tag = "eqip", Size = 0x1B0, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "equipment", Tag = "eqip", Size = 0x220, MinVersion = CacheVersion.HaloReach)]
     public class Equipment : Item
     {
@@ -41,9 +41,9 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public float MovementSpeedDomain; // wu/s
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public short Charges;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public EquipmentFlagBits EquipmentFlags;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST)]
@@ -72,10 +72,10 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public StringId AiDialogueEquipmentType;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public List<Unit.UnitCameraBlock> OverrideCamera;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<SuperShieldBlock> SuperShield;
 
         public List<MultiplayerPowerupBlock> MultiplayerPowerup;
@@ -84,7 +84,7 @@ namespace TagTool.Tags.Definitions
         public List<MotionTrackerNoiseBlock> MotionTrackerNoise;
         public List<ShowmeBlock> Showme;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<InvisibilityBlock> Invisibility;
 
         public List<InvincibilityBlock> Invincibility;
@@ -115,33 +115,33 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<NullBlock> Jetpack;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ForcedReloadBlock> ForcedReload;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ConcussiveBlastBlock> ConcussiveBlast;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<TankModeBlock> TankMode;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<MagPulseBlock> MagPulse;
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public List<HologramBlock> Hologram;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ReactiveArmorBlock> ReactiveArmor;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<BombRunBlock> BombRun;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ArmorLockBlock> ArmorLock;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<AdrenalineBlock> Adrenaline;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<LightningStrikeBlock> LightningStrike;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ScramblerBlock> Scrambler;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<WeaponJammerBlock> WeaponJammer;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<AmmoPackBlock> AmmoPack;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<VisionBlock> Vision;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -163,7 +163,7 @@ namespace TagTool.Tags.Definitions
 
         [TagField(ValidTags = new[] { "scmb", "snd!" })]
         public CachedTag PickupSound;
-        [TagField(ValidTags = new[] { "scmb", "snd!" }, MinVersion = CacheVersion.EldoradoED)]
+        [TagField(ValidTags = new[] { "scmb", "snd!" }, MinVersion = CacheVersion.HaloOnlineED)]
         public CachedTag ActivateSound;
 
         [TagField(ValidTags = new[] { "effe", "snd!" })]
@@ -175,11 +175,11 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "effe" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag EnergyChargedEffect;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public StringId ActivationAnimation;
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public StringId ActiveAnimation;
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public StringId DeactivateAnimation;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -343,7 +343,7 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x2C, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0x3C, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x2C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x80, MinVersion = CacheVersion.HaloReach)]
         public class InvincibilityBlock : TagStructure
 		{
@@ -377,9 +377,9 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public List<ThresholdEffect> ThresholdEffects;
 
-            [TagField(ValidTags = new[] { "effe" }, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(ValidTags = new[] { "effe" }, MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag ActivationEffect;
-            [TagField(ValidTags = new[] { "effe" }, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(ValidTags = new[] { "effe" }, MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag AttachedEffect;
 
             [TagField(ValidTags = new[] { "effe" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
@@ -396,14 +396,14 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x4, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x10, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
         public class RegeneratorBlock : TagStructure
 		{
             [TagField(MaxVersion = CacheVersion.Halo3ODST)]
             public float PhantomVolumesMakeMyLifeEasy;
 
-            [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag RegeneratingEffect;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -421,13 +421,13 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
         public class HealthPackBlock : TagStructure
 		{
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float HeathAmount;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float ShieldAmount;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -472,7 +472,7 @@ namespace TagTool.Tags.Definitions
             public uint Radius;
         }
 
-        [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloReach)]
         public class HologramBlock : TagStructure
 		{
@@ -491,7 +491,7 @@ namespace TagTool.Tags.Definitions
             public float ShimmerDecreaseRate;
             public float ShimmerBulletPing;
             public TagFunction ShimmerToCamoFunction;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag ChudHologramTarget;
         }
 

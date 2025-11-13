@@ -14,13 +14,13 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public AssaultEnemyBombWaypointSettings EnemyBombWaypoint;
         public short ScoreToWin;
         
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown0;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown1;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown2;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreUnknown3;
         
         public AssaultSuddenDeathTime SuddenDeathTime;
@@ -32,7 +32,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public GameVariantPlayerTraits ArmingTraits;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x64, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x3C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x3C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 
         [Flags]

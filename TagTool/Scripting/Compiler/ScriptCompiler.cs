@@ -3251,9 +3251,9 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Biped ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Giant ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Vehicle)
+                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Biped ||
+                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Giant ||
+                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Vehicle)
                 {
                     throw new FormatException(objectNameString.Value);
                 }
@@ -3277,7 +3277,7 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Vehicle)
+                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Vehicle)
                     throw new FormatException(objectNameString.Value);
 
                 var expr = ScriptExpressions[handle.Index];
@@ -3299,7 +3299,7 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Weapon)
+                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Weapon)
                     throw new FormatException(objectNameString.Value);
 
                 var expr = ScriptExpressions[handle.Index];
@@ -3321,9 +3321,9 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.AlternateRealityDevice ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Control ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Machine)
+                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.AlternateRealityDevice ||
+                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Control ||
+                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Machine)
                 {
                     throw new FormatException(objectNameString.Value);
                 }
@@ -3347,7 +3347,7 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.Scenery)
+                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Scenery)
                     throw new FormatException(objectNameString.Value);
 
                 var expr = ScriptExpressions[handle.Index];
@@ -3369,7 +3369,7 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.Eldorado != GameObjectTypeEldorado.EffectScenery)
+                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.EffectScenery)
                     throw new FormatException(objectNameString.Value);
 
                 var expr = ScriptExpressions[handle.Index];

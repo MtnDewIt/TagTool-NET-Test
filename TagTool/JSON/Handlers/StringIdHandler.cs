@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Cache;
 using TagTool.Common;
 
@@ -9,9 +9,9 @@ namespace TagTool.JSON.Handlers
     public class StringIdHandler : JsonConverter<StringId>
     {
         private GameCache Cache;
-        private GameCacheEldoradoBase CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
 
-        public StringIdHandler(GameCache cache, GameCacheEldoradoBase cacheContext)
+        public StringIdHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext)
         {
             Cache = cache;
             CacheContext = cacheContext;

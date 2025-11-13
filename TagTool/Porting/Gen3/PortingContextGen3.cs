@@ -30,7 +30,7 @@ namespace TagTool.Porting.Gen3
     {
         private readonly RenderGeometryConverter GeometryConverter;
 
-        public PortingContextGen3(GameCacheEldoradoBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
+        public PortingContextGen3(GameCacheHaloOnlineBase cacheContext, GameCache blamCache) : base(cacheContext, blamCache)
         {
             GeometryConverter = new RenderGeometryConverter(cacheContext, blamCache);
         }
@@ -84,7 +84,7 @@ namespace TagTool.Porting.Gen3
                     }
                     break;
 
-                case ShieldImpact shit when BlamCache.Version < CacheVersion.EldoradoED:
+                case ShieldImpact shit when BlamCache.Version < CacheVersion.HaloOnlineED:
                     shit = PreConvertShieldImpact(shit, BlamCache.Version, CacheContext);
                     // These won't convert automatically due to versioning
                     shit.Plasma.PlasmaNoiseBitmap1 = ConvertTag(cacheStream, blamCacheStream, shit.Plasma.PlasmaNoiseBitmap1);

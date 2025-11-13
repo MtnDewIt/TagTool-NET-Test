@@ -65,7 +65,7 @@ namespace TagTool.Porting.Gen2
             if(sound != null)
             {
                 Sound soundDef = CacheContext.Deserialize<Sound>(cacheStream, sound);
-                newLoop.SoundClass = (SoundLooping.SoundClassValue)soundDef.SoundClass.Eldorado;
+                newLoop.SoundClass = (SoundLooping.SoundClassValue)soundDef.SoundClass.HaloOnline;
             }
             else
             {

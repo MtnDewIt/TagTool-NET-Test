@@ -142,7 +142,7 @@ namespace TagTool.Geometry
                     case VertexBufferFormat.TinyPosition:
                         ConvertVertices(count, inVertexStream.ReadTinyPositionVertex, (v, i) =>
                         {
-                            if (!CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, inVersion))
+                            if (!CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, inVersion))
                                 v.Variant = (ushort)UShort2Short(v.Variant);
 
                             v.Position = ConvertPositionShort(v.Position);

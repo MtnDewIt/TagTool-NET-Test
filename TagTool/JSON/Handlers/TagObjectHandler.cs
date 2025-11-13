@@ -10,14 +10,14 @@ namespace TagTool.JSON.Handlers
     public class TagObjectHandler
     {
         private GameCache Cache { get; set; }
-        private GameCacheEldoradoBase CacheContext { get; set; }
+        private GameCacheHaloOnlineBase CacheContext { get; set; }
         private Stream CacheStream { get; set; }
         private TagObjectParser TagParser { get; set; }
         private List<string> ParsedTags { get; set; }
 
         private static List<JsonConverter> Converters;
 
-        public TagObjectHandler(GameCache cache, GameCacheEldoradoBase cacheContext, Stream cacheStream, TagObjectParser tagParser)
+        public TagObjectHandler(GameCache cache, GameCacheHaloOnlineBase cacheContext, Stream cacheStream, TagObjectParser tagParser)
         {
             Cache = cache;
             CacheContext = cacheContext;

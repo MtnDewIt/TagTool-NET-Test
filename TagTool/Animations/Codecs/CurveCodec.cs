@@ -227,7 +227,7 @@ namespace TagTool.Animations.Codecs
             reader.BaseStream.Position = (long)(position + TotalCompressedSize);
         }
 
-        public override byte[] Write(GameCacheEldoradoBase CacheContext) => throw new NotImplementedException();
+        public override byte[] Write(GameCacheHaloOnlineBase CacheContext) => throw new NotImplementedException();
 
         protected List<int> ReadKeyFrameData(int keyCount, EndianReader reader)
         {

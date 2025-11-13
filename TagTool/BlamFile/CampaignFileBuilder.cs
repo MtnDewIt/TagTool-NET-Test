@@ -2,7 +2,7 @@
 using System.Linq;
 using TagTool.BlamFile.Chunks;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -73,7 +73,7 @@ namespace TagTool.BlamFile
             var singlePlayerMapIds = new List<int>();
             var outputBuffer = new int[64];
 
-            if (Cache is GameCacheEldorado)
+            if (Cache is GameCacheHaloOnline)
             {
                 foreach (var scenario in Cache.TagCache.FindAllInGroup("scnr"))
                 {

@@ -72,14 +72,14 @@ namespace TagTool.Porting.Gen3
 
                 case CacheVersion.Halo3ODST:
                     if (damageReportingType.Halo3ODST == DamageReportingType.Halo3ODSTValue.ElephantTurret)
-                        value = DamageReportingType.EldoradoValue.GuardiansUnknown.ToString();
+                        value = DamageReportingType.HaloOnlineValue.GuardiansUnknown.ToString();
                     else
                         value = damageReportingType.Halo3ODST.ToString();
                     break;
 
                 case CacheVersion.Halo3Retail:
                     if (damageReportingType.Halo3Retail == DamageReportingType.Halo3RetailValue.ElephantTurret)
-                        value = DamageReportingType.EldoradoValue.GuardiansUnknown.ToString();
+                        value = DamageReportingType.HaloOnlineValue.GuardiansUnknown.ToString();
                     else
                         value = damageReportingType.Halo3Retail.ToString();
                     break;
@@ -89,13 +89,13 @@ namespace TagTool.Porting.Gen3
                     break;
             }
 
-            if (CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, BlamCache.Version))
+            if (CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, BlamCache.Version))
                 return damageReportingType;
 
-            if (value == null || !Enum.TryParse(value, out damageReportingType.Eldorado))
+            if (value == null || !Enum.TryParse(value, out damageReportingType.HaloOnline))
             {
                 Log.Warning($"Unsupported Damage reporting type '{value}'. Using default.");
-                damageReportingType.Eldorado = DamageReportingType.EldoradoValue.GuardiansUnknown;
+                damageReportingType.HaloOnline = DamageReportingType.HaloOnlineValue.GuardiansUnknown;
             }    
 
             return damageReportingType;

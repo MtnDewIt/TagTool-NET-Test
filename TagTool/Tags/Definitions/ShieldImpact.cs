@@ -6,7 +6,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "shield_impact", Tag = "shit", Size = 0xA4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "shield_impact", Tag = "shit", Size = 0xB0, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "shield_impact", Tag = "shit", Size = 0x1E4, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "shield_impact", Tag = "shit", Size = 0x1E4, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "shield_impact", Tag = "shit", Size = 0x1E0, MinVersion = CacheVersion.HaloReach)]
     public class ShieldImpact : TagStructure
 	{
@@ -18,28 +18,28 @@ namespace TagTool.Tags.Definitions
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]
         public H3ValuesBlock H3Values;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public ShieldIntensityBlock ShieldIntensity;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public ShieldEdgeBlock ShieldEdge;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public PlasmaBlock Plasma;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public ExtrusionOscillationBlock ExtrusionOscillation;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public HitResponseBlock HitResponse;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public RealQuaternion EdgeScales; // outer scale, inner scale, plasmaedge outer scale, plasmaedge inner scale
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public RealQuaternion EdgeOffsets; // outer offset, inner offset, plasmaedge outer offset, plasmaedge inner offset
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public RealQuaternion PlasmaScales; // U scale, V scale, plasmanoise power scale, plasmanoise power offset
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public RealQuaternion DepthFadeParameters; // edge depth fade, plasma depth fade, unused, unused
 
         public void UpdateParameters()
@@ -84,11 +84,11 @@ namespace TagTool.Tags.Definitions
         /// Radius 0.0 corresponds to the area of the surface directly facing the camera(the center).
         /// You can control separately the inner and outer fades.
         /// </summary>
-        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x48, MinVersion = CacheVersion.HaloReach)]
         public class ShieldEdgeBlock : TagStructure
         {
-            [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public float OvershieldScale;
             public float DepthFadeRange;            //In world units
             public float OuterFadeRadius;           //Within [0,1]
@@ -105,7 +105,7 @@ namespace TagTool.Tags.Definitions
         /// Scroll speed controls how fast the textures scroll on the surface.
         /// You can specify separate sharpness values for the edge and the center.
         /// </summary>
-        [TagStructure(Size = 0xB0, MinVersion = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0xB0, MinVersion = CacheVersion.HaloOnlineED)]
         public class PlasmaBlock : TagStructure
         {
             public float PlasmaDepthFadeRange;      //In world units

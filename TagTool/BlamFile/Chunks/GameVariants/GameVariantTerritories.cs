@@ -16,7 +16,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public GameVariantPlayerTraits AttackerTraits;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x70, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x50, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x50, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 
         [Flags]

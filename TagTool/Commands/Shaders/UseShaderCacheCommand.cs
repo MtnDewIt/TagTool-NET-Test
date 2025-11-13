@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 
 namespace TagTool.Commands.Shaders
 {
     public class UseShaderCacheCommand : Command
     {
-        public static GameCacheEldorado ShaderCache = null;
+        public static GameCacheHaloOnline ShaderCache = null;
 
         public UseShaderCacheCommand() :
             base(true,
@@ -38,11 +38,11 @@ namespace TagTool.Commands.Shaders
                     directory.Create();
                 }
 
-                ShaderCache = new GameCacheEldorado(directory);
+                ShaderCache = new GameCacheHaloOnline(directory);
             }
             else
             {
-                ShaderCache = (GameCacheEldorado)GameCache.Open(tagsFile);
+                ShaderCache = (GameCacheHaloOnline)GameCache.Open(tagsFile);
             }
 
             Console.WriteLine("Shader cache set successfully");

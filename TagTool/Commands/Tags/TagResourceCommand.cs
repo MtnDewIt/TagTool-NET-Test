@@ -5,7 +5,7 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.IO;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Resources;
 using TagTool.Common.Logging;
 
@@ -13,9 +13,9 @@ namespace TagTool.Commands.Tags
 {
     public class TagResourceCommand : Command
     {
-        public GameCacheEldoradoBase Cache { get; }
+        public GameCacheHaloOnlineBase Cache { get; }
 
-        public TagResourceCommand(GameCacheEldoradoBase cache) :
+        public TagResourceCommand(GameCacheHaloOnlineBase cache) :
             base(true,
 
                 "TagResource",
@@ -64,11 +64,11 @@ namespace TagTool.Commands.Tags
                     location = ResourceLocation.ResourcesB;
                     break;
 
-                case "render_models" when Cache.Version >= CacheVersion.Eldorado235640:
+                case "render_models" when Cache.Version >= CacheVersion.HaloOnline235640:
                     location = ResourceLocation.RenderModels;
                     break;
 
-                case "lightmaps" when Cache.Version >= CacheVersion.Eldorado235640:
+                case "lightmaps" when Cache.Version >= CacheVersion.HaloOnline235640:
                     location = ResourceLocation.Lightmaps;
                     break;
 
@@ -104,7 +104,7 @@ namespace TagTool.Commands.Tags
             using (var cacheStream = Cache.OpenCacheRead())
             using (var reader = new EndianReader(cacheStream))
             {
-                foreach (var instance in Cache.TagCacheEldorado.Tags)
+                foreach (var instance in Cache.TagCacheGenHO.Tags)
                 {
                     if (instance == null || instance.ResourcePointerOffsets.Count == 0)
                         continue;
@@ -163,7 +163,7 @@ namespace TagTool.Commands.Tags
 
             foreach (var tagIndex in indices)
             {
-                var tag = (CachedTagEldorado)Cache.TagCache.GetTag(tagIndex);
+                var tag = (CachedTagHaloOnline)Cache.TagCache.GetTag(tagIndex);
 
                 if (tag == null)
                     continue;

@@ -4,7 +4,7 @@ using System.Linq;
 using TagTool.Common;
 using System.IO;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.IO;
 using TagTool.Tags.Definitions;
 using TagTool.Tags;
@@ -172,10 +172,10 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 AdjustImportedNodes(importer);
 
                 //process node data in advance of serialization
-                importer.ProcessNodeFrames((GameCacheEldoradoBase)CacheContext, Animation, AnimationType, FrameInfoType);
+                importer.ProcessNodeFrames((GameCacheHaloOnlineBase)CacheContext, Animation, AnimationType, FrameInfoType);
 
                 //Check the nodes to verify that this animation can be imported to this jmad
-                //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheEldoradoBase)CacheContext))
+                //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheHaloOnlineBase)CacheContext))
                 //    return false;
 
                 //serialize animation block values
@@ -210,7 +210,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 {
                     GroupMembers = new TagTool.Tags.TagBlock<ModelAnimationTagResource.GroupMember>()
                 };
-                newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheEldoradoBase)CacheContext));
+                newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheHaloOnlineBase)CacheContext));
                 newResource.GroupMembers.AddressType = CacheAddressType.Definition;
                 //serialize the new resource into the cache
                 TagResourceReference resourceref = CacheContext.ResourceCache.CreateModelAnimationGraphResource(newResource);

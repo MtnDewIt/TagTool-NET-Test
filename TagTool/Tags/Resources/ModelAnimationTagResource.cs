@@ -10,7 +10,7 @@ namespace TagTool.Tags.Resources
     {
         public TagBlock<GroupMember> GroupMembers;
 
-        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x64, MinVersion = CacheVersion.HaloReach)]
         public class GroupMember : TagStructure
         {
@@ -20,7 +20,7 @@ namespace TagTool.Tags.Resources
             public byte NodeCount;
             public GroupMemberMovementDataType MovementDataType; // sbyte
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public PackedDataSizesStructBlock PackedDataSizes;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public PackedDataSizesStructReach PackedDataSizesReach;

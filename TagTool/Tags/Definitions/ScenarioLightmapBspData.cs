@@ -11,7 +11,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "scenario_lightmap_bsp_data", Tag = "Lbsp", Size = 0x1B4, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "scenario_lightmap_bsp_data", Tag = "Lbsp", Size = 0x1E4, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "scenario_lightmap_bsp_data", Tag = "Lbsp", Size = 0x1E4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "scenario_lightmap_bsp_data", Tag = "Lbsp", Size = 0x1E4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "scenario_lightmap_bsp_data", Tag = "Lbsp", Size = 0x15C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "scenario_lightmap_bsp_data", Tag = "Lbsp", Size = 0x168, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class ScenarioLightmapBspData : TagStructure
@@ -23,7 +23,7 @@ namespace TagTool.Tags.Definitions
         /// <summary>
         /// When sampling from the lightmap coefficient map, the resuling rgb SH coefficients are multiplied by this luminance scale.
         /// </summary>
-        [TagField(Length = 9, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 9, MaxVersion = CacheVersion.HaloOnline700123)]
         public LuminanceScale[] CoefficientsMapScale;
 
         [TagField(ValidTags = new[] { "bitm" }, MinVersion = CacheVersion.HaloReach)]
@@ -92,13 +92,13 @@ namespace TagTool.Tags.Definitions
             DisableHybridRefinement = 1 << 14
         }
 
-        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x4, MinVersion = CacheVersion.HaloReach)]
         public class StaticPerVertexLighting : TagStructure
         {
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<int> UnusedVertexBuffer;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public int VertexBufferIndex;
 
             [TagField(MinVersion = CacheVersion.HaloReach, Downgrade = nameof(VertexBufferIndex))]
@@ -110,7 +110,7 @@ namespace TagTool.Tags.Definitions
             public VertexBufferDefinition VertexBuffer;
         }
 
-        [TagStructure(Size = 0x4, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x4, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x8, MinVersion = CacheVersion.HaloReach)]
         public class ClusterStaticPerVertexLighting : TagStructure
         {
@@ -120,7 +120,7 @@ namespace TagTool.Tags.Definitions
             public int PerVertexOffset;
         }
 
-        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x8, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
         public class InstancedGeometryLighting : TagStructure
         {
@@ -164,17 +164,17 @@ namespace TagTool.Tags.Definitions
         }
     }
 
-    [TagStructure(Size = 0x48, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x48, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
     public class InstancedGeometryLightProbe : TagStructure
     {
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public HalfRGBLightProbe LightProbe;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public DualVmfLightProbe VmfLightProbe;
     }
 
-    [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
     public class Airprobe : TagStructure
     {
@@ -183,18 +183,18 @@ namespace TagTool.Tags.Definitions
         public ushort ManualBspFlags;
         [TagField(Length = 2, Flags = TagFieldFlags.Padding)]
         public byte[] ProbePad;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public HalfRGBLightProbe LightProbe;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public DualVmfLightProbe VmfLightProbe;
     }
 
-    [TagStructure(Size = 0x50, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x50, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
     public class SceneryLightProbe : TagStructure
     {
         public ObjectIdentifier ObjectId;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public HalfRGBLightProbe LightProbe;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public DualVmfLightProbe VmfLightProbe;
@@ -207,12 +207,12 @@ namespace TagTool.Tags.Definitions
         public RealRectangle3d Bounds;
         public List<MachineLightProbe> LightProbes;
 
-        [TagStructure(Size = 0x54, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x54, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x30, MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
         public class MachineLightProbe : TagStructure
         {
             public RealPoint3d Position;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public HalfRGBLightProbe LightProbe;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public DualVmfLightProbe VmfLightProbe;

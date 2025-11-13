@@ -8,7 +8,7 @@ using static TagTool.Effects.EditableProperty;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "particle", Tag = "prt3", Size = 0x194, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "particle", Tag = "prt3", Size = 0x194, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "particle", Tag = "prt3", Size = 0x1F0, MinVersion = CacheVersion.HaloReach)]
     public class Particle : TagStructure
 	{
@@ -19,7 +19,7 @@ namespace TagTool.Tags.Definitions
 
         public List<Attachment> Attachments;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public AppearanceFlagsValue AppearanceFlags;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public AppearanceFlagsValueReach AppearanceFlagsReach;
@@ -32,7 +32,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public byte Version;
 
-        [TagField(Length = 2, Flags = Padding, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Length = 2, Flags = Padding, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(Length = 1, Flags = Padding, MinVersion = CacheVersion.HaloReach)]
         public byte[] Padding2;
 
@@ -66,7 +66,7 @@ namespace TagTool.Tags.Definitions
         public ParticlePropertyScalar Intensity;
         public ParticlePropertyScalar Alpha;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public AnimationFlagsValueHO AnimationFlagsHO;
 
         [TagField(MaxVersion = CacheVersion.Halo3ODST)]

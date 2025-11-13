@@ -13,7 +13,7 @@ using TagTool.Pathfinding;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 using TagTool.Tags.Resources;
-using static TagTool.Cache.Eldorado.ResourceCacheEldorado;
+using static TagTool.Cache.HaloOnline.ResourceCacheHaloOnline;
 using static TagTool.Porting.Gen2.Gen2BspGeometryConverter;
 using Gen2Pathfinding = TagTool.Tags.Definitions.Gen2.ScenarioStructureBsp.PathfindingDataBlock;
 using Gen2ScenarioStructureBsp = TagTool.Tags.Definitions.Gen2.ScenarioStructureBsp;

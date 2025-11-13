@@ -7,7 +7,7 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "lens_flare", Tag = "lens", Size = 0x98, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "lens_flare", Tag = "lens", Size = 0x9C, MinVersion = CacheVersion.EldoradoED, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "lens_flare", Tag = "lens", Size = 0x9C, MinVersion = CacheVersion.HaloOnlineED, Platform = CachePlatform.Original)]
     [TagStructure(Name = "lens_flare", Tag = "lens", Size = 0x9C, Version = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "lens_flare", Tag = "lens", Size = 0x98, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "lens_flare", Tag = "lens", Size = 0x9C, Version = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
@@ -21,14 +21,14 @@ namespace TagTool.Tags.Definitions
         //  For H3->HO conversion: OcclusionReflectionIndex = 0;
         //  Halo 3 lens tags always use their first reflection block element.
         [TagField(Version = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public int OcclusionReflectionIndex;
 
         public float OcclusionOffsetDistance;
 
         public OcclusionOffsetDirectionValue OcclusionOffsetDirection;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public OcclusionInnerRadiusScaleEnum OcclusionInnerRadiusScale;
 
         [TagField(Length = 0x2, Flags = Padding, MinVersion = CacheVersion.HaloReach)]
@@ -140,7 +140,7 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x30, Platform = CachePlatform.Original, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x8C, Platform = CachePlatform.Original, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x8C, Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x58, Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloReach)]
         [TagStructure(Size = 0x9C, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0x30, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3ODST)]
@@ -157,14 +157,14 @@ namespace TagTool.Tags.Definitions
             [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3Retail, Length = 0x2, Flags = Padding)]
             public byte[] H3MCCPadding1;
 
-            [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             public uint UnknownHO;
 
-            [TagField(ValidTags = new[] { "bitm" }, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(ValidTags = new[] { "bitm" }, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagField(ValidTags = new[] { "bitm" }, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
             public CachedTag BitmapOverride;
 
-            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.EldoradoED)]
+            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloOnlineED)]
             [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
             [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.HaloReach)]
             public float RotationOffset; // degrees
@@ -175,7 +175,7 @@ namespace TagTool.Tags.Definitions
             [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.Halo3ODST)]
             public float RotationOffsetH3;
 
-            [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
             public Bounds<float> OffsetBounds;
 
@@ -189,19 +189,19 @@ namespace TagTool.Tags.Definitions
 
             /* FUNCTIONS */
 
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
             public TagFunction RadiusCurveFunction = new TagFunction { Data = new byte[0] };
 
-            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3Retail)]
             public TagFunction ScaleCurveXFunction = new TagFunction { Data = new byte[0] };
 
-            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3Retail)]
             public TagFunction ScaleCurveYFunction = new TagFunction { Data = new byte[0] };
 
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
             public TagFunction BrightnessCurveFunction = new TagFunction { Data = new byte[0] };
 
@@ -214,7 +214,7 @@ namespace TagTool.Tags.Definitions
 
             public RealRgbColor TintColor;
 
-            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.Halo3Retail)]
             public float TintModulationFactor;
 

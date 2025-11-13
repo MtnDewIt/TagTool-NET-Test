@@ -23,7 +23,7 @@ namespace TagTool.Commands.Porting
 {
     class PortMultiplayerScenarioCommand : Command
     {
-        private GameCacheEldoradoBase CacheContext { get; }
+        private GameCacheHaloOnlineBase CacheContext { get; }
         private GameCache BlamCache { get; }
         private PortingContextGen3 PortContext { get; }
 
@@ -46,7 +46,7 @@ namespace TagTool.Commands.Porting
 			Default = Objects | DeviceObjects | SpawnPoint | CustomScenarioPath
         }
 
-        public PortMultiplayerScenarioCommand(GameCacheEldoradoBase cacheContext, GameCache blamCache, PortingContextGen3 portContext) :
+        public PortMultiplayerScenarioCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache, PortingContextGen3 portContext) :
             base(true,
 
                 "PortMultiplayerScenario",
@@ -429,7 +429,7 @@ namespace TagTool.Commands.Porting
                 Math.Abs(delta.Z) < volume.Extents.Z;
         }
 
-        public void Convert(Stream destStream, GameCacheEldoradoBase destCache, Stream srcStream, GameCache srcCache,
+        public void Convert(Stream destStream, GameCacheHaloOnlineBase destCache, Stream srcStream, GameCache srcCache,
             string scenarioPath, int mapId, Scenario scnr, CachedTag scnrTag, int zoneSetIndex, uint includeBspMask,
             MultiplayerScenarioConversionFlags conversionFlags, PortingFlags portingFlags)
         {
@@ -566,7 +566,7 @@ namespace TagTool.Commands.Porting
             return cache.TagCache.AllocateTag<Scenario>(name);
         }
 
-        private static void FixupLightmapBpsData(GameCacheEldoradoBase destCache, Stream destStream, ScenarioLightmap sldt)
+        private static void FixupLightmapBpsData(GameCacheHaloOnlineBase destCache, Stream destStream, ScenarioLightmap sldt)
         {
             for (short i = 0; i < sldt.PerPixelLightmapDataReferences.Count; i++)
             {

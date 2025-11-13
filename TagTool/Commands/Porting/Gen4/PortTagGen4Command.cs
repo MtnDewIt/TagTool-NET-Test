@@ -16,10 +16,10 @@ namespace TagTool.Commands.Porting.Gen4
 {
     public partial class PortTagGen4Command : Command
     {
-        public readonly GameCacheEldoradoBase Cache;
+        public readonly GameCacheHaloOnlineBase Cache;
         public readonly GameCacheGen4 Gen4Cache;
 
-        public PortTagGen4Command(GameCacheEldoradoBase cache, GameCacheGen4 gen4Cache) : base(false, "PortTag", "", "", "")
+        public PortTagGen4Command(GameCacheHaloOnlineBase cache, GameCacheGen4 gen4Cache) : base(false, "PortTag", "", "", "")
         {
             Cache = cache;
             Gen4Cache = gen4Cache;
@@ -68,7 +68,7 @@ namespace TagTool.Commands.Porting.Gen4
         {
             object definition = Gen4Cache.Deserialize(gen4CacheStream, gen4Tag);
             definition = ConvertData(cacheStream, gen4CacheStream, resourceStreams, definition, definition, gen4Tag.Name);
-            var destType = Cache.TagCacheEldorado.TagDefinitions.GetTagDefinitionType(gen4Tag.Group.Tag);
+            var destType = Cache.TagCacheGenHO.TagDefinitions.GetTagDefinitionType(gen4Tag.Group.Tag);
             var tag = Cache.TagCache.AllocateTag(destType, gen4Tag.Name);
 
             switch (definition)

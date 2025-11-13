@@ -9,9 +9,9 @@ namespace TagTool.Commands.Files
 {
     class ImportFontsCommand : Command
     {
-        public GameCacheEldoradoBase Cache { get; }
+        public GameCacheHaloOnlineBase Cache { get; }
 
-        public ImportFontsCommand(GameCacheEldoradoBase cache)
+        public ImportFontsCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
                   "ImportFonts",

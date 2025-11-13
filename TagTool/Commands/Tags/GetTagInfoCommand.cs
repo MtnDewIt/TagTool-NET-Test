@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Tags
 {
     class GetTagInfoCommand : Command
     {
-        private GameCacheEldoradoBase Cache { get; }
+        private GameCacheHaloOnlineBase Cache { get; }
 
-        public GetTagInfoCommand(GameCacheEldoradoBase cache)
+        public GetTagInfoCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
             "GetTagInfo",
@@ -30,7 +30,7 @@ namespace TagTool.Commands.Tags
             if (!Cache.TagCache.TryGetTag(args[0], out var tag))
                 return new TagToolError(CommandError.TagInvalid);
 
-            var hoTag = (CachedTagEldorado)tag;
+            var hoTag = (CachedTagHaloOnline)tag;
 
             Console.WriteLine("Information for tag {0:X8}:", tag.Index);
             Console.Write("- Groups:        {0}", tag.Group.Tag);

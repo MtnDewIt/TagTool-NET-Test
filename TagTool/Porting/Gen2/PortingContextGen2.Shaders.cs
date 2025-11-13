@@ -1,27 +1,22 @@
-using NewShader = HaloShaderGenerator.Shader;
-using NewHalogram = HaloShaderGenerator.Halogram;
-using NewDecal = HaloShaderGenerator.Decal;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using TagTool.Audio;
 using TagTool.Bitmaps;
 using TagTool.Cache;
-using TagTool.Commands.Common;
-using TagTool.Commands.Shaders;
-using TagTool.Common;
-using TagTool.Shaders.ShaderGenerator;
-using TagTool.Shaders.ShaderMatching;
-using TagTool.Tags.Definitions;
-using static TagTool.Shaders.ShaderMatching.ShaderMatcher;
-using static TagTool.Tags.Definitions.MultiplayerVariantSettingsInterfaceDefinition.GameEngineSetting;
-using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
-using ShaderGen2 = TagTool.Tags.Definitions.Gen2.Shader;
-using TagGroupGen3 = TagTool.Cache.Gen3.TagGroupGen3;
-using TagTool.Cache.Eldorado;
 using TagTool.Common.Logging;
 using TagTool.Shaders;
+using TagTool.Shaders.ShaderGenerator;
+using TagTool.Tags;
+using TagTool.Tags.Definitions;
+using static TagTool.Commands.Common.TagToolChoicePrompt;
+using static TagTool.Tags.Definitions.RenderMethod.RenderMethodPostprocessBlock;
+using BitmapGen2 = TagTool.Tags.Definitions.Gen2.Bitmap;
+using NewDecal = HaloShaderGenerator.Decal;
+using NewHalogram = HaloShaderGenerator.Halogram;
+using NewShader = HaloShaderGenerator.Shader;
+using ShaderGen2 = TagTool.Tags.Definitions.Gen2.Shader;
 
 namespace TagTool.Porting.Gen2
 {
@@ -1433,7 +1428,7 @@ namespace TagTool.Porting.Gen2
             RenderMethodDefinition rmdf;
 
             RenderMethodTemplate rmt2Definition;
-            if (!CacheContext.TagCacheEldorado.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
+            if (!CacheContext.TagCacheGenHO.TryGetTag(rmt2TagName + ".rmt2", out CachedTag rmt2Tag))
             {
                 if (CacheContext.TagCache.TryGetTag($"shaders\\{rmt2Desc.Type}.rmdf", out rmdfTag))
                 {
@@ -1504,7 +1499,7 @@ namespace TagTool.Porting.Gen2
             };
 
             rmDefinition.ShaderProperties.Add(shaderProperty);
-            rmDefinition.BaseRenderMethod = CacheContext.TagCacheEldorado.GetTag<RenderMethodDefinition>(rmt2Desc.GetRmdfName());
+            rmDefinition.BaseRenderMethod = CacheContext.TagCacheGenHO.GetTag<RenderMethodDefinition>(rmt2Desc.GetRmdfName());
             Definition = rmDefinition;
 
             // Add all the texture maps
@@ -1575,7 +1570,7 @@ namespace TagTool.Porting.Gen2
                 //                string originalName = h2_texture_reference[i].Bitmap.ToString();
                 //                newSpec.Name = originalName.Insert(originalName.LastIndexOf(".bitmap"), "_spec");
                 //
-                //                //CacheContext.TagCacheGenHO.Tags[tagIndex] = (CachedTagEldorado)newSpec;
+                //                //CacheContext.TagCacheGenHO.Tags[tagIndex] = (CachedTagHaloOnline)newSpec;
                 //
                 //                bitmapBase.Data = BitmapDecoder.FillR(bitmapBase.Data, multiChannelBitmapImage.Width, multiChannelBitmapImage.Height);
                 //
@@ -1624,7 +1619,7 @@ namespace TagTool.Porting.Gen2
                                         }
                                         break;
                                 }
-                                Definition.ShaderProperties[0].TextureConstants[samplerIndex].Bitmap = CacheContext.TagCacheEldorado.GetTag(current_bitmap);
+                                Definition.ShaderProperties[0].TextureConstants[samplerIndex].Bitmap = CacheContext.TagCacheGenHO.GetTag(current_bitmap);
                                 break;
                             }
                         }
@@ -1997,6 +1992,1342 @@ namespace TagTool.Porting.Gen2
                 Log.Error($"No rmdf tag present for {renderMethodName}");
                 return -1;
             }
+        }
+
+
+        // ASCENSION SHADER CONVERTER
+        public class ShaderData
+        {
+            public string Name { get; set; }
+            public string GlobMat { get; set; }
+            public string Template { get; set; }
+            public List<ParameterData> Parameters { get; set; }
+            public string SpecCol { get; set; }
+            public string SpecGlnc { get; set; }
+            public string EnvTint { get; set; }
+            public string EnvGlnc { get; set; }
+            public string SpecType { get; set; }
+            public string EnvBitmap { get; set; }
+        }
+
+        public class ParameterData
+        {
+            public string Name { get; set; }
+            public string Type { get; set; }
+            public string Bitmap { get; set; }
+            public string Value { get; set; }
+            public string Colour { get; set; }
+            public sbyte ScaleX1 { get; set; }
+            public byte ScaleX2 { get; set; }
+            public sbyte ScaleY1 { get; set; }
+            public byte ScaleY2 { get; set; }
+            public byte[] ScaleY { get; set; }
+        }
+
+        public class BitmapData
+        {
+            public string Bitmap { get; set; }
+            public string Type { get; set; }
+            public string Compression { get; set; }
+            public string Fade { get; set; }
+            public string BumpHeight { get; set; }
+        }
+
+        public class CookSettings
+        {
+            public float SpecCoeff { get; set; }
+            public float Roughness { get; set; }
+            public float AreaContr { get; set; }
+            public float AnalContr { get; set; }
+            public float EnvContr { get; set; }
+        }
+
+        public ShaderData GetShaderData(ShaderGen2 gen2Shader, ShaderGen2 gen2ShaderH2, string gen2TagName, Stream cacheStream, Stream gen2CacheStream, CachedTag gen2Tag) 
+        {
+            List<ParameterData> shaderParameters = new List<ParameterData>();
+            string shaderName = gen2TagName;
+            string specCol = "";
+            string specGlncCol = "";
+            string envCol = "";
+            string envGlncCol = "";
+            string envBitmap = "";
+
+            string shaderTemplate = gen2Shader.Template.Name;
+            string shaderGlobMat = BlamCache.StringTable.GetString(gen2Shader.MaterialName);
+            string specularSetting = gen2Shader.LightmapType.ToString();
+
+            foreach (var parameter in gen2Shader.Parameters) 
+            {
+                string paramName = BlamCache.StringTable.GetString(parameter.Name);
+
+                if (paramName == "specular_color")
+                {
+                    specCol = parameter.ConstColor.ToString();
+                }
+                else if (paramName == "specular_glancing_color")
+                {
+                    specGlncCol = parameter.ConstColor.ToString();
+                }
+                else if (paramName == "env_tint_color")
+                {
+                    envCol = parameter.ConstColor.ToString();
+                }
+                else if (paramName == "env_glancing_tint_color")
+                {
+                    envGlncCol = parameter.ConstColor.ToString();
+                }
+                else if (paramName == "environment_map")
+                {
+                    envBitmap = parameter.Bitmap.Name;
+                }
+                else 
+                {
+                    string paramType = parameter.Type.ToString();
+                    string paramBitmap = parameter.Bitmap.Name;
+                    string paramValue = parameter.ConstValue.ToString();
+                    string paramColour = parameter.ConstColor.ToString();
+                    sbyte byte1ScaleX = new sbyte();
+                    byte byte2ScaleX = new byte();
+                    sbyte byte1ScaleY = new sbyte();
+                    byte byte2ScaleY = new byte();
+
+                    if (shaderTemplate.Contains("detail_blend_detail"))
+                    {
+                        if (paramName == "detail_map" || paramName == "detail_map_a" || paramName == "detail_map_b" || paramName == "secondary_detail_map")
+                        {
+                            continue;
+                        }
+                    }
+
+                    else if (shaderTemplate.Contains("three_detail_blend"))
+                    {
+                        if (paramName == "blend_detail_map_1" || paramName == "blend_detail_map_2" || paramName == "overlay_detail_map" || paramName == "secondary_detail_map")
+                        {
+                            continue;
+                        }
+                    }
+
+                    foreach (var animation in parameter.AnimationProperties) 
+                    {
+                        string type = animation.Type.ToString();
+
+                        if (type.Contains("BitmapScaleX"))
+                        {
+                            for (int i = 0; i < animation.Function.Data.Count; i++) 
+                            {
+                                if (i == 6)
+                                {
+                                    byte1ScaleX = (sbyte)animation.Function.Data[i].Value;
+                                }
+                                else if (i == 7) 
+                                {
+                                    byte2ScaleX = (byte)animation.Function.Data[i].Value;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (type.Contains("BitmapScaleY")) 
+                        {
+                            for (int i = 0; i < animation.Function.Data.Count; i++)
+                            {
+                                if (i == 6)
+                                {
+                                    byte1ScaleY = (sbyte)animation.Function.Data[i].Value;
+                                }
+                                else if (i == 7)
+                                {
+                                    byte2ScaleY = (byte)animation.Function.Data[i].Value;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    shaderParameters.Add(new ParameterData
+                    {
+                        Name = paramName,
+                        Type = paramType,
+                        Bitmap = paramBitmap,
+                        Value = paramValue,
+                        Colour = paramColour,
+                        ScaleX1 = byte1ScaleX,
+                        ScaleX2 = byte2ScaleX,
+                        ScaleY1 = byte1ScaleY,
+                        ScaleY2 = byte2ScaleY,
+                    });
+                }
+            }
+
+            return new ShaderData
+            {
+                Name = shaderName,
+                GlobMat = shaderGlobMat,
+                Template = shaderTemplate,
+                Parameters = shaderParameters,
+                SpecCol = specCol,
+                SpecGlnc = specGlncCol,
+                EnvTint = envCol,
+                EnvGlnc = envGlncCol,
+                SpecType = specularSetting,
+                EnvBitmap = envBitmap
+            };
+        }
+
+        // These will need to be moved into the bitmap conversion code, but they can stay here for now
+        public List<BitmapData> GetBitmapData(ShaderData shaderData, Stream gen2CacheStream) 
+        {
+            List<BitmapData> bitmapData = new List<BitmapData>();
+
+            foreach (ParameterData parameter in shaderData.Parameters) 
+            {
+                if (!string.IsNullOrEmpty(parameter.Bitmap)) 
+                {
+                    CachedTag tag = BlamCache.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                    BitmapGen2 gen2Bitmap = BlamCache.Deserialize<BitmapGen2>(gen2CacheStream, tag);
+
+                    string bitmapName = tag.Name;
+                    string usage = gen2Bitmap.Usage.ToString();
+                    string compression = gen2Bitmap.Format.ToString();
+                    string fadeFactor = gen2Bitmap.DetailFadeFactor.ToString();
+                    string bumpHeight = gen2Bitmap.BumpHeight.ToString();
+
+                    bitmapData.Add(new BitmapData
+                    {
+                        Bitmap = bitmapName,
+                        Type = usage,
+                        Compression = compression,
+                        Fade = fadeFactor,
+                        BumpHeight = bumpHeight
+                    });
+                }
+            }
+
+            return bitmapData;
+        }
+
+        public void UpdateBitmapData(List<BitmapData> bitmapData, Stream cacheStream) 
+        {
+            foreach (BitmapData bitmap in bitmapData) 
+            {
+                CachedTag tag = CacheContext.TagCache.GetTag(bitmap.Bitmap);
+                Bitmap bitm = CacheContext.Deserialize<Bitmap>(cacheStream, tag);
+
+                if (bitmap.Type.Contains("Default"))
+                {
+                    bitm.Usage = Bitmap.BitmapUsageGlobalEnum.DiffuseMap;
+                }
+                else if (bitmap.Type.Contains("Height"))
+                {
+                    bitm.Usage = Bitmap.BitmapUsageGlobalEnum.BumpMapfromHeightMap;
+                }
+                else if (bitmap.Type.Contains("Detail"))
+                {
+                    bitm.Usage = Bitmap.BitmapUsageGlobalEnum.DetailMap;
+                }
+
+                if (bitmap.Type.Contains("Height")) 
+                {
+                    bitm.ForceBitmapFormat = Bitmap.BitmapUsageFormat.BestCompressedBumpFormat;
+                }
+                else if (bitmap.Compression.Contains("ColorKey")) 
+                {
+                    bitm.ForceBitmapFormat = Bitmap.BitmapUsageFormat.Dxt1CompressedColorColorKeyAlpha;
+                }
+                else if (bitmap.Compression.Contains("ExplicitAlpha")) 
+                {
+                    bitm.ForceBitmapFormat = Bitmap.BitmapUsageFormat.Dxt3CompressedColor4BitAlpha;
+                }
+                else if (bitmap.Compression.Contains("InterpolatedAlpha"))
+                {
+                    bitm.ForceBitmapFormat = Bitmap.BitmapUsageFormat.Dxt5CompressedColorCompressed8BitAlpha;
+                }
+
+                bitm.CurveMode = BitmapCurveMode.ForcePretty;
+                bitm.FadeFactor = float.Parse(bitmap.Fade);
+
+                if (bitmap.Type.Contains("Height")) 
+                {
+                    if (float.Parse(bitmap.BumpHeight) >= 15.0f)
+                    {
+                        bitm.BumpMapHeight = 10.0f;
+                    }
+                    else 
+                    {
+                        bitm.BumpMapHeight = float.Parse(bitmap.BumpHeight);
+                    }
+                }
+
+                CacheContext.Serialize(cacheStream, tag, bitm);
+
+                // Technically this would only work if the bitmap data gets reimported with these fields set
+            }
+        }
+
+        public void AddShaderScaleFunction(RenderMethod definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType type, int paramaterIndex, byte byte1, byte byte2, int animIndex) 
+        {
+            definition.Parameters[paramaterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+            definition.Parameters[paramaterIndex].AnimatedParameters[animIndex].Type = type;
+            definition.Parameters[paramaterIndex].AnimatedParameters[animIndex].Function = new TagFunction { Data = new byte[32] };
+            definition.Parameters[paramaterIndex].AnimatedParameters[animIndex].Function.Data[0] = 1;
+            definition.Parameters[paramaterIndex].AnimatedParameters[animIndex].Function.Data[6] = byte2;
+            definition.Parameters[paramaterIndex].AnimatedParameters[animIndex].Function.Data[7] = byte1;
+        }
+
+        public RenderMethod AscensionTest(ShaderGen2 gen2Shader, ShaderGen2 gen2ShaderH2, string gen2TagName, Stream cacheStream, Stream gen2CacheStream, CachedTag gen2Tag) 
+        {
+            CookSettings cookDiffuse = new CookSettings
+            {
+                SpecCoeff = 0.06366198f,
+                Roughness = 0.3f,
+                AreaContr = 0.3f,
+                AnalContr = 0.5f,
+                EnvContr = 0.0f
+            };
+
+            CookSettings cookDefault = new CookSettings
+            {
+                SpecCoeff = 0.2546479f,
+                Roughness = 0.2f,
+                AreaContr = 0.3f,
+                AnalContr = 0.6f,
+                EnvContr = 1.0f
+            };
+
+            CookSettings cookDull = new CookSettings
+            {
+                SpecCoeff = 0.06366198f,
+                Roughness = 0.3f,
+                AreaContr = 0.1f,
+                AnalContr = 0.2f,
+                EnvContr = 0.0f
+            };
+
+            CookSettings cookShiny = new CookSettings
+            {
+                SpecCoeff = 0.318309873f,
+                Roughness = 0.1f,
+                AreaContr = 0.2f,
+                AnalContr = 0.5f,
+                EnvContr = 1.0f
+            };
+
+            ShaderData shaderData = GetShaderData(gen2Shader, gen2ShaderH2, gen2TagName, cacheStream, gen2CacheStream, gen2Tag);
+
+            if (shaderData.GlobMat.Contains("soft_organic_plant"))
+            {
+                ShaderFoliage definition = new ShaderFoliage();
+
+                // #TODO: Handle shader options: (create a new array using the number of render method definition categories as a reference)
+                // Set alpha test to simple (definition.Options[0].OptionIndex = 1)
+
+                definition.Material = CacheContext.StringTable.GetOrAddString(shaderData.GlobMat);
+
+                int parameterIndex = 0;
+
+                foreach (ParameterData parameter in shaderData.Parameters) 
+                {
+                    if (parameter.Name == "base_map") 
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("base_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero) 
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "detail_map") 
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("detail_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "bump_map" || parameter.Name == "lightmap_alphatest_map") 
+                    {
+                        if (parameter.Name == "bump_map") 
+                        {
+                            // #TODO: Figure out how to reencode parameter.Bitmap as colour map for alpha test
+                        }
+
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("alpha_test_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+                }
+
+                return definition;
+            }
+            else if (shaderData.Template.Contains("plasma_alpha"))
+            {
+                Shader definition = new Shader();
+
+                // #TODO: Handle shader options: (create a new array using the number of render method definition categories as a reference)
+                // Set plasma (definition.Options[6].OptionIndex = 3)
+                // Set pre-multiplied (definition.Options[7].OptionIndex = 5)
+
+                definition.Material = CacheContext.StringTable.GetOrAddString(shaderData.GlobMat);
+
+                int parameterIndex = 0;
+
+                foreach (ParameterData parameter in shaderData.Parameters)
+                {
+                    if (parameter.Name == "noise_map_a") 
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("noise_map_a");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "noise_map_b")
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("noise_map_b");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "alpha_map")
+                    {
+                        if (!string.IsNullOrEmpty(parameter.Bitmap)) 
+                        {
+                            definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                            definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("base_map");
+                            definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                            definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                            definition.Parameters[parameterIndex].BitmapFlags = 1;
+                            definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                            byte byte1X = parameter.ScaleX2;
+                            byte byte2X = (byte)(256 + parameter.ScaleX1);
+                            byte byte1Y = parameter.ScaleY2;
+                            byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                            byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                            bool allZero = true;
+
+                            foreach (byte scale in scales)
+                            {
+                                if (scale != 0)
+                                {
+                                    allZero = false;
+                                    break;
+                                }
+                            }
+
+                            if (!allZero)
+                            {
+                                if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                                }
+                                else
+                                {
+                                    int animIndex = 0;
+                                    if (!(byte1X == 0 && byte2X == 0))
+                                    {
+                                        AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                        animIndex++;
+                                    }
+                                    if (!(byte1Y == 0 && byte2Y == 0))
+                                    {
+                                        AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                    }
+                                }
+                            }
+
+                            parameterIndex++;
+                        }
+                    }
+                }
+
+                return definition;
+            }
+            else 
+            {
+                Shader definition = new Shader();
+
+                // #TODO: Handle shader options: (create a new array using the number of render method definition categories as a reference)
+                // Set standard bump (definition.Options[1].OptionIndex = 1)
+
+                if (shaderData.Template.Contains("opaque\\overlay")) 
+                {
+                    // Set blend mode to double multiply (definition.Options[7].OptionIndex = 4)
+                }
+
+                definition.Material = CacheContext.StringTable.GetOrAddString(shaderData.GlobMat);
+
+                // Set specular mask (definition.Options[3].OptionIndex = 1)
+
+                int parameterIndex = 0;
+
+                if (shaderData.SpecCol != "") 
+                {
+                    // Set material model (definition.Options[4].OptionIndex = 1)
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("specular_tint");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Color;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Color;
+
+                    // #TODO: Handle color functions
+                    //TagFieldCustomFunctionEditor specTintFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //specTintFunc.Value.ColorGraphType = FunctionEditorColorGraphType.OneColor;
+                    //specTintFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+                    //float[] specColour = shaderData.SpecCol.Split(',').Select(float.Parse).ToArray();
+                    //specTintFunc.Value.SetColor(0, GameColor.FromRgb(specColour[0], specColour[1], specColour[2]));
+
+                    parameterIndex++;
+
+                    if (shaderData.SpecGlnc != "") 
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("fresnel_color");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Color;
+                        definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                        definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Color;
+
+                        // #TODO: Handle color functions
+                        //TagFieldCustomFunctionEditor specGlanceFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                        //specGlanceFunc.Value.ColorGraphType = FunctionEditorColorGraphType.OneColor;
+                        //specGlanceFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+                        //float[] specGlanceColour = shaderData.SpecGlnc.Split(',').Select(float.Parse).ToArray();
+                        //specGlanceFunc.Value.SetColor(0, GameColor.FromRgb(specGlanceColour[0], specGlanceColour[1], specGlanceColour[2]));
+
+                        parameterIndex++;
+                    }
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("specular_coefficient");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Real;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Value;
+
+                    // #TODO: Handle value functions
+                    //TagFieldCustomFunctionEditor specCoeffFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //specCoeffFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+
+                    parameterIndex++;
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("roughness");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Real;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Value;
+
+                    // #TODO: Handle value functions
+                    //TagFieldCustomFunctionEditor roughFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //roughFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+
+                    parameterIndex++;
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("area_specular_contribution");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Real;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Value;
+
+                    // #TODO: Handle value functions
+                    //TagFieldCustomFunctionEditor areaFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //areaFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+
+                    parameterIndex++;
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("analytical_specular_contribution");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Real;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Value;
+
+                    // #TODO: Handle value functions
+                    //TagFieldCustomFunctionEditor analFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //analFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+
+                    parameterIndex++;
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("environment_map_specular_contribution");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Real;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Value;
+
+                    // #TODO: Handle value functions
+                    //TagFieldCustomFunctionEditor envFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //envFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+
+                    parameterIndex++;
+
+                    // #TODO: Handle this somehow (We need to fix the color functions)
+                    /*
+                    if (shaderData.SpecType == "Diffuse")
+                    {
+                        specCoeffFunc.Value.ClampRangeMin = cookDiffuse.SpecCoeff;
+                        roughFunc.Value.ClampRangeMin = cookDiffuse.Roughness;
+                        areaFunc.Value.ClampRangeMin = cookDiffuse.AreaContr;
+                        analFunc.Value.ClampRangeMin = cookDiffuse.AnalContr;
+                        envFunc.Value.ClampRangeMin = cookDiffuse.EnvContr;
+                    }
+                    else if (shaderData.SpecType == "DefaultSpecular")
+                    {
+                        specCoeffFunc.Value.ClampRangeMin = cookDefault.SpecCoeff;
+                        roughFunc.Value.ClampRangeMin = cookDefault.Roughness;
+                        areaFunc.Value.ClampRangeMin = cookDefault.AreaContr;
+                        analFunc.Value.ClampRangeMin = cookDefault.AnalContr;
+                        envFunc.Value.ClampRangeMin = cookDefault.EnvContr;
+                    }
+                    else if (shaderData.SpecType == "DullSpecular")
+                    {
+                        specCoeffFunc.Value.ClampRangeMin = cookDull.SpecCoeff;
+                        roughFunc.Value.ClampRangeMin = cookDull.Roughness;
+                        areaFunc.Value.ClampRangeMin = cookDull.AreaContr;
+                        analFunc.Value.ClampRangeMin = cookDull.AnalContr;
+                        envFunc.Value.ClampRangeMin = cookDull.EnvContr;
+                    }
+                    else if (shaderData.SpecType == "ShinySpecular")
+                    {
+                        specCoeffFunc.Value.ClampRangeMin = cookShiny.SpecCoeff;
+                        roughFunc.Value.ClampRangeMin = cookShiny.Roughness;
+                        areaFunc.Value.ClampRangeMin = cookShiny.AreaContr;
+                        analFunc.Value.ClampRangeMin = cookShiny.AnalContr;
+                        envFunc.Value.ClampRangeMin = cookShiny.EnvContr;
+                    }
+                    */
+                }
+
+                if (shaderData.EnvTint != "" && shaderData.EnvBitmap == "" && shaderData.SpecCol != "")
+                {
+                    // Set dynamic (definition.Options[5].OptionIndex = 2)
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("env_tint_color");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Color;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Color;
+
+                    // #TODO: Handle color functions
+                    //TagFieldCustomFunctionEditor envColFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //envColFunc.Value.ColorGraphType = FunctionEditorColorGraphType.OneColor;
+                    //envColFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+                    //float[] envColour = shader.EnvTint.Split(',').Select(float.Parse).ToArray();
+                    //envColFunc.Value.SetColor(0, GameColor.FromRgb(envColour[0], envColour[1], envColour[2]));
+
+                    parameterIndex++;
+                }
+
+                else if (shaderData.EnvTint != "" && shaderData.EnvBitmap != "") 
+                {
+                    // Set per-pixel (definition.Options[5].OptionIndex = 1)
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("env_tint_color");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Color;
+                    definition.Parameters[parameterIndex].AnimatedParameters.Add(new RenderMethod.RenderMethodAnimatedParameterBlock());
+                    definition.Parameters[parameterIndex].AnimatedParameters[0].Type = RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.Color;
+
+                    // #TODO: Handle color functions
+                    //TagFieldCustomFunctionEditor envColFunc = (TagFieldCustomFunctionEditor)tagFile.SelectField($"Struct:render_method[0]/Block:parameters[{paramIndex}]/Block:animated parameters[0]/Custom:animation function");
+                    //envColFunc.Value.ColorGraphType = FunctionEditorColorGraphType.OneColor;
+                    //envColFunc.Value.MasterType = FunctionEditorMasterType.Basic;
+                    //float[] envColour = shader.EnvTint.Split(',').Select(float.Parse).ToArray();
+                    //envColFunc.Value.SetColor(0, GameColor.FromRgb(envColour[0], envColour[1], envColour[2]));
+
+                    parameterIndex++;
+
+                    definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                    definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("environment_map");
+                    definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                    definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{shaderData.EnvBitmap}.bitmap");
+
+                    parameterIndex++;
+                }
+
+                foreach (ParameterData parameter in shaderData.Parameters)
+                {
+                    if (parameter.Name == "base_map")
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("base_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "detail_map" && !shaderData.Template.Contains("three"))
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("detail_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "overlay_detail_map" && !shaderData.Template.Contains("detail"))
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("detail_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if ((parameter.Name == "detail_map_a" || parameter.Name == "blend_detail_map_1") && shaderData.Template.Contains("detail")) 
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("detail_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if ((parameter.Name == "secondary_detail_map" || parameter.Name == "detail_map_b" || parameter.Name == "blend_detail_map_2") && shaderData.Template.Contains("detail")) 
+                    {
+                        // Set two detail (definition.Options[0].OptionIndex = 1)
+
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("detail_map2");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if ((parameter.Name == "detail_map_c" || parameter.Name == "overlay_detail_map") && shaderData.Template.Contains("detail")) 
+                    {
+                        if (shaderData.Template.Contains("detail_blend_detail"))
+                        {
+                            // Set two detail overlay (definition.Options[0].OptionIndex = 6)
+                        }
+                        else
+                        {
+                            // Set three detail blend (definition.Options[0].OptionIndex = 5)
+                        }
+
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+
+                        if (shaderData.Template.Contains("detail_blend_detail"))
+                        {
+                            definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("detail_map_overlay");
+                        }
+                        else
+                        {
+                            definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("detail_map3");
+                        }
+
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "bump_map") 
+                    {
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("bump_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if ((parameter.Name == "alpha_test_map" || parameter.Name == "lightmap_alphatest_map") && !shaderData.Template.Contains("detail_blend")) 
+                    {
+                        // Set alpha test (definition.Options[2].OptionIndex = 1)
+
+                        // #TODO: We need to reimport the bitmaps as dxt5 to ensure that the alpha is functional
+
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("alpha_test_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+
+                    if (parameter.Name == "self_illum_map" && shaderData.Template.Contains("illum")) 
+                    {
+                        if (shaderData.Template.Contains("3_channel"))
+                        {
+                            // Set 3 channel self illum (definition.Options[6].OptionIndex = 2)
+                        }
+                        else
+                        {
+                            // Set simple self illum (definition.Options[6].OptionIndex = 1)
+                        }
+
+                        definition.Parameters.Add(new RenderMethod.RenderMethodParameterBlock());
+                        definition.Parameters[parameterIndex].Name = CacheContext.StringTable.GetOrAddString("self_illum_map");
+                        definition.Parameters[parameterIndex].ParameterType = RenderMethodOption.ParameterBlock.OptionDataType.Bitmap;
+                        definition.Parameters[parameterIndex].Bitmap = CacheContext.TagCache.GetTag($"{parameter.Bitmap}.bitmap");
+                        definition.Parameters[parameterIndex].BitmapFlags = 1;
+                        definition.Parameters[parameterIndex].BitmapFilterMode = 6;
+
+                        byte byte1X = parameter.ScaleX2;
+                        byte byte2X = (byte)(256 + parameter.ScaleX1);
+                        byte byte1Y = parameter.ScaleY2;
+                        byte byte2Y = (byte)(256 + parameter.ScaleY1);
+                        byte[] scales = new byte[] { byte1X, byte2X, byte1Y, byte2Y };
+                        bool allZero = true;
+
+                        foreach (byte scale in scales)
+                        {
+                            if (scale != 0)
+                            {
+                                allZero = false;
+                                break;
+                            }
+                        }
+
+                        if (!allZero)
+                        {
+                            if ((byte1X == byte1Y) && (byte2X == byte2Y))
+                            {
+                                AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleUniform, parameterIndex, byte1X, byte2X, 0);
+                            }
+                            else
+                            {
+                                int animIndex = 0;
+                                if (!(byte1X == 0 && byte2X == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleX, parameterIndex, byte1X, byte2X, animIndex);
+                                    animIndex++;
+                                }
+                                if (!(byte1Y == 0 && byte2Y == 0))
+                                {
+                                    AddShaderScaleFunction(definition, RenderMethod.RenderMethodAnimatedParameterBlock.FunctionType.ScaleY, parameterIndex, byte1Y, byte2Y, animIndex);
+                                }
+                            }
+                        }
+
+                        parameterIndex++;
+                    }
+                }
+
+                return definition;
+            }
+
+            // #TODO: Handle routing info and template compilation
         }
     }
 }

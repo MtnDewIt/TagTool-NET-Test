@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Scripting;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
@@ -14,11 +14,11 @@ namespace TagTool.Cache.Utils
         /// <summary>
         /// Replaces all references to <paramref name="tag"/> with <paramref name="replacementTag"/>
         /// </summary>
-        public static void ReplaceTag(GameCacheEldoradoBase cache, Stream cacheStream, CachedTag tag, CachedTag replacementTag)
+        public static void ReplaceTag(GameCacheHaloOnlineBase cache, Stream cacheStream, CachedTag tag, CachedTag replacementTag)
         {
             CachedTag[] dependentTags = cache.TagCache
                 .NonNull()
-                .Cast<CachedTagEldorado>()
+                .Cast<CachedTagHaloOnline>()
                 .Where(x => x.Dependencies.Contains(tag.Index))
                 .ToArray();
 
@@ -42,7 +42,7 @@ namespace TagTool.Cache.Utils
             }
         }
 
-        private static object ReplaceTagReferences(GameCacheEldoradoBase cache, object data, CachedTag tag, CachedTag replacementTag, string path = "")
+        private static object ReplaceTagReferences(GameCacheHaloOnlineBase cache, object data, CachedTag tag, CachedTag replacementTag, string path = "")
         {
             switch (data)
             {

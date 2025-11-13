@@ -5,15 +5,15 @@ using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Commands.Common;
 using TagTool.Tags;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Tags
 {
     class ListDuplicateTagsCommand : Command
     {
-        public GameCacheEldoradoBase Cache { get; }
+        public GameCacheHaloOnlineBase Cache { get; }
 
-        public ListDuplicateTagsCommand(GameCacheEldoradoBase cache)
+        public ListDuplicateTagsCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
                   "ListDuplicateTags",
@@ -28,7 +28,7 @@ namespace TagTool.Commands.Tags
 
         public override object Execute(List<string> args)
         {
-            var tags = Cache.TagCacheEldorado.NonNull().GroupBy(x => $"{x.Name}.{x.Group}").Where(x => x.Count() > 1).ToList();
+            var tags = Cache.TagCacheGenHO.NonNull().GroupBy(x => $"{x.Name}.{x.Group}").Where(x => x.Count() > 1).ToList();
             foreach (var duplicates in tags)
             {
                 foreach (var duplicate in duplicates)

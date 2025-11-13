@@ -15,11 +15,11 @@ namespace TagTool.Commands.Porting
 {
     public partial class PortTagCommand : Command
     {
-        private GameCacheEldoradoBase CacheContext { get; }
+        private GameCacheHaloOnlineBase CacheContext { get; }
         private GameCache BlamCache;
         private PortingContext PortContext;
 
-        public PortTagCommand(GameCacheEldoradoBase cacheContext, GameCache blamCache, PortingContext portContext) :
+        public PortTagCommand(GameCacheHaloOnlineBase cacheContext, GameCache blamCache, PortingContext portContext) :
             base(true,
 
                 "PortTag",

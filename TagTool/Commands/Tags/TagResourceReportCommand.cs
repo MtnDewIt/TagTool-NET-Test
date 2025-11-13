@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.Common;
 using TagTool.Tags;
@@ -16,10 +16,10 @@ namespace TagTool.Commands.Tags
 {
     public class TagResourceReportCommand : Command
     {
-        private GameCacheEldoradoBase Cache;
+        private GameCacheHaloOnlineBase Cache;
         private ReportFlags CurrentFlags;
 
-        public TagResourceReportCommand(GameCacheEldoradoBase cache) :
+        public TagResourceReportCommand(GameCacheHaloOnlineBase cache) :
             base(true,
 
                 "TagResourceReport",
@@ -64,8 +64,8 @@ namespace TagTool.Commands.Tags
             var resourceList = new List<PageableResource>();
             using (var cacheStream = Cache.OpenCacheRead())
             {
-                var visitedTags = new HashSet<CachedTagEldorado>();
-                foreach (CachedTagEldorado tag in tags)
+                var visitedTags = new HashSet<CachedTagHaloOnline>();
+                foreach (CachedTagHaloOnline tag in tags)
                     CollectTagResources(Cache, cacheStream, tag, resourceList, visitedTags);
             }
 
@@ -161,7 +161,7 @@ namespace TagTool.Commands.Tags
             }
         }
 
-        private void CollectTagResources(GameCache cache, Stream stream, CachedTagEldorado tag, List<PageableResource> resourcesList, HashSet<CachedTagEldorado> visitedTags)
+        private void CollectTagResources(GameCache cache, Stream stream, CachedTagHaloOnline tag, List<PageableResource> resourcesList, HashSet<CachedTagHaloOnline> visitedTags)
         {
             if (tag == null)
                 return;
@@ -172,7 +172,7 @@ namespace TagTool.Commands.Tags
                 CollectTagResources(cache, stream, cache.Deserialize(stream, tag), resourcesList, visitedTags);
         }
 
-        private void CollectTagResources(GameCache cache, Stream stream, object data, List<PageableResource> resourcesList, HashSet<CachedTagEldorado> visitedTags)
+        private void CollectTagResources(GameCache cache, Stream stream, object data, List<PageableResource> resourcesList, HashSet<CachedTagHaloOnline> visitedTags)
         {
             switch (data)
             {
@@ -187,7 +187,7 @@ namespace TagTool.Commands.Tags
                     foreach (var element in list)
                         CollectTagResources(cache, stream, element, resourcesList, visitedTags);
                     break;
-                case CachedTagEldorado tagRef when CurrentFlags.HasFlag(ReportFlags.Recursive):
+                case CachedTagHaloOnline tagRef when CurrentFlags.HasFlag(ReportFlags.Recursive):
                     CollectTagResources(cache, stream, tagRef, resourcesList, visitedTags);
                     break;
             }

@@ -4,7 +4,7 @@ using TagTool.Cache;
 
 namespace TagTool.Tags.Definitions
 {
-	[TagStructure(Name = "performance_throttles", Tag = "perf", Size = 0xC, MaxVersion = CacheVersion.Eldorado700123)]
+	[TagStructure(Name = "performance_throttles", Tag = "perf", Size = 0xC, MaxVersion = CacheVersion.HaloOnline700123)]
 	[TagStructure(Name = "performance_throttles", Tag = "perf", Size = 0x10, MinVersion = CacheVersion.HaloReach)]
 	public class PerformanceThrottles : TagStructure
 	{
@@ -18,13 +18,13 @@ namespace TagTool.Tags.Definitions
 
 		public List<PerformanceThrottleBlock> PerformanceThrottle;
 		
-		[TagStructure(Size = 0x38, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+		[TagStructure(Size = 0x38, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
 		[TagStructure(Size = 0x4C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
-		[TagStructure(Size = 0x3C, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.MCC)]
+		[TagStructure(Size = 0x3C, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.MCC)]
 		[TagStructure(Size = 0x50, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
 		public class PerformanceThrottleBlock : TagStructure
 		{
-			[TagField(MaxVersion = CacheVersion.Eldorado700123)]
+			[TagField(MaxVersion = CacheVersion.HaloOnline700123)]
 			public PerformanceThrottleFlags Flags;
 			[TagField(MinVersion = CacheVersion.HaloReach)]
 			public PerformanceThrottleFlagsReach FlagsReach;

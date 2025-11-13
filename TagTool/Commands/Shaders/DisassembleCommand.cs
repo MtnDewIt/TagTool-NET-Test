@@ -9,7 +9,7 @@ using System.IO;
 using TagTool.IO;
 using System.Linq;
 using System.Diagnostics;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Shaders
 {
@@ -59,9 +59,9 @@ namespace TagTool.Commands.Shaders
 
                         disassembly = DisassembleGen3Shader(i, gpix, $" \"{i}\"");
                     }
-                    else if (Cache.GetType() == typeof(GameCacheEldorado))
+                    else if (Cache.GetType() == typeof(GameCacheHaloOnline))
                     {
-                        disassembly = DisassembleEldoradoShader(i);
+                        disassembly = DisassembleHaloOnlineShader(i);
                     }
                     
                     if (disassembly == null)
@@ -87,9 +87,9 @@ namespace TagTool.Commands.Shaders
 
                         disassemblies.Add(DisassembleGen3Shader(shaderIndex, gpix, $" \"{shaderIndex}\""));
                     }
-                    else if (Cache.GetType() == typeof(GameCacheEldorado))
+                    else if (Cache.GetType() == typeof(GameCacheHaloOnline))
                     {
-                        disassemblies.Add(DisassembleEldoradoShader(shaderIndex));
+                        disassemblies.Add(DisassembleHaloOnlineShader(shaderIndex));
                     }
                     indices.Add(shaderIndex);
                 }
@@ -216,7 +216,7 @@ namespace TagTool.Commands.Shaders
             return disassembly;
         }
 
-        private string DisassembleEldoradoShader(int shaderIndex)
+        private string DisassembleHaloOnlineShader(int shaderIndex)
         {
             string disassembly = null;
 

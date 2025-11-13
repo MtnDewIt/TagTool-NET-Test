@@ -37,7 +37,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
             {
                 foreach (var anim in Animation.Animations)
                 {
-                    // For inline animation data (e.g. Eldorado version)
+                    // For inline animation data (e.g. HaloOnline version)
                     if (anim.AnimationData != null && anim.AnimationData.ObjectSpaceParentNodes != null)
                     {
                         anim.AnimationData.ObjectSpaceParentNodes.Clear();

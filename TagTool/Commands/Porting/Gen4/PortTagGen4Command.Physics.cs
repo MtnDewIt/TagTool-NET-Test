@@ -81,7 +81,7 @@ namespace TagTool.Commands.Porting.Gen4
                     AlignmentMaxVelocity = gen4phantomtype.AlignmentMaxVel
                 };
                 //fix up phantom type flags
-                if (!Enum.TryParse(gen4phantomtype.Flags.ToString(), out newPhantomType.Flags.Eldorado))
+                if (!Enum.TryParse(gen4phantomtype.Flags.ToString(), out newPhantomType.Flags.HaloOnline))
                     Log.Warning($"Some phantom type flags failed to convert!");
 
                 physicsModel.PhantomTypes.Add(newPhantomType);

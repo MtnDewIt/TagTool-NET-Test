@@ -7,7 +7,7 @@ using static TagTool.Tags.TagFieldFlags;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xB0 , MaxVersion = CacheVersion.Halo3Retail)]
-    [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xB4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xB4, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "cinematic", Tag = "cine", Size = 0xC4, MinVersion = CacheVersion.HaloReach)]
     public class Cinematic : TagStructure
 	{

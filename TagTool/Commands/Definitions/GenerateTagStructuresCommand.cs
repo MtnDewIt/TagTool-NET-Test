@@ -6,15 +6,15 @@ using TagTool.Analysis;
 using TagTool.Cache;
 using TagTool.Layouts;
 using TagTool.Commands.Common;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Definitions
 {
     class GenerateTagStructuresCommand : Command
     {
-        private GameCacheEldoradoBase Cache { get; }
+        private GameCacheHaloOnlineBase Cache { get; }
 
-        public GenerateTagStructuresCommand(GameCacheEldoradoBase cache) : base(
+        public GenerateTagStructuresCommand(GameCacheHaloOnlineBase cache) : base(
             true,
 
             "GenerateTagStructures",
@@ -74,8 +74,8 @@ namespace TagTool.Commands.Definitions
 
                         lastTag = tag;
 
-                        var analyzer = new TagAnalyzer(Cache.TagCacheEldorado);
-                        var data = Cache.TagCacheEldorado.ExtractTag(stream, (CachedTagEldorado)tag);
+                        var analyzer = new TagAnalyzer(Cache.TagCacheGenHO);
+                        var data = Cache.TagCacheGenHO.ExtractTag(stream, (CachedTagHaloOnline)tag);
                         var tagLayout = analyzer.Analyze(data);
 
                         if (layout != null)

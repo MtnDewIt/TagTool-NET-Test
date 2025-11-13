@@ -16,7 +16,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public CtfSuddenDeathTime SuddenDeathTime;
         public short ScoreToWin;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public short ScoreToWinEarly;
 
         public short FlagResetTime;
@@ -26,7 +26,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
         public byte[] Padding3;
 
         [TagField(Flags = TagFieldFlags.Padding, Length = 0x82, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = TagFieldFlags.Padding, Length = 0x60, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Alignment;
 
         [Flags]

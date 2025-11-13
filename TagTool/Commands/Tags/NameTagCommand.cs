@@ -57,8 +57,8 @@ namespace TagTool.Commands.Tags
             if (args.Count > 3 && args[3].ToLower() != "nosave")
                 passArgs = new List<string>() { args[3] };
 
-            if (saveTagNames && Cache is GameCacheEldoradoBase)
-                new SaveTagNamesCommand(Cache as GameCacheEldoradoBase).Execute(passArgs);
+            if (saveTagNames && Cache is GameCacheHaloOnlineBase)
+                new SaveTagNamesCommand(Cache as GameCacheHaloOnlineBase).Execute(passArgs);
             
 
             Console.WriteLine($"[Index: 0x{tag.Index:X4}] {tag.Name}.{tag.Group}");

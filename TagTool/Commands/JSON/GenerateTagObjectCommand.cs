@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.JSON.Objects;
 using TagTool.JSON.Handlers;
 using TagTool.Tags.Resources;
@@ -21,7 +21,7 @@ namespace TagTool.Commands.JSON
     public class GenerateTagObjectCommand : Command
     {
         private GameCache Cache;
-        private GameCacheEldoradoBase CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private string ExportPath = $@"tags";
         private string DataPath = $@"data";
         private string PathPrefix = null;
@@ -32,7 +32,7 @@ namespace TagTool.Commands.JSON
         private Stopwatch StopWatch = new Stopwatch();
         private List<string> ErrorLog = new List<string>();
 
-        public GenerateTagObjectCommand(GameCache cache, GameCacheEldoradoBase cacheContext) : base
+        public GenerateTagObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             false,
             "GenerateTagObject",
@@ -97,7 +97,7 @@ namespace TagTool.Commands.JSON
 
                 if (Recursive)
                 {
-                    tagTable.AddRange(CacheContext.TagCacheEldorado.FindDependencies((CachedTagEldorado)tag));
+                    tagTable.AddRange(CacheContext.TagCacheGenHO.FindDependencies((CachedTagHaloOnline)tag));
                 }
             }
             else if (input.Equals("all", StringComparison.OrdinalIgnoreCase))
@@ -106,7 +106,7 @@ namespace TagTool.Commands.JSON
 
                 if (Cache is GameCacheModPackage modCache)
                 {
-                    tagTable.RemoveAll(x => (x as CachedTagEldorado).IsEmpty());
+                    tagTable.RemoveAll(x => (x as CachedTagHaloOnline).IsEmpty());
                 }
             }
             else 

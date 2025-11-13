@@ -7,7 +7,7 @@ using System.IO;
 using System;
 using TagTool.Tags.Definitions;
 using TagTool.Geometry;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Shaders;
 using System.Diagnostics;
 using TagTool.Common.Logging;
@@ -77,12 +77,12 @@ namespace TagTool.Commands.Shaders
 
         private void DisassembleCacheShaders(GameCache cache)
         {
-            IsXbox = CacheVersionDetection.GetGeneration(cache.Version) != CacheGeneration.Eldorado && cache.Platform != CachePlatform.MCC;
+            IsXbox = CacheVersionDetection.GetGeneration(cache.Version) != CacheGeneration.HaloOnline && cache.Platform != CachePlatform.MCC;
 
             Type entryPointEnum = typeof(EntryPoint);
             if (cache.Version >= CacheVersion.HaloReach)
                 entryPointEnum = typeof(EntryPointReach);
-            else if (cache.Version >= CacheVersion.Eldorado301003 && cache.Version <= CacheVersion.Eldorado700123)
+            else if (cache.Version >= CacheVersion.HaloOnline301003 && cache.Version <= CacheVersion.HaloOnline700123)
                 entryPointEnum = typeof(EntryPointMs30);
 
             using (var stream = cache.OpenCacheRead())
@@ -97,7 +97,7 @@ namespace TagTool.Commands.Shaders
                 {
                     if (tag.Name == null || tag.Name == "" || tag.Group.Tag != "rmdf")
                         continue;
-                    if (cache.Version == CacheVersion.EldoradoED && tag.Name.StartsWith("ms30\\"))
+                    if (cache.Version == CacheVersion.HaloOnlineED && tag.Name.StartsWith("ms30\\"))
                         continue; // ignore ms30 in ms23, disassemble from ms30 directly instead
                     var pieces = tag.Name.Split('\\');
 
@@ -828,7 +828,7 @@ namespace TagTool.Commands.Shaders
         {
             if (version >= CacheVersion.HaloReach)
                 return (int)((EntryPointReach)input);
-            else if (version >= CacheVersion.Eldorado301003 && version <= CacheVersion.Eldorado700123)
+            else if (version >= CacheVersion.HaloOnline301003 && version <= CacheVersion.HaloOnline700123)
                 return (int)((EntryPointMs30)input);
             else
                 return (int)((EntryPoint)input);

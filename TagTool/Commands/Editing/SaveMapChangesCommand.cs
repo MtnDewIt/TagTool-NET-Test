@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
-using TagTool.BlamFile.Eldorado;
+using TagTool.BlamFile.HaloOnline;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.IO;
 
 namespace TagTool.Commands.Editing
@@ -11,9 +11,9 @@ namespace TagTool.Commands.Editing
     public class SaveMapChangesCommand : Command 
     {
         private GameCache Cache { get; }
-        private EldoradoMapFile MapFile { get; }
+        private HaloOnlineMapFile MapFile { get; }
 
-        public SaveMapChangesCommand(GameCache cache, EldoradoMapFile mapFile)
+        public SaveMapChangesCommand(GameCache cache, HaloOnlineMapFile mapFile)
             : base(true,
                   "SaveMapChanges",
                   $"Saves changes made to the current {mapFile.Header.GetName()}.map file instance.",
@@ -28,13 +28,13 @@ namespace TagTool.Commands.Editing
         {
             var mapData = new MapFile
             {
-                MapVersion = CacheFileVersion.Eldorado,
+                MapVersion = CacheFileVersion.HaloOnline,
                 Version = Cache.Version,
                 Platform = Cache.Platform,
                 Header = MapFile.Header,
             };
 
-            if (Cache.Version == CacheVersion.EldoradoED)
+            if (Cache.Version == CacheVersion.HaloOnlineED)
             {
                 mapData.MapFileBlf = new Blf(Cache.Version, Cache.Platform)
                 {

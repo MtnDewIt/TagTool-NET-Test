@@ -10,10 +10,10 @@ namespace TagTool.Commands.Editing
     public class EditMapCommand : Command 
     {
         private CommandContextStack ContextStack { get; }
-        private GameCacheEldoradoBase CacheContext { get; }
+        private GameCacheHaloOnlineBase CacheContext { get; }
         private GameCache Cache { get; }
 
-        public EditMapCommand(CommandContextStack contextStack, GameCacheEldoradoBase cacheContext, GameCache cache) : base(
+        public EditMapCommand(CommandContextStack contextStack, GameCacheHaloOnlineBase cacheContext, GameCache cache) : base(
             false,
 
             "EditMap",

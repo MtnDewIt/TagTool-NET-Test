@@ -1,7 +1,7 @@
 ﻿using System;
 using TagTool.Cache;
 using TagTool.BlamFile;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.JSON.Objects
 {

@@ -9,7 +9,7 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using static TagTool.Commands.Shaders.GenerateShaderCommand;
 using TagTool.Shaders.ShaderGenerator;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Common.Logging;
 
 namespace TagTool.Commands.Shaders
@@ -145,7 +145,7 @@ namespace TagTool.Commands.Shaders
             {
                 Cache.Serialize(stream, task.Result.PixelTag, task.Result.PixelShader);
                 Cache.Serialize(stream, task.Result.VertexTag, task.Result.VertexShader);
-                (Cache as GameCacheEldoradoBase).SaveTagNames();
+                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
             }
 
             Console.Write($"\rSuccessfully recompiled {tasks.Count} {shaderType} shaders. Serializing... Done");
@@ -250,7 +250,7 @@ namespace TagTool.Commands.Shaders
                 task.Result.Template.VertexShader.Name = task.Result.Name;
                 task.Result.Tag.Name = task.Result.Name;
 
-                (Cache as GameCacheEldoradoBase).SaveTagNames();
+                (Cache as GameCacheHaloOnlineBase).SaveTagNames();
 
                 ReserializeDependantsAsync(Cache, stream, task.Result.Template, task.Result.Dependants, task.Result.AllRmopParameters, task.Result.Options);
             }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using TagTool.Bitmaps;
 using TagTool.BlamFile;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Porting.Gen2;
 using TagTool.Porting.Gen3;
-using TagTool.Porting.Eldorado;
+using TagTool.Porting.HaloOnline;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -22,7 +22,7 @@ namespace TagTool.Porting
     {
         protected record struct CacheKey(int Index, string Name);
 
-        public readonly GameCacheEldoradoBase CacheContext;
+        public readonly GameCacheHaloOnlineBase CacheContext;
         public readonly GameCache BlamCache;
         protected readonly TagDefinitionCache TagDefinitionCache = new();
         private readonly HashSet<int> ReplacedTags = [];
@@ -40,7 +40,7 @@ namespace TagTool.Porting
 
         public PortingOptions Options = new();
 
-        protected PortingContext(GameCacheEldoradoBase cacheContext, GameCache blamCache)
+        protected PortingContext(GameCacheHaloOnlineBase cacheContext, GameCache blamCache)
         {
             CacheContext = cacheContext;
             BlamCache = blamCache;
@@ -53,12 +53,12 @@ namespace TagTool.Porting
         /// <param name="sourceCache">Source cache</param>
         /// <returns>PortingContext</returns>
         /// <exception cref="NotSupportedException">Thrown if the cache is not supported</exception>
-        public static PortingContext Create(GameCacheEldoradoBase destCache, GameCache sourceCache)
+        public static PortingContext Create(GameCacheHaloOnlineBase destCache, GameCache sourceCache)
         {
             switch (sourceCache)
             {
-                case GameCacheEldoradoBase:
-                    return new PortingContextEldorado(destCache, sourceCache);
+                case GameCacheHaloOnlineBase:
+                    return new PortingContextHaloOnline(destCache, sourceCache);
                 case GameCacheGen3:
                     return new PortingContextGen3(destCache, sourceCache);
                 case GameCacheGen2:
@@ -111,7 +111,7 @@ namespace TagTool.Porting
                 return null;
 
             // Ignore tags that have been pre-converted
-            if (blamTag is CachedTagEldorado hoTag && hoTag.TagCache == CacheContext.TagCache)
+            if (blamTag is CachedTagHaloOnline hoTag && hoTag.TagCache == CacheContext.TagCache)
                 return blamTag;
 
             var cacheKey = new CacheKey(blamTag.Index, options.TargetTagName ?? blamTag.Name);
@@ -301,7 +301,7 @@ namespace TagTool.Porting
                 var i = CacheContext.TagCache.TagTable.ToList().FindIndex(n => n == null);
 
                 if (i >= 0)
-                    CacheContext.TagCacheEldorado.Tags[i] = (CachedTagEldorado)(edTag = (new CachedTagEldorado(CacheContext.TagCache, i, group)));
+                    CacheContext.TagCacheGenHO.Tags[i] = (CachedTagHaloOnline)(edTag = (new CachedTagHaloOnline(CacheContext.TagCache, i, group)));
             }
             else
             {

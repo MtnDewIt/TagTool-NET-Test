@@ -2,7 +2,7 @@
 
 namespace TagTool.Audio
 {
-    [TagStructure(Size = 0x10, MaxVersion = Cache.CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x10, MaxVersion = Cache.CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x20, MinVersion = Cache.CacheVersion.HaloReach)]
     public class SoundDistanceParameters : TagStructure
     {

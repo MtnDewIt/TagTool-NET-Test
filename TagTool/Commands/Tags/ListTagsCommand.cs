@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Commands.Tags
 {
@@ -118,13 +118,13 @@ namespace TagTool.Commands.Tags
 
 
             // Warn of incompatible options with current cache
-            if (options.Is == "orphan" && !(Cache is GameCacheEldoradoBase))
+            if (options.Is == "orphan" && !(Cache is GameCacheHaloOnlineBase))
                 return new TagToolError(CommandError.CacheUnsupported, @"[is:orphan] unavailable with current cache file.");
 
 
             // Store dependency list if we need to orphan search
             var dependencyList = options.Is != "orphan" ?
-                null : Cache.TagCache.NonNull().SelectMany(tag => ((CachedTagEldorado)tag).Dependencies.Where(dep => dep != tag.Index)).ToHashSet();
+                null : Cache.TagCache.NonNull().SelectMany(tag => ((CachedTagHaloOnline)tag).Dependencies.Where(dep => dep != tag.Index)).ToHashSet();
 
 
             // Loop tags or only duplicates if requested

@@ -7,10 +7,10 @@ namespace TagTool.Shaders
     {
         static public uint GetEntryMask(CacheVersion version, CachePlatform platform, Tags.Definitions.RenderMethodTemplate template)
         {
-            if (version <= CacheVersion.Eldorado235640 && platform == CachePlatform.Original || 
+            if (version <= CacheVersion.HaloOnline235640 && platform == CachePlatform.Original || 
                 version <= CacheVersion.Halo3Retail && platform == CachePlatform.MCC)
                 return (uint)template.ValidEntryPoints;
-            if (version >= CacheVersion.Eldorado301003 && version <= CacheVersion.Eldorado700123 && platform == CachePlatform.Original)
+            if (version >= CacheVersion.HaloOnline301003 && version <= CacheVersion.HaloOnline700123 && platform == CachePlatform.Original)
                 return (uint)template.ValidEntryPointsHO;
             if (version == CacheVersion.Halo3ODST && platform == CachePlatform.MCC)
                 return (uint)template.ValidEntryPointsMCC;

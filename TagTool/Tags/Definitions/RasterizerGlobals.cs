@@ -7,7 +7,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "rasterizer_globals", Size = 0xA4, Tag = "rasg", MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "rasterizer_globals", Size = 0xAC, Tag = "rasg", MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "rasterizer_globals", Size = 0xBC, Tag = "rasg", MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "rasterizer_globals", Size = 0xBC, Tag = "rasg", MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "rasterizer_globals", Size = 0xB0, Tag = "rasg", MinVersion = CacheVersion.HaloReach)]
     public class RasterizerGlobals : TagStructure
 	{
@@ -19,7 +19,7 @@ namespace TagTool.Tags.Definitions
         public List<CachedTag> AtmosphereLookupTables;
         public int RuntimeMMaxVsGprs;
         public int RuntimeMMaxPsGprs;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag ActiveCamoDistortion;
         public CachedTag DefaultPerformanceTemplate;
         public CachedTag DefaultShieldImpact;
@@ -28,11 +28,11 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public CachedTag EmblemLibrary;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag DefaultVisionMode;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public MotionBlurParametersLegacyBlock MotionBlurParametersLegacy;
 
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
@@ -42,9 +42,9 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public float CheapAlbedoBlend; // for all screen space light without shader reference
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint Unknown1;
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint Unknown2;
 
         [TagStructure(Size = 0x14)]
@@ -124,7 +124,7 @@ namespace TagTool.Tags.Definitions
             public CachedTag Bitmap;
         }
 
-        [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x20, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x30, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x34, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]

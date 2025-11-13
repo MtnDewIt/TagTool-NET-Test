@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using TagTool.IO;
 using TagTool.Serialization;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.BlamFile;
 using TagTool.Tags;
 using System.Runtime.InteropServices;
@@ -41,7 +41,7 @@ namespace TagTool.Cache
 
         public List<string> CacheNames { get; set; } = new List<string>();
 
-        public StringTableEldorado StringTable { get; set; }
+        public StringTableHaloOnline StringTable { get; set; }
 
         public Stream FontPackage;
 
@@ -51,7 +51,7 @@ namespace TagTool.Cache
 
         public int GetTagCacheCount() => TagCacheCount;
 
-        public CacheVersion PackageVersion = CacheVersion.EldoradoED;
+        public CacheVersion PackageVersion = CacheVersion.HaloOnlineED;
         public CachePlatform PackagePlatform = CachePlatform.Original;
 
         public void Dispose()
@@ -89,7 +89,7 @@ namespace TagTool.Cache
                 TagCacheNames.Add(names);
                 CacheNames.Add("default");
                 Files = new Dictionary<string, Stream>();
-                StringTable = new StringTableEldorado(CacheVersion.EldoradoED, null);
+                StringTable = new StringTableHaloOnline(CacheVersion.HaloOnlineED, null);
                 Header.SectionTable = new ModPackageSectionTable();
                 unsafe
                 {
@@ -624,7 +624,7 @@ namespace TagTool.Cache
             reader.Read(data, 0, size);
             stringIdCacheStream.Write(data, 0, size);
             stringIdCacheStream.Position = 0;
-            StringTable = new StringTableEldorado(CacheVersion.EldoradoED, stringIdCacheStream);
+            StringTable = new StringTableHaloOnline(CacheVersion.HaloOnlineED, stringIdCacheStream);
         }
 
         private void ReadFontSection(EndianReader reader)

@@ -9,7 +9,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "biped", Tag = "bipd", Size = 0x1D4, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "biped", Tag = "bipd", Size = 0x21C, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "biped", Tag = "bipd", Size = 0x240, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "biped", Tag = "bipd", Size = 0x240, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "biped", Tag = "bipd", Size = 0x2B0, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "biped", Tag = "bipd", Size = 0x2BC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class Biped : Unit
@@ -18,7 +18,7 @@ namespace TagTool.Tags.Definitions
         public BipedDefinitionFlags BipedFlags;
         public Angle StationaryTurningThreshold;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public float RagdollThresholdVelocity; // if the biped dies while moving faster than this velocity, immediately transition to ragdoll.  Use 0 for 'never' (wu/s)
 
         [TagField(ValidTags = new[] { "bdpd" }, MinVersion = CacheVersion.HaloReach)]
@@ -48,7 +48,7 @@ namespace TagTool.Tags.Definitions
         public float MinimumHardLandingVelocity; // below this velocity the biped will not do a soft landing when returning to the ground (world units per second)
         public float MaximumHardLandingVelocity; // the velocity corresponding to the maximum landing time (world units per second)
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float DeathHardLandingVelocity; // the maximum velocity with which a character can strike the ground and live (world units per second)
 
         public float StunDuration;
@@ -64,7 +64,7 @@ namespace TagTool.Tags.Definitions
 
         public float CrouchTransitionTime; // seconds
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public TagFunction CrouchingCameraFunction = new TagFunction
         {
             // TODO: make high-level constructors...
@@ -78,7 +78,7 @@ namespace TagTool.Tags.Definitions
             }
         };
 
-        [TagField(MinVersion = CacheVersion.EldoradoED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED)]
         public List<CameraHeightBlock> CameraHeights;
 
         public Angle CameraInterpolationStart; // looking-downward angle that starts camera interpolation to fp position
@@ -91,9 +91,9 @@ namespace TagTool.Tags.Definitions
         public float RootOffsetCameraDampening;
         public float AutoaimWidth; // world units
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public BipedLockOnFlags LockonFlags; //bitfield32
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float LockonDistance;
 
         public short PhysicsControlNodeIndex;
@@ -110,13 +110,13 @@ namespace TagTool.Tags.Definitions
         public short PelvisNodeIndex;
         public short HeadNodeIndex;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public float FpCrouchMovingAnimSpeedScale;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<BipedWallProximityBlock> WallProximityFeelers;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float HeadshotAccelerationScale; // when the biped ragdolls from a headshot it acceleartes based on this value.  0 defaults to the standard acceleration scale
 
         [TagField(ValidTags = new[] { "effe" })]
@@ -275,7 +275,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x40, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x44, MinVersion = CacheVersion.HaloReach)]
         public class CharacterPhysicsGroundStruct : TagStructure
         {
@@ -347,7 +347,7 @@ namespace TagTool.Tags.Definitions
             public float LobbingDesire; // 1= heavy arc, 0= no arc
         }
 
-        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x30, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x78, MinVersion = CacheVersion.HaloReach)]
         public class BipedGroundFitting : TagStructure
         {
@@ -427,7 +427,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint Unknown4;
 
         [Flags]
@@ -473,7 +473,7 @@ namespace TagTool.Tags.Definitions
             AlwaysLockedByHumanTargeting = 1 << 2
         }
 
-        [TagStructure(Size = 0x24, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x24, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloReach)]
         public class MovementGateBlock : TagStructure
 		{

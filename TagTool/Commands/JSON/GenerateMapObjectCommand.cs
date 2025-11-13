@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.IO;
 using TagTool.JSON.Objects;
 using TagTool.JSON.Handlers;
@@ -18,7 +18,7 @@ namespace TagTool.Commands.JSON
     public class GenerateMapObjectCommand : Command
     {
         private GameCache Cache;
-        private GameCacheEldoradoBase CacheContext;
+        private GameCacheHaloOnlineBase CacheContext;
         private string ExportPath = $@"maps";
         private string PathPrefix = null;
 
@@ -26,7 +26,7 @@ namespace TagTool.Commands.JSON
         private Stopwatch StopWatch = new Stopwatch();
         private List<string> ErrorLog = new List<string>();
 
-        public GenerateMapObjectCommand(GameCache cache, GameCacheEldoradoBase cacheContext) : base
+        public GenerateMapObjectCommand(GameCache cache, GameCacheHaloOnlineBase cacheContext) : base
         (
             false,
             "GenerateMapObject",

@@ -10,7 +10,7 @@ using TagTool.IO;
 using TagTool.Scripting;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using TagTool.BlamFile;
 using TagTool.Cache.Resources;
 
@@ -18,7 +18,7 @@ namespace TagTool.Commands.Modding
 {
     class ApplyModPackageCommand : Command
     {
-        private GameCacheEldoradoBase BaseCache { get; }
+        private GameCacheHaloOnlineBase BaseCache { get; }
 
         private GameCacheModPackage ModCache { get; }
 
@@ -162,7 +162,7 @@ namespace TagTool.Commands.Modding
                 if (ModCache.BaseModPackage.Files != null && ModCache.BaseModPackage.Files.Count > 0)
                 {
 
-                    if (BaseCache is GameCacheEldorado)
+                    if (BaseCache is GameCacheHaloOnline)
                     {
                         Console.WriteLine("Mod Files exist in package. Overwrite in BaseCache? (y/n)");
                         string response = Console.ReadLine();
@@ -217,7 +217,7 @@ namespace TagTool.Commands.Modding
                 return BaseCache.TagCache.GetTag(TagMapping[modTag.Index]);   // get the matching tag in the destination package
 
             // Determine if tag requires conversion
-            if (((CachedTagEldorado)modTag).IsEmpty())
+            if (((CachedTagHaloOnline)modTag).IsEmpty())
             {
                 //modtag references a base tag, figure out which one is it and add it to the mapping
                 CachedTag cacheTag;
@@ -262,9 +262,9 @@ namespace TagTool.Commands.Modding
                 }
                 BaseCache.Serialize(CacheStream, newTag, tagDefinition);
 
-                foreach (var resourcePointer in ((CachedTagEldorado)modTag).ResourcePointerOffsets)
+                foreach (var resourcePointer in ((CachedTagHaloOnline)modTag).ResourcePointerOffsets)
                 {
-                    var newTagHo = newTag as CachedTagEldorado;
+                    var newTagHo = newTag as CachedTagHaloOnline;
                     newTagHo.AddResourceOffset(resourcePointer);
                 }
                 return newTag;
@@ -463,7 +463,7 @@ namespace TagTool.Commands.Modding
             if (tagIndex == -1)
                 return;
 
-            var tag = ConvertCachedTagInstance(modPack, ModCache.TagCacheEldorado.Tags[tagIndex]);
+            var tag = ConvertCachedTagInstance(modPack, ModCache.TagCacheGenHO.Tags[tagIndex]);
             expr.Data = BitConverter.GetBytes(tag.Index).ToArray();
         }
 

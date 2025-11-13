@@ -13,10 +13,10 @@ namespace TagTool.Tags.Definitions
         public CachedTag VertexShader;
         public CachedTag PixelShader;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado235640, Platform = CachePlatform.Original)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
         [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         public EntryPointFlags ValidEntryPoints;
-        [TagField(MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public EntryPointFlagsMs30 ValidEntryPointsHO;
         [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public EntryPointFlagsMCC ValidEntryPointsMCC;
@@ -40,10 +40,10 @@ namespace TagTool.Tags.Definitions
             public CachedTag VertexShader;
             public CachedTag PixelShader;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado235640, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
             [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
             public EntryPointFlags ValidEntryPoints;
-            [TagField(MinVersion = CacheVersion.Eldorado301003, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+            [TagField(MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public EntryPointFlagsMs30 ValidEntryPointsHO;
             [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             public EntryPointFlagsMCC ValidEntryPointsMCC;

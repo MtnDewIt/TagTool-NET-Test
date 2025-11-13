@@ -11,30 +11,30 @@ namespace TagTool.Tags.Definitions
     {
         public List<AchievementInformationBlock> AchievementInformation;
 
-        [TagStructure(Size = 0x18, Platform = CachePlatform.Original, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x18, Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x10, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0x14, MinVersion = CacheVersion.HaloReach)]
         public class AchievementInformationBlock : TagStructure
         {
-            [TagField(MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public Achievements AchievementName;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.MCC)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.MCC)]
             public AchievementsMCC AchievementNameMCC;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public LevelFlags Flags;
 
-            [TagField(Flags = Label, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Flags = Label, MaxVersion = CacheVersion.HaloOnline700123)]
             public StringId RestrictedLevelName;
 
-            [TagField(Flags = Label, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Flags = Label, MaxVersion = CacheVersion.HaloOnline700123)]
             public int MaximumProgressCount;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public int ProgressionTrackingInterval;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public int ChudBitmapSequenceIndex;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]

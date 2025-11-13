@@ -8,7 +8,7 @@ using static TagTool.Tags.Definitions.Effect.Event.ParticleSystem.Emitter.Partic
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "particle_physics", Tag = "pmov", Size = 0x20, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "particle_physics", Tag = "pmov", Size = 0x2C, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "particle_physics", Tag = "pmov", Size = 0x2C, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "particle_physics", Tag = "pmov", Size = 0x30, MinVersion = CacheVersion.HaloReach)]
     public class ParticlePhysics : TagStructure
 	{
@@ -16,7 +16,7 @@ namespace TagTool.Tags.Definitions
         public ParticleMovementFlags Flags;
         public List<ParticleController> Movements;
 
-        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Flags = Padding, Length = 12, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public byte[] Padding_ED;
 
         [TagField(ValidTags = new[] { "bitm" }, MinVersion = CacheVersion.HaloReach)]
@@ -43,7 +43,7 @@ namespace TagTool.Tags.Definitions
             public ParticleMovementType Type;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public ParticleControllerFlags Flags;
-            [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagField(Flags = Padding, Length = 1, MinVersion = CacheVersion.HaloReach)]
             public byte[] Padding0;
             public List<ParticleControllerParameter> Parameters;

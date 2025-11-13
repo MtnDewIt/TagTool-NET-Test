@@ -11,7 +11,7 @@ using TagTool.Tags;
 using TagTool.Commands.Common;
 using TagTool.Animations;
 using TagTool.Tags.Resources;
-using TagTool.Cache.Eldorado;
+using TagTool.Cache.HaloOnline;
 using System.Text;
 using System.Threading.Tasks;
 using TagTool.Common.Logging;
@@ -20,7 +20,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
 {
     public class RebuildFPAnimationCommand : Command
     {
-        private GameCacheEldoradoBase CacheContext { get; }
+        private GameCacheHaloOnlineBase CacheContext { get; }
         private ModelAnimationGraph Animation { get; set; }
         private ModelAnimationGraph.FrameType AnimationType = ModelAnimationGraph.FrameType.Base;
         private ModelAnimationTagResource.GroupMemberMovementDataType FrameInfoType = ModelAnimationTagResource.GroupMemberMovementDataType.None;
@@ -44,7 +44,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                   "If using the reachfix argument, a custom translation can be specified in brackets like so: reachfix[x,y,z]"
                   )
         {
-            CacheContext = (GameCacheEldoradoBase)cachecontext;
+            CacheContext = (GameCacheHaloOnlineBase)cachecontext;
             Animation = animation;
             Jmad = jmad;
         }
@@ -202,10 +202,10 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 AdjustImportedNodes(importer);
 
                 //set up node flags for serialization
-                importer.ProcessNodeFrames((GameCacheEldoradoBase)CacheContext, Animation, AnimationType, FrameInfoType);
+                importer.ProcessNodeFrames((GameCacheHaloOnlineBase)CacheContext, Animation, AnimationType, FrameInfoType);
 
                 //Check the nodes to verify that this animation can be imported to this jmad
-                //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheEldoradoBase)CacheContext))
+                //if (!importer.CompareNodes(Animation.SkeletonNodes, (GameCacheHaloOnlineBase)CacheContext))
                 //    return false;
 
                 int ResourceGroupIndex = Animation.Animations[matchingindex].AnimationData.ResourceGroupIndex;
@@ -219,7 +219,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 {
                     GroupMembers = new TagTool.Tags.TagBlock<ModelAnimationTagResource.GroupMember>()
                 };
-                newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheEldoradoBase)CacheContext));
+                newResource.GroupMembers.Add(importer.SerializeAnimationData((GameCacheHaloOnlineBase)CacheContext));
                 newResource.GroupMembers.AddressType = CacheAddressType.Definition;
                 //serialize the new resource into the cache
                 TagResourceReference resourceref = CacheContext.ResourceCache.CreateModelAnimationGraphResource(newResource);
@@ -247,7 +247,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                 using (var definitionWriter = new EndianWriter(definitionStream, EndianFormat.LittleEndian))
                 using (var dataWriter = new EndianWriter(dataStream, EndianFormat.LittleEndian))
                 {
-                    var pageableResource = Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.EldoradoPageableResource;
+                    var pageableResource = Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.HaloOnlinePageableResource;
 
                     var context = new ResourceDefinitionSerializationContext(dataWriter, definitionWriter, CacheAddressType.Definition);
                     var serializer = new ResourceSerializer(CacheContext.Version);
@@ -263,7 +263,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
                     pageableResource.Resource.FixupLocations = context.FixupLocations;
                     pageableResource.Resource.DefinitionAddress = context.MainStructOffset;
                     pageableResource.Resource.InteropLocations = context.InteropLocations;
-                    Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.EldoradoPageableResource = pageableResource;
+                    Animation.ResourceGroups[ResourceGroupIndex].ResourceReference.HaloOnlinePageableResource = pageableResource;
                 }
                 */
             }
@@ -302,7 +302,7 @@ namespace TagTool.Commands.ModelAnimationGraphs
 
             using (var CacheStream = CacheContext.OpenCacheReadWrite())
             {
-                var mode_tag_ref = CacheContext.TagCacheEldorado.GetTag<RenderModel>(SecondaryModel);
+                var mode_tag_ref = CacheContext.TagCacheGenHO.GetTag<RenderModel>(SecondaryModel);
                 var mode_tag = CacheContext.Deserialize<RenderModel>(CacheStream, mode_tag_ref);
                 var mode_nodes = mode_tag.Nodes;
 

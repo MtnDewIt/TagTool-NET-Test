@@ -10,7 +10,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0xF0, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x208, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
     [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x198, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-    [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x2B8, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x2B8, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x46C, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "chud_globals_definition", Tag = "chgd", Size = 0x210, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
     public class ChudGlobalsDefinition : TagStructure
@@ -21,15 +21,15 @@ namespace TagTool.Tags.Definitions
         [TagField(Platform = CachePlatform.Original)]
         public List<ChudSuckProfile> SuckProfiles;
 
-        [TagField(Platform = CachePlatform.Original, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(Platform = CachePlatform.Original, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<CortanaEffectConfig> CortanaConfigs;
 
         public List<PlayerTrainingDatum> PlayerTrainingData;
         public CampaignMetagameStruct CampaignMetagame;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag DirectDamageMicrotexture;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float MicrotextureScale;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -63,9 +63,9 @@ namespace TagTool.Tags.Definitions
 
         public float MaxAgeSize; // SensorBlipGlowAmount ??
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float SizePower; // SensorBlipGlowRadius ??
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float AlphaPower; // SensorBlipGlowOpacity ??
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -86,11 +86,11 @@ namespace TagTool.Tags.Definitions
 
         public CachedTag MotionSensorBlip;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag GruntBirthdayEffect;
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag CampaignFloodMask; // TentaclePorn
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag CampaignFloodMaskTile; // FloodGoo
 
         // Minimap
@@ -196,38 +196,38 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         public ReachWaypointProperties TerritoryWaypoint;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public float MotionSensorLevelHeightRange = float.MaxValue; // if object outside this height range of player, up/down indicator is used respectively
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
-        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.HaloOnline700123)]
         public float ShieldMinorThreshold;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
-        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.HaloOnline700123)]
         public float ShieldMajorThreshold;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
-        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.HaloOnline700123)]
         public float ShieldCriticalThreshold;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
-        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.HaloOnline700123)]
         public float HealthMinorThreshold;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
-        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.HaloOnline700123)]
         public float HealthMajorThreshold;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
-        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.HaloOnline700123)]
         public float HealthCriticalThreshold;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public RealRgbaColor HealthMultiplyColor0 = new RealRgbaColor(1.0f, 1.0f, 1.0f, 0.0f); 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public RealRgbaColor HealthMultiplyColor1 = new RealRgbaColor(1.0f, 1.0f, 1.0f, 0.0f);
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public RealRgbaColor HealthAdditiveColor0;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public RealRgbaColor HealthAdditiveColor1;
 
         //DAMAGE MASK FUNCTIONS AND VARIABLES
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public TagFunction HealthEffectDamageMaskIntensity = new TagFunction
         {
             Data = new byte[]
@@ -241,16 +241,16 @@ namespace TagTool.Tags.Definitions
             }
         };
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public RealRgbaColor ShieldMultiplyColor0;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public RealRgbaColor ShieldMultiplyColor1;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public RealRgbaColor ShieldAdditiveColor0;
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public RealRgbaColor ShieldAdditiveColor1;
         
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public TagFunction ShieldEffectDamageMaskIntensity = new TagFunction
         {
             Data = new byte[]
@@ -283,27 +283,27 @@ namespace TagTool.Tags.Definitions
         public TagFunction WaypointAngleModifier;
 
         //HO VALUES
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public float SprintFovMultiplier = 1.0f;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public float SprintFovTransitionInTime = 0.5f;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public float SprintFovTransitionOutTime = 1.0f;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag ParallaxData = null;
 
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public CameraShakeFunctions CameraShakeRunning;
-        [TagField(Gen = CacheGeneration.Eldorado)]
+        [TagField(Gen = CacheGeneration.HaloOnline)]
         public CameraShakeFunctions CameraShakeSprinting;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag SurvivalModeMultiplayerIntro = null;  //chdt tagreference which activates in firefight
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public float AchievementDisplayTime = 3.0f;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -313,7 +313,7 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0x1C8, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x23C, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x1FC, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x2B0, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x584, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x534, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class HudGlobal : TagStructure
@@ -321,46 +321,46 @@ namespace TagTool.Tags.Definitions
             [TagField(Flags = Label)]
             public ChudSkinType Type;
             // possible mismatches below
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor PrimaryBackground;         // global 0
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor SecondaryBackground;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor HighlightForeground;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor WarningFlash;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor CrosshairNormal;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor CrosshairEnemy;            // global 5
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor CrosshairFriendly;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor BaseBlip;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor SelfBlip;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor EnemyBlip;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NeutralBlip;               // global 10
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor FriendlyBlip;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor BlipPing;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor ObjectiveBlipOnRadar;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor ObjectiveBlipOffRadar;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointFriendly;          // global 15
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointNeutral;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointEnemy;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointAllyDead;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor PrimaryBackground;         // global 0
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor SecondaryBackground;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor HighlightForeground;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor WarningFlash;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor CrosshairNormal;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor CrosshairEnemy;            // global 5
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor CrosshairFriendly;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor BaseBlip;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor SelfBlip;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor EnemyBlip;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NeutralBlip;               // global 10
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor FriendlyBlip;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor BlipPing;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor ObjectiveBlipOnRadar;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor ObjectiveBlipOffRadar;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointFriendly;          // global 15
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointNeutral;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointEnemy;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointAllyDead;
 
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor NavpointAllyText;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor NavpointAllyText;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor MessageFlashSelf;          // global 20
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor MessageFlashFriendly;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor MessageFlashEnemy;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor MessageFlashNeutral;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor InvincibleShield;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointAllyStandingBy;    // global 25
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointAllyFiring;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointAllyTakingDamage;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)] public ArgbColor NavpointAllySpeaking;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor MessageFlashSelf;          // global 20
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor MessageFlashFriendly;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor MessageFlashEnemy;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor MessageFlashNeutral;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor InvincibleShield;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointAllyStandingBy;    // global 25
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointAllyFiring;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointAllyTakingDamage;
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)] public ArgbColor NavpointAllySpeaking;
 
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor NeutralTerritory;
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor DefaultItemOutline;
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor MagazineItemOutline;
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor DamageItemOutline;
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor AccuracyItemOutline;
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor FastFireItemOutline;
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor RangeItemOutline;
-            [TagField(Gen = CacheGeneration.Eldorado)] public ArgbColor PowerItemOutline;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor NeutralTerritory;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor DefaultItemOutline;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor MagazineItemOutline;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor DamageItemOutline;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor AccuracyItemOutline;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor FastFireItemOutline;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor RangeItemOutline;
+            [TagField(Gen = CacheGeneration.HaloOnline)] public ArgbColor PowerItemOutline;
 
             [TagField(MinVersion = CacheVersion.HaloReach)] public RealArgbColor PrimaryBackgroundReach;
             [TagField(MinVersion = CacheVersion.HaloReach)] public RealArgbColor SecondaryBackgroundReach;
@@ -421,9 +421,9 @@ namespace TagTool.Tags.Definitions
             public CachedTag FragGrenadeSwapSound;
             public CachedTag PlasmaGrenadeSwapSound;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag SpikeGrenadeSwapSound;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag FirebombGrenadeSwapSound;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -451,9 +451,9 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public CachedTag MotionSensorDirectionalArrowFastForward;
 
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public CachedTag GrenadeWaypoint = null;
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public CachedTag PinkGradient = null;
 
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
@@ -474,16 +474,16 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public TagFunction DirectionalDamagePitch;
 
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public float Unknown10;
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public float Unknown11;
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public float Unknown12;
 
             public CachedTag Waypoints;
 
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public CachedTag PlayerWaypoints = null;
 
             public CachedTag ScoreboardHud;
@@ -495,7 +495,7 @@ namespace TagTool.Tags.Definitions
 
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public CachedTag SurvivalHud = null;
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag MetagameScoreboardHud2 = null;
 
             public CachedTag TheaterHud;
@@ -503,10 +503,10 @@ namespace TagTool.Tags.Definitions
             public CachedTag HudStrings;
             public CachedTag Medals;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public List<MultiplayerMedal> MultiplayerMedals;
 
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public CachedTag MedalHudAnimation2 = null;
 
             public CachedTag MedalAnimation;
@@ -521,7 +521,7 @@ namespace TagTool.Tags.Definitions
             public CachedTag JammerDamage;
             public CachedTag JammerDamageSound;
 
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public RealPoint2d GrenadeSchematicsOffset;
 
             public float GrenadeAnchorOffset; // GrenadeScematicsSpacing
@@ -534,7 +534,7 @@ namespace TagTool.Tags.Definitions
             public float WaypointMinDistanceScale;
             public float WaypointMaxDistanceScale;
 
-            [TagField(Gen = CacheGeneration.Eldorado)]
+            [TagField(Gen = CacheGeneration.HaloOnline)]
             public float WaypointScale;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -593,7 +593,7 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0x60, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x130, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-            [TagStructure(Size = 0xE8, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+            [TagStructure(Size = 0xE8, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x64, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
             [TagStructure(Size = 0x110, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             [TagStructure(Size = 0x10C, MinVersion = CacheVersion.HaloReach)]
@@ -603,13 +603,13 @@ namespace TagTool.Tags.Definitions
 
                 //Not present in ODST, ugly version hacks
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                [TagField(MinVersion = CacheVersion.EldoradoED)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                 public Angle WarpSourceFovY; // WarpAngle
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public float WarpSourceAspect; // WarpAmount
                 [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-                [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
                 public float WarpDestinationOffsetZ; // the Z-axis is along the camera line of sight.
 
                 //ODST only warp fields
@@ -690,29 +690,29 @@ namespace TagTool.Tags.Definitions
                 public float SafeFrameVerticalDing; // VerticalStretch
 
                 //these four tagrefs have no function in HO
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public CachedTag DamageBorderHealthEffect = null;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
                 public CachedTag ThirdPersonDamageBorderHealthEffect = null;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 public CachedTag DamageBorderShieldEffect = null;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 public CachedTag ThirdPersonDamageBorderShieldEffect = null;
 
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float StateMessageScale;
 
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public RealPoint2d StateMessageOffset;
 
                 //these only exist in HO
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float ScaleUnknown1; //related to state scale (alternate version?)
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float SpacingUnknown1;
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float ScaleUnknown2;
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float SpacingUnknown2;
 
                 [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
@@ -732,42 +732,42 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public float FireteamStateHorizontalOffset;
 
-                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public float MedalScale;
-                [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public float MedalWidth; // medal spacing
 
                 [TagField(MaxVersion = CacheVersion.Halo3ODST)]
                 public float StateMessageScaleH3;
 
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public RealPoint2d SurvivalMedalsOffset; //referenced by chud anchors -- must be neither campaign nor multiplayer
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float Unknown32;
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public RealPoint2d MultiplayerMedalsOffset; //referenced by chud anchors
 
                 public float MessageScale;
                 public float MessageHeight; // line spacing
                 public int MessageCountDelta; //controls max number of notification lines onscreen
 
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public RealPoint2d MessageOffset;
 
                 //This group of 5 floats is all part of the same system
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float ScaleUnknown;
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float SpacingUnknown;
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public float NullUnknown;
-                [TagField(Gen = CacheGeneration.Eldorado)]
+                [TagField(Gen = CacheGeneration.HaloOnline)]
                 public RealPoint2d UnknownOffset3; //referenced by chud anchors
 
                 //this is present in HO, it is still used in chud anchors
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 public float PDAMessageVerticalOffset;
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 public float PDAMessageHorizontalOffset;
 
                 [Flags]
@@ -787,8 +787,8 @@ namespace TagTool.Tags.Definitions
 
             [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
             [TagStructure(Size = 0x14, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-            [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
-            [TagStructure(Size = 0x18, MinVersion = CacheVersion.Eldorado498295)]
+            [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
+            [TagStructure(Size = 0x18, MinVersion = CacheVersion.HaloOnline498295)]
             public class HudSound : TagStructure
             {
                 [TagField(MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
@@ -802,12 +802,12 @@ namespace TagTool.Tags.Definitions
                 [TagField(MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                 public ChudSoundCueFlags LatchedTo;
 
-                [TagField(MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
                 public uint LatchedTo2;
 
                 public float Scale;
 
-                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
                 [TagField(Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
                 public List<BipedData> Bipeds;
 
@@ -914,7 +914,7 @@ namespace TagTool.Tags.Definitions
                     [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
                     public BipedTypeValue_ODST BipedType_ODST;
 
-                    [TagField(MinVersion = CacheVersion.EldoradoED)]
+                    [TagField(MinVersion = CacheVersion.HaloOnlineED)]
                     public BipedTypeValue_HO BipedType_HO;
 
                     [TagField(Flags = Padding, Length = 3, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
@@ -1033,15 +1033,15 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x48, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x4C, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
         public class CampaignMetagameStruct : TagStructure
         {
             public CachedTag Emblems;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag Medals;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag MedalAnimation;
 
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
@@ -1057,7 +1057,7 @@ namespace TagTool.Tags.Definitions
             public float ScoreboardSpacing;
         }
 
-        [TagStructure(Size = 0x68,  Gen = CacheGeneration.Eldorado)]
+        [TagStructure(Size = 0x68,  Gen = CacheGeneration.HaloOnline)]
         public class CameraShakeFunctions : TagStructure
         {
             public float Period; // seconds

@@ -38,7 +38,7 @@ namespace TagTool.Commands.Tags
             var isConst = false;
 
             //set const by default for other caches
-            if (!CacheVersionDetection.IsInGen(CacheGeneration.Eldorado, Cache.Version))
+            if (!CacheVersionDetection.IsInGen(CacheGeneration.HaloOnline, Cache.Version))
                 isConst = true;
 
             if (args[0].ToLower() == "const")

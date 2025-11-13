@@ -10,9 +10,9 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "object", Tag = "obje", Size = 0xF8, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0x104, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "object", Tag = "obje", Size = 0x120, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado416097)]
-    [TagStructure(Name = "object", Tag = "obje", Size = 0x130, MinVersion = CacheVersion.Eldorado430475, MaxVersion = CacheVersion.Eldorado449175)]
-    [TagStructure(Name = "object", Tag = "obje", Size = 0x120, MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x120, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline416097)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x130, MinVersion = CacheVersion.HaloOnline430475, MaxVersion = CacheVersion.HaloOnline449175)]
+    [TagStructure(Name = "object", Tag = "obje", Size = 0x120, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0x178, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0xF8, Version = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
     [TagStructure(Name = "object", Tag = "obje", Size = 0x108, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
@@ -61,8 +61,8 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "hlmt" })]
         public CachedTag Model;
 
-        [TagField(ValidTags = new[] { "bloc" }, MaxVersion = CacheVersion.EldoradoED)]
-        [TagField(ValidTags = new[] { "bloc", "bipd" }, MinVersion = CacheVersion.Eldorado106708, MaxVersion = CacheVersion.Eldorado449175)]
+        [TagField(ValidTags = new[] { "bloc" }, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(ValidTags = new[] { "bloc", "bipd" }, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline449175)]
         [TagField(ValidTags = new[] { "bloc" }, MinVersion = CacheVersion.HaloReach)]
         public CachedTag CrateObject;
 
@@ -80,7 +80,7 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "foot" })]
         public CachedTag MaterialEffects;
 
-        [TagField(ValidTags = new[] { "arms" }, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(ValidTags = new[] { "arms" }, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag ArmorSounds;
 
         [TagField(ValidTags = new[] { "snd!", "scmb" })]
@@ -115,23 +115,23 @@ namespace TagTool.Tags.Definitions
         [TagField(Gen = CacheGeneration.Third, Platform = CachePlatform.Original)]
         public List<PredictedResource> PredictedResources;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<NodeMap> NodeMaps;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail)]
         public List<MultiplayerObjectBlock> MultiplayerObject;
 
-        [TagField(MinVersion = CacheVersion.Eldorado430475)]
+        [TagField(MinVersion = CacheVersion.HaloOnline430475)]
         public CachedTag SimulationInterpolation;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         public List<TagReferenceBlock> HealthPacks;
 
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<SpawnEffectsBlock> SpawnEffects;
 
-        [TagField(MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public List<PathfindingSphere> PathfindingSpheres;
 
         [TagField(Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
@@ -184,7 +184,7 @@ namespace TagTool.Tags.Definitions
             public TagReference CampaignSpawnEffect;
         }
 
-        [TagStructure(Size = 0x28, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x28, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x2C, MinVersion = CacheVersion.HaloReach)]
         public class EarlyMoverProperty : TagStructure
         {
@@ -202,7 +202,7 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xC, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x10, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
         public class AiProperty : TagStructure
@@ -234,7 +234,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x2C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x2C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x40, MinVersion = CacheVersion.HaloReach)]
         public class Function : TagStructure
         {
@@ -281,11 +281,11 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x18, MaxVersion = CacheVersion.Halo2PC)]
         [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
         public class Attachment : TagStructure
         {
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public AtlasFlagsValue AtlasFlags;
 
             [TagField(Flags = Label, ValidTags = new[] { "ligh", "gldf", "ltvl", "effe", "lsnd", "lens", "cpem" })]
@@ -372,37 +372,37 @@ namespace TagTool.Tags.Definitions
             public sbyte TargetNode;
         }
 
-        [TagStructure(Size = 0xC4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0xC4, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0xBC, MinVersion = CacheVersion.HaloReach)]
         public class MultiplayerObjectBlock : TagStructure
         {
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public GameEngineFlagsReach ReachEngineFlags;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public GameEngineSubTypeFlags EngineFlags;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public MultiplayerObjectType Type;
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public MultiplayerObjectTypeReach TypeReach;
 
             public MultiplayerTeleporterPassabilityFlags TeleporterPassability;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public MultiplayerObjectFlags Flags;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public MultiplayerObjectBoundaryShape BoundaryShape;
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public MultiplayerObjectSpawnTimerType SpawnTimerType;
 
             [TagField(Flags = Padding, Length = 1, MinVersion = CacheVersion.HaloReach)]
             public byte[] pad = new byte[1];
 
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public short DefaultSpawnTime; // seconds
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public short DefaultAbandonTime;
 
             public float BoundaryWidthRadius;
@@ -423,9 +423,9 @@ namespace TagTool.Tags.Definitions
 
             //only the first of these exists in Reach
             public float StandardRespawnZoneWeight;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float FlagAwayRespawnZoneWeight;
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float FlagAtHomeRespawnZoneWeight;
 
             public StringId BoundaryCenterMarker;
@@ -570,7 +570,7 @@ namespace TagTool.Tags.Definitions
         EffectScenery
     }
 
-    public enum GameObjectTypeEldorado
+    public enum GameObjectTypeHaloOnline
     {
         None = -1,
         Biped,
@@ -619,11 +619,11 @@ namespace TagTool.Tags.Definitions
         [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         public GameObjectTypeHalo3Retail Halo3Retail = GameObjectTypeHalo3Retail.None;
 
-        [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
+        [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
         public GameObjectTypeHalo3ODST Halo3ODST = GameObjectTypeHalo3ODST.None;
 
-        [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
-        public GameObjectTypeEldorado Eldorado = GameObjectTypeEldorado.None;
+        [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+        public GameObjectTypeHaloOnline HaloOnline = GameObjectTypeHaloOnline.None;
 
         [TagField(EnumType = typeof(sbyte), MinVersion = CacheVersion.HaloReach)]
         public GameObjectTypeHalo3Retail HaloReach = GameObjectTypeHalo3Retail.None;
@@ -634,10 +634,10 @@ namespace TagTool.Tags.Definitions
                 return Halo2;
             else if (version <= CacheVersion.Halo3Retail)
                 return Halo3Retail;
-            else if (version <= CacheVersion.Eldorado449175)
+            else if (version <= CacheVersion.HaloOnline449175)
                 return Halo3ODST;
-            else if (version <= CacheVersion.Eldorado700123)
-                return Eldorado;
+            else if (version <= CacheVersion.HaloOnline700123)
+                return HaloOnline;
             else if (version <= CacheVersion.HaloReach)
                 return HaloReach;
             else
@@ -650,10 +650,10 @@ namespace TagTool.Tags.Definitions
                 Halo2 = value.ConvertLexical<GameObjectTypeHalo2>();
             else if (version <= CacheVersion.Halo3Retail)
                 Halo3Retail = value.ConvertLexical<GameObjectTypeHalo3Retail>();
-            else if (version <= CacheVersion.Eldorado449175)
+            else if (version <= CacheVersion.HaloOnline449175)
                 Halo3ODST = value.ConvertLexical<GameObjectTypeHalo3ODST>();
-            else if (version <= CacheVersion.Eldorado700123)
-                Eldorado = value.ConvertLexical<GameObjectTypeEldorado>();
+            else if (version <= CacheVersion.HaloOnline700123)
+                HaloOnline = value.ConvertLexical<GameObjectTypeHaloOnline>();
             else if (version <= CacheVersion.HaloReach)
                 HaloReach = value.ConvertLexical<GameObjectTypeHalo3Retail>();
             else
@@ -670,11 +670,11 @@ namespace TagTool.Tags.Definitions
         [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         public GameObjectTypeHalo3Retail Halo3Retail = GameObjectTypeHalo3Retail.None;
 
-        [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
+        [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
         public GameObjectTypeHalo3ODST Halo3ODST = GameObjectTypeHalo3ODST.None;
 
-        [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
-        public GameObjectTypeEldorado Eldorado = GameObjectTypeEldorado.None;
+        [TagField(EnumType = typeof(short), MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+        public GameObjectTypeHaloOnline HaloOnline = GameObjectTypeHaloOnline.None;
 
         [TagField(EnumType = typeof(short), MinVersion = CacheVersion.HaloReach)]
         public GameObjectTypeHalo3Retail HaloReach = GameObjectTypeHalo3Retail.None;
@@ -685,10 +685,10 @@ namespace TagTool.Tags.Definitions
                 return Halo2;
             else if (version <= CacheVersion.Halo3Retail)
                 return Halo3Retail;
-            else if (version <= CacheVersion.Eldorado449175)
+            else if (version <= CacheVersion.HaloOnline449175)
                 return Halo3ODST;
-            else if (version <= CacheVersion.Eldorado700123)
-                return Eldorado;
+            else if (version <= CacheVersion.HaloOnline700123)
+                return HaloOnline;
             else if (version <= CacheVersion.HaloReach)
                 return HaloReach;
             else
@@ -701,10 +701,10 @@ namespace TagTool.Tags.Definitions
                 Halo2 = value.ConvertLexical<GameObjectTypeHalo2>();
             else if (version <= CacheVersion.Halo3Retail)
                 Halo3Retail = value.ConvertLexical<GameObjectTypeHalo3Retail>();
-            else if (version <= CacheVersion.Eldorado449175)
+            else if (version <= CacheVersion.HaloOnline449175)
                 Halo3ODST = value.ConvertLexical<GameObjectTypeHalo3ODST>();
-            else if (version <= CacheVersion.Eldorado700123)
-                Eldorado = value.ConvertLexical<GameObjectTypeEldorado>();
+            else if (version <= CacheVersion.HaloOnline700123)
+                HaloOnline = value.ConvertLexical<GameObjectTypeHaloOnline>();
             else if (version <= CacheVersion.HaloReach)
                 HaloReach = value.ConvertLexical<GameObjectTypeHalo3Retail>();
             else
@@ -721,11 +721,11 @@ namespace TagTool.Tags.Definitions
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         public GameObjectTypeHalo3Retail Halo3Retail = GameObjectTypeHalo3Retail.None;
 
-        [TagField(EnumType = typeof(int), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
+        [TagField(EnumType = typeof(int), MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
         public GameObjectTypeHalo3ODST Halo3ODST = GameObjectTypeHalo3ODST.None;
 
-        [TagField(EnumType = typeof(int), MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
-        public GameObjectTypeEldorado Eldorado = GameObjectTypeEldorado.None;
+        [TagField(EnumType = typeof(int), MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
+        public GameObjectTypeHaloOnline HaloOnline = GameObjectTypeHaloOnline.None;
 
         [TagField(EnumType = typeof(int), MinVersion = CacheVersion.HaloReach)]
         public GameObjectTypeHalo3Retail HaloReach = GameObjectTypeHalo3Retail.None;
@@ -736,10 +736,10 @@ namespace TagTool.Tags.Definitions
                 return Halo2;
             else if (version <= CacheVersion.Halo3Retail)
                 return Halo3Retail;
-            else if (version <= CacheVersion.Eldorado449175)
+            else if (version <= CacheVersion.HaloOnline449175)
                 return Halo3ODST;
-            else if (version <= CacheVersion.Eldorado700123)
-                return Eldorado;
+            else if (version <= CacheVersion.HaloOnline700123)
+                return HaloOnline;
             else if (version <= CacheVersion.HaloReach)
                 return HaloReach;
             else
@@ -752,10 +752,10 @@ namespace TagTool.Tags.Definitions
                 Halo2 = value.ConvertLexical<GameObjectTypeHalo2>();
             else if (version <= CacheVersion.Halo3Retail)
                 Halo3Retail = value.ConvertLexical<GameObjectTypeHalo3Retail>();
-            else if (version <= CacheVersion.Eldorado449175)
+            else if (version <= CacheVersion.HaloOnline449175)
                 Halo3ODST = value.ConvertLexical<GameObjectTypeHalo3ODST>();
-            else if (version <= CacheVersion.Eldorado700123)
-                Eldorado = value.ConvertLexical<GameObjectTypeEldorado>();
+            else if (version <= CacheVersion.HaloOnline700123)
+                HaloOnline = value.ConvertLexical<GameObjectTypeHaloOnline>();
             else if (version <= CacheVersion.HaloReach)
                 HaloReach = value.ConvertLexical<GameObjectTypeHalo3Retail>();
             else
@@ -825,7 +825,7 @@ namespace TagTool.Tags.Definitions
     }
 
     [Flags]
-    public enum ObjectTypeFlagsEldorado : ushort
+    public enum ObjectTypeFlagsHaloOnline : ushort
     {
         None,
         Biped = 1 << 0,
@@ -855,11 +855,11 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
         public ObjectTypeFlagsHalo3Retail Halo3Retail;
 
-        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado449175)]
+        [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline449175)]
         public ObjectTypeFlagsHalo3ODST Halo3ODST;
 
-        [TagField(MinVersion = CacheVersion.Eldorado498295)]
-        public ObjectTypeFlagsEldorado Eldorado;
+        [TagField(MinVersion = CacheVersion.HaloOnline498295)]
+        public ObjectTypeFlagsHaloOnline HaloOnline;
     }
 
     [Flags]
@@ -884,11 +884,11 @@ namespace TagTool.Tags.Definitions
         DamageNotBlockedByObstructions = 1 << 15
     }
 
-    [TagStructure(Size = 0x2, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Size = 0x2, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Size = 0x4, MinVersion = CacheVersion.HaloReach)]
     public class ObjectDefinitionFlags : VersionedFlags
     {
-        [TagField(MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         public ObjectFlags Flags;
 
         [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]

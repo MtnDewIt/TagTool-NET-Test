@@ -5,7 +5,7 @@ using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "decorator_set", Tag = "dctr", Size = 0x80, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "decorator_set", Tag = "dctr", Size = 0x80, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "decorator_set", Tag = "dctr", Size = 0x100, MinVersion = CacheVersion.HaloReach)]
     public class DecoratorSet : TagStructure
 	{
@@ -25,7 +25,7 @@ namespace TagTool.Tags.Definitions
 
         public DecoratorFlags RenderFlags;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public DecoratorShader RenderShader;
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public DecoratorShaderReach RenderShaderReach;
@@ -50,7 +50,7 @@ namespace TagTool.Tags.Definitions
 
         public List<GlobalDecoratorType> DecoratorTypes;
 
-        [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x5C, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x64, MinVersion = CacheVersion.HaloReach)] // verify
         public class GlobalDecoratorType : TagStructure
         {
@@ -129,13 +129,13 @@ namespace TagTool.Tags.Definitions
             Hanging
         }
 
-        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagStructure(Size = 0x10, MaxVersion = CacheVersion.HaloOnline700123)]
         [TagStructure(Size = 0x60, MinVersion = CacheVersion.HaloReach)]
         public class DecoratorLodTransition : TagStructure
         {
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float StartFade; // decorators will start to fade at this distance
-            [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public float EndFade; // decorators will fade completely and be culled at this distance
 
             public float EarlyCull; // cull vertices this percentage sooner than end fade [0-1]

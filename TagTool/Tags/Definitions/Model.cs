@@ -9,8 +9,8 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "model", Tag = "hlmt", Size = 0x188, MaxVersion = CacheVersion.Halo3Retail)]
     [TagStructure(Name = "model", Tag = "hlmt", Size = 0x1A0, MaxVersion = CacheVersion.Halo3ODST)]
-    [TagStructure(Name = "model", Tag = "hlmt", Size = 0x1B4, MaxVersion = CacheVersion.Eldorado449175)]
-    [TagStructure(Name = "model", Tag = "hlmt", Size = 0x1B8, MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
+    [TagStructure(Name = "model", Tag = "hlmt", Size = 0x1B4, MaxVersion = CacheVersion.HaloOnline449175)]
+    [TagStructure(Name = "model", Tag = "hlmt", Size = 0x1B8, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
     [TagStructure(Name = "model", Tag = "hlmt", Size = 0x220, MinVersion = CacheVersion.HaloReach)]
     public partial class Model : TagStructure
 	{
@@ -48,7 +48,7 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public float TessellationMaxDrawDistance;
 
-        [TagField(ValidTags = new[] { "mode" }, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(ValidTags = new[] { "mode" }, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag LodModel;
 
         public List<Variant> Variants;
@@ -79,7 +79,7 @@ namespace TagTool.Tags.Definitions
         public List<Node> Nodes;
         public int RuntimeNodeListChecksum;
 
-        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public List<ModelObjectDatum> ModelObjectData;
 
         [TagField(ValidTags = new[] { "udlg" })] public CachedTag PrimaryDialogue;
@@ -94,7 +94,7 @@ namespace TagTool.Tags.Definitions
         public int[] RenderOnlySectionFlags = new int[8];
 
         public RuntimeFlagsValue RuntimeFlags;
-        [TagField(MinVersion = CacheVersion.Eldorado498295, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123)]
         public uint Unknown3;
 
         public List<ScenarioLoadParametersBlock> ScenarioLoadParameters;
@@ -124,9 +124,9 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "shit" })]
         public CachedTag ShieldImpactFirstPerson;
 
-        [TagField(ValidTags = new[] { "shit" }, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(ValidTags = new[] { "shit" }, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag OvershieldThirdPerson;
-        [TagField(ValidTags = new[] { "shit" }, MinVersion = CacheVersion.EldoradoED, MaxVersion = CacheVersion.Eldorado700123)]
+        [TagField(ValidTags = new[] { "shit" }, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag OvershieldFirstPerson;
 
         //Reach has the model object data block inlined here
@@ -177,29 +177,29 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x38, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x30, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
-        [TagStructure(Size = 0x50, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x50, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0x48, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x38, MinVersion = CacheVersion.HaloReach)]
         public class Variant : TagStructure
         {
             public StringId Name;
 
-            [TagField(ValidTags = new[] { "udlg" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(ValidTags = new[] { "udlg" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public CachedTag Voice; // The dialogue tag for this model variant
 
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public StringId DialogueEffect;
 
-            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public OdstReconVariantEnum AiCharacter;
 
-            [TagField(Length = 0x3, Flags = Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagField(Length = 0x3, Flags = Padding, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public byte[] Padding0;
 
             [TagField(Length = 16)]
             public sbyte[] ModelRegionIndices = new sbyte[16];
 
-            [TagField(MinVersion = CacheVersion.Eldorado700123, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+            [TagField(MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public StringId SkinName;
 
             public List<Region> Regions;
@@ -207,8 +207,8 @@ namespace TagTool.Tags.Definitions
 
             public int InstanceGroupIndex;
 
-            [TagField(Length = 0x8, Flags = Padding, MaxVersion = CacheVersion.Eldorado604673, Platform = CachePlatform.Original)]
-            [TagField(Length = 0x4, Flags = Padding, MinVersion = CacheVersion.Eldorado700123, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+            [TagField(Length = 0x8, Flags = Padding, MaxVersion = CacheVersion.HaloOnline604673, Platform = CachePlatform.Original)]
+            [TagField(Length = 0x4, Flags = Padding, MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             [TagField(Length = 0x8, Flags = Padding, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
             [TagField(Length = 0x8, Flags = Padding, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.MCC)]
             public byte[] Padding1;
@@ -259,7 +259,7 @@ namespace TagTool.Tags.Definitions
                         Bit1 = 1 << 1
                     }
 
-                    [TagStructure(Size = 0x20, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+                    [TagStructure(Size = 0x20, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
                     [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloReach)]
                     public class State : TagStructure
 					{
@@ -268,9 +268,9 @@ namespace TagTool.Tags.Definitions
                         public PropertyFlagsValue PropertyFlags;
                         public StateValue State2;
 
-                        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+                        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                         public CachedTag LoopingEffect;
-                        [TagField(MaxVersion = CacheVersion.Eldorado700123)]
+                        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                         public StringId LoopingEffectMarkerName;
 
                         public float InitialProbability;
@@ -317,7 +317,7 @@ namespace TagTool.Tags.Definitions
                 }
             }
 
-            [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+            [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
             [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
             public class Object : TagStructure
 			{
@@ -798,7 +798,7 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x100, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123, Platform = CachePlatform.Original)]
+        [TagStructure(Size = 0x100, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xA4, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x10C, MinVersion = CacheVersion.HaloReach)]
         public class GlobalDamageInfoBlock : TagStructure
@@ -939,7 +939,7 @@ namespace TagTool.Tags.Definitions
                     AllowDamageResponseOverflow = 1 << 11
                 }
 
-                [TagStructure(Size = 0x88, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Eldorado700123)]
+                [TagStructure(Size = 0x88, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
                 [TagStructure(Size = 0x90, MinVersion = CacheVersion.HaloReach)]
                 public class InstantResponse : TagStructure
 				{
@@ -1164,12 +1164,12 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x20, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0x28, MinVersion = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0x28, MinVersion = CacheVersion.HaloOnlineED)]
         public class Target : TagStructure
 		{
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public ByteFlags Flags;
-            [TagField(MinVersion = CacheVersion.EldoradoED, Flags = Padding, Length = 3)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED, Flags = Padding, Length = 3)]
             public byte[] pad = new byte[3];
 
             public StringId MarkerName;
@@ -1205,17 +1205,17 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x8, MaxVersion = CacheVersion.Halo3ODST)]
-        [TagStructure(Size = 0xC, MinVersion = CacheVersion.EldoradoED)]
+        [TagStructure(Size = 0xC, MinVersion = CacheVersion.HaloOnlineED)]
         public class TargetLockOnData : TagStructure
         {
             [TagField(MaxVersion = CacheVersion.Halo3ODST)]
             public FlagsValueOld FlagsOld;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public FlagsValue Flags;
-            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.EldoradoED)]
+            [TagField(Flags = TagFieldFlags.Padding, Length = 0x3, MinVersion = CacheVersion.HaloOnlineED)]
             public byte[] Padding1;
             public float LockOnDistance;
-            [TagField(MinVersion = CacheVersion.EldoradoED)]
+            [TagField(MinVersion = CacheVersion.HaloOnlineED)]
             public StringId TrackingType; // a weapon can track/lock on this target if this string is in the weapon's tracking block
 
             [Flags]
