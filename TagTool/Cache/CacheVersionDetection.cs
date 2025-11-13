@@ -96,8 +96,11 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "08117.07.03.07.1702.delta":
+                    version = CacheVersion.Halo3March7Delta;
+                    cachePlatform = CachePlatform.Original;
+                    break;
                 case "08172.07.03.08.2240.delta":
-                    version = CacheVersion.Halo3MarchDelta;
+                    version = CacheVersion.Halo3March8Delta;
                     cachePlatform = CachePlatform.Original;
                     break;
                 case "Mar  9 2007 22:22:32":
@@ -396,9 +399,16 @@ namespace TagTool.Cache
 
 			switch (version)
 			{
-				case CacheVersion.Halo3Beta:
-				case CacheVersion.Halo3Retail:
-				case CacheVersion.Halo3ODST:
+                case CacheVersion.Halo3PreAlpha:
+                case CacheVersion.Halo3Alpha:
+                case CacheVersion.Halo3Beta:
+                case CacheVersion.Halo3March7Delta:
+                case CacheVersion.Halo3March8Delta:
+                case CacheVersion.Halo3March9Delta:
+                case CacheVersion.Halo3Epsilon:
+                case CacheVersion.Halo3DLC:
+                case CacheVersion.Halo3Retail:
+                case CacheVersion.Halo3ODST:
                 case CacheVersion.HaloReachAlpha:
                 case CacheVersion.HaloReachPreBeta:
                 case CacheVersion.HaloReachBeta:
@@ -659,7 +669,14 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Beta:
                     return CacheGeneration.Second;
 
+                case CacheVersion.Halo3PreAlpha:
+                case CacheVersion.Halo3Alpha:
                 case CacheVersion.Halo3Beta:
+                case CacheVersion.Halo3March7Delta:
+                case CacheVersion.Halo3March8Delta:
+                case CacheVersion.Halo3March9Delta:
+                case CacheVersion.Halo3Epsilon:
+                case CacheVersion.Halo3DLC:
                 case CacheVersion.Halo3Retail:
                 case CacheVersion.Halo3ODST:
                 case CacheVersion.HaloReachAlpha:
@@ -729,7 +746,14 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Xbox:
                 case CacheVersion.Halo2PC:
                     return GameTitle.Halo2;
+                case CacheVersion.Halo3PreAlpha:
+                case CacheVersion.Halo3Alpha:
                 case CacheVersion.Halo3Beta:
+                case CacheVersion.Halo3March7Delta:
+                case CacheVersion.Halo3March8Delta:
+                case CacheVersion.Halo3March9Delta:
+                case CacheVersion.Halo3Epsilon:
+                case CacheVersion.Halo3DLC:
                 case CacheVersion.Halo3Retail:
                     return GameTitle.Halo3;
                 case CacheVersion.Halo3ODST:
@@ -813,7 +837,8 @@ namespace TagTool.Cache
         Halo3PreAlpha,
         Halo3Alpha,
         Halo3Beta,
-        Halo3MarchDelta,
+        Halo3March7Delta,
+        Halo3March8Delta,
         Halo3March9Delta,
         Halo3Epsilon,
         Halo3DLC,

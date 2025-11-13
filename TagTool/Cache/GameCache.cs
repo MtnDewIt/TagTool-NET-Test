@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using TagTool.Audio.Bank;
 using TagTool.BlamFile;
 using TagTool.Cache.HaloOnline;
 using TagTool.Cache.Monolithic;
 using TagTool.Cache.Resources;
-using TagTool.Common;
 using TagTool.IO;
 using TagTool.Scripting;
 using TagTool.Serialization;
-using TagTool.Tags;
 
 namespace TagTool.Cache
 {
@@ -90,8 +86,14 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2PC:
                     return new GameCacheGen2(map, file);
 
+                case CacheVersion.Halo3PreAlpha:
+                case CacheVersion.Halo3Alpha:
                 case CacheVersion.Halo3Beta:
+                case CacheVersion.Halo3March7Delta:
+                case CacheVersion.Halo3March8Delta:
+                case CacheVersion.Halo3March9Delta:
                 case CacheVersion.Halo3Epsilon:
+                case CacheVersion.Halo3DLC:
                 case CacheVersion.Halo3Retail:
                 case CacheVersion.Halo3ODST:
                 case CacheVersion.HaloReachAlpha:

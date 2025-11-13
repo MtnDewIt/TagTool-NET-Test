@@ -33,6 +33,17 @@ namespace TagTool.Cache
         Count
     }
 
+    public enum CacheFilePartitionTypeDLC : int
+    {
+        ResourcesTags,
+        SoundResourcesTags,
+        GlobalTags,
+        BaseTags,
+        MapTags,
+
+        Count
+    }
+
     public enum CacheFilePartitionTypeBeta : int
     {
         ResourcesTags,

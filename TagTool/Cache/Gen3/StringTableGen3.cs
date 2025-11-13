@@ -27,11 +27,29 @@ namespace TagTool.Cache.Gen3
             {
                 switch (baseMapFile.Version)
                 {
+                    case CacheVersion.Halo3PreAlpha:
+                        Resolver = new StringIdResolverHalo3PreAlpha();
+                        break;
+
+                    case CacheVersion.Halo3Alpha:
+                        Resolver = new StringIdResolverHalo3Alpha();
+                        break;
+
                     case CacheVersion.Halo3Beta:
                         Resolver = new StringIdResolverHalo3Beta();
                         break;
 
+                    case CacheVersion.Halo3March7Delta:
+                        Resolver = new StringIdResolverHalo3March7Delta();
+                        break;
+
+                    case CacheVersion.Halo3March8Delta:
+                    case CacheVersion.Halo3March9Delta:
+                        Resolver = new StringIdResolverHalo3MarchDelta();
+                        break;
+
                     case CacheVersion.Halo3Epsilon:
+                    case CacheVersion.Halo3DLC:
                     case CacheVersion.Halo3Retail:
                         Resolver = new StringIdResolverHalo3();
                         break;
@@ -69,7 +87,7 @@ namespace TagTool.Cache.Gen3
 
             uint stringIdTableOffset;
             uint stringIdDataOffset;
-            if (baseMapFile.Version > CacheVersion.Halo3Beta)
+            if (baseMapFile.Version > CacheVersion.Halo3Epsilon)
             {
                 stringIdTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
                 stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
