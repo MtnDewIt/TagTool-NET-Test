@@ -130,6 +130,19 @@ namespace TagTool.Commands.Modding
             Cache.BaseModPackage.MapIds.RemoveAt(mapFileIndex);
             Cache.BaseModPackage.MapFileStreams.RemoveAt(mapFileIndex);
             Cache.BaseModPackage.MapToCacheMapping.Remove(mapFileIndex);
+
+            var keysToShift = Cache.BaseModPackage.MapToCacheMapping.Keys
+                .Where(k => k > mapFileIndex)
+                .OrderBy(k => k)
+                .ToList();
+
+            foreach (var key in keysToShift)
+            {
+                var value = Cache.BaseModPackage.MapToCacheMapping[key];
+                Cache.BaseModPackage.MapToCacheMapping.Remove(key);
+                Cache.BaseModPackage.MapToCacheMapping[key - 1] = value;
+            }
+
             Console.WriteLine($"Map deleted successfully.");
             return true;
         }
