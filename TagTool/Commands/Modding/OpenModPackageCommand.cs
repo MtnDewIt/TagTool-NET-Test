@@ -30,11 +30,8 @@ namespace TagTool.Commands.Modding
 
         public override object Execute(List<string> args)
         {
-            bool useLargeStreams = false;
-
             if (args.Count > 1 && args[0].ToLower() == "large")
             {
-                useLargeStreams = true;
                 args.RemoveAt(0);
             }
 

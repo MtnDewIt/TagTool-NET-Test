@@ -8,10 +8,10 @@ using TagTool.Geometry;
 
 namespace TagTool.Shaders
 {
-    /// <summary>
+    /*/// <summary>
     /// Utility class for converting shader bytecode between rendering pipelines.
     /// </summary>
-    /*public static class ShaderConverter
+    public static class ShaderConverter
     {
         /// <summary>
         /// Converts a new (1.235640+) vertex shader to one compatible with the 1.106708 pipeline.

@@ -798,7 +798,7 @@ namespace TagTool.Porting.Gen2
                         }
                     }
                     catch (Exception ex) {
-                        Log.Warning($"Failed to add gpu functions");
+                        Log.Warning($"Failed to add gpu functions: {ex.Message}");
                     }
 
                     property.MInnardsY.IsConstant = 0;

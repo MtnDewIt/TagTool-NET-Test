@@ -720,7 +720,7 @@ namespace TagTool.Geometry
                         baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Clamp" ? TextureWrapMode.Clamp :
                         baseMapTexture.SamplerAddressMode.AddressV.ToString() == "Mirror" ? TextureWrapMode.Mirror :
                         TextureWrapMode.Wrap;
-                    material.AddMaterialTexture(ref baseMapTS);
+                    material.AddMaterialTexture(baseMapTS);
                 }
 
                 Scene.Materials.Add(material);
@@ -813,21 +813,15 @@ namespace TagTool.Geometry
                 // Flip the model right side up.
                 mesh.Vertices.Add(new Vector3D(vertex.Position.X, vertex.Position.Y, vertex.Position.Z)); //vertex.Position.Z, -vertex.Position.Y
 
-                if (vertex.Normal != null)
-                    mesh.Normals.Add(vertex.Normal);
+                mesh.Normals.Add(vertex.Normal);
 
-                if (vertex.TexCoords != null)
-                {
-                    // Y didn't like being shifted before decompression, so do it here.
-                    mesh.TextureCoordinateChannels[textureCoordinateIndex].Add(
-                        new Vector3D(vertex.TexCoords.X, 1 - vertex.TexCoords.Y, vertex.TexCoords.Z));
-                }
+                // Y didn't like being shifted before decompression, so do it here.
+                mesh.TextureCoordinateChannels[textureCoordinateIndex].Add(
+                    new Vector3D(vertex.TexCoords.X, 1 - vertex.TexCoords.Y, vertex.TexCoords.Z));
 
-                if (vertex.Tangents != null)
-                    mesh.Tangents.Add(vertex.Tangents);
-
-                if (vertex.Binormals != null)
-                    mesh.BiTangents.Add(vertex.Binormals);
+          
+                mesh.Tangents.Add(vertex.Tangents);
+                mesh.BiTangents.Add(vertex.Binormals);
 
                 if (vertex.Indices != null)
                 {

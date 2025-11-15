@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TagTool.Common.Logging;
 
+// Suppress warning for lowercase class names
+#pragma warning disable CS8981, IDE1006
+
 namespace TagTool.Geometry.BspCollisionGeometry.Utils
 {
     public class LeafMap

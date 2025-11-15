@@ -77,7 +77,7 @@ namespace TagTool.Tags.Definitions
         [TagField(ValidTags = new[] { "snd!", "effe" })]
         public CachedTag Detonation;
         [TagField(ValidTags = new[] { "jpt!", "drdf" })]
-        public CachedTag DetonationDamageEffect;
+        public CachedTag DetonationDamageEffect; // TODO: consider what to do about the conflict. Leaving for now to avoid breaking changes
 
         [TagField(ValidTags = new[] { "jpt!" }, MaxVersion = CacheVersion.HaloOnline700123)]
         public CachedTag PlayerMeleeDamage;

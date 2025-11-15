@@ -413,9 +413,9 @@ namespace TagTool.Porting.Gen2
                 luminances.Add(new float[image.Width * image.Height]);
             }
 
-
-            RealVector3d incident_direction = new RealVector3d();
             /*
+            RealVector3d incident_direction = new RealVector3d();
+            
             //NO INCIDENT DIRECTION FOR NOW DUE TO ARTIFACTS
             //get average incident direction across cluster mesh
             RealVector3d incident_direction = mesh.RawVertices[0].PrimaryLightmapIncidentDirection;

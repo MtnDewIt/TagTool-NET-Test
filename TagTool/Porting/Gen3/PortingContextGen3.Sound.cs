@@ -170,8 +170,8 @@ namespace TagTool.Porting.Gen3
 
         private BlamSound ConvertAudio(Sound sound, string blamTag_Name, Compression targetFormat, int pitchRangeIndex, int permutationIndex, Permutation blamPermutation)
         {
-            bool useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
-            string soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
+            bool useCache = Options.AudioCache != null;
+            string soundCachePath = Options.AudioCache;
 
             BlamSound audioData = null;
 
