@@ -342,14 +342,11 @@ namespace TagTool.Commands.Porting
                                 transitionFullName == CacheContext.StringTable.GetString(t.FullName) &&
                                 transitionStateName == CacheContext.StringTable.GetString(t.StateName));
 
-                            var edTransitionCreated = false;
-
                             if (edTransition == null)
                             {
                                 edTransition = (ModelAnimationGraph.Mode.WeaponClassBlock.WeaponTypeBlock.Transition)PortContext.ConvertData(
                                     CacheStream, BlamCacheStream, h3Transition.DeepClone(), h3Def, h3Tag.Name);
                                 edWeaponType.Set.Transitions.Add(edTransition);
-                                edTransitionCreated = true;
                             }
 
                             foreach (var h3Destination in h3Transition.Destinations)

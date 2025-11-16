@@ -348,7 +348,7 @@ namespace TagTool.Porting
         /// Converts a <see cref="TagStructure"/> from the source cache to the destination cache
         /// </summary>
         /// <remarks>
-        /// This should only be used if all you want to do is convert the fields and nothing else. Consider using <see cref="ConvertData"/> or <see cref="ConvertDefinition(Stream, Stream, CachedTag, CachedTag, object, out CachedTag, out bool)"/> If it'a tag definition
+        /// This should only be used if all you want to do is convert the fields and nothing else. Consider using <see cref="ConvertData"/> or <see cref="ConvertDefinition"/> If it'a tag definition
         /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="cacheStream"></param>

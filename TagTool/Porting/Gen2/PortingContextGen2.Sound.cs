@@ -185,8 +185,8 @@ namespace TagTool.Porting.Gen2
                 // Convert Blam permutations to ElDorado format
                 //
 
-                var useCache = Options.AudioCache != null || UseAudioCacheCommand.AudioCacheDirectory != null;
-                var soundCachePath = Options.AudioCache ?? UseAudioCacheCommand.AudioCacheDirectory?.FullName ?? "";
+                var useCache = Options.AudioCache != null;
+                var soundCachePath = Options.AudioCache;
 
                 var permutationCount = ugh.GetPermutationCount(pitchRangeIndex);
                 var relativePitchRangeIndex = pitchRangeIndex - gen2Sound.PitchRangeIndex;

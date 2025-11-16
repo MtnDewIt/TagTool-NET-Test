@@ -7,7 +7,7 @@ namespace TagTool.Tags
 {
     public abstract class TagDefinitions
     {
-        protected static CachedDefinitions GetCachedDefinitions(Dictionary<TagGroup, Type?> dict)
+        protected static CachedDefinitions GetCachedDefinitions(Dictionary<TagGroup, Type> dict)
 		{
 			Dictionary<Tag, Type> TagToTypeLookup = [];
 			Dictionary<Type, TagGroup> TypeToTagGroupLookup = [];
