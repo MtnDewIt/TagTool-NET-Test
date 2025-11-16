@@ -75,7 +75,7 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             Minutes_5 = 300,
         }
 
-        public static new GameVariantAssault Decode(BitStreamReader stream)
+        public static GameVariantAssault Decode(BitStreamReader stream)
         {
             var variant = new GameVariantAssault();
 

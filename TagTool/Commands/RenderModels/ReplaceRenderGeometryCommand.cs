@@ -625,7 +625,7 @@ namespace TagTool.Commands.RenderModels
                         if (suffixMatch.Success && suffixMatch.Groups[1].Value.Contains("%"))
                             preventBackfaceCulling = true;
 
-                            if (partStartIndex > uint.MaxValue || meshIndices.Length > uint.MaxValue)
+                        if (partStartIndex > int.MaxValue || meshIndices.Length > int.MaxValue)
                             throw new InvalidOperationException($"sub-part too large: index range {partStartIndex}…{partStartIndex + meshIndices.Length - 1}");
                         int absoluteFirstIndex = partStartIndex;
                         builder.BeginPart(materialIndex, absoluteFirstIndex, meshIndices.Length, (ushort)part.VertexCount);

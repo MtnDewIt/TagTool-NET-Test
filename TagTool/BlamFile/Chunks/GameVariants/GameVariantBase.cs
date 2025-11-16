@@ -226,25 +226,5 @@ namespace TagTool.BlamFile.Chunks.GameVariants
             MaximumScore,
             Default,
         }
-
-        public static GameVariantBase Decode(BitStreamReader stream)
-        {
-            var variant = new GameVariantBase();
-
-            variant.BaseFlags = (BaseVariantFlags)stream.ReadUnsigned(1);
-            variant.MiscellaneousOptions = VariantMiscellaneousOptions.Decode(stream);
-            variant.RespawnOptions = VariantRespawnOptions.Decode(stream);
-            variant.SocialOptions = VariantSocialOptions.Decode(stream);
-            variant.MapOverrideOptions = VariantMapOverrideOptions.Decode(stream);
-            variant.TeamScoringMethod = (TeamScoring)stream.ReadUnsigned(3);
-
-            return variant;
-        }
-
-        public static void Encode(BitStreamWriter stream, GameVariantBase variant)
-        {
-            // TODO: Implement
-            throw new NotImplementedException();
-        }
     }
 }

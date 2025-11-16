@@ -17,7 +17,7 @@ namespace TagTool.Commands
 		/// </summary>
 		public bool IsValid { get; set; } = true;
 		/// <summary>
-		/// Contains any arguments that were identified within the command string. If none are found, the list will be empty (not null).</string>
+		/// Contains any arguments that were identified within the command string. If none are found, the list will be empty (not null).
 		/// <br>Sometimes a command has no parameters. Sometimes no valid Parameters can be determined.</br>
 		/// </summary>
 		public List<string> Parameters { get; set; } = new List<string>();
