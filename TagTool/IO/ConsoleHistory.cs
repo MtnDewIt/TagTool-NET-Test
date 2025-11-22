@@ -44,7 +44,8 @@ namespace TagTool.IO
                 }
                 else
                 {
-                    fileName = Regex.Replace(fileName, @"[*\\ /:]", "_");
+                    string filteredName = fileName.Replace("*", shortDateTime);
+                    fileName = Regex.Replace(filteredName, @"[\\ /:]", "_");
                 }
             }
             else
@@ -56,9 +57,9 @@ namespace TagTool.IO
                 else if (string.IsNullOrEmpty(fileExtension))
                     fileName += ".log";
 
-                fileName.Replace("*", shortDateTime);
+                string filteredName = fileName.Replace("*", shortDateTime);
 
-                fileName = Regex.Replace(fileName, @"[\\ /:]", "_");
+                fileName = Regex.Replace(filteredName, @"[\\ /:]", "_");
 
                 filePath = "logs";
             }
