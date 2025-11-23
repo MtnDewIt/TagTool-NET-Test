@@ -271,6 +271,8 @@ namespace TagTool.Commands.Scenarios
                     CellSize = 20,
                     Tesselation = 20,
                     Opacity = 0.9f,
+                    X = -(sbsp.WorldBoundsX.Length / 2),
+                    Y = -(sbsp.WorldBoundsZ.Length / 2),
                     Z = 0
                 };
                 WorldGenerator.GenerateWaterWorld(Cache, sbsp, waterWorldParams, out var waterGeometry, out var resource);
@@ -569,7 +571,10 @@ namespace TagTool.Commands.Scenarios
             public CachedTag Shader;
             public float Tesselation;
             public float Opacity;
+            public int CellCount;
             public float CellSize;
+            public float X;
+            public float Y;
             public float Z;
         }
 
@@ -594,7 +599,7 @@ namespace TagTool.Commands.Scenarios
             int yCells = (int)Math.Ceiling(sbsp.WorldBoundsZ.Length / cellSize);
             GenerateGridMesh(xCells, yCells, cellSize, out WorldVertex[] worldVertices, out ushort[] indices);
 
-            var origin = new RealPoint3d(-sbsp.WorldBoundsX.Length / 2, -sbsp.WorldBoundsZ.Length / 2, parameters.Z);
+            var origin = new RealPoint3d(parameters.X, parameters.Y, parameters.Z);
             foreach (ref WorldVertex v in worldVertices.AsSpan())
                 v.Position = new RealQuaternion(v.Position.I + origin.X, v.Position.J + origin.Y, v.Position.K + origin.Z);
 
@@ -673,10 +678,11 @@ namespace TagTool.Commands.Scenarios
                 RuntimeGlobalMaterialIndex = 0
             });
 
-            float cellSize = parameters.CellSize;
-            GenerateGridMesh(1, 1, cellSize, out WorldVertex[] worldVertices, out ushort[] indices);
+            float cellSize = parameters.CellSize / parameters.CellCount;
+            int cellCount = parameters.CellCount;
+            GenerateGridMesh(cellCount, cellCount, cellSize, out WorldVertex[] worldVertices, out ushort[] indices);
 
-            var origin = new RealPoint3d(-250, -250, parameters.Z);
+            var origin = new RealPoint3d(parameters.X, parameters.Y, parameters.Z);
             foreach (ref WorldVertex v in worldVertices.AsSpan())
                 v.Position = new RealQuaternion(v.Position.I + origin.X, v.Position.J + origin.Y, v.Position.K + origin.Z);
 
