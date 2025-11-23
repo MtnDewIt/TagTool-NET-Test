@@ -2552,7 +2552,7 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x40, MaxVersion = CacheVersion.Halo3Retail)]
         [TagStructure(Size = 0x68, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x6C, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+        [TagStructure(Size = 0x6C, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
         [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.HaloReach11883)]
         public class Squad : TagStructure
 		{
@@ -2560,18 +2560,18 @@ namespace TagTool.Tags.Definitions
             public string Name; // The name of the squad.
             public SquadFlags Flags; // The flags of the squad.
             public GameTeam Team; // The team the squad is on.
-            public short ParentSquadGroupIndex; // The index of the parent group of the squad.
+            public short ParentIndex; // The index of the parent group of the squad.
             public short InitialZoneIndex; // The initial zone index the squad is placed on.
 
             [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.Halo3Retail)]
             public byte[] Unused1 = new byte[2];
             
-            public short ObjectiveIndex;
+            public short InitialObjectiveIndex;
 
-            public short ObjectiveRoleIndex;
+            public short InitialTaskIndex;
 
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
-            public short EditorFolderIndexNew = -1;
+            public short EditorFolderIndex = -1;
 
             [TagField(MaxVersion = CacheVersion.Halo3Retail)]
             public List<Fireteam> Fireteams;
@@ -2583,18 +2583,21 @@ namespace TagTool.Tags.Definitions
             public List<SpawnPoint> SpawnPoints;
 
             [TagField(MaxVersion = CacheVersion.Halo3Retail)]
-            public short EditorFolderIndexOld;
+            public short EditorFolderIndexH3;
 
             [TagField(Flags = Padding, Length = 2, MaxVersion = CacheVersion.Halo3Retail)]
             public byte[] Unused2 = new byte[2];
 
             // Filter which squads in Firefight waves can be spawned into this squad
-            [TagField(Platform = CachePlatform.MCC, Version = CacheVersion.Halo3ODST)]
-            [TagField(MinVersion = CacheVersion.HaloReach)]
-            public WavePlacementFilterEnum WavePlacementFilterReach;
+            [TagField(EnumType = typeof(short), MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            [TagField(EnumType = typeof(int), MinVersion = CacheVersion.HaloReach)]
+            public ExcludedPlacements ExcludedPlacementFlags;
+
+            [TagField(Flags = Padding, Length = 0x2, MinVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            public byte[] PostExcludedPlacementFlags;
 
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
-            public StringId ModuleId;
+            public StringId Template;
 
             [TagField(Flags = Short, MinVersion = CacheVersion.Halo3ODST)]
             public CachedTag SquadTemplate;
@@ -2605,16 +2608,18 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public List<Fireteam> TemplatedFireteams;
 
-            public enum WavePlacementFilterEnum : int
+            [Flags]
+            public enum ExcludedPlacements : int
             {
-                None,
-                HeavyInfantry,
-                BossInfantry,
-                LightVehicle,
-                HeavyVehicle,
-                FlyingInfantry,
-                FlyingVehicle,
-                Bonus
+                None = 1 << 0,
+                HeavyInfantry = 1 << 1,
+                BossInfantry = 1 << 2,
+                LightVehicle = 1 << 3,
+                HeavyVehicle = 1 << 4,
+                FlyingInfantry = 1 << 5,
+                FlyingVehicle = 1 << 6,
+                Bonus = 1 << 7,
+                NoVaultAnim = 1 << 8,
             }
 
             [TagStructure(Size = 0x60, MaxVersion = CacheVersion.Halo3Retail)]

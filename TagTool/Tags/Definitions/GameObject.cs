@@ -288,7 +288,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
             public AtlasFlagsValue AtlasFlags;
 
-            [TagField(Flags = Label, ValidTags = new[] { "ligh", "gldf", "ltvl", "effe", "lsnd", "lens", "cpem" })]
+            [TagField(Flags = Label, ValidTags = new[] { "ligh", "gldf", "ltvl", "effe", "efsc", "lsnd", "lens", "cpem" })]
             public CachedTag Type;
 
             public StringId Marker;

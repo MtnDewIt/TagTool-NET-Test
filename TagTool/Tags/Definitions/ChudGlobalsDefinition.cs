@@ -723,8 +723,10 @@ namespace TagTool.Tags.Definitions
                 public float MessageAnchorVerticalOffset;
                 public float StateMessageVerticalOffset;
 
+                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public float BottomStateVerticalOffset;
+                [TagField(MaxVersion = CacheVersion.Halo3ODST)]
                 [TagField(MinVersion = CacheVersion.HaloReach)]
                 public float BottomPrimaryVerticalOffset;
                 [TagField(MinVersion = CacheVersion.HaloReach)]

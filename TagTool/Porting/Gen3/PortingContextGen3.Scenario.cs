@@ -136,7 +136,7 @@ namespace TagTool.Porting.Gen3
 
                 foreach (var squad in scnr.Squads)
                 {
-                    squad.EditorFolderIndexNew = squad.EditorFolderIndexOld;
+                    squad.EditorFolderIndex = squad.EditorFolderIndexH3;
                     squad.SpawnFormations = new List<Scenario.Squad.SpawnFormation>();
                     squad.SpawnPoints = new List<Scenario.Squad.SpawnPoint>();
                     squad.SquadTemplate = null;

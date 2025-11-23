@@ -144,9 +144,9 @@ namespace TagTool.Tags.Definitions
                 [TagField(Length = 0x2, Flags = Padding, MinVersion = CacheVersion.HaloReach)]
                 public byte[] Padding1;
 
-                [TagField(ValidTags = new[] { "beam", "char", "cmoe", "cntl", "cpem", "decs", "drdf",
-                "gldf", "jpt!", "lens", "ligh", "ltvl", "obje", "rwrd", "sefc", "shit", "snd!" })]
-                public CachedTag Type; // 020_base: effe | sandbox.map: hlmt
+                [TagField(ValidTags = new[] { "beam", "char", "cmoe", "cntl", "cpem", "decs", "drdf", "effe", 
+                "gldf", "hlmt", "jpt!", "lens", "ligh", "ltvl", "obje", "rwrd", "sefc", "shit", "snd!" })]
+                public CachedTag Type;
 
                 public Bounds<float> VelocityBounds;
                 public RealEulerAngles2d VelocityOrientation;

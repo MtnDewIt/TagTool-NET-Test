@@ -133,7 +133,9 @@ namespace TagTool.Damage
             SentinelRPG,
             Teleporter,
             Tripmine,
-            ElephantTurret
+            ElephantTurret,
+            Automag,
+            BrutePlasmaRifle,
         }
 
         public enum Halo3ODSTValue : sbyte

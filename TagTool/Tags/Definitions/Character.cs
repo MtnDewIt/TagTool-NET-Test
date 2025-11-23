@@ -454,8 +454,10 @@ namespace TagTool.Tags.Definitions
         [TagStructure(Size = 0xA4, MinVersion = CacheVersion.HaloReach)]
         public class CharacterMovementProperties : TagStructure
         {
-            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
             public CharacterMovementFlagsH3 FlagsH3;
+            [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+            public CharacterMovementFlagsODST Flags;
             [TagField(MinVersion = CacheVersion.HaloReach, MaxVersion = CacheVersion.HaloReach11883)]
             public CharacterMovementFlagsReach FlagsReach;
             [TagField(Version = CacheVersion.Halo4)]
