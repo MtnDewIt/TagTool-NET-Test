@@ -5,10 +5,8 @@ using System.Linq;
 using TagTool.BlamFile;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
-using TagTool.Common;
-using TagTool.IO;
+using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
-using TagTool.Tags.Definitions.Common;
 using static TagTool.BlamFile.MapVariantGenerator;
 using static TagTool.Tags.Definitions.Scenario;
 
@@ -16,44 +14,91 @@ namespace TagTool.Commands.Forge
 {
     class MaximizeBudgetCommand : Command
     {
-        private GameCacheHaloOnlineBase Cache;
-        private ForgeGlobalsDefinition Definition;
-        private HashSet<CachedTag> ForgePalette = new HashSet<CachedTag>();
+        private readonly GameCacheHaloOnlineBase Cache;
+        private readonly ForgeGlobalsDefinition Definition;
+        private readonly HashSet<string> ForgePalette;
 
         public MaximizeBudgetCommand(GameCacheHaloOnlineBase cache, ForgeGlobalsDefinition definition) : base(true,
             "MaximizeBudget",
             "Moves placements for objects that are in the global forge palette into a map variant to maximize the number of objects that can be placed",
 
-            "MaximizeBudget",
+            "MaximizeBudget [object-types: {type1,type2,...}>] [scenario-tag]",
 
             "")
         {
             Cache = cache;
             Definition = definition;
-            ForgePalette = new HashSet<CachedTag>(definition.Palette.Where(x => x.CategoryIndex != -1).Select(x => x.Object));
+            ForgePalette = [.. definition.Palette.Where(x => x.CategoryIndex != -1 && x.Object != null).Select(x => x.Object.ToString())];
         }
 
         public override object Execute(List<string> args)
         {
-            foreach(MapFile mapFile in Cache.MapFiles.GetAll())
-            {
-                if (mapFile.Header.GetName() == "mainmenu")
-                    continue;
+            uint objectTypes =
+               (1 << (int)GameObjectTypeHalo3ODST.Vehicle) |
+               (1 << (int)GameObjectTypeHalo3ODST.Weapon) |
+               (1 << (int)GameObjectTypeHalo3ODST.Equipment) |
+               (1 << (int)GameObjectTypeHalo3ODST.Scenery) |
+               (1 << (int)GameObjectTypeHalo3ODST.Crate) |
+               (1 << (int)GameObjectTypeHalo3ODST.Machine) |
+               (1 << (int)GameObjectTypeHalo3ODST.Control) |
+               (1 << (int)GameObjectTypeHalo3ODST.EffectScenery);
 
-                MaximizeMapForgeBudget(mapFile);
-                Cache.MapFiles.Add(mapFile);
+            for (int i = 0; i < args.Count;)
+            {
+                string arg = args[i].ToLower();
+                switch (arg)
+                {
+                    case "object-types:":
+                        {
+                            if (!TryParseObjectTypes(args[1], out objectTypes))
+                                return new TagToolError(CommandError.ArgInvalid, $"One or more of the specified object types are invalid '{args[1]}'");
+                            args.RemoveRange(i, 2);
+                        }
+                        break;
+
+                    default:
+                        i++;
+                        break;
+                }
+            }
+
+            List<CachedTag> scenarioTagList = [];
+
+            if (args.Count > 0)
+            {
+                if (!Cache.TagCache.TryGetTag(args[0], out CachedTag tag))
+                    return new TagToolError(CommandError.TagInvalid, args[0]);
+
+                scenarioTagList.Add(tag);
+            }
+            else
+            {
+                foreach (var scnrTag in Cache.TagCache.FindAllInGroup<Scenario>().Cast<CachedTagHaloOnline>())
+                {
+                    if (scnrTag.IsEmpty() || scnrTag.Name == @"levels\ui\mainmenu\mainmenu")
+                        continue;
+
+                    scenarioTagList.Add(scnrTag);
+                }
+            }
+
+            foreach (CachedTag scenarioTag in scenarioTagList)
+            {
+                using Stream stream = Cache.OpenCacheRead();
+                var scenario = Cache.Deserialize<Scenario>(stream, scenarioTag);
+
+                MapFile mapFile = Cache.MapFiles.FindByMapId(scenario.MapId);
+                if (mapFile == null)
+                    return new TagToolError(CommandError.FileNotFound, $"Could not find map file for '{scenarioTag}'");
+
+                MaximizeMapForgeBudget(scenarioTag, mapFile, objectTypes);
             }
 
             return true;
         }
 
-        private void MaximizeMapForgeBudget(MapFile mapFile)
+        private void MaximizeMapForgeBudget(CachedTag scenarioTag, MapFile mapFile, uint objectTypes)
         {
-            if (mapFile.MapFileBlf == null || mapFile.MapFileBlf.MapVariant != null)
-                return;
-
-            var scenarioTag = Cache.TagCache.GetTag<Scenario>(mapFile.Header.GetScenarioPath());
-
             Console.WriteLine($"Maximizing budget for scenario '{scenarioTag.Name}'...");
 
             using (var cacheStream = Cache.OpenCacheReadWrite())
@@ -78,10 +123,7 @@ namespace TagTool.Commands.Forge
                 };
 
                 var generator = new MapVariantGenerator();
-                generator.ObjectTypeMask |= 
-                    (1 << (int)GameObjectTypeHalo3ODST.Machine) |
-                    (1 << (int)GameObjectTypeHalo3ODST.Control) |
-                    (1 << (int)GameObjectTypeHalo3ODST.EffectScenery);
+                generator.ObjectTypeMask = objectTypes;
 
                 // Generate a map variant from the current scenario first
                 var oldBlf = generator.Generate(cacheStream, Cache, scenario, metadata);
@@ -100,12 +142,15 @@ namespace TagTool.Commands.Forge
                 mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariant;
                 mapFile.MapFileBlf.MapVariantTagNames = blf.MapVariantTagNames;
                 mapFile.MapFileBlf.ContentFlags |= BlfFileContentFlags.MapVariantTagNames;
+                // Update the map File
+                Cache.MapFiles.Add(mapFile, overwrite: true);
+
                 // Finally serialize the scenario
                 Cache.Serialize(cacheStream, scenarioTag, scenario);
 
                 var numCulled = oldBlf.MapVariant.MapVariant.ScenarioObjectCount - blf.MapVariant.MapVariant.ScenarioObjectCount;
                 var numAvailable = blf.MapVariant.MapVariant.Objects.Length - blf.MapVariant.MapVariant.ScenarioObjectCount;
-                Console.WriteLine($"Culled {numCulled} placements, Availabel: {numAvailable}");
+                Console.WriteLine($"Culled {numCulled} placements, Available: {numAvailable}");
             }
         }
 
@@ -163,7 +208,7 @@ namespace TagTool.Commands.Forge
                     continue;
                 var paletteEntry = mapVariant.Quotas[placement.QuotaIndex];
 
-                if (ForgePalette.Contains(Cache.TagCache.GetTag(paletteEntry.ObjectDefinitionIndex)))
+                if (ForgePalette.Contains(Cache.TagCache.GetTag(paletteEntry.ObjectDefinitionIndex).ToString()))
                     newUserPlacements.Add(placement);
             }
 
@@ -207,7 +252,7 @@ namespace TagTool.Commands.Forge
                     var paletteEntry = objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry;
 
                     // we only want to leave objects that are not in the forge palette left in the scenario
-                    if (ForgePalette.Contains(paletteEntry.Object))
+                    if (ForgePalette.Contains(paletteEntry.Object.ToString()))
                         continue;
 
                     // try to find an existing palette entry, if not add one to the new palette block and use that index
@@ -263,37 +308,17 @@ namespace TagTool.Commands.Forge
             scenario.SandboxWeapons = new List<SandboxObject>();
         }
 
-        class BlamCrc32
+        private static bool TryParseObjectTypes(string types, out uint mask)
         {
-            private static uint[] _table;
-
-            static BlamCrc32()
+            mask = 0u;
+            foreach (string type in types.Split(','))
             {
-                _table = new uint[256];
+                if (!Enum.TryParse<ObjectTypeFlagsHalo3ODST>(type, ignoreCase: true, out var value) || !Enum.IsDefined(value))
+                    return false;
 
-                for (int i = 0; i < _table.Length; i++)
-                {
-                    uint value = (uint)i;
-                    for (int j = 0; j < 8; j++)
-                    {
-                        if ((value & 1) != 0)
-                            value = (value >> 1) ^ 0xEDB88320;
-                        else
-                            value >>= 1;
-                    }
-                    _table[i] = value;
-                }
+                mask |= 1u << (int)value;
             }
-
-            public static uint CrcChecksum(byte[] data)
-            {
-                uint value = 0xFFFFFFFF;
-                for (int i = 0; i < data.Length; i++)
-                {
-                    value = _table[(value ^ data[i]) & 0xFF] ^ (value >> 8);
-                }
-                return value;
-            }
+            return true;
         }
     }
 }
