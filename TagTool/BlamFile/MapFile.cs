@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using TagTool.Cache;
@@ -30,6 +31,11 @@ namespace TagTool.BlamFile
 
         public MapFile()
         {
+        }
+
+        public MapFile(EndianReader reader)
+        {
+            Read(reader);
         }
 
         public void Write(EndianWriter writer)

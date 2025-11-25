@@ -14,6 +14,7 @@ namespace TagTool.Cache
         public TagCacheHaloOnline TagCacheGenHO;
         public StringTableHaloOnline StringTableHaloOnline;
         public ResourceCachesHaloOnlineBase ResourceCaches;
+        public IMapFileStorage MapFiles;
 
         public override TagCache TagCache => TagCacheGenHO;
         public override StringTable StringTable => StringTableHaloOnline;

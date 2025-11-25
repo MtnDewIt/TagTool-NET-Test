@@ -488,7 +488,7 @@ namespace TagTool.Commands.Porting
             }
         }
 
-        void GenerateMapFile(Stream cacheStream, GameCache cache, CachedTag scenarioTag, string mapName, string mapDescription)
+        void GenerateMapFile(Stream cacheStream, GameCacheHaloOnlineBase cache, CachedTag scenarioTag, string mapName, string mapDescription)
         {
             var scenarioName = Path.GetFileName(scenarioTag.Name);
             var scnr = cache.Deserialize<Scenario>(cacheStream, scenarioTag);
@@ -497,27 +497,9 @@ namespace TagTool.Commands.Porting
             mapBuilder.MapName = mapName;
             mapBuilder.MapDescription = mapDescription;
             MapFile map = mapBuilder.Build(scenarioTag, scnr);
+            Console.WriteLine($"Generating map file '{map.Header.GetName()}'...");
 
-            if (cache is GameCacheModPackage)
-            {
-                var mapStream = new MemoryStream();
-                var writer = new EndianWriter(mapStream, leaveOpen: true);
-                map.Write(writer);
-
-                var modPackCache = cache as GameCacheModPackage;
-                modPackCache.AddMapFile(mapStream, scnr.MapId);
-            }
-            else
-            {
-                var mapFile = new FileInfo(Path.Combine(cache.Directory.FullName, $"{scenarioName}.map"));
-
-                Console.WriteLine($"Generating map file '{mapFile.Name}'...");
-
-                using (var mapFileStream = mapFile.Create())
-                {
-                    map.Write(new EndianWriter(mapFileStream));
-                }
-            }
+            cache.MapFiles.Add(map);
         }
 
         private void AddRespawnPoint(Scenario scnr, int bspIndex, RealPoint3d position, RealEulerAngles3d rotation)

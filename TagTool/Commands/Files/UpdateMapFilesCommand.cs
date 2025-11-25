@@ -9,9 +9,9 @@ namespace TagTool.Commands.Files
 {
     class UpdateMapFilesCommand : Command
     {
-        public GameCache Cache { get; }
+        public GameCacheHaloOnlineBase Cache { get; }
 
-        public UpdateMapFilesCommand(GameCache cache)
+        public UpdateMapFilesCommand(GameCacheHaloOnlineBase cache)
             : base(true,
 
                   "UpdateMapFiles",

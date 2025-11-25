@@ -468,14 +468,10 @@ namespace TagTool.Commands.Modding
                 using (var mapFileStream = mapFile.OpenRead())
                 using(var reader = new EndianReader(mapFileStream))
                 {
-                    var cacheStream = new MemoryStream();
-                    mapFileStream.CopyTo(cacheStream);
-
                     MapFile map = new MapFile();
                     map.Read(reader);
                     // TODO: specify cache per map
-                    ModPackage.AddMap(cacheStream, ((CacheFileHeaderGenHaloOnline)map.Header).MapId , 0);
-
+                    ModPackage.MapFiles.Add(new ModPackage.MapFileEntry(map, 0));
                 }
             }
         }

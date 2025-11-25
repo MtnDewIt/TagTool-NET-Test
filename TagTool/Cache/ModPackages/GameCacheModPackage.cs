@@ -53,6 +53,7 @@ namespace TagTool.Cache
             Serializer = new TagSerializer(Version, Platform);
             ResourceCaches = new ResourceCachesModPackage(this, BaseModPackage);
             StringTableHaloOnline = BaseModPackage.StringTable;
+            MapFiles = new ModPackageMapFileStorage(this);
 
             SetActiveTagCache(0);
         }
@@ -148,11 +149,6 @@ namespace TagTool.Cache
         public void SetCampaignFile(Stream stream)
         {
             BaseModPackage.CampaignFileStream = stream;
-        }
-
-        public void AddMapFile(Stream mapStream, int mapId)
-        {
-            BaseModPackage.AddMap(mapStream, mapId, CurrentTagCacheIndex);
         }
 
         public override void SaveFonts(Stream fontStream)

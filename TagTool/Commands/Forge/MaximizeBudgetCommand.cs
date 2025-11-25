@@ -35,44 +35,23 @@ namespace TagTool.Commands.Forge
 
         public override object Execute(List<string> args)
         {
-            if (Cache is GameCacheModPackage modCache)
+            foreach(MapFile mapFile in Cache.MapFiles.GetAll())
             {
-                foreach (var stream in modCache.BaseModPackage.MapFileStreams)
-                    MaximizeMapForgeBudget(stream);
-            }
-            else if (Cache is GameCacheHaloOnline hoCache)
-            {
-                foreach (var file in hoCache.Directory.GetFiles("*.map"))
-                {
-                    if (file.Name == "mainmenu.map")
-                        continue;
-                    using (var mapFileStream = file.Open(FileMode.Open, FileAccess.ReadWrite))
-                        MaximizeMapForgeBudget(mapFileStream);
-                }
+                if (mapFile.Header.GetName() == "mainmenu")
+                    continue;
+
+                MaximizeMapForgeBudget(mapFile);
+                Cache.MapFiles.Add(mapFile);
             }
 
             return true;
         }
 
-        private void MaximizeMapForgeBudget(Stream mapFileStream)
+        private void MaximizeMapForgeBudget(MapFile mapFile)
         {
-            var reader = new EndianReader(mapFileStream);
-            var writer = new EndianWriter(mapFileStream);
-
-            var mapFile = new MapFile();
-            mapFile.Read(reader);
-
             if (mapFile.MapFileBlf == null || mapFile.MapFileBlf.MapVariant != null)
                 return;
 
-            MaximizeMapForgeBudget(mapFile);
-
-            mapFileStream.Position = 0;
-            mapFile.Write(writer);
-        }
-
-        private void MaximizeMapForgeBudget(MapFile mapFile)
-        {
             var scenarioTag = Cache.TagCache.GetTag<Scenario>(mapFile.Header.GetScenarioPath());
 
             Console.WriteLine($"Maximizing budget for scenario '{scenarioTag.Name}'...");

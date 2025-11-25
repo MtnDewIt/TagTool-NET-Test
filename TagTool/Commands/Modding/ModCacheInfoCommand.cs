@@ -27,7 +27,7 @@ namespace TagTool.Commands.Modding
             if (args.Count != 0)
                 return new TagToolError(CommandError.ArgCount);
 
-            Console.WriteLine($"Cache contains {Cache.BaseModPackage.GetTagCacheCount()} tag caches and {Cache.BaseModPackage.MapFileStreams.Count} map files.");
+            Console.WriteLine($"Cache contains {Cache.BaseModPackage.GetTagCacheCount()} tag caches and {Cache.BaseModPackage.MapFiles.Count} map files.");
 
             if(Cache.BaseModPackage.CampaignFileStream != null && Cache.BaseModPackage.CampaignFileStream.Length > 0)
                 Console.WriteLine($"Cache contains a campaign file");

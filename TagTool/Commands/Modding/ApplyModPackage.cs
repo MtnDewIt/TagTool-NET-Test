@@ -93,43 +93,15 @@ namespace TagTool.Commands.Modding
                 }
 
                 // fixup map files
-                foreach (var mapFile in ModCache.BaseModPackage.MapFileStreams)
+                foreach (var entry in ModCache.BaseModPackage.MapFiles)
                 {
-                    if (BaseCache is GameCacheModPackage)
-                    {
-                        var reader = new EndianReader(mapFile);
+                    MapFile map = entry.MapFile;
+                    var header = (CacheFileHeaderGenHaloOnline)map.Header;
+                    var modIndex = header.ScenarioTagIndex;
+                    TagMapping.TryGetValue(modIndex, out int newScnrIndex);
+                    header.ScenarioTagIndex = newScnrIndex;
 
-                        MapFile map = new MapFile();
-                        map.Read(reader);
-                        var header = (CacheFileHeaderGenHaloOnline)map.Header;
-                        var modIndex = header.ScenarioTagIndex;
-                        TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                        header.ScenarioTagIndex = newScnrIndex;
-
-                        var modPackCache = BaseCache as GameCacheModPackage;
-                        modPackCache.AddMapFile(mapFile, header.MapId);
-                    }
-                    else
-                    {
-                        using (var reader = new EndianReader(mapFile))
-                        {
-                            MapFile map = new MapFile();
-                            map.Read(reader);
-                            var header = (CacheFileHeaderGenHaloOnline)map.Header;
-                            var modIndex = header.ScenarioTagIndex;
-                            TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                            header.ScenarioTagIndex = newScnrIndex;
-                            var mapName = header.Name;
-
-                            var mapPath = $"{BaseCache.Directory.FullName}\\{mapName}.map";
-                            var file = new FileInfo(mapPath);
-                            var fileStream = file.OpenWrite();
-                            using (var writer = new EndianWriter(fileStream, map.EndianFormat))
-                            {
-                                map.Write(writer);
-                            }
-                        }
-                    }
+                    BaseCache.MapFiles.Add(map);
                 }
 
                 // apply .campaign file

@@ -19,6 +19,8 @@ namespace TagTool.Cache
 {
     public class ModPackage
     {
+        public record struct MapFileEntry(MapFile MapFile, int CacheIndex);
+
         public ModPackageHeader Header { get; set; } = new ModPackageHeader();
 
         public ModPackageMetadata Metadata { get; set; } = new ModPackageMetadata();
@@ -31,13 +33,10 @@ namespace TagTool.Cache
 
         public bool IsLarge { get; }
 
-        public List<Stream> MapFileStreams { get; set; } = new List<Stream>();
+        public List<MapFileEntry> MapFiles { get; set; } = new List<MapFileEntry>();
 
         public Stream CampaignFileStream { get; set; } = new MemoryStream();
 
-        public Dictionary<int, int> MapToCacheMapping { get; set; } = new Dictionary<int, int>();
-
-        public List<int> MapIds = new List<int>();
 
         public List<string> CacheNames { get; set; } = new List<string>();
 
@@ -107,22 +106,6 @@ namespace TagTool.Cache
             TagCacheNames.Add(tagNames);
 
             return CacheNames.Count - 1;
-        }
-
-        public void AddMap(Stream mapStream, int mapId, int cacheIndex)
-        {
-            mapStream.Position = 0;
-            var mapFileIndex = MapIds.IndexOf(mapId);
-            if (mapFileIndex != -1)
-            {
-                MapFileStreams[mapFileIndex] = mapStream;
-            }
-            else
-            {
-                MapFileStreams.Add(mapStream);
-                MapToCacheMapping.Add(MapFileStreams.Count - 1, cacheIndex);
-                MapIds.Add(mapId);
-            }
         }
 
         public void Load(FileInfo file)
@@ -226,7 +209,7 @@ namespace TagTool.Cache
                 // Write map file section
                 //
 
-                if(MapFileStreams.Count > 0)
+                if(MapFiles.Count > 0)
                 {
                     offset = (uint)writer.BaseStream.Position;
                     WriteMapsSection(writer);
@@ -362,29 +345,30 @@ namespace TagTool.Cache
 
         private void WriteMapsSection(EndianWriter writer)
         {
-            uint sectionOffset = (uint)writer.BaseStream.Position;
+            long sectionOffset = writer.BaseStream.Position;
             uint sectionEntrySize = TagStructure.GetStructureSize(typeof(GenericSectionEntry), PackageVersion, PackagePlatform);
             int cacheMapEntrySize = (int)TagStructure.GetStructureSize(typeof(CacheMapTableEntry), PackageVersion, PackagePlatform);
-            GenericSectionEntry mapEntry = new GenericSectionEntry(MapFileStreams.Count, sectionEntrySize);
+            GenericSectionEntry mapEntry = new GenericSectionEntry(MapFiles.Count, sectionEntrySize);
             mapEntry.Write(writer);
             // make room for table
 
             writer.Write(new byte[cacheMapEntrySize * mapEntry.Count]);
 
-            for(int i = 0; i < MapFileStreams.Count; i++)
+            for(int i = 0; i < MapFiles.Count; i++)
             {
-                var mapFileStream = MapFileStreams[i];
-                uint offset = (uint)writer.BaseStream.Position;
-                int size = (int)mapFileStream.Length;
+                MapFileEntry entry = MapFiles[i];
+                int mapId = ((CacheFileHeaderGenHaloOnline)entry.MapFile.Header).MapId;
 
-                mapFileStream.Position = 0;
-                StreamUtil.Copy(mapFileStream, writer.BaseStream, (int)mapFileStream.Length);
+                long offset = (uint)writer.BaseStream.Position;              
+                entry.MapFile.Write(writer);
+                int size = (int)(writer.BaseStream.Position - offset);
+
                 StreamUtil.Align(writer.BaseStream, 4);
 
                 // seek to the table and update size and offset
                 long originalPos = writer.BaseStream.Position;
                 writer.BaseStream.Seek(mapEntry.TableOffset + cacheMapEntrySize * i + sectionOffset, SeekOrigin.Begin);
-                var tableEntry = new CacheMapTableEntry(size, offset - sectionOffset, MapToCacheMapping[i], MapIds[i]);
+                var tableEntry = new CacheMapTableEntry(size, (uint)(offset - sectionOffset), entry.CacheIndex, mapId);
                 tableEntry.Write(writer);
                 writer.BaseStream.Seek(originalPos, SeekOrigin.Begin);
             }
@@ -650,9 +634,7 @@ namespace TagTool.Cache
             var entry = new GenericSectionEntry(reader);
             var mapCount = entry.Count;
 
-            MapFileStreams = new List<Stream>();
-            MapToCacheMapping = new Dictionary<int, int>();
-            MapIds = new List<int>();
+
             // TODO: add map ids on load
             for(int i = 0; i < mapCount; i++)
             {
@@ -675,9 +657,7 @@ namespace TagTool.Cache
                     mapFile.Read(mapReader);
 
                     stream.Position = 0;
-                    MapFileStreams.Add(stream);
-                    MapIds.Add(((CacheFileHeaderGenHaloOnline)mapFile.Header).MapId);
-                    MapToCacheMapping.Add(i, tableEntry.CacheIndex);
+                    MapFiles.Add(new MapFileEntry(mapFile, tableEntry.CacheIndex));
                 }
                 catch
                 {
@@ -765,13 +745,9 @@ namespace TagTool.Cache
 
         public void DetermineMapFlags()
         {
-            foreach (var mapFile in MapFileStreams)
+            foreach (var map in MapFiles)
             {
-                var reader = new EndianReader(mapFile);
-                MapFile map = new MapFile();
-                map.Read(reader);
-
-                var type = ((CacheFileHeaderGenHaloOnline)map.Header).CacheType;
+                var type = ((CacheFileHeaderGenHaloOnline)map.MapFile.Header).CacheType;
 
                 if (type == CacheFileType.Campaign)
                     Header.MapFlags |= MapFlags.CampaignMaps;
