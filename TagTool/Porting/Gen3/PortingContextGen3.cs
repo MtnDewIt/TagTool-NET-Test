@@ -111,6 +111,10 @@ namespace TagTool.Porting.Gen3
                     blamDefinition = ConvertAreaScreenEffect(sefc);
                     break;
 
+                case AiDialogueGlobals adlg:
+                    blamDefinition = ConvertDialogueGlobals(adlg);
+                    break;
+
                 case Bitmap bitm:
                     blamDefinition = ConvertBitmap(cacheStream, edTag, blamTag, bitm);
                     break;
