@@ -19,16 +19,17 @@ namespace TagTool.Commands.Forge
     {
         private readonly GameCacheHaloOnlineBase Cache;
         private readonly ForgeGlobalsDefinition Definition;
-        private readonly HashSet<string> ForgePalette;
+
+        private HashSet<string> ForgePalette;
 
         public MaximizeBudgetCommand(GameCacheHaloOnlineBase cache, ForgeGlobalsDefinition definition) : base(true,
             "MaximizeBudget",
             "Moves placements for objects that are in the global forge palette into a map variant to maximize the number of objects that can be placed",
 
-            "MaximizeBudget [object-types: {type1,type2,...}>] [scenario-tag]",
+            "MaximizeBudget [allobjects] [object-types: {type1,type2,...}>] [scenario-tag]",
 
             "Moves placements for objects that are in the global forge palette into a map variant to maximize the number of objects that can be placed\n\n" +
-            "Use the \"All\" flag to move placements for all objects in the global forge palette, even if they have an invalid category or category index")
+            "Use the \"allobjects\" flag to move placements for all objects in the global forge palette, even if they have an invalid category or category index")
         {
             Cache = cache;
             Definition = definition;
@@ -52,6 +53,12 @@ namespace TagTool.Commands.Forge
                 string arg = args[i].ToLower();
                 switch (arg)
                 {
+                    case "allobjects":
+                        {
+                            ForgePalette = [.. Definition.Palette.Where(x => x.Object != null).Select(x => x.Object.ToString())];
+                            args.RemoveRange(i, 1);
+                        }
+                        break;
                     case "object-types:":
                         {
                             if (!TryParseObjectTypes(args[1], out objectTypes))
@@ -59,7 +66,6 @@ namespace TagTool.Commands.Forge
                             args.RemoveRange(i, 2);
                         }
                         break;
-
                     default:
                         i++;
                         break;
