@@ -57,7 +57,7 @@ namespace TagTool.Scripting.CSharp
 
         public object EvaluateScript(ScriptEvaluationContext context, string input, bool inline = false, bool isolate = false, DirectoryInfo sourceDirectory = null)
         {
-            sourceDirectory ??= new DirectoryInfo(Program.TagToolDirectory);
+            sourceDirectory ??= new DirectoryInfo(DirectoryPaths.Base);
             var preprocessResult = new ScriptPreprocessor().PreprocessScript(input);
             var references = GetScriptReferences(preprocessResult.Imports, sourceDirectory);
 
