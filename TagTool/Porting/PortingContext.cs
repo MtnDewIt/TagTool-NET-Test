@@ -134,11 +134,6 @@ namespace TagTool.Porting
                 if (result == null)
                     Log.Warning($"null tag allocated for reference \"{blamTag}\"");
             }
-            else if (blamTag.Name != null && blamTag.IsInGroup("bitm"))
-            {
-                if (CacheContext.TagCache.TryGetTag($"{blamTag}", out result))
-                    Log.Warning($"using bitm tag reference \"{blamTag}\" from source cache");
-            }
 
             PortedTags[cacheKey] = result;
 
