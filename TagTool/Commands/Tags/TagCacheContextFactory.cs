@@ -40,6 +40,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new SetLogLevelCommand());
             context.AddCommand(new SuppressErrorsCommand());
             context.AddCommand(new RunCommands(contextStack));
+            context.AddCommand(new RunCommand(contextStack));
             context.AddCommand(new ClearCommand());
             context.AddCommand(new ExecuteCSharpCommand(contextStack));
             context.AddCommand(new EchoCommand());
