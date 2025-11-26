@@ -31,7 +31,14 @@ namespace TagTool.Commands.Common
 
             string fileName = Path.GetFileName(filePath);
 
-            using LineTrackingTextReader reader = new LineTrackingTextReader(File.OpenText(filePath));
+            using var reader = new LineTrackingTextReader(File.OpenText(filePath));
+
+            return RunCommandScript(fileName, reader, shouldPrint);
+        }
+
+        public object RunCommandScript(string fileName, TextReader inputReader, bool shouldPrint = false)
+        {
+            var reader = new LineTrackingTextReader(inputReader);
 
             TextReader oldStdIn = Console.In;
             Console.SetIn(reader);
@@ -45,7 +52,7 @@ namespace TagTool.Commands.Common
                     {
                         string indentedMessage = string.Join("\n", error.Message.Split('\n').Select((line, i) => i > 0 ? $"  {line}" : line));
                         string errorMessage = $"Error executing \"{line}\"\n  in \"{fileName}\" on line {reader.LineNumber}: {indentedMessage}";
-                        
+
                         if (SuppressErrors)
                         {
                             Log.Error(errorMessage);
