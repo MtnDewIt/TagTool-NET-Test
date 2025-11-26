@@ -125,7 +125,10 @@ namespace TagTool.Cache.HaloOnline
         /// <param name="name">The name of the tag instance.</param>
         /// <returns>The allocated tag.</returns>
         public override CachedTag AllocateTag(TagGroup type, string name = null)
-        {
+        {           
+            // Ensure the group name string_id exists
+            StringTableReference.GetOrAddString(type.ToString());
+
             var tagIndex = Tags.Count;
             var tag = new CachedTagHaloOnline(this, tagIndex, type, name);
             Tags.Add(tag);
