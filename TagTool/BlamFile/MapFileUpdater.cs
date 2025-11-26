@@ -23,7 +23,7 @@ namespace TagTool.BlamFile
         /// <param name="cache">Cache</param>
         /// <param name="mapInfoDir">Path to the map info directory</param>
         /// <param name="forceUpdate">Force recreation of the .map file</param>
-        public static void UpdateMapFiles(GameCache cache, string mapInfoDir = "", bool forceUpdate = false)
+        public static void UpdateMapFiles(GameCacheHaloOnlineBase cache, string mapInfoDir = "", bool forceUpdate = false)
         {
             var helper = new UpdateMapFilesHelper(cache, mapInfoDir, forceUpdate);
             using Stream cacheStream = cache.OpenCacheRead();
@@ -46,7 +46,7 @@ namespace TagTool.BlamFile
         /// <param name="scnr">Scenario Definition</param>
         /// <param name="mapInfoDir">Path to the map info directory</param>
         /// <param name="forceUpdate">Force recreation of the .map file</param>
-        public static void UpdateMapFile(GameCache cache, CachedTag scnrTag, Scenario scnr, string mapInfoDir = "", bool forceUpdate = false)
+        public static void UpdateMapFile(GameCacheHaloOnlineBase cache, CachedTag scnrTag, Scenario scnr, string mapInfoDir = "", bool forceUpdate = false)
         {
             var helper = new UpdateMapFilesHelper(cache, mapInfoDir, forceUpdate);
             helper.UpdateMapFile(scnrTag, scnr);
@@ -54,11 +54,11 @@ namespace TagTool.BlamFile
 
         class UpdateMapFilesHelper
         {
-            private readonly GameCache _cache;
+            private readonly GameCacheHaloOnlineBase _cache;
             private readonly string _mapInfoDir;
             private readonly bool _forceUpdate;
 
-            public UpdateMapFilesHelper(GameCache cache, string mapInfoDir, bool forceUpdate)
+            public UpdateMapFilesHelper(GameCacheHaloOnlineBase cache, string mapInfoDir, bool forceUpdate)
             {
                 _cache = cache;
                 _mapInfoDir = mapInfoDir;
@@ -118,17 +118,16 @@ namespace TagTool.BlamFile
             {
                 try
                 {
-                    return _cache switch
-                    {
-                        GameCacheHaloOnline hoCache => LoadMapFile(Path.Combine(_cache.Directory.FullName, $"{scnrTag.Name.Split('\\').Last()}.map")),
-                        GameCacheModPackage modCache => LoadMapFile(modCache.BaseModPackage.MapFileStreams[modCache.BaseModPackage.MapIds.IndexOf(scnr.MapId)]),
-                        _ => throw new NotSupportedException("Unsupported cache"),
-                    };
+                    var mapFile = _cache.MapFiles.FindByMapId(scnr.MapId);
+                    if (mapFile != null)
+                        return mapFile;
                 }
-                catch (Exception)
+                catch (Exception) 
                 {
-                    return BuildMapFile(scnrTag, scnr, mapInfo);
+                    Log.Warning($"Unable to load map file for '{scnrTag.Name}'. Building new...");
                 }
+
+                return BuildMapFile(scnrTag, scnr, mapInfo);
             }
 
             private void SaveMapFile(MapFile map, string mapName, int mapId)
@@ -139,7 +138,7 @@ namespace TagTool.BlamFile
                         {
                             var mapStream = new MemoryStream();
                             SaveMapFile(map, mapStream);
-                            modCache.AddMapFile(mapStream, mapId);
+                            modCache.MapFiles.Add(map, modCache.GetCurrentTagCacheIndex());
                         }
                         break;
 

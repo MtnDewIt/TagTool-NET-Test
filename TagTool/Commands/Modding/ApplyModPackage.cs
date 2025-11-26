@@ -93,41 +93,15 @@ namespace TagTool.Commands.Modding
                 }
 
                 // fixup map files
-                foreach (var mapFile in ModCache.BaseModPackage.MapFileStreams)
+                foreach (var entry in ModCache.BaseModPackage.MapFiles)
                 {
-                    if (BaseCache is GameCacheModPackage)
-                    {
-                        var reader = new EndianReader(mapFile);
+                    MapFile map = entry.MapFile;
+                    var header = map.Header;
+                    var modIndex = header.GetScenarioIndex();
+                    TagMapping.TryGetValue(modIndex, out int newScnrIndex);
+                    header.SetScenarioIndex(newScnrIndex);
 
-                        MapFile map = new MapFile();
-                        map.Read(reader);
-                        var modIndex = map.Header.GetScenarioIndex();
-                        TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                        map.Header.SetScenarioIndex(newScnrIndex);
-
-                        var modPackCache = BaseCache as GameCacheModPackage;
-                        modPackCache.AddMapFile(mapFile, map.Header.GetMapId());
-                    }
-                    else
-                    {
-                        using (var reader = new EndianReader(mapFile))
-                        {
-                            MapFile map = new MapFile();
-                            map.Read(reader);
-                            var modIndex = map.Header.GetScenarioIndex();
-                            TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                            map.Header.SetScenarioIndex(newScnrIndex);
-                            var mapName = map.Header.GetName();
-
-                            var mapPath = $"{BaseCache.Directory.FullName}\\{mapName}.map";
-                            var file = new FileInfo(mapPath);
-                            var fileStream = file.OpenWrite();
-                            using (var writer = new EndianWriter(fileStream, map.EndianFormat))
-                            {
-                                map.Write(writer);
-                            }
-                        }
-                    }
+                    BaseCache.MapFiles.Add(map);
                 }
 
                 // apply .campaign file
@@ -181,12 +155,7 @@ namespace TagTool.Commands.Modding
                             foreach (var file in ModCache.BaseModPackage.Files)
                             {
                                 Console.WriteLine("Writing: {0}", file.Key);
-
-                                var directoryName = Path.GetDirectoryName(file.Key.ToString());
-
-                                if (!string.IsNullOrEmpty(directoryName)) 
-                                    directory.CreateSubdirectory(directoryName);
-
+                                directory.CreateSubdirectory(Path.GetDirectoryName(file.Key.ToString()));
                                 BaseCache.AddModFile(Path.Combine(directory.FullName, file.Key), file.Value);
                             }
 

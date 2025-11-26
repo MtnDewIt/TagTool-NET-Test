@@ -533,7 +533,7 @@ namespace TagTool.Commands.Scenarios
             return renderGeometry;
         }
 
-        private void GenerateMapFile(Stream cacheStream, GameCache cache, CachedTag scenarioTag, string mapName, string mapDescription, string author)
+        private void GenerateMapFile(Stream cacheStream, GameCacheHaloOnlineBase cache, CachedTag scenarioTag, string mapName, string mapDescription, string author)
         {
             var scenarioName = Path.GetFileName(scenarioTag.Name);
             var scnr = cache.Deserialize<Scenario>(cacheStream, scenarioTag);
@@ -542,25 +542,8 @@ namespace TagTool.Commands.Scenarios
             mapBuilder.MapName = mapName;
             mapBuilder.MapDescription = mapDescription;
             MapFile map = mapBuilder.Build(scenarioTag, scnr);
- 
-            if (cache is GameCacheModPackage)
-            {
-                var mapStream = new MemoryStream();
-                var writer = new EndianWriter(mapStream, leaveOpen: true);
-                map.Write(writer);
 
-                var modPackCache = cache as GameCacheModPackage;
-                modPackCache.AddMapFile(mapStream, scnr.MapId);
-            }
-            else
-            {
-                var mapFile = new FileInfo(Path.Combine(cache.Directory.FullName, $"{scenarioName}.map"));
-
-                using (var mapFileStream = mapFile.Create())
-                {
-                    map.Write(new EndianWriter(mapFileStream));
-                }
-            }
+            cache.MapFiles.Add(map);
         }        
     }
 

@@ -109,7 +109,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new SetCustomizationFromModelCommand(cache));
                 context.AddCommand(new GenerateCanvasCommand(hoCache));
 
-                context.AddCommand(new UpdateMapFilesCommand(cache));
+                context.AddCommand(new UpdateMapFilesCommand(hoCache));
 
                 context.AddCommand(new RescaleGUICommand(cache));
                 context.AddCommand(new RescaleHudTextCommand(cache));
@@ -126,7 +126,7 @@ namespace TagTool.Commands.Tags
 
                 context.AddCommand(new TagResourceReportCommand(hoCache));
 
-                context.AddCommand(new EditMapCommand(contextStack, hoCache, cache));
+                context.AddCommand(new EditMapCommand(contextStack, hoCache));
                 context.AddCommand(new ListMapsCommand(hoCache));
             }
 
@@ -167,7 +167,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new AddForgeItemCommand(cache as GameCacheHaloOnlineBase));
                 context.AddCommand(new AddSkyBoxCommand(cache as GameCacheHaloOnlineBase));
 
-                context.AddCommand(new EditMapCommand(contextStack, cache as GameCacheHaloOnlineBase, modCache));
+                context.AddCommand(new EditMapCommand(contextStack, modCache));
                 context.AddCommand(new ExitModPackageCommand(contextStack, modCache));
                 context.AddCommand(new EditModMetadataCommand(contextStack, modCache));
             }

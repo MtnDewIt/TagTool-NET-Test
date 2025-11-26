@@ -205,12 +205,10 @@ namespace TagTool.Commands.Modding
             modPackage.Header = oldMod.BaseModPackage.Header;
     
             //copy over other fields
-            modPackage.MapIds = oldMod.BaseModPackage.MapIds;
+            modPackage.MapFiles = oldMod.BaseModPackage.MapFiles;
             modPackage.CampaignFileStream = oldMod.BaseModPackage.CampaignFileStream;
-            modPackage.MapFileStreams = oldMod.BaseModPackage.MapFileStreams;
             modPackage.Files = oldMod.BaseModPackage.Files;
             modPackage.FontPackage = oldMod.BaseModPackage.FontPackage;
-            modPackage.MapToCacheMapping = oldMod.BaseModPackage.MapToCacheMapping;
 
             return modPackage;
         }

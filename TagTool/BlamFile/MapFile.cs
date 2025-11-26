@@ -31,6 +31,11 @@ namespace TagTool.BlamFile
         {
         }
 
+        public MapFile(EndianReader reader)
+        {
+            Read(reader);
+        }
+
         public void Write(EndianWriter writer)
         {
             var dataContext = new DataSerializationContext(writer);
