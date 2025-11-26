@@ -5,6 +5,7 @@ using System.Linq;
 using TagTool.BlamFile;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.Cache;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.CollisionModels;
 using TagTool.Commands.Common;
 using TagTool.Commands.RenderModels;
@@ -18,6 +19,7 @@ using TagTool.Tags.Definitions.Common;
 
 namespace TagTool.Commands.ScenarioStructureBSPs
 {
+	// #TODO: MASSIVE FUCKING REFACTOR BECAUSE THIS IS UGLY AS HELL
 	public class ImportGeometryWithPathfindingCommand : Command
 	{
 		private GameCache Cache { get; }
@@ -579,127 +581,35 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				else if (ScenarioTagName.Contains("riverworld"))	{ mapName = "riverworld"; }			// "Valhalla", "riverworld"
 				else { mapName = $"{ScenarioTagName.Split("/").Last()}"; }                              // Set the specified map name to equal the last string in the scenario tag name (This is only in the event that the scenario does not exist in the base cache)
 
-                // Check if the current cache context is a mod package context
                 if (Cache is GameCacheModPackage modCache)
 				{
-					// Intitially, we assume that the map file is not the mod package, so this gets set to true
-					bool isBaseCacheMap = true;
+					MapFile mapFile = modCache.MapFiles.FindByName(mapName);
 
-					// Loop through each map file stream in the mod package
-                    for (int i = 0; i < modCache.BaseModPackage.MapFileStreams.Count; i++)
-                    {
-						// Create a new empty map file object
-						MapFile mapFileData = new MapFile();
-
-						// Get the current map file stream
-						Stream stream = modCache.BaseModPackage.MapFileStreams[i];
-
-                        // Set the stream position to the beginning of the stream
-                        stream.Position = 0;
-
-						// Create a new reader instance using the file stream
-						EndianReader reader = new EndianReader(stream);
-
-                        // Read the data from the specified map file
-                        mapFileData.Read(reader);
-
-                        // Reset the stream position
-                        stream.Position = 0;
-
-						// Check if the map file header name equals the specified map name
-						if (mapFileData.Header.GetName() == mapName)
-						{
-							// Update variant placement data
-							UpdateVariantPlacements(mapFileData.MapFileBlf);
-
-							// Create a new writer instance using the file stream
-							EndianWriter writer = new EndianWriter(stream);
-
-							// Write the modified data to the specified map file
-							mapFileData.Write(writer);
-
-							// Reset the stream position
-							stream.Position = 0;
-
-							// Since we have found the map file in the mod package, we can set our flag to false
-							isBaseCacheMap = false;
-
-							// Break out of the loop, since we have made our map file changes
-							break;
-						}
-					}
-
-					// This should only run if we were unable to find the 
-					if (isBaseCacheMap)
+					if (mapFile != null)
 					{
-						// Create a new stream for our modified map data
-						MemoryStream mapStream = new MemoryStream();
+						UpdateVariantPlacements(mapFile.MapFileBlf);
+					}
+					else 
+					{
+                        mapFile = modCache.BaseCacheReference.MapFiles.FindByName(mapName);
 
-						// Define a new file info for the specified map file
-						FileInfo file = new FileInfo($@"{modCache.BaseCacheReference.Directory.FullName}\{mapName}.map");
-
-						// Create a new empty map file object
-						MapFile mapFileData = new MapFile();
-
-                        // Open a stream to the specified map 
-                        using (FileStream fs = file.OpenRead()) 
+						if (mapFile != null) 
 						{
-							// Load the map data into our memory stream
-                            fs.CopyTo(mapStream);
+                            UpdateVariantPlacements(mapFile.MapFileBlf);
+
+                            modCache.MapFiles.Add(mapFile);
                         }
-
-						// Create a new reader instance using the file stream
-						EndianReader reader = new EndianReader(mapStream);
-
-                        // Read the data from the specified map file
-                        mapFileData.Read(reader);
-
-                        // Update variant placement data
-                        UpdateVariantPlacements(mapFileData.MapFileBlf);
-
-                        // Reset the stream position
-                        mapStream.Position = 0;
-
-                        // Create a new writer instance using the file stream
-                        EndianWriter writer = new EndianWriter(mapStream);
-
-                        // Write the modified data to the specified map file stream
-                        mapFileData.Write(writer);
-
-                        // Reset the stream position
-                        mapStream.Position = 0;
-
-                        // Add the map file stream to the mod package
-                        modCache.AddMapFile(mapStream, mapFileData.Header.GetMapId());
                     }
 				}
-
-				// Handle map files in the base cache
 				else 
 				{
-					// Define a new file info for the specified map file
-					FileInfo file = new FileInfo($@"{Cache.Directory.FullName}\{mapName}.map");
+					GameCacheHaloOnline baseCache = Cache as GameCacheHaloOnline;
 
-					// Create a new empty map file object
-					MapFile mapFileData = new MapFile();
+                    MapFile mapFile = baseCache.MapFiles.FindByName(mapName);
 
-					// Open a stream to the specified map 
-                    using (FileStream stream = file.OpenRead())
-                    {
-						// Create a new reader instance using the file stream
-						EndianReader reader = new EndianReader(stream);
-
-						// Read the data from the specified map file
-                        mapFileData.Read(reader);
-
-						// Update variant placement data
-                        UpdateVariantPlacements(mapFileData.MapFileBlf);
-
-						// Create a new writer instance using the file stream
-						EndianWriter writer = new EndianWriter(stream);
-
-                        // Write the modified data to the specified map file
-                        mapFileData.Write(writer);
+					if (mapFile != null) 
+					{
+                        UpdateVariantPlacements(mapFile.MapFileBlf);
                     }
                 }
             }

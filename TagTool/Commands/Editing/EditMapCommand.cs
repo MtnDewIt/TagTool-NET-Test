@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using TagTool.BlamFile;
 using TagTool.Cache;
+using TagTool.Cache.HaloOnline;
 using TagTool.Commands.Common;
 using TagTool.IO;
 
@@ -10,10 +12,10 @@ namespace TagTool.Commands.Editing
     public class EditMapCommand : Command 
     {
         private CommandContextStack ContextStack { get; }
-        private GameCacheHaloOnlineBase CacheContext { get; }
         private GameCache Cache { get; }
+        private MapFile MapFile { get; set; }
 
-        public EditMapCommand(CommandContextStack contextStack, GameCacheHaloOnlineBase cacheContext, GameCache cache) : base(
+        public EditMapCommand(CommandContextStack contextStack, GameCache cache) : base(
             false,
 
             "EditMap",
@@ -26,8 +28,8 @@ namespace TagTool.Commands.Editing
             "which can be used to edit or view the data in the map.")
         {
             ContextStack = contextStack;
-            CacheContext = cacheContext;
             Cache = cache;
+            MapFile = null;
         }
 
         public override object Execute(List<string> args) 
@@ -35,91 +37,32 @@ namespace TagTool.Commands.Editing
             if (args.Count != 1)
                 return new TagToolError(CommandError.ArgCount);
 
-            if (Cache is GameCacheModPackage)
-            {
-                var mapName = args[0].ToLower().Replace(".map", "");
+            var mapName = args[0].ToLower().Replace(".map", "");
 
-                if (!TryGetModPackageMapFile(mapName, out var mapFile)) 
+            if (Cache is GameCacheModPackage modCache)
+            {
+                MapFile = modCache.MapFiles.FindByName(mapName);
+
+                if (MapFile == null) 
                 {
-                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0].ToLower()}\"");
+                    throw new InvalidOperationException("Map not found in in mod package");
                 }
 
-                ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, mapFile));
+                ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, MapFile));
             }
-            else 
+            else if (Cache is GameCacheHaloOnline hoCache)
             {
-                if (!TryGetMapFile(args[0].ToLower(), out var mapFile)) 
+                MapFile = hoCache.MapFiles.FindByName(mapName);
+
+                if (MapFile == null) 
                 {
-                    return new TagToolError(CommandError.FileNotFound, $"\"{args[0].ToLower()}\"");
+                    throw new InvalidOperationException("Map not found in in cache directory");
                 }
 
-                ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, mapFile));
+                ContextStack.Push(EditMapContextFactory.Create(ContextStack, Cache, MapFile));
             }
 
             return true;
-        }
-
-        public bool TryGetMapFile(string mapName, out MapFile result) 
-        {
-            try
-            {
-                var file = new FileInfo($@"{CacheContext.Directory.FullName}\{mapName}");
-
-                var mapFileData = new MapFile();
-
-                using (var stream = file.OpenRead())
-                {
-                    var reader = new EndianReader(stream);
-
-                    mapFileData.Read(reader);
-                }
-
-                result = mapFileData;
-
-                return true;
-            }
-            catch 
-            {
-                result = null;
-
-                return false;
-            }
-        }
-
-        public bool TryGetModPackageMapFile(string mapName, out MapFile result) 
-        {
-            var modCache = Cache as GameCacheModPackage;
-
-            try
-            {
-                for (int i = 0; i < modCache.BaseModPackage.MapFileStreams.Count; i++) 
-                {
-                    var mapFileData = new MapFile();
-
-                    var stream = modCache.BaseModPackage.MapFileStreams[i];
-                    stream.Position = 0;
-                    var reader = new EndianReader(stream);
-                    mapFileData.Read(reader);
-                    stream.Position = 0;
-
-                    if (mapFileData.Header.GetName() == mapName) 
-                    {
-                        result = mapFileData;
-
-                        return true;
-                    }
-                }
-
-                result = null;
-
-                return false;
-            }
-            catch 
-            {
-                result = null;
-
-                return false;
-            }
         }
     }
 }

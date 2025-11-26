@@ -66,36 +66,13 @@ namespace TagTool.Commands.Editing
                 };
             }
 
-            if (Cache is GameCacheModPackage)
+            if (Cache is GameCacheModPackage modCache)
             {
-                var modCache = Cache as GameCacheModPackage;
-
-                for (int i = 0; i < modCache.BaseModPackage.MapFileStreams.Count; i++) 
-                {
-                    var baseMapData = new MapFile();
-
-                    var stream = modCache.BaseModPackage.MapFileStreams[i];
-                    var reader = new EndianReader(stream);
-                    baseMapData.Read(reader);
-                    stream.Position = 0;
-
-                    if (mapData.Header.GetName() == baseMapData.Header.GetName()) 
-                    {
-                        var writer = new EndianWriter(stream);
-                        mapData.Write(writer);
-                        stream.Position = 0;
-                    }
-                }
+                modCache.MapFiles.Add(mapData);
             }
-            else 
+            else if (Cache is GameCacheHaloOnline hoCache)
             {
-                var file = new FileInfo($@"{Cache.Directory.FullName}\{MapFile.Header.GetName()}.map");
-
-                using (var fileStream = file.OpenWrite())
-                using (var writer = new EndianWriter(fileStream))
-                {
-                    mapData.Write(writer);
-                }
+                hoCache.MapFiles.Add(mapData);
             }
 
             return true;

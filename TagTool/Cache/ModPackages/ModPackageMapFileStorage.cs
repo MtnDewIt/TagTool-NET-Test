@@ -45,15 +45,15 @@ namespace TagTool.Cache.ModPackages
             if (cacheIndex == -1)
                 cacheIndex = _modCache.GetCurrentTagCacheIndex();
 
-            var header = (CacheFileHeaderGenHaloOnline)mapFile.Header;
-            int mapId = header.MapId;
+            int mapId = mapFile.Header.GetMapId();
+            string mapName = mapFile.Header.GetName();
 
-            int mapIndex = FindMapByNameInternal(header.Name);
+            int mapIndex = FindMapByNameInternal(mapName);
             if (mapIndex != -1 && !overwrite)
                 throw new IOException($"A Map file with the map id '{mapId}' already exists");
 
-            if (FindMapByNameInternal(header.Name) != -1 && !overwrite)
-                throw new IOException($"A Map file with the name '{header.Name}' already exists");
+            if (FindMapByNameInternal(mapName) != -1 && !overwrite)
+                throw new IOException($"A Map file with the name '{mapName}' already exists");
 
             var newEntry = new ModPackage.MapFileEntry(mapFile, cacheIndex);
             if (mapIndex != -1)
@@ -73,8 +73,8 @@ namespace TagTool.Cache.ModPackages
         {
             return _package.MapFiles.FindIndex(entry =>
             {
-                var entryHeader = (CacheFileHeaderGenHaloOnline)entry.MapFile.Header;
-                return entryHeader.Name == name;
+                var entryHeader = entry.MapFile.Header;
+                return entryHeader.GetName() == name;
             });
         }
 
@@ -82,8 +82,8 @@ namespace TagTool.Cache.ModPackages
         {
             return _package.MapFiles.FindIndex(entry =>
             {
-                var entryHeader = (CacheFileHeaderGenHaloOnline)entry.MapFile.Header;
-                return entryHeader.MapId == mapId;
+                var entryHeader = entry.MapFile.Header;
+                return entryHeader.GetMapId() == mapId;
             });
         }
     }

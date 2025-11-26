@@ -16,28 +16,28 @@ using TagTool.Cache.Resources;
 
 namespace TagTool.Commands.Modding
 {
-	class ApplyModPackageTagsCommand : Command
-	{
-		private GameCacheHaloOnlineBase BaseCache { get; }
+    class ApplyModPackageTagsCommand : Command
+    {
+        private GameCacheHaloOnlineBase BaseCache { get; }
 
-		private GameCacheModPackage ModCache { get; }
+        private GameCacheModPackage ModCache { get; }
 
-		private Dictionary<int, int> TagMapping;
+        private Dictionary<int, int> TagMapping;
 
-		private Stream CacheStream;
+        private Stream CacheStream;
 
-		private Dictionary<string, CachedTag> CacheTagsByName;
+        private Dictionary<string, CachedTag> CacheTagsByName;
 
-		private Dictionary<StringId, StringId> StringIdMapping;
+        private Dictionary<StringId, StringId> StringIdMapping;
 
-		private HashSet<string> BlacklistedTags;
-		private HashSet<string> ForceAppliedTags;
-		private HashSet<string> ForceBlacklistedTags;
-		private HashSet<string> AppliedTags;
-		private Dictionary<string, List<string>> DependencyRules;
+        private HashSet<string> BlacklistedTags;
+        private HashSet<string> ForceAppliedTags;
+        private HashSet<string> ForceBlacklistedTags;
+        private HashSet<string> AppliedTags;
+        private Dictionary<string, List<string>> DependencyRules;
 
-		public ApplyModPackageTagsCommand(GameCacheModPackage modCache) :
-			base(false,
+        public ApplyModPackageTagsCommand(GameCacheModPackage modCache) :
+            base(false,
 
                 "ApplyModPackageTags",
         "Apply current mod package to the base cache, optionally excluding tags / tag groups.",
@@ -54,36 +54,36 @@ namespace TagTool.Commands.Modding
 
         "Apply current mod package to the base cache, optionally excluding tags / tag groups. \n")
         {
-			BaseCache = modCache.BaseCacheReference;
-			ModCache = modCache;
-			BlacklistedTags = new HashSet<string>();
-			ForceAppliedTags = new HashSet<string>();
-			ForceBlacklistedTags = new HashSet<string>();
-			AppliedTags = new HashSet<string>();
-			InitializeDependencyRules();
-		}
+            BaseCache = modCache.BaseCacheReference;
+            ModCache = modCache;
+            BlacklistedTags = new HashSet<string>();
+            ForceAppliedTags = new HashSet<string>();
+            ForceBlacklistedTags = new HashSet<string>();
+            AppliedTags = new HashSet<string>();
+            InitializeDependencyRules();
+        }
 
-		private void InitializeDependencyRules()
-		{
-		    DependencyRules = new Dictionary<string, List<string>>
-		    {
-		        { ".bitmap", new List<string> { ".shader" } },
-		        { ".shader", new List<string> { ".render_model" } },
-		        { ".render_model", new List<string> { ".model" } }
-		    };
-		}
+        private void InitializeDependencyRules()
+        {
+            DependencyRules = new Dictionary<string, List<string>>
+            {
+                { ".bitmap", new List<string> { ".shader" } },
+                { ".shader", new List<string> { ".render_model" } },
+                { ".render_model", new List<string> { ".model" } }
+            };
+        }
 
-		public override object Execute(List<string> args)
-		{			
-			int tagCacheIndex = -1;
+        public override object Execute(List<string> args)
+        {
+            int tagCacheIndex = -1;
 
-			if (args.Count > 1)
-				return new TagToolError(CommandError.ArgCount);
+            if (args.Count > 1)
+                return new TagToolError(CommandError.ArgCount);
 
-			if (args.Count == 0)
-				tagCacheIndex = 0;
-			else if (!int.TryParse(args[0], System.Globalization.NumberStyles.Integer, null, out tagCacheIndex))
-				return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\"");
+            if (args.Count == 0)
+                tagCacheIndex = 0;
+            else if (!int.TryParse(args[0], System.Globalization.NumberStyles.Integer, null, out tagCacheIndex))
+                return new TagToolError(CommandError.ArgInvalid, $"\"{args[0]}\"");
 
             if (tagCacheIndex != ModCache.GetCurrentTagCacheIndex())
             {
@@ -95,371 +95,379 @@ namespace TagTool.Commands.Modding
 
             Console.WriteLine("Blacklisting Tags:\n");
 
-			Console.WriteLine("1. You can blacklist a specific tag by entering its name -> vehicles/warthog");
-			Console.WriteLine("Examples:\tweapons/rocket_launcher\t\tcharacters/masterchief\n");
+            Console.WriteLine("1. You can blacklist a specific tag by entering its name -> vehicles/warthog");
+            Console.WriteLine("Examples:\tweapons/rocket_launcher\t\tcharacters/masterchief\n");
 
-			Console.WriteLine("2. You can blacklist an entire group by using the group name followed by a '/' -> vehicles/");
-			Console.WriteLine("Examples:\tvehicles/\t\tweapons/\t\tcharacters/\n");
+            Console.WriteLine("2. You can blacklist an entire group by using the group name followed by a '/' -> vehicles/");
+            Console.WriteLine("Examples:\tvehicles/\t\tweapons/\t\tcharacters/\n");
 
-			Console.WriteLine("3. You can force include a tag by prepending a '+' -> +vehicles/warthog");
-			Console.WriteLine("Examples:\t+weapons/rocket_launcher\t\t+characters/masterchief\n");
+            Console.WriteLine("3. You can force include a tag by prepending a '+' -> +vehicles/warthog");
+            Console.WriteLine("Examples:\t+weapons/rocket_launcher\t\t+characters/masterchief\n");
 
-			Console.WriteLine("Please enter the list of blacklisted tags or keywords - one per line. Type 'Done' when finished.");
+            Console.WriteLine("Please enter the list of blacklisted tags or keywords - one per line. Type 'Done' when finished.");
 
-			string line = string.Empty;
-			while (( line = Console.ReadLine() ) != "Done") {
-				if (!string.IsNullOrWhiteSpace(line)) {
-					line = line.Trim();
-					if (line.StartsWith("+-") || line.StartsWith("-+")){
-					    AppliedTags.Add(line.Substring(2));
-					}
-					else if (line.StartsWith("+")){
-					    ForceAppliedTags.Add(line.Substring(1));
-					}
-					else if (line.StartsWith("-")){
-					    ForceBlacklistedTags.Add(line.Substring(1));
-					}
-					else {
-						BlacklistedTags.Add(line);
-					}
-				}
-			}
+            string line = string.Empty;
+            while ((line = Console.ReadLine()) != "Done")
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    line = line.Trim();
+                    if (line.StartsWith("+-") || line.StartsWith("-+"))
+                    {
+                        AppliedTags.Add(line.Substring(2));
+                    }
+                    else if (line.StartsWith("+"))
+                    {
+                        ForceAppliedTags.Add(line.Substring(1));
+                    }
+                    else if (line.StartsWith("-"))
+                    {
+                        ForceBlacklistedTags.Add(line.Substring(1));
+                    }
+                    else
+                    {
+                        BlacklistedTags.Add(line);
+                    }
+                }
+            }
 
-			TagMapping = new Dictionary<int, int>();
+            TagMapping = new Dictionary<int, int>();
 
-			StringIdMapping = new Dictionary<StringId, StringId>();
+            StringIdMapping = new Dictionary<StringId, StringId>();
 
-			// build dictionary of names to tag instance for faster lookups
-			CacheTagsByName = BaseCache.TagCache.TagTable
-				.Where(tag => tag != null)
-				.GroupBy(tag => $"{tag.Name}.{tag.Group}")
-				.Select(tags => tags.Last())
-				.ToDictionary(tag => $"{tag.Name}.{tag.Group}", tag => tag);
-
-
-			// shut down base cache stream from mod cache and reopen once applying is complete
-			using (CacheStream = BaseCache.OpenCacheReadWrite()) {
-
-				for (int i = 0; i < ModCache.TagCache.Count; i++) {
-					var modTag = ModCache.TagCache.GetTag(i);
-
-					if (modTag != null) {
-						if (!TagMapping.ContainsKey(modTag.Index))
-							ConvertCachedTagInstance(ModCache.BaseModPackage, modTag, false);
-					}
-				}
-
-				// fixup map files
-				foreach (var mapFile in ModCache.BaseModPackage.MapFileStreams) {
-					if (BaseCache is GameCacheModPackage) {
-						var reader = new EndianReader(mapFile);
-
-						MapFile map = new MapFile();
-						map.Read(reader);
-                        var modIndex = map.Header.GetScenarioIndex();
-                        TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                        map.Header.SetScenarioIndex(newScnrIndex);	
-
-						var modPackCache = BaseCache as GameCacheModPackage;
-						modPackCache.AddMapFile(mapFile, map.Header.GetMapId());
-					}
-					else {
-						using (var reader = new EndianReader(mapFile)) {
-							MapFile map = new MapFile();
-							map.Read(reader);
-							var modIndex = map.Header.GetScenarioIndex();
-							TagMapping.TryGetValue(modIndex, out int newScnrIndex);
-                            map.Header.SetScenarioIndex(newScnrIndex);
-							var mapName = map.Header.GetName();
-
-							var mapPath = $"{BaseCache.Directory.FullName}\\{mapName}.map";
-							var file = new FileInfo(mapPath);
-							var fileStream = file.OpenWrite();
-							using (var writer = new EndianWriter(fileStream, map.EndianFormat)) {
-								map.Write(writer);
-							}
-						}
-					}
-				}
-
-				// apply .campaign file
-				if (ModCache.BaseModPackage.CampaignFileStream != null && ModCache.BaseModPackage.CampaignFileStream.Length > 0) {
-
-					if (BaseCache is GameCacheModPackage) {
-						var BaseCacheContext = BaseCache as GameCacheModPackage;
-						BaseCacheContext.SetCampaignFile(ModCache.BaseModPackage.CampaignFileStream);
-					}
-					else {
-						var campaignFilepath = $"{BaseCache.Directory.FullName}\\halo3.campaign";
-						var campaignFile = new FileInfo(campaignFilepath);
-						using (var campaignFileStream = campaignFile.OpenWrite()) {
-							ModCache.BaseModPackage.CampaignFileStream.CopyTo(campaignFileStream);
-						}
-					}
-				}
-
-				// apply fonts
-				if (ModCache.BaseModPackage.FontPackage != null && ModCache.BaseModPackage.FontPackage.Length > 0) {
-					using (var stream = ModCache.BaseModPackage.FontPackage) {
-						BaseCache.SaveFonts(stream);
-					}
-				}
-
-				// apply mod files
-				if (ModCache.BaseModPackage.Files != null && ModCache.BaseModPackage.Files.Count > 0) {
-
-					if (BaseCache is GameCacheHaloOnline) {
-						Console.WriteLine("Mod Files exist in package. Overwrite in BaseCache? (y/n)");
-						string response = Console.ReadLine();
-						if (response.ToLower().StartsWith("y")) {
-							Console.WriteLine("Please enter the directory for the Mod Files:");
-							string directoryPath = Console.ReadLine();
-
-							var directory = new DirectoryInfo(directoryPath);
-							if (!directory.Exists) {
-								Console.WriteLine("Directory not found.");
-								return new TagToolError(CommandError.DirectoryNotFound);
-							}
-
-							Console.WriteLine("Writing Mod Files to Directory");
-							foreach (var file in ModCache.BaseModPackage.Files) {
-								Console.WriteLine("Writing: {0}", file.Key);
-								try {
-									var directoryName = Path.GetDirectoryName(file.Key);
-									if (!string.IsNullOrEmpty(directoryName)) { directory.CreateSubdirectory(directoryName); }
-								}
-								catch (Exception ex) {
-									Console.WriteLine($"Failed to create directory for '{file.Key}': {ex}");
-									return new TagToolError(CommandError.FileIO);
-								}
-								BaseCache.AddModFile(Path.Combine(directory.FullName, file.Key), file.Value);
-							}
-
-						}
-						else { Console.WriteLine("Skipping Mod Files"); }
-					}
-					else{
-						foreach (var file in ModCache.BaseModPackage.Files) {
-							Console.WriteLine("Copying: {0}", file.Key);
-							BaseCache.AddModFile(file.Key, file.Value);
-						}
-					}
-				}
+            // build dictionary of names to tag instance for faster lookups
+            CacheTagsByName = BaseCache.TagCache.TagTable
+                .Where(tag => tag != null)
+                .GroupBy(tag => $"{tag.Name}.{tag.Group}")
+                .Select(tags => tags.Last())
+                .ToDictionary(tag => $"{tag.Name}.{tag.Group}", tag => tag);
 
 
-				BaseCache.SaveTagNames();
-				BaseCache.SaveStrings();
-			}
+            // shut down base cache stream from mod cache and reopen once applying is complete
+            using (CacheStream = BaseCache.OpenCacheReadWrite())
+            {
 
-			return true;
-		}
+                for (int i = 0; i < ModCache.TagCache.Count; i++)
+                {
+                    var modTag = ModCache.TagCache.GetTag(i);
 
-		private CachedTag ConvertCachedTagInstance(ModPackage modPack, CachedTag modTag, bool isTagReference = true)
-		{
+                    if (modTag != null)
+                    {
+                        if (!TagMapping.ContainsKey(modTag.Index))
+                            ConvertCachedTagInstance(ModCache.BaseModPackage, modTag, false);
+                    }
+                }
 
-			string fullTagName = string.Join('.', modTag.Name, modTag.Group);
+                // fixup map files
+                foreach (var entry in ModCache.BaseModPackage.MapFiles)
+                {
+                    MapFile map = entry.MapFile;
+                    var header = map.Header;
+                    var modIndex = header.GetScenarioIndex();
+                    TagMapping.TryGetValue(modIndex, out int newScnrIndex);
+                    header.SetScenarioIndex(newScnrIndex);
 
-			// Check if the tag should be applied (i.e., has a "+" in the blacklist list)
-			bool forceApply = ForceAppliedTags.Contains(fullTagName) || ForceAppliedTags.Any(fullTagName.Contains);
-			bool forceBlacklist = ForceBlacklistedTags.Contains(fullTagName) || ForceBlacklistedTags.Any(fullTagName.Contains);
-			bool applyTag = AppliedTags.Contains(fullTagName) || AppliedTags.Any(fullTagName.Contains);
+                    BaseCache.MapFiles.Add(map);
+                }
 
-			if (forceApply && !applyTag)
-			{
-				Console.WriteLine($"Included Tag: {fullTagName}");
-				var dependencies = GetTagDependencies(modTag);
-				foreach (var dependency in dependencies)
-				{
-					if (!ForceAppliedTags.Contains(dependency) 
-						&& !BlacklistedTags.Contains(dependency)
-						&& !ForceBlacklistedTags.Contains(dependency))
-					{
-						ForceAppliedTags.Add(dependency);
-						Console.WriteLine($"Including dependency: {dependency}");
-					}
-					else
-					{
-						Console.WriteLine($"Excluded dependency due to blacklist: {dependency}");
-					}
-				}
-			}
-			else if (applyTag)
-			{
-				Console.WriteLine($"Applied Tag: {fullTagName}");
-				var dependencies = GetTagDependencies(modTag);
-				foreach (var dependency in dependencies)
-				{
-					if (!BlacklistedTags.Contains(dependency))
-					{
-						BlacklistedTags.Add(dependency);
-						Console.WriteLine($"Blacklisting dependency: {dependency}");
-					}
-				}
-			}
-			else if (forceBlacklist || BlacklistedTags.Contains(fullTagName) || BlacklistedTags.Any(fullTagName.Contains))
-			{
-				Console.WriteLine($"Blacklisted: {fullTagName}");
+                // apply .campaign file
+                if (ModCache.BaseModPackage.CampaignFileStream != null && ModCache.BaseModPackage.CampaignFileStream.Length > 0)
+                {
 
-				// If tag exists in base cache, return the reference
-				if (CacheTagsByName.TryGetValue(fullTagName, out CachedTag baseTag))
-				{
-					TagMapping[modTag.Index] = baseTag.Index;
-					return baseTag;
-				}
-				// Otherwise, return null without processing
-				return null;
-			}
+                    if (BaseCache is GameCacheModPackage)
+                    {
+                        var BaseCacheContext = BaseCache as GameCacheModPackage;
+                        BaseCacheContext.SetCampaignFile(ModCache.BaseModPackage.CampaignFileStream);
+                    }
+                    else
+                    {
+                        var campaignFilepath = $"{BaseCache.Directory.FullName}\\halo3.campaign";
+                        var campaignFile = new FileInfo(campaignFilepath);
+                        using (var campaignFileStream = campaignFile.OpenWrite())
+                        {
+                            ModCache.BaseModPackage.CampaignFileStream.CopyTo(campaignFileStream);
+                        }
+                    }
+                }
 
-			// If we already processed this tag, return the existing reference.
-			if (TagMapping.ContainsKey(modTag.Index))
-				return BaseCache.TagCache.GetTag(TagMapping[modTag.Index]);
+                // apply fonts
+                if (ModCache.BaseModPackage.FontPackage != null && ModCache.BaseModPackage.FontPackage.Length > 0)
+                {
+                    using (var stream = ModCache.BaseModPackage.FontPackage)
+                    {
+                        BaseCache.SaveFonts(stream);
+                    }
+                }
 
-			// Proceed with normal tag conversion if it's not blacklisted or applied
-			if (((CachedTagHaloOnline)modTag).IsEmpty())
-			{
-				// Tag references a base tag. Look it up in the base cache.
-				if (CacheTagsByName.TryGetValue($"{modTag.Name}.{modTag.Group}", out CachedTag cacheTag))
-				{
-					TagMapping[modTag.Index] = cacheTag.Index;
-					return cacheTag;
-				}
+                // apply mod files
+                if (ModCache.BaseModPackage.Files != null && ModCache.BaseModPackage.Files.Count > 0)
+                {
 
-				// Modified behavior: If the tag is not found in the base cache,
-				// log the failure, mark it as blacklisted, and return null.
-				Console.Error.WriteLine($"Failed to find {fullTagName} in the base cache, marking as blacklisted tag.");
-				BlacklistedTags.Add(fullTagName);
-				return null;
-			}
-			// In ConvertCachedTagInstance, modified tag branch:
-			else
-			{
-				Console.WriteLine($"Converting {fullTagName}...");
-				CachedTag newTag;
-				if (!CacheTagsByName.TryGetValue($"{fullTagName}", out newTag))
-				{
-					newTag = BaseCache.TagCache.AllocateTag(modTag.Group);
-					newTag.Name = modTag.Name;
-					// Register the new, modified tag for future dependency lookups:
-					CacheTagsByName[$"{newTag.Name}.{newTag.Group}"] = newTag;
-				}
+                    if (BaseCache is GameCacheHaloOnline)
+                    {
+                        Console.WriteLine("Mod Files exist in package. Overwrite in BaseCache? (y/n)");
+                        string response = Console.ReadLine();
+                        if (response.ToLower().StartsWith("y"))
+                        {
+                            Console.WriteLine("Please enter the directory for the Mod Files:");
+                            string directoryPath = Console.ReadLine();
 
-				TagMapping.Add(modTag.Index, newTag.Index);
-				var definitionType = BaseCache.TagCache.TagDefinitions.GetTagDefinitionType(modTag.Group);
-				var tagDefinition = ModCache.Deserialize(ModCache.OpenCacheRead(CacheStream), modTag);
-				tagDefinition = ConvertData(modPack, tagDefinition);
+                            var directory = new DirectoryInfo(directoryPath);
+                            if (!directory.Exists)
+                            {
+                                Console.WriteLine("Directory not found.");
+                                return new TagToolError(CommandError.DirectoryNotFound);
+                            }
 
-				if (definitionType == typeof(ForgeGlobalsDefinition))
-					tagDefinition = ConvertForgeGlobals((ForgeGlobalsDefinition)tagDefinition);
-				else if (definitionType == typeof(Scenario))
-					tagDefinition = ConvertScenario(modPack, (Scenario)tagDefinition);
+                            Console.WriteLine("Writing Mod Files to Directory");
+                            foreach (var file in ModCache.BaseModPackage.Files)
+                            {
+                                Console.WriteLine("Writing: {0}", file.Key);
+                                try
+                                {
+                                    var directoryName = Path.GetDirectoryName(file.Key);
+                                    if (!string.IsNullOrEmpty(directoryName)) { directory.CreateSubdirectory(directoryName); }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Failed to create directory for '{file.Key}': {ex}");
+                                    return new TagToolError(CommandError.FileIO);
+                                }
+                                BaseCache.AddModFile(Path.Combine(directory.FullName, file.Key), file.Value);
+                            }
 
-				BaseCache.Serialize(CacheStream, newTag, tagDefinition);
+                        }
+                        else { Console.WriteLine("Skipping Mod Files"); }
+                    }
+                    else
+                    {
+                        foreach (var file in ModCache.BaseModPackage.Files)
+                        {
+                            Console.WriteLine("Copying: {0}", file.Key);
+                            BaseCache.AddModFile(file.Key, file.Value);
+                        }
+                    }
+                }
 
-				foreach (var resourcePointer in ((CachedTagHaloOnline)modTag).ResourcePointerOffsets)
-				{
-					var newTagHo = newTag as CachedTagHaloOnline;
-					newTagHo.AddResourceOffset(resourcePointer);
-				}
-				return newTag;
-			}
-		}
+
+                BaseCache.SaveTagNames();
+                BaseCache.SaveStrings();
+            }
+
+            return true;
+        }
+
+        private CachedTag ConvertCachedTagInstance(ModPackage modPack, CachedTag modTag, bool isTagReference = true)
+        {
+
+            string fullTagName = string.Join('.', modTag.Name, modTag.Group);
+
+            // Check if the tag should be applied (i.e., has a "+" in the blacklist list)
+            bool forceApply = ForceAppliedTags.Contains(fullTagName) || ForceAppliedTags.Any(fullTagName.Contains);
+            bool forceBlacklist = ForceBlacklistedTags.Contains(fullTagName) || ForceBlacklistedTags.Any(fullTagName.Contains);
+            bool applyTag = AppliedTags.Contains(fullTagName) || AppliedTags.Any(fullTagName.Contains);
+
+            if (forceApply && !applyTag)
+            {
+                Console.WriteLine($"Included Tag: {fullTagName}");
+                var dependencies = GetTagDependencies(modTag);
+                foreach (var dependency in dependencies)
+                {
+                    if (!ForceAppliedTags.Contains(dependency)
+                        && !BlacklistedTags.Contains(dependency)
+                        && !ForceBlacklistedTags.Contains(dependency))
+                    {
+                        ForceAppliedTags.Add(dependency);
+                        Console.WriteLine($"Including dependency: {dependency}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Excluded dependency due to blacklist: {dependency}");
+                    }
+                }
+            }
+            else if (applyTag)
+            {
+                Console.WriteLine($"Applied Tag: {fullTagName}");
+                var dependencies = GetTagDependencies(modTag);
+                foreach (var dependency in dependencies)
+                {
+                    if (!BlacklistedTags.Contains(dependency))
+                    {
+                        BlacklistedTags.Add(dependency);
+                        Console.WriteLine($"Blacklisting dependency: {dependency}");
+                    }
+                }
+            }
+            else if (forceBlacklist || BlacklistedTags.Contains(fullTagName) || BlacklistedTags.Any(fullTagName.Contains))
+            {
+                Console.WriteLine($"Blacklisted: {fullTagName}");
+
+                // If tag exists in base cache, return the reference
+                if (CacheTagsByName.TryGetValue(fullTagName, out CachedTag baseTag))
+                {
+                    TagMapping[modTag.Index] = baseTag.Index;
+                    return baseTag;
+                }
+                // Otherwise, return null without processing
+                return null;
+            }
+
+            // If we already processed this tag, return the existing reference.
+            if (TagMapping.ContainsKey(modTag.Index))
+                return BaseCache.TagCache.GetTag(TagMapping[modTag.Index]);
+
+            // Proceed with normal tag conversion if it's not blacklisted or applied
+            if (((CachedTagHaloOnline)modTag).IsEmpty())
+            {
+                // Tag references a base tag. Look it up in the base cache.
+                if (CacheTagsByName.TryGetValue($"{modTag.Name}.{modTag.Group}", out CachedTag cacheTag))
+                {
+                    TagMapping[modTag.Index] = cacheTag.Index;
+                    return cacheTag;
+                }
+
+                // Modified behavior: If the tag is not found in the base cache,
+                // log the failure, mark it as blacklisted, and return null.
+                Console.Error.WriteLine($"Failed to find {fullTagName} in the base cache, marking as blacklisted tag.");
+                BlacklistedTags.Add(fullTagName);
+                return null;
+            }
+            // In ConvertCachedTagInstance, modified tag branch:
+            else
+            {
+                Console.WriteLine($"Converting {fullTagName}...");
+                CachedTag newTag;
+                if (!CacheTagsByName.TryGetValue($"{fullTagName}", out newTag))
+                {
+                    newTag = BaseCache.TagCache.AllocateTag(modTag.Group);
+                    newTag.Name = modTag.Name;
+                    // Register the new, modified tag for future dependency lookups:
+                    CacheTagsByName[$"{newTag.Name}.{newTag.Group}"] = newTag;
+                }
+
+                TagMapping.Add(modTag.Index, newTag.Index);
+                var definitionType = BaseCache.TagCache.TagDefinitions.GetTagDefinitionType(modTag.Group);
+                var tagDefinition = ModCache.Deserialize(ModCache.OpenCacheRead(CacheStream), modTag);
+                tagDefinition = ConvertData(modPack, tagDefinition);
+
+                if (definitionType == typeof(ForgeGlobalsDefinition))
+                    tagDefinition = ConvertForgeGlobals((ForgeGlobalsDefinition)tagDefinition);
+                else if (definitionType == typeof(Scenario))
+                    tagDefinition = ConvertScenario(modPack, (Scenario)tagDefinition);
+
+                BaseCache.Serialize(CacheStream, newTag, tagDefinition);
+
+                foreach (var resourcePointer in ((CachedTagHaloOnline)modTag).ResourcePointerOffsets)
+                {
+                    var newTagHo = newTag as CachedTagHaloOnline;
+                    newTagHo.AddResourceOffset(resourcePointer);
+                }
+                return newTag;
+            }
+        }
 
 
         private IEnumerable<string> GetTagDependencies(CachedTag tag)
-		{
-		    var dependencies = new HashSet<string>();
-		    var tagDefinition = ModCache.Deserialize(ModCache.OpenCacheRead(CacheStream), tag);
-		    CollectDependencies(tagDefinition, dependencies);
-		    return dependencies;
-		}
+        {
+            var dependencies = new HashSet<string>();
+            var tagDefinition = ModCache.Deserialize(ModCache.OpenCacheRead(CacheStream), tag);
+            CollectDependencies(tagDefinition, dependencies);
+            return dependencies;
+        }
 
-		private void CollectDependencies(object tagData, HashSet<string> dependencies)
-		{
-		    switch (tagData)
-		    {
-		        case TagStructure structure:
-		            foreach (var field in TagStructure.GetTagFieldEnumerable(structure.GetType(), BaseCache.Version, BaseCache.Platform))
-		            {
-		                var value = field.GetValue(structure);
-		                CollectDependencies(value, dependencies);
-		            }
-		            break;
-		        case CachedTag tag:
-		            dependencies.Add($"{tag.Name}.{tag.Group}");
-		            ApplyDependencyRules(tag, dependencies);
-		            break;
-		        case IList collection:
-		            foreach (var item in collection)
-		            {
-		                CollectDependencies(item, dependencies);
-		            }
-		            break;
-		    }
-		}
+        private void CollectDependencies(object tagData, HashSet<string> dependencies)
+        {
+            switch (tagData)
+            {
+                case TagStructure structure:
+                    foreach (var field in TagStructure.GetTagFieldEnumerable(structure.GetType(), BaseCache.Version, BaseCache.Platform))
+                    {
+                        var value = field.GetValue(structure);
+                        CollectDependencies(value, dependencies);
+                    }
+                    break;
+                case CachedTag tag:
+                    dependencies.Add($"{tag.Name}.{tag.Group}");
+                    ApplyDependencyRules(tag, dependencies);
+                    break;
+                case IList collection:
+                    foreach (var item in collection)
+                    {
+                        CollectDependencies(item, dependencies);
+                    }
+                    break;
+            }
+        }
 
-		private void ApplyDependencyRules(CachedTag tag, HashSet<string> dependencies)
-		{
-		    string fullTagName = $"{tag.Name}.{tag.Group}";
-		    foreach (var rule in DependencyRules)
-		    {
-		        if (fullTagName.EndsWith(rule.Key))
-		        {
-		            foreach (var dependencyExtension in rule.Value)
-		            {
+        private void ApplyDependencyRules(CachedTag tag, HashSet<string> dependencies)
+        {
+            string fullTagName = $"{tag.Name}.{tag.Group}";
+            foreach (var rule in DependencyRules)
+            {
+                if (fullTagName.EndsWith(rule.Key))
+                {
+                    foreach (var dependencyExtension in rule.Value)
+                    {
                         var dependentTagName = tag.Name + dependencyExtension;
                         if (CacheTagsByName.TryGetValue(dependentTagName, out CachedTag dependentTag))
-		                {
-		                    dependencies.Add(dependentTagName);
-		                    CollectDependencies(dependentTag, dependencies);
-		                }
-		            }
-		        }
-		    }
-		}
+                        {
+                            dependencies.Add(dependentTagName);
+                            CollectDependencies(dependentTag, dependencies);
+                        }
+                    }
+                }
+            }
+        }
 
-		private object ConvertData(ModPackage modPack, object data) {
-			switch (data) {
-				case StringId _:
-					return ConvertStringId(modPack, (StringId)data);
+        private object ConvertData(ModPackage modPack, object data)
+        {
+            switch (data)
+            {
+                case StringId _:
+                    return ConvertStringId(modPack, (StringId)data);
 
-				case null:
-				case string _:
-				case ValueType _:
-					return data;
-				case PageableResource resource:
-					return ConvertPageableResource(modPack, resource);
-				case TagStructure structure:
-					return ConvertStructure(modPack, structure);
-				case IList collection:
-					return ConvertCollection(modPack, collection);
-				case CachedTag tag:
-					return ConvertCachedTagInstance(modPack, tag);
+                case null:
+                case string _:
+                case ValueType _:
+                    return data;
+                case PageableResource resource:
+                    return ConvertPageableResource(modPack, resource);
+                case TagStructure structure:
+                    return ConvertStructure(modPack, structure);
+                case IList collection:
+                    return ConvertCollection(modPack, collection);
+                case CachedTag tag:
+                    return ConvertCachedTagInstance(modPack, tag);
 
-			}
-			return data;
-		}
+            }
+            return data;
+        }
 
-		private StringId ConvertStringId(ModPackage modPack, StringId stringId) {
-			if (StringIdMapping.ContainsKey(stringId))
-				return StringIdMapping[stringId];
-			else {
-				StringId cacheStringId;
-				var modString = modPack.StringTable.GetString(stringId);
-				var cacheStringTest = BaseCache.StringTable.GetString(stringId);
+        private StringId ConvertStringId(ModPackage modPack, StringId stringId)
+        {
+            if (StringIdMapping.ContainsKey(stringId))
+                return StringIdMapping[stringId];
+            else
+            {
+                StringId cacheStringId;
+                var modString = modPack.StringTable.GetString(stringId);
+                var cacheStringTest = BaseCache.StringTable.GetString(stringId);
 
-				if (cacheStringTest != null && modString == cacheStringTest)            // check if base cache contains the exact same id with matching strings
-					cacheStringId = stringId;
-				else if (BaseCache.StringTable.Contains(modString))                // try to find the string among all stringids
-					cacheStringId = BaseCache.StringTable.GetStringId(modString);
-				else                                                                    // add new stringid
-					cacheStringId = BaseCache.StringTable.AddString(modString);
+                if (cacheStringTest != null && modString == cacheStringTest)            // check if base cache contains the exact same id with matching strings
+                    cacheStringId = stringId;
+                else if (BaseCache.StringTable.Contains(modString))                // try to find the string among all stringids
+                    cacheStringId = BaseCache.StringTable.GetStringId(modString);
+                else                                                                    // add new stringid
+                    cacheStringId = BaseCache.StringTable.AddString(modString);
 
-				StringIdMapping[stringId] = cacheStringId;
-				return cacheStringId;
-			}
-		}
+                StringIdMapping[stringId] = cacheStringId;
+                return cacheStringId;
+            }
+        }
 
-		private PageableResource ConvertPageableResource(ModPackage modPack, PageableResource resource) {
+        private PageableResource ConvertPageableResource(ModPackage modPack, PageableResource resource)
+        {
             if (resource.Page.Index == -1)
                 return resource;
 
@@ -471,154 +479,166 @@ namespace TagTool.Commands.Modding
             return resource;
         }
 
-		private IList ConvertCollection(ModPackage modPack, IList collection) {
-			if (collection is null || collection.Count == 0)
-				return collection;
+        private IList ConvertCollection(ModPackage modPack, IList collection)
+        {
+            if (collection is null || collection.Count == 0)
+                return collection;
 
-			for (var i = 0; i < collection.Count; i++) {
-				var oldValue = collection[i];
-				var newValue = ConvertData(modPack, oldValue);
-				collection[i] = newValue;
-			}
+            for (var i = 0; i < collection.Count; i++)
+            {
+                var oldValue = collection[i];
+                var newValue = ConvertData(modPack, oldValue);
+                collection[i] = newValue;
+            }
 
-			return collection;
-		}
+            return collection;
+        }
 
-		private T ConvertStructure<T>(ModPackage modPack, T data) where T : TagStructure {
-			foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), BaseCache.Version, BaseCache.Platform)) {
-				var oldValue = tagFieldInfo.GetValue(data);
+        private T ConvertStructure<T>(ModPackage modPack, T data) where T : TagStructure
+        {
+            foreach (var tagFieldInfo in TagStructure.GetTagFieldEnumerable(data.GetType(), BaseCache.Version, BaseCache.Platform))
+            {
+                var oldValue = tagFieldInfo.GetValue(data);
 
-				if (oldValue is null)
-					continue;
+                if (oldValue is null)
+                    continue;
 
-				var newValue = ConvertData(modPack, oldValue);
-				tagFieldInfo.SetValue(data, newValue);
-			}
+                var newValue = ConvertData(modPack, oldValue);
+                tagFieldInfo.SetValue(data, newValue);
+            }
 
-			return data;
-		}
+            return data;
+        }
 
-		private ForgeGlobalsDefinition ConvertForgeGlobals(ForgeGlobalsDefinition forg) {
-			var currentForgTag = BaseCache.TagCache.GetTag<ForgeGlobalsDefinition>("multiplayer\\forge_globals");
-			var currentForg = (ForgeGlobalsDefinition)BaseCache.Deserialize(CacheStream, currentForgTag);
+        private ForgeGlobalsDefinition ConvertForgeGlobals(ForgeGlobalsDefinition forg)
+        {
+            var currentForgTag = BaseCache.TagCache.GetTag<ForgeGlobalsDefinition>("multiplayer\\forge_globals");
+            var currentForg = (ForgeGlobalsDefinition)BaseCache.Deserialize(CacheStream, currentForgTag);
 
-			// hardcoded base indices:
-			int[] baseBlockCounts = new int[] { 0, 20, 173, 6, 83, 498, 9, 12 };
+            // hardcoded base indices:
+            int[] baseBlockCounts = new int[] { 0, 20, 173, 6, 83, 498, 9, 12 };
 
-			for (int i = baseBlockCounts[0]; i < forg.ReForgeMaterialTypes.Count; i++)
-				currentForg.ReForgeMaterialTypes.Add(forg.ReForgeMaterialTypes[i]);
+            for (int i = baseBlockCounts[0]; i < forg.ReForgeMaterialTypes.Count; i++)
+                currentForg.ReForgeMaterialTypes.Add(forg.ReForgeMaterialTypes[i]);
 
-			for (int i = baseBlockCounts[1]; i < forg.ReForgeMaterialTypes.Count; i++)
-				currentForg.ReForgeMaterialTypes.Add(forg.ReForgeMaterialTypes[i]);
+            for (int i = baseBlockCounts[1]; i < forg.ReForgeMaterialTypes.Count; i++)
+                currentForg.ReForgeMaterialTypes.Add(forg.ReForgeMaterialTypes[i]);
 
-			for (int i = baseBlockCounts[2]; i < forg.ReForgeObjects.Count; i++)
-				currentForg.ReForgeObjects.Add(forg.ReForgeObjects[i]);
+            for (int i = baseBlockCounts[2]; i < forg.ReForgeObjects.Count; i++)
+                currentForg.ReForgeObjects.Add(forg.ReForgeObjects[i]);
 
-			for (int i = baseBlockCounts[3]; i < forg.Descriptions.Count; i++)
-				currentForg.Descriptions.Add(forg.Descriptions[i]);
+            for (int i = baseBlockCounts[3]; i < forg.Descriptions.Count; i++)
+                currentForg.Descriptions.Add(forg.Descriptions[i]);
 
-			for (int i = baseBlockCounts[4]; i < forg.PaletteCategories.Count; i++)
-				currentForg.PaletteCategories.Add(forg.PaletteCategories[i]);
+            for (int i = baseBlockCounts[4]; i < forg.PaletteCategories.Count; i++)
+                currentForg.PaletteCategories.Add(forg.PaletteCategories[i]);
 
-			for (int i = baseBlockCounts[5]; i < forg.Palette.Count; i++)
-				currentForg.Palette.Add(forg.Palette[i]);
+            for (int i = baseBlockCounts[5]; i < forg.Palette.Count; i++)
+                currentForg.Palette.Add(forg.Palette[i]);
 
-			for (int i = baseBlockCounts[6]; i < forg.WeatherEffects.Count; i++)
-				currentForg.WeatherEffects.Add(forg.WeatherEffects[i]);
+            for (int i = baseBlockCounts[6]; i < forg.WeatherEffects.Count; i++)
+                currentForg.WeatherEffects.Add(forg.WeatherEffects[i]);
 
-			for (int i = baseBlockCounts[7]; i < forg.Skies.Count; i++)
-				currentForg.Skies.Add(forg.Skies[i]);
+            for (int i = baseBlockCounts[7]; i < forg.Skies.Count; i++)
+                currentForg.Skies.Add(forg.Skies[i]);
 
-			// move over the rest of the definition
-			currentForg.InvisibleRenderMethod = forg.InvisibleRenderMethod;
-			currentForg.DefaultRenderMethod = forg.DefaultRenderMethod;
-			currentForg.PrematchCameraObject = forg.PrematchCameraObject;
-			currentForg.PostmatchObject = forg.PostmatchObject;
-			currentForg.ModifierObject = forg.ModifierObject;
-			currentForg.KillVolumeObject = forg.KillVolumeObject;
-			currentForg.GarbageVolumeObject = forg.GarbageVolumeObject;
-			currentForg.FxObject = forg.FxObject;
-			currentForg.FxLight = forg.FxLight;
+            // move over the rest of the definition
+            currentForg.InvisibleRenderMethod = forg.InvisibleRenderMethod;
+            currentForg.DefaultRenderMethod = forg.DefaultRenderMethod;
+            currentForg.PrematchCameraObject = forg.PrematchCameraObject;
+            currentForg.PostmatchObject = forg.PostmatchObject;
+            currentForg.ModifierObject = forg.ModifierObject;
+            currentForg.KillVolumeObject = forg.KillVolumeObject;
+            currentForg.GarbageVolumeObject = forg.GarbageVolumeObject;
+            currentForg.FxObject = forg.FxObject;
+            currentForg.FxLight = forg.FxLight;
 
-			return currentForg;
-		}
+            return currentForg;
+        }
 
-		private Scenario ConvertScenario(ModPackage modPack, Scenario scnr) {
-			foreach (var expr in scnr.ScriptExpressions)
-				ConvertScriptExpression(modPack, expr);
+        private Scenario ConvertScenario(ModPackage modPack, Scenario scnr)
+        {
+            foreach (var expr in scnr.ScriptExpressions)
+                ConvertScriptExpression(modPack, expr);
 
-			return scnr;
-		}
+            return scnr;
+        }
 
-		public void ConvertScriptExpression(ModPackage modPack, HsSyntaxNode expr) {
-			ConvertScriptExpressionData(modPack, expr);
-		}
+        public void ConvertScriptExpression(ModPackage modPack, HsSyntaxNode expr)
+        {
+            ConvertScriptExpressionData(modPack, expr);
+        }
 
-		public void ConvertScriptExpressionData(ModPackage modPack, HsSyntaxNode expr) {
-			if (expr.Flags == HsSyntaxNodeFlags.Expression) {
-				switch (expr.ValueType) {
-					case HsType.Sound:
-					case HsType.Effect:
-					case HsType.Damage:
-					case HsType.LoopingSound:
-					case HsType.AnimationGraph:
-					case HsType.DamageEffect:
-					case HsType.ObjectDefinition:
-					case HsType.Bitmap:
-					case HsType.Shader:
-					case HsType.RenderModel:
-					case HsType.StructureDefinition:
-					case HsType.LightmapDefinition:
-					case HsType.CinematicDefinition:
-					case HsType.CinematicSceneDefinition:
-					case HsType.BinkDefinition:
-					case HsType.AnyTag:
-					case HsType.AnyTagNotResolving:
-						ConvertScriptTagReferenceExpressionData(modPack, expr);
-						return;
+        public void ConvertScriptExpressionData(ModPackage modPack, HsSyntaxNode expr)
+        {
+            if (expr.Flags == HsSyntaxNodeFlags.Expression)
+            {
+                switch (expr.ValueType)
+                {
+                    case HsType.Sound:
+                    case HsType.Effect:
+                    case HsType.Damage:
+                    case HsType.LoopingSound:
+                    case HsType.AnimationGraph:
+                    case HsType.DamageEffect:
+                    case HsType.ObjectDefinition:
+                    case HsType.Bitmap:
+                    case HsType.Shader:
+                    case HsType.RenderModel:
+                    case HsType.StructureDefinition:
+                    case HsType.LightmapDefinition:
+                    case HsType.CinematicDefinition:
+                    case HsType.CinematicSceneDefinition:
+                    case HsType.BinkDefinition:
+                    case HsType.AnyTag:
+                    case HsType.AnyTagNotResolving:
+                        ConvertScriptTagReferenceExpressionData(modPack, expr);
+                        return;
 
-					case HsType.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
-					case HsType.StringId:
-						ConvertScriptStringIdExpressionData(modPack, expr);
-						return;
-					default:
-						break;
-				}
-			}
-		}
+                    case HsType.AiLine when BitConverter.ToInt32(expr.Data, 0) != -1:
+                    case HsType.StringId:
+                        ConvertScriptStringIdExpressionData(modPack, expr);
+                        return;
+                    default:
+                        break;
+                }
+            }
+        }
 
-		public void ConvertScriptTagReferenceExpressionData(ModPackage modPack, HsSyntaxNode expr) {
-			var tagIndex = BitConverter.ToInt32(expr.Data.ToArray(), 0);
+        public void ConvertScriptTagReferenceExpressionData(ModPackage modPack, HsSyntaxNode expr)
+        {
+            var tagIndex = BitConverter.ToInt32(expr.Data.ToArray(), 0);
 
-			if (tagIndex == -1)
-				return;
+            if (tagIndex == -1)
+                return;
 
-			if (tagIndex < 0 || tagIndex >= ModCache.TagCacheGenHO.Tags.Count)
-			{
-			    Console.Error.WriteLine($"Invalid tag index {tagIndex}");
-			    return;
-			}
+            if (tagIndex < 0 || tagIndex >= ModCache.TagCacheGenHO.Tags.Count)
+            {
+                Console.Error.WriteLine($"Invalid tag index {tagIndex}");
+                return;
+            }
 
-			var tag = ConvertCachedTagInstance(modPack, ModCache.TagCacheGenHO.Tags[tagIndex]);
+            var tag = ConvertCachedTagInstance(modPack, ModCache.TagCacheGenHO.Tags[tagIndex]);
 
-			if (tag == null)
-			{
-			    Console.Error.WriteLine($"Failed to convert tag reference for index {tagIndex}");
-			    return;
-			}
+            if (tag == null)
+            {
+                Console.Error.WriteLine($"Failed to convert tag reference for index {tagIndex}");
+                return;
+            }
 
-			expr.Data = BitConverter.GetBytes(tag.Index).ToArray();
-		}
+            expr.Data = BitConverter.GetBytes(tag.Index).ToArray();
+        }
 
-		public void ConvertScriptStringIdExpressionData(ModPackage modPack, HsSyntaxNode expr) {
-			StringId modStringId = new StringId(BitConverter.ToUInt32(expr.Data.ToArray(), 0));
+        public void ConvertScriptStringIdExpressionData(ModPackage modPack, HsSyntaxNode expr)
+        {
+            StringId modStringId = new StringId(BitConverter.ToUInt32(expr.Data.ToArray(), 0));
 
-			// if string is invalid, don't convert
-			if (modPack.StringTable.GetString(modStringId) == null)
-				return;
+            // if string is invalid, don't convert
+            if (modPack.StringTable.GetString(modStringId) == null)
+                return;
 
-			var edStringId = ConvertStringId(modPack, modStringId);
-			expr.Data = BitConverter.GetBytes(edStringId.Value).ToArray();
-		}
-	}
+            var edStringId = ConvertStringId(modPack, modStringId);
+            expr.Data = BitConverter.GetBytes(edStringId.Value).ToArray();
+        }
+    }
 }
