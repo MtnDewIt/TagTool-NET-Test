@@ -233,7 +233,7 @@ namespace TagTool.Commands.Files
         {
             if (TagMap == null) 
             {
-                var jsonData = File.ReadAllText($@"{Program.TagToolDirectory}\Tools\mappings\061_mapping.json");
+                var jsonData = File.ReadAllText($@"{DirectoryPaths.Data}\mappings\061_mapping.json");
                 TagMap = JsonConvert.DeserializeObject<Dictionary<int, string>>(jsonData);
             }
 
@@ -281,7 +281,7 @@ namespace TagTool.Commands.Files
 
             var fileName = Regex.Replace($"hott_{shortDateTime}_variant_errors.log", @"[<>:""/\|?*]", "_");
             var filePath = "logs";
-            var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
+            var fullPath = Path.Combine(DirectoryPaths.Base, filePath, fileName);
 
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);

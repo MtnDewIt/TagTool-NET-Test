@@ -352,7 +352,7 @@ namespace TagTool.Commands.Files
 
             var fileName = Regex.Replace($"hott_{shortDateTime}_variant_errors.log", @"[<>:""/\|?*]", "_");
             var filePath = "logs";
-            var fullPath = Path.Combine(Program.TagToolDirectory, filePath, fileName);
+            var fullPath = Path.Combine(DirectoryPaths.Base, filePath, fileName);
 
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);
