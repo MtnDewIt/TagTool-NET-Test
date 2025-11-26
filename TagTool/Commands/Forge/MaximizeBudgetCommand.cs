@@ -84,27 +84,26 @@ namespace TagTool.Commands.Forge
 
             foreach (CachedTag scenarioTag in scenarioTagList)
             {
-                using Stream stream = Cache.OpenCacheRead();
-                var scenario = Cache.Deserialize<Scenario>(stream, scenarioTag);
+                Scenario scenario;
+                using (Stream stream = Cache.OpenCacheRead())
+                    scenario = Cache.Deserialize<Scenario>(stream, scenarioTag);
 
                 MapFile mapFile = Cache.MapFiles.FindByMapId(scenario.MapId);
                 if (mapFile == null)
                     return new TagToolError(CommandError.FileNotFound, $"Could not find map file for '{scenarioTag}'");
 
-                MaximizeMapForgeBudget(scenarioTag, mapFile, objectTypes);
+                MaximizeMapForgeBudget(scenarioTag, scenario, mapFile, objectTypes);
             }
 
             return true;
         }
 
-        private void MaximizeMapForgeBudget(CachedTag scenarioTag, MapFile mapFile, uint objectTypes)
+        private void MaximizeMapForgeBudget(CachedTag scenarioTag, Scenario scenario, MapFile mapFile, uint objectTypes)
         {
             Console.WriteLine($"Maximizing budget for scenario '{scenarioTag.Name}'...");
 
             using (var cacheStream = Cache.OpenCacheReadWrite())
             {
-                var scenario = Cache.Deserialize<Scenario>(cacheStream, scenarioTag);
-
                 var metadata = new ContentItemMetadata()
                 {
                     Name = mapFile.MapFileBlf.Scenario.Names[0].Name,
@@ -252,7 +251,7 @@ namespace TagTool.Commands.Forge
                     var paletteEntry = objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry;
 
                     // we only want to leave objects that are not in the forge palette left in the scenario
-                    if (ForgePalette.Contains(paletteEntry.Object.ToString()))
+                    if (paletteEntry.Object == null || ForgePalette.Contains(paletteEntry.Object.ToString()))
                         continue;
 
                     // try to find an existing palette entry, if not add one to the new palette block and use that index
