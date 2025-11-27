@@ -32,8 +32,15 @@ namespace TagTool.Porting.Gen3
 
                 if (weapon.Tracking == Weapon.TrackingType.HumanTracking)
                 {
-                    weapon.TargetTracking[0].TrackingSound = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(@"sound\weapons\missile_launcher\tracking_locking\tracking_locking.sound_looping"));
-                    weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, BlamCache.TagCache.GetTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping"));
+                    if (BlamCache.TagCache.TryGetTag(@"sound\weapons\missile_launcher\tracking_locking\tracking_locking.sound_looping", out CachedTag trackingSound)) 
+                    {
+                        weapon.TargetTracking[0].TrackingSound = ConvertTag(cacheStream, blamCacheStream, trackingSound);
+                    }
+
+                    if (BlamCache.TagCache.TryGetTag(@"sound\weapons\missile_launcher\tracking_locked\tracking_locked.sound_looping", out CachedTag lockedSound)) 
+                    {
+                        weapon.TargetTracking[0].LockedSound = ConvertTag(cacheStream, blamCacheStream, lockedSound);
+                    }
                 }
             }
 
