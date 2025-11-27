@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using TagTool.Tags;
 using TagTool.Commands.Common;
@@ -345,8 +346,8 @@ namespace TagTool.Serialization
                 SerializeIndexBufferIndex(block, (IndexBufferIndex)value);
             else if (valueType == typeof(StructureSurfaceToTriangleMapping))
                 SerializePlaneReference(block, (StructureSurfaceToTriangleMapping)value);
-            else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(FlagBits<>))
-                SerializeFlagBits(block.Writer, (IFlagBits)value, valueInfo, valueType);
+            else if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(BitFlags<>))
+                SerializeFlagBits(block.Writer, (IBitFlags)value, valueInfo, valueType);
             else
             {
                 var info = StructCache.GetTagStructureInfo(valueType);
@@ -368,12 +369,26 @@ namespace TagTool.Serialization
             }
         }
 
-        private void SerializeFlagBits(EndianWriter writer, IFlagBits value, TagFieldAttribute valueInfo, Type valueType)
+        private void SerializeFlagBits(EndianWriter writer, IBitFlags flags, TagFieldAttribute valueInfo, Type valueType)
         {
-            var enumType = valueType.GenericTypeArguments[0];
-            uint exportedValue = VersionedEnum.ExportFlags(enumType, value, Version, CachePlatform);
-            object castedValue = Convert.ChangeType(exportedValue, valueInfo.EnumType);
-            SerializePrimitiveValue(writer, castedValue, valueInfo.EnumType);
+            TagEnumInfo enumInfo = EnumCache.GetInfo(valueType.GenericTypeArguments[0]);
+            Type storageType = valueInfo.EnumType;
+
+            ulong value = flags.GetUnsafe();
+
+            if(!VersionedEnum.ValidateFlagsForExport(enumInfo, value))
+                Log.Warning($"serializer: Enum value out of range {enumInfo.Type.FullName} = {value}");
+
+            value = VersionedEnum.ExportFlags(enumInfo, value);
+  
+            if (storageType == typeof(byte))
+                writer.Write((byte)value);
+            else if (storageType == typeof(ushort))
+                writer.Write((ushort)value);
+            else if (storageType == typeof(uint))
+                writer.Write((uint)value);
+            else
+                throw new NotSupportedException($"Unsupported storage type '{storageType}' for Enum '{enumInfo.Type}'");
         }
 
         private void SerializeEnum(EndianWriter writer, object value, TagFieldAttribute valueInfo, Type valueType)

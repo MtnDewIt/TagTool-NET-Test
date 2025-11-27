@@ -395,7 +395,7 @@ namespace TagTool.Tags
                 case TypeCode.Object when type.IsSubclassOf(typeof(TagStructure)):
                     return TagStructure.GetTagStructureInfo(type, targetVersion, cachePlatform).TotalSize;
 
-				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(FlagBits<>):
+				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(BitFlags<>):
 					return TagFieldInfo.GetFieldSize(type.GenericTypeArguments[0], attr, targetVersion, cachePlatform);
 
 				default:
