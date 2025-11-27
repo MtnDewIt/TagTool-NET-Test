@@ -7,7 +7,7 @@ on:
 jobs:
   build-win:
     env:
-      TARGET_FRAMEWORK: net8.0-windows
+      TARGET_FRAMEWORK: net10.0-windows
       PLATFORM: x64
 
     strategy:
