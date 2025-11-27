@@ -19,7 +19,8 @@ namespace TagTool.Porting.Gen3
     {
         private LensFlare ConvertLensFlare(LensFlare lensFlare, Stream cacheStream, Stream blamCacheStream)
         {
-            lensFlare.OcclusionReflectionIndex = 0;
+            if (BlamCache.Version != CacheVersion.Halo3Retail || BlamCache.Platform != CachePlatform.MCC)
+                lensFlare.OcclusionReflectionIndex = 0;
 
             // TO DO: verify reach conversions
 
