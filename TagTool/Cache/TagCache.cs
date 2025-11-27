@@ -6,6 +6,9 @@ using System.Linq;
 using TagTool.Cache.Gen3;
 using TagTool.Common;
 using TagTool.Tags;
+using TagTool.Cache.Gen2;
+using TagTool.Cache.Gen1;
+using TagTool.Cache.Gen4;
 
 namespace TagTool.Cache
 {
@@ -223,14 +226,21 @@ namespace TagTool.Cache
         /// <returns>True if group was found or (input name is "none" or "null" and tag is null) else false.</returns>
         public bool TryParseGroupTag(string name, out Tag result)
         {
-            if (TagDefinitions is TagDefinitionsGen3 td3)
+            switch (TagDefinitions) 
             {
-				if (td3.TryGetTagFromName(name, out result)) return true;
+                case TagDefinitionsGen1 td1:
+                    if (td1.TryGetTagFromName(name, out result)) return true;
+                    break;
+                case TagDefinitionsGen2 td2:
+                    if (td2.TryGetTagFromName(name, out result)) return true;
+                    break;
+                case TagDefinitionsGen3 td3:
+                    if (td3.TryGetTagFromName(name, out result)) return true;
+                    break;
+                case TagDefinitionsGen4 td4:
+                    if (td4.TryGetTagFromName(name, out result)) return true;
+                    break;
             }
-            else if (TagDefinitions is Gen4.TagDefinitionsGen4 td4)
-			{
-				if (td4.TryGetTagFromName(name, out result)) return true;
-			}
 
             name = name.PadRight(4); // rmw, rmd, rm
 
