@@ -19,13 +19,24 @@ namespace TagTool.Porting.Gen3
     {
         private LensFlare ConvertLensFlare(LensFlare lensFlare, Stream cacheStream, Stream blamCacheStream)
         {
-            if (BlamCache.Version != CacheVersion.Halo3Retail || BlamCache.Platform != CachePlatform.MCC)
+            bool isLegacyFlare = (BlamCache.Version != CacheVersion.Halo3Retail || BlamCache.Platform != CachePlatform.MCC) && BlamCache.Version < CacheVersion.HaloOnlineED;
+
+            if (isLegacyFlare)
+            {
                 lensFlare.OcclusionReflectionIndex = 0;
+                lensFlare.Flags |= LensFlare.LensFlareFlags.RotateOcclusionTestingBoxWithLensFlare;
+                lensFlare.Flags |= LensFlare.LensFlareFlags.NoReflectionOpacityFeedback;
+            }
 
             // TO DO: verify reach conversions
 
             foreach (var reflection in lensFlare.Reflections)
             {
+                if (isLegacyFlare)
+                {
+                    reflection.Flags |= LensFlare.Reflection.ReflectionFlags.UseLegacyH3FlaresSystem;
+                }
+
                 // only H3Original and ODST have Rotation after Axis Offset
                 // ODST: counterclockwise rotation starting from alt axis
                 if (BlamCache.Version == CacheVersion.Halo3ODST)
