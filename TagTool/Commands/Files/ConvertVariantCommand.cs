@@ -178,7 +178,7 @@ namespace TagTool.Commands.Files
         private void FixBlfEndianness(FileStream stream, Blf blf)
         {
             var buffer = new byte[stream.Length];
-            stream.Read(buffer, 0, buffer.Length);
+            stream.ReadExactly(buffer);
 
             using (var memoryStream = new MemoryStream(buffer)) 
             {

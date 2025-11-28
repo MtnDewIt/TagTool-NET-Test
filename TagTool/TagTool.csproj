@@ -1,28 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{42814DEE-5A94-4901-BDA9-28AFD2D4F5AC}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TagTool</RootNamespace>
-    <AssemblyName>TagTool</AssemblyName>
     <ApplicationIcon>TagTool.ico</ApplicationIcon>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <LangVersion>14</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591;CA1416</NoWarn>
-    <LangVersion>12</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     <GenerateLaunchSettingsFile>false</GenerateLaunchSettingsFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn),CS0169,CS0414,CS0649,CS1591;CA1416</NoWarn>
     <DocumentationFile>obj\$(Platform)\$(ConfigurationName)\$(TargetFramework)\Documentation.xml</DocumentationFile>
     <Deterministic>false</Deterministic>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
-    <Platforms>x86;x64</Platforms>
+    <Platforms>x64;x86</Platforms>
     <Configuration>Release</Configuration> <!--Default value-->
     <Platform>x64</Platform> <!--Default value-->
-	<!-- disabled for now as it does not respect DestinationSubDirectory -->
-	<AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
+    <!-- disabled for now as it does not respect DestinationSubDirectory -->
+    <AccelerateBuildsInVisualStudio>false</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="TagTool.ico" />
@@ -47,12 +43,6 @@
   <ItemGroup>
     <Reference Include="..\Tools\JsonMoppNet.dll" Private="false" />
     <Reference Include="..\Tools\MIConvexHull.dll" Private="false" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShaderGenerator\HaloShaderGenerator\HaloShaderGenerator.csproj" PrivateAssets="all" Private="false" />
