@@ -5,22 +5,14 @@ on:
     branches: [ "net10" ]
 
 jobs:
-  build-win:
-    env:
-      TARGET_FRAMEWORK: net10.0-windows
-      PLATFORM: x64
+  build:
 
-    strategy:
-      matrix:
-        BUILD_CONFIGURATION: [ Debug, Release ]
-
-    runs-on: windows-latest
+    runs-on: windows-2026
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Initialize Submodules 
-      uses: snickerbockers/submodules-init@v4
+      with:
+        submodules: 'true'
 
     - name: Determine Version
       id: determine_version
@@ -28,29 +20,29 @@ jobs:
         $version = (git rev-parse --short=7 HEAD).Trim()
         Write-Output "Version determined: $version"
         Write-Host "::set-output name=version::$version"
-          
-    - name: Install 7Zip
-      run: |
-        Invoke-WebRequest -Uri "https://www.7-zip.org/a/7z1900-x64.msi" -OutFile "$env:TEMP\7z.msi"
-        Start-Process -Wait -FilePath msiexec -ArgumentList "/i", "$env:TEMP\7z.msi", "/quiet" 
 
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.x'
+        dotnet-version: '10.x'
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1.0.5
+      
+    - name: Install 7Zip
+      run: |
+        Invoke-WebRequest -Uri "https://www.7-zip.org/a/7z1900-x64.msi" -OutFile "$env:TEMP\7z.msi"
+        Start-Process -Wait -FilePath msiexec -ArgumentList "/i", "$env:TEMP\7z.msi", "/quiet" 
 
     - name: Restore Packages
-      run: nuget restore TagTool.sln
+      run: nuget restore TagTool.slnx
+
 
     - name: Build solution
-      working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: msbuild TagTool.sln /t:rebuild /p:Platform=${{ env.PLATFORM }} /p:Configuration=${{ matrix.BUILD_CONFIGURATION }} /p:TargetFramework=${{ env.TARGET_FRAMEWORK }}
+      run: msbuild TagTool.slnx -t:rebuild -property:Platform=${{ env.PLATFORM }} -property:Configuration=${{ matrix.BUILD_CONFIGURATION }} -property:TargetFramework=${{ env.TARGET_FRAMEWORK }}
 
     - name: Zip Release
       run: |
