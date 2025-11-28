@@ -150,7 +150,6 @@ namespace TagTool.Tags.Definitions
 
         public enum SweetenerSizeValue : sbyte
         {
-            Default,
             Small,
             Medium,
             Large

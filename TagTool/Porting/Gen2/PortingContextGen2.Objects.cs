@@ -84,10 +84,6 @@ namespace TagTool.Porting.Gen2
                     return null;
             }
 
-            //fix impact sound related crash
-            if (newObject.SweetenerSize == GameObject.SweetenerSizeValue.Large)
-                newObject.SweetenerSize = GameObject.SweetenerSizeValue.Medium;
-
             return newObject;
         }
 
