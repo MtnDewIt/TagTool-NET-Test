@@ -2,7 +2,7 @@ name: TagTool Build
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "net10" ]
 
 jobs:
   build-win:
