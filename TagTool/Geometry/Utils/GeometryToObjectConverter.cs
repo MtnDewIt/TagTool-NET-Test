@@ -248,7 +248,7 @@ namespace TagTool.Geometry.Utils
                 ObjectType = new GameObjectType16() { Halo3ODST = GameObjectTypeHalo3ODST.Scenery }, // TODO: generic object type
                 BoundingRadius = boundingSphere,
                 AccelerationScale = 1.0f,
-                SweetenerSize = GameObject.SweetenerSizeValue.Default,
+                SweetenerSize = GameObject.SweetenerSizeValue.Medium,
                 MultiplayerObject = new List<GameObject.MultiplayerObjectBlock>()
                 {
                     new GameObject.MultiplayerObjectBlock() { DefaultSpawnTime = 30, DefaultAbandonTime = 60 }
