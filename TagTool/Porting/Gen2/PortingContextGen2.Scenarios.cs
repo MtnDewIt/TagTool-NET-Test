@@ -351,7 +351,7 @@ namespace TagTool.Porting.Gen2
                     (allClustersBitVector[k >> 5] ??= new()).Bits |= (BitVectorDword.DwordBits)(1u << (k & 31));
 
                 var connectedClusters = currentbsp.Clusters
-                    .Select((_, i) => new BspPvsBlock.BspSeamClusterMapping.ClusterReference() { BspIndex = 0, ClusterIndex = (byte)i });
+                    .Select((_, i) => new BspPvsBlock.BspSeamClusterMapping.ClusterReference() { BspIndex = 0, ClusterIndex = (sbyte)i });
 
                 for (var j = 0; j < currentbsp.Clusters.Count; j++)
                 {
