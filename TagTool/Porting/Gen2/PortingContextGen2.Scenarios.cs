@@ -392,8 +392,15 @@ namespace TagTool.Porting.Gen2
 
             //skies
             int bspbits = 0;
+            Gen2ScenarioStructureBsp gen2sbsp = null;
             for (var b = 0; b < gen2Tag.StructureBsps.Count; b++)
             {
+                // Get the first bsp in the scenario 
+                if (b == 0) 
+                {
+                    gen2sbsp = BlamCache.Deserialize<Gen2ScenarioStructureBsp>(gen2CacheStream, rawgen2Tag.StructureBsps[0].StructureBsp);
+                }
+
                 bspbits |= 1 << b;
             }
             foreach (var gen2sky in rawgen2Tag.Skies)
@@ -412,6 +419,14 @@ namespace TagTool.Porting.Gen2
                         RenderModel skymode = CacheContext.Deserialize<RenderModel>(cacheStream, skymodetag);
 
                         skymode.Nodes[0].DefaultScale *= (gen2skytag.RenderModelScale / 2);
+
+                        if (gen2sbsp != null) 
+                        {
+                            skymode.Nodes[0].DefaultTranslation.X = (gen2sbsp.WorldBoundsX.Lower + gen2sbsp.WorldBoundsX.Upper) / 2;
+                            skymode.Nodes[0].DefaultTranslation.Y = (gen2sbsp.WorldBoundsY.Lower + gen2sbsp.WorldBoundsY.Upper) / 2;
+                        }
+                        
+                        skymode.RuntimeNodeOrientations[0].Translation = skymode.Nodes[0].DefaultTranslation;
 
                         CacheContext.Serialize(cacheStream, skymodetag, skymode);
                     }

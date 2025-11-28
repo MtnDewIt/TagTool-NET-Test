@@ -389,7 +389,7 @@ namespace TagTool.Porting.Gen2
                         hint.Data[2] = (hint.Data[2] & ~(byte.MaxValue << 8)); //remove old jump height flags
                     }
                 }
-                pathfindingresource.PathfindingData = new TagBlock<Pathfinding.ResourcePathfinding>() {newPathfinding};
+                pathfindingresource.PathfindingData = new TagBlock<Pathfinding.ResourcePathfinding>() { newPathfinding };
             }
 
             //write pathfinding resource
@@ -399,84 +399,117 @@ namespace TagTool.Porting.Gen2
             newSbsp.Geometry = meshbuild.Geometry;
 
             //generate water meshes if the map has them
-            if (gen2Tag.WaterDefinitions != null && gen2Tag.WaterDefinitions.Count > 0 && gen2Tag.WaterDefinitions[0].Shader != null)
+            if (gen2Tag.WaterDefinitions != null && gen2Tag.WaterDefinitions.Count > 0)
             {
-                var waterWorldParams = new WorldGenerator.WorldParameters()
+                foreach (var waterDefinition in gen2Tag.WaterDefinitions)
                 {
-                    Center = gen2Tag.WaterDefinitions[0].Center,
-                    Extents = gen2Tag.WaterDefinitions[0].Extents,
-                    Z = gen2Tag.WaterDefinitions[0].Height,
-                    Shader = CacheContext.TagCache.GetTag(@"objects\eldewrito\reforge\shaders\water.shader"),
-                    CellSize = 5,
-                    Tesselation = 20,
-                    Opacity = 0.9f,                 
-                };
+                    if (waterDefinition.Shader != null)
+                    {
+                        if (waterDefinition.Farz > 0)
+                        {
+                            RealVector2d relativeCenter = waterDefinition.Center;
 
-                //WorldGenerator.GenerateWaterWorld(CacheContext, newSbsp, waterWorldParams, out var waterGeometry, out var waterResource);
-                WorldGenerator.GenerateFlatWorld(CacheContext, newSbsp, waterWorldParams, out var waterGeometry, out var waterResource);
-                
-                CollisionResource.InstancedGeometry.Add(new InstancedGeometryBlock
-                {
-                    BoundingSphereOffset = new RealPoint3d(gen2Tag.WaterDefinitions[0].Center.I, gen2Tag.WaterDefinitions[0].Center.J, gen2Tag.WaterDefinitions[0].Height),
-                    BoundingSphereRadius = 500.0f,
-                    MeshIndex = (short)(newSbsp.Geometry.Meshes.Count)
-                });
+                            if (relativeCenter == new RealVector2d(0.0f, 0.0f))
+                            {
+                                relativeCenter = new RealVector2d
+                                {
+                                    I = (gen2Tag.WorldBoundsX.Lower + gen2Tag.WorldBoundsX.Upper) / 2,
+                                    J = (gen2Tag.WorldBoundsY.Lower + gen2Tag.WorldBoundsY.Upper) / 2,
+                                };
+                            }
+                            else
+                            {
+                                waterDefinition.Extents = new RealVector2d(500.0f, 500.0f);
 
-                newSbsp.InstancedGeometryInstances.Add(new InstancedGeometryInstance
-                {
-                    Scale = 1.0f,
-                    Matrix = new RealMatrix4x3(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, gen2Tag.WaterDefinitions[0].Center.I, gen2Tag.WaterDefinitions[0].Center.J, gen2Tag.WaterDefinitions[0].Height),
-                    DefinitionIndex = (short)(CollisionResource.InstancedGeometry.Count - 1),
-                    Flags = InstancedGeometryInstance.InstancedGeometryFlags.RenderOnly,
-                    WorldBoundingSphereCenter = new RealPoint3d(gen2Tag.WaterDefinitions[0].Center.I, gen2Tag.WaterDefinitions[0].Center.J, gen2Tag.WaterDefinitions[0].Height),
-                    BoundingSphereRadiusBounds = new Bounds<float>(500.0f, 500.0f),
-                });               
-                
-                /*
-                newSbsp.Clusters.Add(new ScenarioStructureBsp.Cluster()
-                {
-                    BoundsX = newSbsp.WorldBoundsX,
-                    BoundsY = newSbsp.WorldBoundsY,
-                    BoundsZ = newSbsp.WorldBoundsZ,
-                    AtmosphereIndex = -1,
-                    CameraFxIndex = -1,
-                    BackgroundSoundEnvironmentIndex = -1,
-                    AcousticsSoundClusterIndex = 0,
-                    Unknown3 = -1,
-                    Unknown4 = -1,
-                    Unknown5 = -1,
-                    RuntimeDecalStartIndex = -1,
-                    MeshIndex = (short)(newSbsp.Geometry.Meshes.Count),
-                });               
-                */
+                                // This correctly aligns the plane on headlong
+                                const float SCALAR_CONSTANT = 2.0f / 3.0f;
 
-                var geometryResource = CacheContext.ResourceCache.GetRenderGeometryApiResourceDefinition(newSbsp.Geometry.Resource);
-                waterGeometry.Meshes[0].IndexBufferIndices[0] = (short)geometryResource.IndexBuffers.Count;
-                waterGeometry.Meshes[0].VertexBufferIndices[0] = (short)geometryResource.VertexBuffers.Count;
-                //waterGeometry.Meshes[0].VertexBufferIndices[6] = (short)(geometryResource.VertexBuffers.Count + 1);
-                //waterGeometry.Meshes[0].VertexBufferIndices[7] = (short)(geometryResource.VertexBuffers.Count + 2);
-                foreach (var part in waterGeometry.Meshes[0].Parts)
-                    part.MaterialIndex = (short)(newSbsp.Materials.Count - 1);             
-                newSbsp.Geometry.Meshes.Add(waterGeometry.Meshes[0]);
-                geometryResource.IndexBuffers.Add(waterResource.IndexBuffers[0]);
-                geometryResource.VertexBuffers.Add(waterResource.VertexBuffers[0]);
-                //geometryResource.VertexBuffers.Add(waterResource.VertexBuffers[1]);
-                //geometryResource.VertexBuffers.Add(waterResource.VertexBuffers[2]);
-                newSbsp.Geometry.InstancedGeometryPerPixelLighting = new List<RenderGeometry.StaticPerPixelLighting>();
-                newSbsp.Geometry.SetResourceBuffers(geometryResource, false);
-                CacheContext.ResourceCaches.ReplaceResource(newSbsp.Geometry.Resource, geometryResource);
+                                relativeCenter = new RealVector2d
+                                {
+                                    I = waterDefinition.Center.I != 0.0f ? (waterDefinition.Center.I * SCALAR_CONSTANT) + -(waterDefinition.Extents.I) : 0.0f,
+                                    J = waterDefinition.Center.J != 0.0f ? (waterDefinition.Center.J * SCALAR_CONSTANT) + -(waterDefinition.Extents.J) : 0.0f,
+                                };
+                            }
 
-                /*
-                int waterMeshIndex = newSbsp.Geometry.Meshes.Count - 1;
-                newSbsp.Geometry.Meshes[waterMeshIndex].SubParts = new List<SubPart> { new SubPart
-                {
-                    FirstIndex = 0,
-                    IndexCount = newSbsp.Geometry.Meshes[waterMeshIndex].Parts[0].IndexCount,
-                    PartIndex = 0,
-                    VertexCount = (ushort)waterResource.VertexBuffers[0].Definition.Count
-                } };
-                newSbsp.Geometry.MeshClusterVisibility.Add(HavokMoppGenerator.GeneratePerMeshMopp(CacheContext, newSbsp.Geometry.Meshes[waterMeshIndex]));
-                */
+                            var waterWorldParams = new WorldGenerator.WorldParameters()
+                            {
+                                Center = relativeCenter,
+                                Extents = waterDefinition.Extents,
+                                Z = waterDefinition.Height,
+                                Shader = CacheContext.TagCache.GetTag(@"objects\eldewrito\reforge\shaders\water.shader"),
+                                CellSize = 8,
+                                Tesselation = 20,
+                                Opacity = 0.9f,
+                            };
+
+                            //WorldGenerator.GenerateWaterWorld(CacheContext, newSbsp, waterWorldParams, out var waterGeometry, out var waterResource);
+                            WorldGenerator.GenerateFlatWorld(CacheContext, newSbsp, waterWorldParams, out var waterGeometry, out var waterResource);
+
+                            CollisionResource.InstancedGeometry.Add(new InstancedGeometryBlock
+                            {
+                                BoundingSphereOffset = new RealPoint3d(waterDefinition.Center.I, waterDefinition.Center.J, waterDefinition.Height),
+                                BoundingSphereRadius = 500.0f,
+                                MeshIndex = (short)(newSbsp.Geometry.Meshes.Count)
+                            });
+
+                            newSbsp.InstancedGeometryInstances.Add(new InstancedGeometryInstance
+                            {
+                                Scale = 1.0f,
+                                Matrix = new RealMatrix4x3(1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, waterDefinition.Center.I, waterDefinition.Center.J, waterDefinition.Height),
+                                DefinitionIndex = (short)(CollisionResource.InstancedGeometry.Count - 1),
+                                Flags = InstancedGeometryInstance.InstancedGeometryFlags.RenderOnly,
+                                WorldBoundingSphereCenter = new RealPoint3d(waterDefinition.Center.I, waterDefinition.Center.J, waterDefinition.Height),
+                                BoundingSphereRadiusBounds = new Bounds<float>(500.0f, 500.0f),
+                            });
+
+                            /*
+                            newSbsp.Clusters.Add(new ScenarioStructureBsp.Cluster()
+                            {
+                                BoundsX = newSbsp.WorldBoundsX,
+                                BoundsY = newSbsp.WorldBoundsY,
+                                BoundsZ = newSbsp.WorldBoundsZ,
+                                AtmosphereIndex = -1,
+                                CameraFxIndex = -1,
+                                BackgroundSoundEnvironmentIndex = -1,
+                                AcousticsSoundClusterIndex = 0,
+                                Unknown3 = -1,
+                                Unknown4 = -1,
+                                Unknown5 = -1,
+                                RuntimeDecalStartIndex = -1,
+                                MeshIndex = (short)(newSbsp.Geometry.Meshes.Count),
+                            });               
+                            */
+
+                            var geometryResource = CacheContext.ResourceCache.GetRenderGeometryApiResourceDefinition(newSbsp.Geometry.Resource);
+                            waterGeometry.Meshes[0].IndexBufferIndices[0] = (short)geometryResource.IndexBuffers.Count;
+                            waterGeometry.Meshes[0].VertexBufferIndices[0] = (short)geometryResource.VertexBuffers.Count;
+                            //waterGeometry.Meshes[0].VertexBufferIndices[6] = (short)(geometryResource.VertexBuffers.Count + 1);
+                            //waterGeometry.Meshes[0].VertexBufferIndices[7] = (short)(geometryResource.VertexBuffers.Count + 2);
+                            foreach (var part in waterGeometry.Meshes[0].Parts)
+                                part.MaterialIndex = (short)(newSbsp.Materials.Count - 1);
+                            newSbsp.Geometry.Meshes.Add(waterGeometry.Meshes[0]);
+                            geometryResource.IndexBuffers.Add(waterResource.IndexBuffers[0]);
+                            geometryResource.VertexBuffers.Add(waterResource.VertexBuffers[0]);
+                            //geometryResource.VertexBuffers.Add(waterResource.VertexBuffers[1]);
+                            //geometryResource.VertexBuffers.Add(waterResource.VertexBuffers[2]);
+                            newSbsp.Geometry.InstancedGeometryPerPixelLighting = new List<RenderGeometry.StaticPerPixelLighting>();
+                            newSbsp.Geometry.SetResourceBuffers(geometryResource, false);
+                            CacheContext.ResourceCaches.ReplaceResource(newSbsp.Geometry.Resource, geometryResource);
+
+                            /*
+                            int waterMeshIndex = newSbsp.Geometry.Meshes.Count - 1;
+                            newSbsp.Geometry.Meshes[waterMeshIndex].SubParts = new List<SubPart> { new SubPart
+                            {
+                                FirstIndex = 0,
+                                IndexCount = newSbsp.Geometry.Meshes[waterMeshIndex].Parts[0].IndexCount,
+                                PartIndex = 0,
+                                VertexCount = (ushort)waterResource.VertexBuffers[0].Definition.Count
+                            } };
+                            newSbsp.Geometry.MeshClusterVisibility.Add(HavokMoppGenerator.GeneratePerMeshMopp(CacheContext, newSbsp.Geometry.Meshes[waterMeshIndex]));
+                            */
+                        }
+                    }
+                }
             }
 
             //add empty meshes for clusters and instances with no mesh
