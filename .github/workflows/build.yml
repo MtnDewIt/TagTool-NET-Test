@@ -42,16 +42,16 @@ jobs:
 
 
     - name: Build solution
-      run: msbuild TagTool.slnx -t:rebuild -property:Platform=${{ env.PLATFORM }} -property:Configuration=${{ matrix.BUILD_CONFIGURATION }} -property:TargetFramework=${{ env.TARGET_FRAMEWORK }}
+      run: msbuild TagTool.slnx -t:rebuild -property:Platform=x64 -property:Configuration=Release
 
     - name: Zip Release
       run: |
-        & "C:\Program Files\7-Zip\7z.exe" a ${{ matrix.BUILD_CONFIGURATION }}_${{ env.PLATFORM }}.7z ./TagTool/bin/${{ env.PLATFORM }}/${{ matrix.BUILD_CONFIGURATION }}/${{ env.TARGET_FRAMEWORK }}*
+        & "C:\Program Files\7-Zip\7z.exe" a Release_x64.7z ./TagTool/bin/x64/Release/*
         
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        files: ${{ matrix.BUILD_CONFIGURATION }}_${{ env.PLATFORM }}.7z
+        files: Release_x64.7z
         tag_name: ${{ steps.determine_version.outputs.version }}
         draft: false
         prerelease: false
