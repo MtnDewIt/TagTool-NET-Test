@@ -435,7 +435,7 @@ namespace TagTool.Serialization
             if (valueType == typeof(StructureSurfaceToTriangleMapping))
                 return DeserializePlaneReference(reader);
 
-            if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(FlagBits<>))
+            if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(BitFlags<>))
                 return DeserializeFlagBits(reader, valueInfo, valueType);
 
             // Assume the value is a structure
@@ -444,10 +444,25 @@ namespace TagTool.Serialization
 
         private object DeserializeFlagBits(EndianReader reader, TagFieldAttribute valueInfo, Type valueType)
         {
-            var enumType = valueType.GenericTypeArguments[0];
-            object value = DeserializePrimitiveValue(reader, valueInfo.EnumType ?? valueType.GetEnumUnderlyingType());
-            uint castedValue = (uint)Convert.ChangeType(value, typeof(uint));
-            return VersionedEnum.ImportFlags(enumType, castedValue, Version, CachePlatform);
+            TagEnumInfo enumInfo = EnumCache.GetInfo(valueType.GenericTypeArguments[0]);
+            Type storageType = valueInfo.EnumType;
+
+            ulong value;
+            if (storageType == typeof(byte))
+                value = reader.ReadByte();
+            else if(storageType == typeof(ushort))
+                value = reader.ReadUInt16();
+            else if (storageType == typeof(uint))
+                value = reader.ReadUInt32();
+            else
+                throw new NotSupportedException($"Unsupported storage type '{storageType}' for Enum '{enumInfo.Type}'");
+
+            if(!VersionedEnum.ValidateFlagsForImport(enumInfo, value))
+                Log.Warning($"deserializer: Enum value out of range {enumInfo.Type.FullName} = {value}");
+
+            value = VersionedEnum.ImportFlags(enumInfo, value);
+
+            return (IBitFlags)Activator.CreateInstance(valueType, [value]);
         }
 
         private object DeserializeEnum(EndianReader reader, TagFieldAttribute valueInfo, Type valueType)
