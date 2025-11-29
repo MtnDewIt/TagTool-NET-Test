@@ -36,27 +36,10 @@ namespace TagTool.Common
     /// </summary>
     public class AnsiWriter : TextWriter
     {
-        private const int STD_OUTPUT_HANDLE = -11;
-        private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
-
-        [DllImport("kernel32.dll")]
-        private static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
-
-        [DllImport("kernel32.dll")]
-        private static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern IntPtr GetStdHandle(int nStdHandle);
-
         private TextWriter _writer;
 
         public AnsiWriter(TextWriter writer)
         {
-            if (!EnableVTP()) 
-            {
-                Log.Error("Failed to enable Virtual Terminal Processing (VTP) for Windows Console");
-            }
-
             _writer = writer;
         }
 
@@ -75,41 +58,6 @@ namespace TagTool.Common
         public override void WriteLine()
         {
             _writer.WriteLine(Ansi.Reset);
-        }
-
-        /// <summary>
-        /// Enables Virtual Terminal Processing for ANSI escape sequences in Windows Console
-        /// </summary>
-        /// <returns>
-        /// True if VTP was successfully enabled, false otherwise
-        /// </returns>
-        public static bool EnableVTP()
-        {
-            // ANSI support is native on Linux/Unix systems (This will be relevant at some point)
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return true;
-
-            try
-            {
-                var handle = GetStdHandle(STD_OUTPUT_HANDLE);
-
-                if (handle == IntPtr.Zero)
-                    return false;
-
-                if (!GetConsoleMode(handle, out uint mode))
-                    return false;
-
-                mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-
-                if (!SetConsoleMode(handle, mode))
-                    return false;
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 
