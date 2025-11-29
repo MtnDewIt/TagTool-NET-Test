@@ -370,7 +370,7 @@ namespace TagTool.Commands.ScenarioStructureBSPs
 				
 				// Set Crate Properties
 				crate_tag.ObjectType = new GameObjectType16() { Halo3ODST = GameObjectTypeHalo3ODST.Crate };				 // -- 	SetField ObjectType.Halo3ODST Crate
-				crate_tag.ObjectFlags = new ObjectDefinitionFlags() { Flags = ObjectFlags.DoesNotCastShadow }; // -- 	SetField ObjectFlags.Flags DoesNotCastShadow
+				crate_tag.ObjectFlags.Set(ObjectDefinitionFlags.DoesNotCastShadow, true);								     // -- 	SetField ObjectFlags.Flags DoesNotCastShadow
 				crate_tag.BoundingRadius = 10000;																			 // -- 	SetField BoundingRadius 10000
 				crate_tag.Model = Cache.TagCache.GetTag($"{ TagName}.model");												 // -- 	SetField Model {tagName}.model
 				
