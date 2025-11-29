@@ -28,7 +28,7 @@ namespace TagTool.Commands
             Log.AddHandler(new RunMetricsLogHandler());
             Log.Level = LogLevel.Info; // TODO: set via command line
 
-            Console.SetOut(new AnsiWriter(Console.Out));
+            AnsiConsole.Initialize();
             ConsoleHistory.Initialize();
 
             var assembly = Assembly.GetExecutingAssembly();
