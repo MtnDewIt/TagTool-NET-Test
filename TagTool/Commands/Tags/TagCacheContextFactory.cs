@@ -71,6 +71,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new TagDependencyCommand(cache));
             context.AddCommand(new GuessTagDefCommand(cache));
             context.AddCommand(new DiffTagCommand(cache, cache));
+            context.AddCommand(new ListInvalidBitmapsCommand(cache));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
