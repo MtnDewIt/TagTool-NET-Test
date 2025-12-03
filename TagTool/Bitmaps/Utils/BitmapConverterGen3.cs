@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using TagTool.Cache;
+using TagTool.Common.Logging;
 using TagTool.Extensions;
 using TagTool.Tags.Definitions;
 
@@ -82,25 +83,33 @@ namespace TagTool.Bitmaps.Utils
 
         private BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex)
         {
-            if (Mode == BitmapConverterMode.DiffuseToNormal)
-                return GetNormalMapFormat(format);
+            var image = bitmap.Images[imageIndex];
+
+            if (BitmapUtils.IsNormalMap(bitmap, imageIndex) || Mode == BitmapConverterMode.DiffuseToNormal)
+                format = GetNormalMapFormat(format);
+            else
+                format = BitmapUtils.GetEquivalentBitmapFormat(format);
 
             // array textures will be converted to texture3d which does not support v8u8
             if (bitmap.Usage == Bitmap.BitmapUsageGlobalEnum.WaterArray)
                 return BitmapFormat.A8R8G8B8;
 
-            if (BitmapUtils.IsNormalMap(bitmap, imageIndex))
+            // non-pow2 dxn is not supported in d3d9
+            if (format == BitmapFormat.Dxn && !BitmapUtils.IsPowerOfTwo(image.Width, image.Height))
             {
-                format = GetNormalMapFormat(format);
-
-                // non-pow2 dxn is not supported in d3d9
-                if (format == BitmapFormat.Dxn && !BitmapUtils.IsPowerOfTwo(bitmap.Images[imageIndex].Width, bitmap.Images[imageIndex].Height))
-                    return BitmapFormat.Dxt1;
-
-                return format;
+                Log.Warning($"DXN bitmap '{tagName}' has invalid dimensions {image.Width}x{image.Height} (must be pow2); Using a8r8g8b8.");
+                return BitmapFormat.A8R8G8B8;
             }
 
-            return BitmapUtils.GetEquivalentBitmapFormat(format);
+            // DXTn dimensions must be multiples of 4. See https://learn.microsoft.com/en-us/windows/win32/direct3d9/d3dformat
+            // The dimensions passed to CreateTexture get rounded, which casues the shader to incorrectly sample the padding pixels.
+            if (BitmapUtils.IsCompressedFormat(format) && ((image.Width & 3) != 0 || (image.Height & 3) != 0))
+            {
+                Log.Warning($"DXTn bitmap '{tagName}' has invalid dimensions {image.Width}x{image.Height} (must be divisible by 4); Using a8r8g8b8.");
+                return BitmapFormat.A8R8G8B8;
+            }
+
+            return format;
         }
 
         private CompressionQuality GetCompressionQuality(BitmapFormat destFormat)
