@@ -56,7 +56,7 @@ namespace TagTool.BlamFile
         public static void GenerateCampaignFile(GameCache cache, GameCache blamCache)
         {
             FileInfo mapInfo = blamCache.Directory != null ? new FileInfo(Path.Combine(blamCache.Directory.FullName, "info")) : null;
-            FileInfo modInfo = null; // TODO: Get mod info relative to cache path
+            FileInfo modInfo = blamCache.Directory != null ? new FileInfo(Path.Combine(Directory.GetParent(blamCache.Directory.FullName).FullName, "ModInfo.json")) : null;
 
             GenerateCampaignFile(cache, mapInfo, modInfo);
         }
