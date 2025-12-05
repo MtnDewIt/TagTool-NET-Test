@@ -86,7 +86,7 @@ namespace TagTool.Bitmaps.Utils
             var image = bitmap.Images[imageIndex];
 
             if (BitmapUtils.IsNormalMap(bitmap, imageIndex) || Mode == BitmapConverterMode.DiffuseToNormal)
-                format = GetNormalMapFormat(format);
+                format = GetNormalMapFormat(bitmap, format);
             else
                 format = BitmapUtils.GetEquivalentBitmapFormat(format);
 
