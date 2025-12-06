@@ -56,14 +56,13 @@ namespace TagTool.Porting.Gen2
             }
 
             //convert images
-            foreach (var gen2Img in gen2Bitmap.Bitmaps)
+            for (var i = 0; i < gen2Bitmap.Bitmaps.Count; i++)
             {
+                var gen2Img = gen2Bitmap.Bitmaps[i];
                 byte[] rawBitmapData = BitmapConverterGen2.ConvertBitmapData((GameCacheGen2)BlamCache, gen2Bitmap, gen2Img);
                 Bitmap.Image newImg = BitmapConverterGen2.ConvertBitmapImage((GameCacheGen2)BlamCache, gen2Img, rawBitmapData);
                 BaseBitmap bitmapbase = new BaseBitmap(newImg);
                 bitmapbase.Data = rawBitmapData;
-
-                BitmapConverterGen2.PostprocessBitmap(bitmapbase, gen2Bitmap, newImg, gen2TagName);
 
                 var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(bitmapbase);
                 var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
@@ -95,6 +94,9 @@ namespace TagTool.Porting.Gen2
                     RegistrationPoint = new RealPoint2d { X = 0, Y = 0 },
                 });
             }
+
+            BitmapConverterGen2.PostprocessBitmap(newBitmap, gen2Bitmap, CacheContext);
+
             return newBitmap;
         }
     }
