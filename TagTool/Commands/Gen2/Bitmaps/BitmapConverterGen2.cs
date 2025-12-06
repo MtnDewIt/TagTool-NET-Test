@@ -125,9 +125,7 @@ namespace TagTool.Commands.Gen2.Bitmaps
                 if (image.Format == BitmapFormat.X8R8G8B8 && gen2Bitmap.Usage == BitmapGen2.UsageValue.HeightMap)
                 {
                     // for d3d9 dxn mips need to be >= 4x4 to avoid crashes
-                    int mipCount = image.Format == BitmapFormat.Dxn
-                        ? BitmapUtils.GetMipmapCountTruncate(image.Width, image.Height, 4, 4)
-                        : BitmapUtils.GetMipmapCount(image.Width, image.Height);
+                    int mipCount = BitmapUtils.GetMipmapCountTruncate(image.Width, image.Height, 4, 4);
 
                     int layerCount = image.Type == BitmapType.CubeMap ? 6 : image.Depth;
 
@@ -143,7 +141,8 @@ namespace TagTool.Commands.Gen2.Bitmaps
 
                         var mipGenerator = new MipMapGenerator();
                         mipGenerator.GenerateMipMap(image.Width, image.Height, baseLevelData, 4, mipCount);
-                        Debug.Assert(mipCount == mipGenerator.MipMaps.Count + 1);
+                        while (mipGenerator.MipMaps.Count > mipCount)
+                            mipGenerator.MipMaps.RemoveAt(mipGenerator.MipMaps.Count - 1);
 
                         // append the base level to the list of surfaces
                         newSurfaces.Add(new MipMap(baseLevelData, image.Width, image.Height));
