@@ -411,14 +411,15 @@ namespace TagTool.Porting.Gen2
 
                     var gen2skytag = BlamCache.Deserialize<TagTool.Tags.Definitions.Gen2.Sky>(gen2CacheStream, gen2sky.Sky);
                     CachedTag skymodetag = null;
+                    RenderModel skymode = null;
                     if (gen2skytag.RenderModel != null)
                     {
                         skymodetag = ConvertTag(cacheStream, gen2CacheStream, gen2skytag.RenderModel);
 
                         //fixup skymodetag with gen2 sky render model scale
-                        RenderModel skymode = CacheContext.Deserialize<RenderModel>(cacheStream, skymodetag);
+                        skymode = CacheContext.Deserialize<RenderModel>(cacheStream, skymodetag);
 
-                        skymode.Nodes[0].DefaultScale *= (gen2skytag.RenderModelScale / 2);
+                        skymode.Nodes[0].DefaultScale = (gen2skytag.RenderModelScale / 2);
 
                         if (gen2sbsp != null) 
                         {
@@ -433,8 +434,62 @@ namespace TagTool.Porting.Gen2
 
                     var newmodel = new Model
                     {
-                        RenderModel = skymodetag
+                        RenderModel = skymodetag,
+                        CollisionRegions = new List<Model.CollisionRegion>(),
+                        Nodes = new List<Model.Node>()
                     };
+                    for (int i = 0; i < skymode.Regions.Count; i++) 
+                    {
+                        Model.CollisionRegion collisionRegion = new Model.CollisionRegion 
+                        {
+                            Name = skymode.Regions[i].Name,
+                            CollisionRegionIndex = -1,
+                            Permutations = new List<Model.CollisionRegion.Permutation>(),
+                        };
+
+                        for (int j = 0; j < skymode.Regions[i].Permutations.Count; j++) 
+                        {
+                            Model.CollisionRegion.Permutation permutation = new Model.CollisionRegion.Permutation 
+                            {
+                                Name = skymode.Regions[i].Permutations[j].Name,
+                                CollisionPermutationIndex = -1,
+                            };
+
+                            collisionRegion.Permutations.Add(permutation);
+                        }
+
+                        newmodel.CollisionRegions.Add(collisionRegion);
+                    }
+                    for (int i = 0; i < skymode.Nodes.Count; i++)
+                    {
+                        Model.Node node = new Model.Node 
+                        {
+                            Name = skymode.Nodes[i].Name,
+                            ParentNode = skymode.Nodes[i].ParentNode,
+                            FirstChildNode = skymode.Nodes[i].FirstChildNode,
+                            NextSiblingNode = skymode.Nodes[i].NextSiblingNode,
+                            DefaultTranslation = skymode.Nodes[i].DefaultTranslation,
+                            DefaultRotation = skymode.Nodes[i].DefaultRotation,
+                            DefaultScale = skymode.Nodes[i].DefaultScale,
+                            Inverse = new RealMatrix4x3 
+                            {
+                                // TODO: Update definition so the mode uses a matrix
+                                m11 = skymode.Nodes[i].InverseForward.I,
+                                m12 = skymode.Nodes[i].InverseForward.J,
+                                m13 = skymode.Nodes[i].InverseForward.K,
+                                m21 = skymode.Nodes[i].InverseLeft.I,
+                                m22 = skymode.Nodes[i].InverseLeft.J,
+                                m23 = skymode.Nodes[i].InverseLeft.K,
+                                m31 = skymode.Nodes[i].InverseUp.I,
+                                m32 = skymode.Nodes[i].InverseUp.J,
+                                m33 = skymode.Nodes[i].InverseUp.K,
+                                m41 = skymode.Nodes[i].InversePosition.X,
+                                m42 = skymode.Nodes[i].InversePosition.Y,
+                                m43 = skymode.Nodes[i].InversePosition.Z,
+                            },
+                        };
+                        newmodel.Nodes.Add(node);
+                    }
                     CachedTag newmodeltag = CacheContext.TagCache.AllocateTag<Model>($"{skytagname}");
                     CacheContext.Serialize(cacheStream, newmodeltag, newmodel);
                     var newscen = new Scenery
