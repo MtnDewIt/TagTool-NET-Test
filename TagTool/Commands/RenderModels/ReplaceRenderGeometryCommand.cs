@@ -179,11 +179,11 @@ namespace TagTool.Commands.RenderModels
 
                     var m = invBind;  // alias
 
-                    haloNode.InverseForward = new RealVector3d(m.A1, m.B1, m.C1);
-                    haloNode.InverseLeft = new RealVector3d(m.A2, m.B2, m.C2);
-                    haloNode.InverseUp = new RealVector3d(m.A3, m.B3, m.C3);
+                    haloNode.Inverse.Forward = new RealVector3d(m.A1, m.B1, m.C1);
+                    haloNode.Inverse.Left = new RealVector3d(m.A2, m.B2, m.C2);
+                    haloNode.Inverse.Up = new RealVector3d(m.A3, m.B3, m.C3);
 
-                    haloNode.InversePosition = new RealPoint3d(
+                    haloNode.Inverse.Position = new RealPoint3d(
                         m.A4 * ScaleFactor,
                         m.B4 * ScaleFactor,
                         m.C4 * ScaleFactor

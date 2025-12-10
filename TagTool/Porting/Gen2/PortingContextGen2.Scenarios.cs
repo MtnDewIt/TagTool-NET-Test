@@ -471,22 +471,7 @@ namespace TagTool.Porting.Gen2
                             DefaultTranslation = skymode.Nodes[i].DefaultTranslation,
                             DefaultRotation = skymode.Nodes[i].DefaultRotation,
                             DefaultScale = skymode.Nodes[i].DefaultScale,
-                            Inverse = new RealMatrix4x3 
-                            {
-                                // TODO: Update definition so the mode uses a matrix
-                                m11 = skymode.Nodes[i].InverseForward.I,
-                                m12 = skymode.Nodes[i].InverseForward.J,
-                                m13 = skymode.Nodes[i].InverseForward.K,
-                                m21 = skymode.Nodes[i].InverseLeft.I,
-                                m22 = skymode.Nodes[i].InverseLeft.J,
-                                m23 = skymode.Nodes[i].InverseLeft.K,
-                                m31 = skymode.Nodes[i].InverseUp.I,
-                                m32 = skymode.Nodes[i].InverseUp.J,
-                                m33 = skymode.Nodes[i].InverseUp.K,
-                                m41 = skymode.Nodes[i].InversePosition.X,
-                                m42 = skymode.Nodes[i].InversePosition.Y,
-                                m43 = skymode.Nodes[i].InversePosition.Z,
-                            },
+                            Inverse = skymode.Nodes[i].Inverse,
                         };
                         newmodel.Nodes.Add(node);
                     }

@@ -46,18 +46,6 @@ namespace TagTool.Commands.Models
             {
                 var rmNode = renderModel.Nodes[i];
 
-                // build the inverse matrix from the four vectors:
-                var inv = new RealMatrix4x3(
-                    // row1 = InverseForward
-                    (float)rmNode.InverseForward.I, (float)rmNode.InverseForward.J, (float)rmNode.InverseForward.K,
-                    // row2 = InverseLeft
-                    (float)rmNode.InverseLeft.I, (float)rmNode.InverseLeft.J, (float)rmNode.InverseLeft.K,
-                    // row3 = InverseUp
-                    (float)rmNode.InverseUp.I, (float)rmNode.InverseUp.J, (float)rmNode.InverseUp.K,
-                    // row4 = InversePosition
-                    (float)rmNode.InversePosition.X, (float)rmNode.InversePosition.Y, (float)rmNode.InversePosition.Z
-                );
-
                 var modelNode = new Model.Node
                 {
                     Name = rmNode.Name,
@@ -68,7 +56,7 @@ namespace TagTool.Commands.Models
                     DefaultTranslation = rmNode.DefaultTranslation,
                     DefaultRotation = rmNode.DefaultRotation,
                     DefaultScale = rmNode.DefaultScale,
-                    Inverse = inv
+                    Inverse = rmNode.Inverse,
                 };
 
                 updatedNodes.Add(modelNode);
