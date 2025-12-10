@@ -334,11 +334,7 @@ namespace TagTool.Geometry.Utils
                     DefaultTranslation = node.DefaultTranslation,
                     DefaultRotation = node.DefaultRotation,
                     DefaultScale = node.DefaultScale,
-                    Inverse = new RealMatrix4x3(
-                        node.InverseForward.I, node.InverseForward.J, node.InverseForward.K,
-                        node.InverseLeft.I, node.InverseLeft.J, node.InverseLeft.K,
-                        node.InverseUp.I, node.InverseUp.J, node.InverseUp.K,
-                        node.InversePosition.X, node.InversePosition.Y, node.InversePosition.Z)
+                    Inverse = node.Inverse
                 });
             }
 
@@ -517,10 +513,7 @@ namespace TagTool.Geometry.Utils
                 DefaultTranslation = new RealPoint3d(0, 0, 0),
                 DefaultRotation = new RealQuaternion(0, 0, 0, -1),
                 DefaultScale = 1.0f,
-                InverseForward = new RealVector3d(1, 0, 0),
-                InverseLeft = new RealVector3d(0, 1, 0),
-                InverseUp = new RealVector3d(0, 0, 1),
-                InversePosition = new RealPoint3d(0, 0, 0)
+                Inverse = RealMatrix4x3.Identity
             });
             renderModel.Regions = new List<RenderModel.Region>();
             renderModel.Regions.Add(new RenderModel.Region()

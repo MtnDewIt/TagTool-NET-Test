@@ -88,10 +88,7 @@ namespace TagTool.Porting.Gen2
                     DefaultTranslation = node.DefaultTranslation,
                     DefaultRotation = node.DefaultRotation,
                     DefaultScale = node.DefaultScale,
-                    InverseForward = node.InverseForward,
-                    InverseLeft = node.InverseLeft,
-                    InverseUp = node.InverseUp,
-                    InversePosition = node.InversePosition,
+                    Inverse = node.Inverse,
                     DistanceFromParent = node.DistanceFromParent
                 });
 
