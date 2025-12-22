@@ -30,8 +30,7 @@ namespace TagTool.Porting.Gen3
         {
             CurrentScenario = scnr;
 
-            if (scnr.MapId == 0)
-                scnr.MapId = GenerateScenarioMapId(cacheStream);
+            scnr.MapId = GenerateScenarioMapId(cacheStream, scnr.MapId);
 
             if (CacheVersionDetection.GetGameTitle(BlamCache.Version) == GameTitle.Halo3)
                 scnr.Flags |= ScenarioFlags.H3Compatibility;
@@ -1402,25 +1401,47 @@ namespace TagTool.Porting.Gen3
             return camera;
         }
 
-        public int GenerateScenarioMapId(Stream cacheStream) 
+        public int GenerateScenarioMapId(Stream cacheStream, int currentMapId) 
         {
             Random rng = new Random();
 
             const int kMinMapId = 7000;
             const int kMaxMapId = ushort.MaxValue - 1;
 
-            var usedIds = new HashSet<int>(CacheContext.TagCache.FindAllInGroup("scnr")
-                .Where(tag => !(tag as CachedTagHaloOnline).IsEmpty())
-                .Select(tag => CacheContext.Deserialize<Scenario>(cacheStream, tag))
-                .Select(scnr => scnr.MapId));
+            HashSet<int> usedIds = new HashSet<int>();
 
-            while (true)
+            if (CacheContext is GameCacheHaloOnline hoCache)
             {
-                int candidateId = rng.Next(kMinMapId, kMaxMapId);
-
-                if (!usedIds.Contains(candidateId))
-                    return candidateId;
+                usedIds = new HashSet<int>(hoCache.TagCache.FindAllInGroup("scnr")
+                    .Select(tag => CacheContext.Deserialize<Scenario>(cacheStream, tag))
+                    .Select(scnr => scnr.MapId));
             }
+            else if (CacheContext is GameCacheModPackage modCache) 
+            {
+                usedIds = new HashSet<int>(modCache.BaseCacheReference.TagCache.FindAllInGroup("scnr")
+                    .Select(tag => CacheContext.Deserialize<Scenario>(cacheStream, tag))
+                    .Select(scnr => scnr.MapId));
+
+                usedIds.UnionWith(new HashSet<int>(modCache.TagCache.FindAllInGroup("scnr")
+                    .Where(tag => !(tag as CachedTagHaloOnline).IsEmpty())
+                    .Select(tag => CacheContext.Deserialize<Scenario>(cacheStream, tag))
+                    .Select(scnr => scnr.MapId)));
+            }
+
+            if (usedIds.Contains(currentMapId) || currentMapId == 0) 
+            {
+                while (true)
+                {
+                    int candidateId = rng.Next(kMinMapId, kMaxMapId);
+
+                    if (!usedIds.Contains(candidateId))
+                    {
+                        return candidateId;
+                    }
+                }
+            }
+
+            return currentMapId;
         }
     }
 }
