@@ -16,6 +16,7 @@ using TagTool.BlamFile;
 using TagTool.Commands.ScenarioStructureBSPs;
 using TagTool.Common.Logging;
 using TagTool.Shaders;
+using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Porting.Gen3
 {
@@ -28,6 +29,9 @@ namespace TagTool.Porting.Gen3
         public Scenario ConvertScenario(Stream cacheStream, Stream blamCacheStream, Scenario scnr, string tagName)
         {
             CurrentScenario = scnr;
+
+            if (scnr.MapId == 0)
+                scnr.MapId = GenerateScenarioMapId(cacheStream);
 
             if (CacheVersionDetection.GetGameTitle(BlamCache.Version) == GameTitle.Halo3)
                 scnr.Flags |= ScenarioFlags.H3Compatibility;
@@ -1396,6 +1400,27 @@ namespace TagTool.Porting.Gen3
 
             };
             return camera;
+        }
+
+        public int GenerateScenarioMapId(Stream cacheStream) 
+        {
+            Random rng = new Random();
+
+            const int kMinMapId = 7000;
+            const int kMaxMapId = ushort.MaxValue - 1;
+
+            var usedIds = new HashSet<int>(CacheContext.TagCache.FindAllInGroup("scnr")
+                .Where(tag => !(tag as CachedTagHaloOnline).IsEmpty())
+                .Select(tag => CacheContext.Deserialize<Scenario>(cacheStream, tag))
+                .Select(scnr => scnr.MapId));
+
+            while (true)
+            {
+                int candidateId = rng.Next(kMinMapId, kMaxMapId);
+
+                if (!usedIds.Contains(candidateId))
+                    return candidateId;
+            }
         }
     }
 }
