@@ -86,8 +86,8 @@ namespace TagTool.BlamFile
 
                 var campaignFileBuilder = new CampaignFileBuilder(cache)
                 {
-                    CampaignName = campaignInfo.Title.ParseLocalizedString(63, "Title"),
-                    CampaignDescription = campaignInfo.Description.ParseLocalizedString(127, "Description"),
+                    CampaignName = campaignInfo.Title?.ParseLocalizedString(63, "Title"),
+                    CampaignDescription = campaignInfo.Description?.ParseLocalizedString(127, "Description"),
                 };
 
                 var campaignBlf = campaignFileBuilder.GenerateCampaignBlf(false);
