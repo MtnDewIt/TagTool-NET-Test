@@ -149,6 +149,30 @@ namespace TagTool.Porting.Gen2
                 if (mesh.Type == VertexType.Skinned)
                     mesh.RigidNodeIndex = -1;
 
+            ReadOnlySpan<float> defaultConeOrder3SH =
+            [
+                 0.895147204f,
+                -1.08523822f,
+                 0.00000000f,
+                -1.08523822f,
+                 1.68145335f,
+                -0.00000000f,
+                -0.971080720f,
+                -0.00000000f,
+                 0.00000000f,
+                -1.24551475f,
+                 0.00000000f,
+                 0.965063035f,
+                -0.00000000f,
+                 0.965063035f,
+                 0.00000000f,
+                 1.24551475f
+            ];
+
+            defaultConeOrder3SH.CopyTo(result.SHRed);
+            defaultConeOrder3SH.CopyTo(result.SHGreen);
+            defaultConeOrder3SH.CopyTo(result.SHBlue);
+
             return result;
         }
     }
