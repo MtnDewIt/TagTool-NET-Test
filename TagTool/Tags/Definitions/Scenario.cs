@@ -5719,7 +5719,7 @@ namespace TagTool.Tags.Definitions
             [TagField(ValidTags = new[] { "snd!" })]
             public CachedTag BinocularsZoomOutSound;
 
-            [TagField(ValidTags = new[] { "udlg" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
+            [TagField(ValidTags = new[] { "udlg" }, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
             public CachedTag Voice;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]

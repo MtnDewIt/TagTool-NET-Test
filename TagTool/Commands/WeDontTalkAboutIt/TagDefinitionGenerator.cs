@@ -1,13 +1,14 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters;
 using System.Text;
 using TagTool.Cache;
 using TagTool.Commands.WeDontTalkAboutIt.Groups;
 using TagTool.Common;
+using TagTool.Geometry;
+using TagTool.Geometry.BspCollisionGeometry;
+using TagTool.Shaders;
 using TagTool.Tags;
 
 namespace TagTool.Commands.WeDontTalkAboutIt
@@ -104,55 +105,142 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int j = 0; j < TagStructure.GetTagFieldEnumerable(structureInfo).Count; j++)
+            List<Type> structureTypes = new List<Type>();
+
+            // #TODO: We need to handle indenting :/
+
+            foreach (TagFieldInfo fieldInfo in TagStructure.GetTagFieldEnumerable(structureInfo))
             {
-                var fieldInfo = TagStructure.GetTagFieldEnumerable(structureInfo)[j];
                 var fieldName = fieldInfo.Name;
                 var fieldType = fieldInfo.FieldType;
 
-                // #TODO: Checks we need to add:
-                // Check if any fields have a default value assigned to them (This is often the case with tag functions, might end up ignoring this)
-                // Check if a field is a static array ([] arrays that have a static length)
-                // Check if a field is a list (non static collection of tag structures (They might not be tag structures in some cases :/))
-                // Check if a field is a reference object (Is a type of object, and is not a generic, value or array type (basically anything that can't be parsed by the serializer). Also checks if it isn't a string or some other TagTool specific types)
-                // Check if the type in an array or collection is a TagStructure (We'll need to iterate through the structure to pull thier fields as well)
-                // Check if the field is a generic type (They'll need to be formatted separately)
-
+                // Checks if the field contains the padding flag
                 if (fieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding))
                 {
-                    string data = FormatPadding(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    string length = string.Empty;
+
+                    if (fieldInfo.Attribute.Length != 0)
+                    {
+                        length = $"Length = 0x{fieldInfo.Attribute.Length.ToString("X")}, ";
+                    }
+
+                    sb.AppendLine($"\t\t[TagField({length}Flags = TagFieldFlags.Padding)]");
+
+                    sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};");
                 }
+
+                // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
                 else if (ParseArray(fieldType))
                 {
-                    string data = FormatPrimitiveArray(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    if (fieldInfo.Attribute.Length != 0)
+                    {
+                        sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
+                    }
+
+                    sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};");
                 }
+
+                // Checks if the field is a type of array which uses objects or generics
                 else if (fieldType.IsArray)
                 {
-                    string data = FormatGenericArray(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    if (fieldInfo.Attribute.Length != 0)
+                    {
+                        sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
+                    }
+
+                    sb.AppendLine($"\t\tpublic {FormatTypeName(fieldType.Name)} {fieldName};");
+
+                    Type elementType = fieldType.GetElementType();
+
+                    if (elementType != typeof(StringId) &&
+                        elementType != typeof(CachedTag) &&
+                        elementType != typeof(StructureSurfaceToTriangleMapping) &&
+                        elementType != typeof(TagResourceReference) &&
+                        elementType != typeof(PixelShaderReference) &&
+                        elementType != typeof(VertexShaderReference) &&
+                        elementType != typeof(ComputeShaderReference) &&
+                        elementType != typeof(TagData) &&
+                        elementType != typeof(TinyPositionVertex) &&
+                        elementType != typeof(RealVector4d) &&
+                        !elementType.IsPrimitive)
+                    {
+                        if (!structureTypes.Contains(elementType))
+                        {
+                            structureTypes.Add(elementType);
+                        }
+                    }
                 }
+
+                // Checks if the field is a type of list
                 else if (fieldType.GetInterface(typeof(IList).Name) != null)
                 {
-                    string data = FormatGenericList(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    sb.AppendLine($"\t\tpublic {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};");
+
+                    Type elementType = fieldType.GenericTypeArguments[0];
+
+                    if (elementType != typeof(StringId) &&
+                        elementType != typeof(CachedTag) &&
+                        elementType != typeof(StructureSurfaceToTriangleMapping) &&
+                        elementType != typeof(TagResourceReference) &&
+                        elementType != typeof(PixelShaderReference) &&
+                        elementType != typeof(VertexShaderReference) &&
+                        elementType != typeof(ComputeShaderReference) &&
+                        elementType != typeof(TagData) &&
+                        elementType != typeof(TinyPositionVertex) &&
+                        elementType != typeof(RealVector4d) &&
+                        !elementType.IsPrimitive)
+                    {
+                        if (!structureTypes.Contains(elementType))
+                        {
+                            structureTypes.Add(elementType);
+                        }
+                    }
                 }
+
+                // Checks if the field is a primitive type
                 else if (fieldType.IsPrimitive)
                 {
-                    string data = FormatPrimitive(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name)} {fieldName};");
                 }
+
+                // Checks if the field is a type of Enumerator
                 else if (fieldType.IsEnum)
                 {
-                    string data = FormatEnumerator(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
+
+                    if (!structureTypes.Contains(fieldType))
+                    {
+                        structureTypes.Add(fieldType);
+                    }
                 }
+
+                // Checks if the field is a type of BitFlags
+                /*
+                else if (fieldType.GetInterface(typeof(IBitFlags).Name) != null) 
+                {
+                    Type elementType = fieldType.GenericTypeArguments[0];
+
+                    sb.AppendLine($"\t\tpublic {elementType} {fieldName};");
+
+                    if (!structureTypes.Contains(elementType))
+                    {
+                        structureTypes.Add(elementType);
+                    }
+                }
+                */
+
+                // Checks if the field is a type of string
                 else if (fieldType == typeof(string))
                 {
-                    string data = FormatString(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    if (fieldInfo.Attribute.Length != 0)
+                    {
+                        sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
+                    }
+
+                    sb.AppendLine($"\t\tpublic string {fieldName};");
                 }
+
+                // Checks if the field is a type of object, and is not a generic, value or array type (basically anything that can't be parsed by the serializer). Also checks if it isn't some other TagTool specific types
                 else if (
                     !fieldType.IsPrimitive &&
                     !fieldType.IsGenericType &&
@@ -163,126 +251,84 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     !(fieldType == typeof(CachedTag)) &&
                     !(fieldType == typeof(string)))
                 {
-                    string data = FormatReferenceObject(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
+
+                    if (fieldType != typeof(TagResourceReference) &&
+                        fieldType != typeof(PixelShaderReference) &&
+                        fieldType != typeof(VertexShaderReference) &&
+                        fieldType != typeof(ComputeShaderReference) &&
+                        fieldType != typeof(TagData) &&
+                        fieldType != typeof(TinyPositionVertex) &&
+                        fieldType != typeof(RealVector4d))
+                    {
+                        if (!structureTypes.Contains(fieldType))
+                        {
+                            structureTypes.Add(fieldType);
+                        }
+                    }
+                }
+
+                // Parses the specified value if all other checks return false
+                else
+                {
+                    if (fieldType.GetInterface(typeof(IBounds).Name) != null || fieldType.GetInterface(typeof(IBitFlags).Name) != null)
+                    {
+                        sb.AppendLine($"\t\tpublic {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
+                    }
+                }
+            }
+
+            foreach (Type structureType in structureTypes) 
+            {
+                if (structureType.IsEnum)
+                {
+                    // #TODO: We need handline for versioned enums and bitflags :/
+
+                    if (structureType.IsDefined(typeof(FlagsAttribute), false))
+                    {
+                        sb.AppendLine($"\t\t[Flags]");
+                        sb.AppendLine($"\t\tpublic enum {structureType.Name} : {FormatPrimitiveType(structureType.BaseType.Name)}");
+                        sb.AppendLine($"\t\t{{");
+
+
+
+                        sb.AppendLine($"\t\t}}");
+                    }
+                    else 
+                    {
+                        sb.AppendLine($"\t\tpublic enum {structureType.Name} : {FormatPrimitiveType(structureType.BaseType.Name)}");
+                        sb.AppendLine($"\t\t{{");
+
+
+
+                        sb.AppendLine($"\t\t}}");
+                    }
                 }
                 else
                 {
-                    string data = FormatType(fieldInfo, fieldType, fieldName);
-                    sb.AppendLine(data);
+                    string version = GetTagDefinitionAttributeVersion(Build);
+
+                    TagStructureInfo structureTypeInfo = structureType != null ? TagStructure.GetTagStructureInfo(structureType, Version, Platform) : null;
+
+                    uint structureTypeSize = structureTypeInfo != null ? structureTypeInfo.TotalSize : 0;
+
+                    sb.AppendLine($"\t\t[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]");
+                    sb.AppendLine($"\t\tpublic class {structureType.Name.ToPascalCase()} : TagStructure");
+                    sb.AppendLine($"\t\t{{");
+
+                    string structure = structureTypeInfo != null ? ParseTagStructure(structureTypeInfo) : null;
+                    
+                    if (structure != null)
+                    {
+                        sb.AppendLine(structure);
+                    }
+
+                    sb.AppendLine($"\t\t}}");
                 }
-            }
-
-            return sb.ToString();
-        }
-
-        private static string FormatPadding(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            string length = string.Empty;
-
-            if (fieldInfo.Attribute.Length != 0) 
-            {
-                length = $"Length = 0x{fieldInfo.Attribute.Length.ToString("X")}, ";
-            }
-
-            sb.AppendLine($"\t\t[TagField({length}Flags = TagFieldFlags.Padding)]");
-
-            sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatPrimitiveArray(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            if (fieldInfo.Attribute.Length != 0) 
-            {
-                sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
-            }
-
-            sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatGenericArray(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            if (fieldInfo.Attribute.Length != 0) 
-            {
-                sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
-            }
-
-            sb.AppendLine($"\t\tpublic {FormatTypeName(fieldType.Name)} {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatGenericList(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine($"\t\tpublic {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatPrimitive(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name)} {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatString(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            if (fieldInfo.Attribute.Length != 0)
-            {
-                sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
-            }
-
-            sb.AppendLine($"\t\tpublic string {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatEnumerator(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatReferenceObject(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
-
-            return sb.ToString();
-        }
-
-        private static string FormatType(TagFieldInfo fieldInfo, Type fieldType, string fieldName) 
-        {
-            StringBuilder sb = new StringBuilder();
-
-            if (fieldType.GetInterface(typeof(IBounds).Name) != null || fieldType.GetInterface(typeof(IBitFlags).Name) != null)
-            {
-                sb.AppendLine($"\t\tpublic {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};");
-            }
-            else
-            {
-                sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
             }
 
             return sb.ToString();

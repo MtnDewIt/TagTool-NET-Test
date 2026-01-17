@@ -10,21 +10,21 @@ namespace TagTool.Tags.Definitions
         public List<DisplayGroupItem> DisplayGroups;
         public List<TextItem> Text;
 
-        [TagStructure(Size = 0x10, Version = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public class DisplayGroupItem : TagStructure 
         {
             public StringId DisplayGroup;
             public List<Timings> LocalizedTimings;
         }
 
-        [TagStructure(Size = 0x10, Version = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public class TextItem : TagStructure 
         {
             public StringId Text;
             public List<Timings> LocalizedTimings;
         }
 
-        [TagStructure(Size = 0x8, Version = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
         public class Timings : TagStructure
         {
             public GameLanguage Langauge;
