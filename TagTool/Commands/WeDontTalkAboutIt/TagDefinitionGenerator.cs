@@ -62,7 +62,10 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
             sb.Append($"using TagTool.Cache;\n");
             sb.Append($"using TagTool.Common;\n");
+            sb.Append($"using TagTool.Geometry;\n");
+            sb.Append($"using TagTool.Geometry.BspCollisionGeometry;\n");
             sb.Append($"using TagTool.Tags;\n");
+            sb.Append($"using TagTool.Shaders;\n");
             sb.Append($"using System;\n");
             sb.Append($"using System.Collections.Generic;\n");
             sb.Append($"\n");
@@ -204,7 +207,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 // Checks if the field is a type of list
                 else if (fieldType.GetInterface(typeof(IList).Name) != null)
                 {
-                    sb.Append($"{indent}public {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};\n");
+                    sb.Append($"{indent}public {FormatListName(fieldType.Name)}<{FormatTypeName($"{FormatPrimitiveType(fieldType.GenericTypeArguments[0].Name)}")}> {fieldName};\n");
 
                     Type elementType = fieldType.GenericTypeArguments[0];
 
@@ -284,7 +287,11 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     !(fieldType == typeof(CachedTag)) &&
                     !(fieldType == typeof(string)))
                 {
-                    if (fieldType.Name.StartsWith("GameObjectType"))
+                    // Handle Stupid Enum Wrappers
+                    if (fieldType.Name.StartsWith("GameObjectType") ||
+                        fieldType.Name.StartsWith("DamageReportingType") ||
+                        fieldType.Name.StartsWith("WeaponFlags") ||
+                        fieldType.Name.StartsWith("ItemDefinitionFlags"))
                     {
                         TagStructureInfo structureTypeInfo = TagStructure.GetTagStructureInfo(fieldType, Version, Platform);
 
@@ -317,7 +324,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     if (fieldType.GetInterface(typeof(IBounds).Name) != null)
                     {
-                        sb.Append($"{indent}public {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};\n");
+                        sb.Append($"{indent}public {FormatListName(fieldType.Name)}<{FormatTypeName($"{FormatPrimitiveType(fieldType.GenericTypeArguments[0].Name)}")}> {fieldName};\n");
                     }
                     else
                     {
@@ -393,7 +400,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                                 {
                                     object memberValue = Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[i].Name), underlyingType);
 
-                                    sb.Append($"{indent}\t{enumMembers[i].Name} = 1 << {ParseFlagsValue(memberValue)},\n");
+                                    sb.Append($"{indent}\t{enumMembers[i].Name} = {ParseFlagsValue(memberValue)},\n");
                                 }
                             }
                         }
@@ -409,7 +416,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                                 {
                                     object memberValue = Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[i]), underlyingType);
 
-                                    sb.Append($"{indent}\t{enumMembers[i]} = 1 << {ParseFlagsValue(memberValue)},\n");
+                                    sb.Append($"{indent}\t{enumMembers[i]} = {ParseFlagsValue(memberValue)},\n");
                                 }
                             }
                         }
@@ -488,7 +495,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(sbyte):
                     if (((sbyte)value > 0) && (((sbyte)value & ((sbyte)value - 1)) == 0))
                     {
-                        return Math.Log2((sbyte)value);
+                        return $"1 << {Math.Log2((sbyte)value)}";
                     }
                     else
                     {
@@ -497,7 +504,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(byte):
                     if (((byte)value > 0) && (((byte)value & ((byte)value - 1)) == 0))
                     {
-                        return Math.Log2((byte)value);
+                        return $"1 << {Math.Log2((byte)value)}";
                     }
                     else
                     {
@@ -506,7 +513,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(short):
                     if (((short)value > 0) && (((short)value & ((short)value - 1)) == 0))
                     {
-                        return Math.Log2((short)value);
+                        return $"1 << {Math.Log2((short)value)}";
                     }
                     else
                     {
@@ -515,7 +522,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(ushort):
                     if (((ushort)value > 0) && (((ushort)value & ((ushort)value - 1)) == 0))
                     {
-                        return Math.Log2((ushort)value);
+                        return $"1 << {Math.Log2((ushort)value)}";
                     }
                     else
                     {
@@ -524,7 +531,12 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(int):
                     if (((int)value > 0) && (((int)value & ((int)value - 1)) == 0))
                     {
-                        return Math.Log2((int)value);
+                        return $"1 << {Math.Log2((int)value)}";
+                    }
+                    else if ((int)value == int.MinValue)
+                    {
+                        // Hack :/
+                        return $"1 << 31";
                     }
                     else
                     {
@@ -533,7 +545,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(uint):
                     if (((uint)value > 0) && (((uint)value & ((uint)value - 1)) == 0))
                     {
-                        return Math.Log2((uint)value);
+                        var signage = (int)(uint)value == int.MinValue ? "u" : "";
+
+                        return $"1{signage} << {Math.Log2((uint)value)}";
                     }
                     else
                     {
@@ -542,7 +556,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(long):
                     if (((long)value > 0) && (((long)value & ((long)value - 1)) == 0))
                     {
-                        return Math.Log2((long)value);
+                        var signage = (long)value == long.MinValue ? "L" : "";
+
+                        return $"1{signage} << {Math.Log2((long)value)}";
                     }
                     else
                     {
@@ -551,7 +567,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 case Type t when t == typeof(ulong):
                     if (((ulong)value > 0) && (((ulong)value & ((ulong)value - 1)) == 0))
                     {
-                        return Math.Log2((ulong)value);
+                        var signage = (long)value == long.MinValue ? "uL" : "";
+
+                        return $"1{signage} << {Math.Log2((ulong)value)}";
                     }
                     else
                     {

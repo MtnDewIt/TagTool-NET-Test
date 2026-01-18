@@ -48,7 +48,6 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             sb.AppendLine($"using TagTool.Cache.Resources;");
             sb.AppendLine($"using TagTool.Common;");
             sb.AppendLine($"using TagTool.Tags;");
-            sb.AppendLine($"using TagTool.Tags.Definitions;");
             sb.AppendLine($"using TagTool.Tags.Definitions.{Build};");
             sb.AppendLine();
             sb.AppendLine($"namespace TagTool.Cache.Gen3");
