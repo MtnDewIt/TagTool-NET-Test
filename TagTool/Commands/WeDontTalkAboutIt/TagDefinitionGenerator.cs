@@ -105,6 +105,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         {
             StringBuilder sb = new StringBuilder();
 
+            Dictionary<Type, Type> bitFlags = new Dictionary<Type, Type>();
             Dictionary<Type, bool> structureTypes = new Dictionary<Type, bool>();
 
             // #TODO: We need to handle indenting :/
@@ -210,8 +211,11 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     Type elementType = fieldType.GenericTypeArguments[0];
 
+                    Type underlyingType = fieldInfo.Attribute.EnumType;
+
                     sb.AppendLine($"\t\tpublic {elementType.Name} {fieldName};");
 
+                    bitFlags.Add(elementType, underlyingType);
                     structureTypes.TryAdd(elementType, true);
                 }
 
@@ -275,7 +279,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     {
                         //  Minor issue with this. It assumes the enum has no default member
 
-                        Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
+                        Type underlyingType = bitFlags[structureType.Key];
 
                         sb.AppendLine($"\t\t[Flags]");
                         sb.AppendLine($"\t\tpublic enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}");
