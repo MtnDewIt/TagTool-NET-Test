@@ -105,7 +105,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         {
             StringBuilder sb = new StringBuilder();
 
-            List<Type> structureTypes = new List<Type>();
+            Dictionary<Type, bool> structureTypes = new Dictionary<Type, bool>();
 
             // #TODO: We need to handle indenting :/
 
@@ -164,10 +164,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         elementType != typeof(RealVector4d) &&
                         !elementType.IsPrimitive)
                     {
-                        if (!structureTypes.Contains(elementType))
-                        {
-                            structureTypes.Add(elementType);
-                        }
+                        structureTypes.TryAdd(elementType, false);
                     }
                 }
 
@@ -190,10 +187,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         elementType != typeof(RealVector4d) &&
                         !elementType.IsPrimitive)
                     {
-                        if (!structureTypes.Contains(elementType))
-                        {
-                            structureTypes.Add(elementType);
-                        }
+                        structureTypes.TryAdd(elementType, false);
                     }
                 }
 
@@ -208,26 +202,18 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
 
-                    if (!structureTypes.Contains(fieldType))
-                    {
-                        structureTypes.Add(fieldType);
-                    }
+                    structureTypes.TryAdd(fieldType, false);
                 }
 
                 // Checks if the field is a type of BitFlags
-                /*
                 else if (fieldType.GetInterface(typeof(IBitFlags).Name) != null) 
                 {
                     Type elementType = fieldType.GenericTypeArguments[0];
 
-                    sb.AppendLine($"\t\tpublic {elementType} {fieldName};");
+                    sb.AppendLine($"\t\tpublic {elementType.Name} {fieldName};");
 
-                    if (!structureTypes.Contains(elementType))
-                    {
-                        structureTypes.Add(elementType);
-                    }
+                    structureTypes.TryAdd(elementType, true);
                 }
-                */
 
                 // Checks if the field is a type of string
                 else if (fieldType == typeof(string))
@@ -261,17 +247,14 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         fieldType != typeof(TinyPositionVertex) &&
                         fieldType != typeof(RealVector4d))
                     {
-                        if (!structureTypes.Contains(fieldType))
-                        {
-                            structureTypes.Add(fieldType);
-                        }
+                        structureTypes.TryAdd(fieldType, false);
                     }
                 }
 
                 // Parses the specified value if all other checks return false
                 else
                 {
-                    if (fieldType.GetInterface(typeof(IBounds).Name) != null || fieldType.GetInterface(typeof(IBitFlags).Name) != null)
+                    if (fieldType.GetInterface(typeof(IBounds).Name) != null)
                     {
                         sb.AppendLine($"\t\tpublic {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};");
                     }
@@ -282,28 +265,131 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 }
             }
 
-            foreach (Type structureType in structureTypes) 
+            foreach (var structureType in structureTypes) 
             {
-                if (structureType.IsEnum)
+                if (structureType.Key.IsEnum)
                 {
-                    // #TODO: We need handline for versioned enums and bitflags :/
+                    TagEnumInfo enumTypeInfo = TagEnum.GetInfo(structureType.Key, Version, Platform);
 
-                    if (structureType.IsDefined(typeof(FlagsAttribute), false))
+                    if (structureType.Value)
                     {
+                        //  Minor issue with this. It assumes the enum has no default member
+
+                        Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
+
                         sb.AppendLine($"\t\t[Flags]");
-                        sb.AppendLine($"\t\tpublic enum {structureType.Name} : {FormatPrimitiveType(structureType.BaseType.Name)}");
+                        sb.AppendLine($"\t\tpublic enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}");
                         sb.AppendLine($"\t\t{{");
 
+                        if (enumTypeInfo.IsVersioned)
+                        {
+                            var enumMembers = enumTypeInfo.Members.VersionedMembers;
 
+                            if (enumMembers.Count != 0)
+                            {
+                                sb.AppendLine($"\t\t\tNone = 0,");
+
+                                for (int i = 0; i < enumMembers.Count; i++)
+                                {
+                                    sb.AppendLine($"\t\t\t{enumMembers[i].Name} = 1 << {i},");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var enumMembers = Enum.GetNames(structureType.Key);
+
+                            if (enumMembers.Length != 0)
+                            {
+                                sb.AppendLine($"\t\t\tNone = 0,");
+
+                                for (int i = 0; i < enumMembers.Length; i++)
+                                {
+                                    sb.AppendLine($"\t\t\t{enumMembers[i]} = 1 << {i},");
+                                }
+                            }
+                        }
 
                         sb.AppendLine($"\t\t}}");
                     }
-                    else 
+                    else if (structureType.Key.IsDefined(typeof(FlagsAttribute), false))
                     {
-                        sb.AppendLine($"\t\tpublic enum {structureType.Name} : {FormatPrimitiveType(structureType.BaseType.Name)}");
+                        Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
+
+                        sb.AppendLine($"\t\t[Flags]");
+                        sb.AppendLine($"\t\tpublic enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}");
                         sb.AppendLine($"\t\t{{");
 
+                        if (enumTypeInfo.IsVersioned)
+                        {
+                            var enumMembers = enumTypeInfo.Members.VersionedMembers;
 
+                            if (enumMembers.Count != 0)
+                            {
+                                sb.AppendLine($"\t\t\t{enumMembers[0].Name} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0].Name), underlyingType)},");
+
+                                for (int i = 1; i < enumMembers.Count; i++)
+                                {
+                                    object memberValue = Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[i].Name), underlyingType);
+
+                                    sb.AppendLine($"\t\t\t{enumMembers[i].Name} = 1 << {ParseFlagsValue(memberValue)},");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var enumMembers = Enum.GetNames(structureType.Key);
+
+                            if (enumMembers.Length != 0)
+                            {
+                                sb.AppendLine($"\t\t\t{enumMembers[0]} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0]), underlyingType)},");
+
+                                for (int i = 1; i < enumMembers.Length; i++)
+                                {
+                                    object memberValue = Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[i]), underlyingType);
+
+                                    sb.AppendLine($"\t\t\t{enumMembers[i]} = 1 << {ParseFlagsValue(memberValue)},");
+                                }
+                            }
+                        }
+
+                        sb.AppendLine($"\t\t}}");
+                    }
+                    else
+                    {
+                        Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
+
+                        sb.AppendLine($"\t\tpublic enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}");
+                        sb.AppendLine($"\t\t{{");
+
+                        if (enumTypeInfo.IsVersioned)
+                        {
+                            var enumMembers = enumTypeInfo.Members.VersionedMembers;
+
+                            if (enumMembers.Count != 0)
+                            {
+                                sb.AppendLine($"\t\t\t{enumMembers[0].Name} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0].Name), underlyingType)},");
+
+                                for (int i = 1; i < enumMembers.Count; i++)
+                                {
+                                    sb.AppendLine($"\t\t\t{enumMembers[i].Name},");
+                                }
+                            }
+                        }
+                        else 
+                        {
+                            var enumMembers = Enum.GetNames(structureType.Key);
+
+                            if (enumMembers.Length != 0)
+                            {
+                                sb.AppendLine($"\t\t\t{enumMembers[0]} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0]), underlyingType)},");
+
+                                for (int i = 1; i < enumMembers.Length; i++)
+                                {
+                                    sb.AppendLine($"\t\t\t{enumMembers[i]},");
+                                }
+                            }
+                        }
 
                         sb.AppendLine($"\t\t}}");
                     }
@@ -312,12 +398,12 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     string version = GetTagDefinitionAttributeVersion(Build);
 
-                    TagStructureInfo structureTypeInfo = structureType != null ? TagStructure.GetTagStructureInfo(structureType, Version, Platform) : null;
+                    TagStructureInfo structureTypeInfo = structureType.Key != null ? TagStructure.GetTagStructureInfo(structureType.Key, Version, Platform) : null;
 
                     uint structureTypeSize = structureTypeInfo != null ? structureTypeInfo.TotalSize : 0;
 
                     sb.AppendLine($"\t\t[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]");
-                    sb.AppendLine($"\t\tpublic class {structureType.Name.ToPascalCase()} : TagStructure");
+                    sb.AppendLine($"\t\tpublic class {structureType.Key.Name} : TagStructure");
                     sb.AppendLine($"\t\t{{");
 
                     string structure = structureTypeInfo != null ? ParseTagStructure(structureTypeInfo) : null;
@@ -332,6 +418,87 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
 
             return sb.ToString();
+        }
+
+        private static object ParseFlagsValue(object value) 
+        {
+            switch (value.GetType()) 
+            {
+                case Type t when t == typeof(sbyte):
+                    if (((sbyte)value > 0) && (((sbyte)value & ((sbyte)value - 1)) == 0)) 
+                    {
+                        return Math.Log2((sbyte)value);
+                    }
+                    else 
+                    {
+                        return $"0x{((sbyte)value).ToString("X")}";
+                    }
+                case Type t when t == typeof(byte):
+                    if (((byte)value > 0) && (((byte)value & ((byte)value - 1)) == 0))
+                    {
+                        return Math.Log2((byte)value);
+                    }
+                    else
+                    {
+                        return $"0x{((byte)value).ToString("X")}";
+                    }
+                case Type t when t == typeof(short):
+                    if (((short)value > 0) && (((short)value & ((short)value - 1)) == 0))
+                    {
+                        return Math.Log2((short)value);
+                    }
+                    else
+                    {
+                        return $"0x{((short)value).ToString("X")}";
+                    }
+                case Type t when t == typeof(ushort):
+                    if (((ushort)value > 0) && (((ushort)value & ((ushort)value - 1)) == 0))
+                    {
+                        return Math.Log2((ushort)value);
+                    }
+                    else
+                    {
+                        return $"0x{((ushort)value).ToString("X")}";
+                    }
+                case Type t when t == typeof(int):
+                    if (((int)value > 0) && (((int)value & ((int)value - 1)) == 0))
+                    {
+                        return Math.Log2((int)value);
+                    }
+                    else
+                    {
+                        return $"0x{((int)value).ToString("X")}";
+                    }
+                case Type t when t == typeof(uint):
+                    if (((uint)value > 0) && (((uint)value & ((uint)value - 1)) == 0))
+                    {
+                        return Math.Log2((uint)value);
+                    }
+                    else
+                    {
+                        return $"0x{((uint)value).ToString("X")}";
+                    }
+                case Type t when t == typeof(long):
+                    if (((long)value > 0) && (((long)value & ((long)value - 1)) == 0))
+                    {
+                        return Math.Log2((long)value);
+                    }
+                    else
+                    {
+                        return $"0x{((long)value).ToString("X")}";
+                    }
+                case Type t when t == typeof(ulong):
+                    if (((ulong)value > 0) && (((ulong)value & ((ulong)value - 1)) == 0))
+                    {
+                        return Math.Log2((ulong)value);
+                    }
+                    else
+                    {
+                        return $"0x{((ulong)value).ToString("X")}";
+                    }
+                default:
+                    return value;
+            }
         }
 
         private static bool ParseArray(Type type)
