@@ -101,7 +101,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             return sb.ToString();
         }
 
-        public static string ParseTagStructure(TagStructureInfo structureInfo) 
+        public static string ParseTagStructure(TagStructureInfo structureInfo)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -207,7 +207,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 }
 
                 // Checks if the field is a type of BitFlags
-                else if (fieldType.GetInterface(typeof(IBitFlags).Name) != null) 
+                else if (fieldType.GetInterface(typeof(IBitFlags).Name) != null)
                 {
                     Type elementType = fieldType.GenericTypeArguments[0];
 
@@ -241,17 +241,31 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     !(fieldType == typeof(CachedTag)) &&
                     !(fieldType == typeof(string)))
                 {
-                    sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
-
-                    if (fieldType != typeof(TagResourceReference) &&
-                        fieldType != typeof(PixelShaderReference) &&
-                        fieldType != typeof(VertexShaderReference) &&
-                        fieldType != typeof(ComputeShaderReference) &&
-                        fieldType != typeof(TagData) &&
-                        fieldType != typeof(TinyPositionVertex) &&
-                        fieldType != typeof(RealVector4d))
+                    if (fieldType.Name.StartsWith("GameObjectType"))
                     {
-                        structureTypes.TryAdd(fieldType, false);
+                        TagStructureInfo structureTypeInfo = TagStructure.GetTagStructureInfo(fieldType, Version, Platform);
+
+                        foreach (TagFieldInfo structureFieldInfo in TagStructure.GetTagFieldEnumerable(structureTypeInfo))
+                        {
+                            sb.AppendLine($"\t\tpublic {structureFieldInfo.FieldType.Name} {fieldName};");
+
+                            structureTypes.TryAdd(structureFieldInfo.FieldType, false);
+                        }
+                    }
+                    else
+                    {
+                        sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
+
+                        if (fieldType != typeof(TagResourceReference) &&
+                            fieldType != typeof(PixelShaderReference) &&
+                            fieldType != typeof(VertexShaderReference) &&
+                            fieldType != typeof(ComputeShaderReference) &&
+                            fieldType != typeof(TagData) &&
+                            fieldType != typeof(TinyPositionVertex) &&
+                            fieldType != typeof(RealVector4d))
+                        {
+                            structureTypes.TryAdd(fieldType, false);
+                        }
                     }
                 }
 
@@ -269,7 +283,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 }
             }
 
-            foreach (var structureType in structureTypes) 
+            foreach (var structureType in structureTypes)
             {
                 if (structureType.Key.IsEnum)
                 {
@@ -380,7 +394,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                                 }
                             }
                         }
-                        else 
+                        else
                         {
                             var enumMembers = Enum.GetNames(structureType.Key);
 
@@ -411,7 +425,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     sb.AppendLine($"\t\t{{");
 
                     string structure = structureTypeInfo != null ? ParseTagStructure(structureTypeInfo) : null;
-                    
+
                     if (structure != null)
                     {
                         sb.AppendLine(structure);
@@ -424,16 +438,16 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             return sb.ToString();
         }
 
-        private static object ParseFlagsValue(object value) 
+        private static object ParseFlagsValue(object value)
         {
-            switch (value.GetType()) 
+            switch (value.GetType())
             {
                 case Type t when t == typeof(sbyte):
-                    if (((sbyte)value > 0) && (((sbyte)value & ((sbyte)value - 1)) == 0)) 
+                    if (((sbyte)value > 0) && (((sbyte)value & ((sbyte)value - 1)) == 0))
                     {
                         return Math.Log2((sbyte)value);
                     }
-                    else 
+                    else
                     {
                         return $"0x{((sbyte)value).ToString("X")}";
                     }
@@ -555,7 +569,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             return output;
         }
 
-        public static string GetTagDefinitionAttributeVersion(ZeusVersion build) 
+        public static string GetTagDefinitionAttributeVersion(ZeusVersion build)
         {
             return build switch
             {
@@ -571,9 +585,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             };
         }
 
-        public static void GetTagDefinitionVersioning(ZeusVersion build, ref CacheVersion version, ref CachePlatform platform) 
+        public static void GetTagDefinitionVersioning(ZeusVersion build, ref CacheVersion version, ref CachePlatform platform)
         {
-            switch (build) 
+            switch (build)
             {
                 case ZeusVersion.Halo3Xenon:
                     version = CacheVersion.Halo3Retail;
