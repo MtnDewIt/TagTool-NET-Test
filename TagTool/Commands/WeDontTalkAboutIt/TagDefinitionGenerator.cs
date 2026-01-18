@@ -110,6 +110,11 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
             TagFieldEnumerable fieldEnmerable = TagStructure.GetTagFieldEnumerable(structureInfo);
 
+            int previousPaddingCount = 0;
+            int previousArrayCount = 0;
+            int previousPrimitiveArrayCount = 0;
+            int previousStringCount = 0;
+
             for (int i = 0; i < fieldEnmerable.Count; i++)
             {
                 TagFieldInfo fieldInfo = fieldEnmerable[i];
@@ -119,19 +124,20 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 // Checks if the field contains the padding flag
                 if (fieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding))
                 {
-                    string leading = FormatLeading(i);
-                    string trailing = FormatTrailing(i, fieldEnmerable.Count, true);
+                    string leading = FormatLeading(i, previousPaddingCount);
 
-                    string length = string.Empty;
+                    string length = fieldInfo.Attribute.Length != 0 ? $"Length = 0x{fieldInfo.Attribute.Length:X}, " : string.Empty;
 
-                    if (fieldInfo.Attribute.Length != 0)
+                    sb.Append($"{leading}{indent}[TagField({length}Flags = TagFieldFlags.Padding)] {previousPaddingCount} : {i}\n");
+
+                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
+
+                    if (i < fieldEnmerable.Count - 1)
                     {
-                        length = $"Length = 0x{fieldInfo.Attribute.Length.ToString("X")}, ";
+                        sb.Append("\n");
                     }
 
-                    sb.Append($"{leading}{indent}[TagField({length}Flags = TagFieldFlags.Padding)]\n");
-
-                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n{trailing}");
+                    previousPaddingCount = i;
                 }
 
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
@@ -139,16 +145,21 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     bool hasLength = fieldInfo.Attribute.Length != 0;
 
-                    string trailing = FormatTrailing(i, fieldEnmerable.Count, hasLength);
-
                     if (hasLength)
                     {
-                        string leading = FormatLeading(i);
+                        string leading = FormatLeading(i, previousPrimitiveArrayCount);
 
                         sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n{trailing}");
+                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
+
+                    if (i < fieldEnmerable.Count - 1 && hasLength)
+                    {
+                        sb.Append("\n");
+                    }
+
+                    previousPrimitiveArrayCount = i;
                 }
 
                 // Checks if the field is a type of array which uses objects or generics
@@ -156,16 +167,21 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     bool hasLength = fieldInfo.Attribute.Length != 0;
 
-                    string trailing = FormatTrailing(i, fieldEnmerable.Count, hasLength);
-
                     if (hasLength)
                     {
-                        string leading = FormatLeading(i);
+                        string leading = FormatLeading(i, previousArrayCount);
 
                         sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.Append($"{indent}public {FormatTypeName(fieldType.Name)} {fieldName};\n{trailing}");
+                    sb.Append($"{indent}public {FormatTypeName(fieldType.Name)} {fieldName};\n");
+
+                    if (i < fieldEnmerable.Count - 1 && hasLength)
+                    {
+                        sb.Append("\n");
+                    }
+
+                    previousArrayCount = i;
 
                     Type elementType = fieldType.GetElementType();
 
@@ -240,16 +256,21 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     bool hasLength = fieldInfo.Attribute.Length != 0;
 
-                    string trailing = FormatTrailing(i, fieldEnmerable.Count, hasLength);
-
                     if (hasLength)
                     {
-                        string leading = FormatLeading(i);
+                        string leading = FormatLeading(i, previousStringCount);
 
                         sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.Append($"{indent}public string {fieldName};\n{trailing}");
+                    sb.Append($"{indent}public string {fieldName};\n");
+
+                    if (i < fieldEnmerable.Count - 1 && hasLength)
+                    {
+                        sb.Append("\n");
+                    }
+
+                    previousStringCount = i;
                 }
 
                 // Checks if the field is a type of object, and is not a generic, value or array type (basically anything that can't be parsed by the serializer). Also checks if it isn't some other TagTool specific types
@@ -591,14 +612,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             return output;
         }
 
-        private static string FormatLeading(int currentIndex) 
+        private static string FormatLeading(int currentIndex, int previousCount) 
         {
-            return (currentIndex == 0 ? "" : "\n");
-        }
-
-        private static string FormatTrailing(int currentIndex, int count, bool hasLength)
-        {
-            return (currentIndex == (count - 1) || !hasLength ? "" : "\n");
+            return (currentIndex == 0) || (currentIndex == (previousCount + 1) && currentIndex != 1) ? "" : "\n";
         }
 
         private static string GetTagDefinitionAttributeVersion(ZeusVersion build)
