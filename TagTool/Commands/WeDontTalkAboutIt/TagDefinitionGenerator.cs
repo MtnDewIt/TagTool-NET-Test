@@ -108,14 +108,20 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             Dictionary<Type, Type> bitFlags = new Dictionary<Type, Type>();
             Dictionary<Type, bool> structureTypes = new Dictionary<Type, bool>();
 
-            foreach (TagFieldInfo fieldInfo in TagStructure.GetTagFieldEnumerable(structureInfo))
+            TagFieldEnumerable fieldEnmerable = TagStructure.GetTagFieldEnumerable(structureInfo);
+
+            for (int i = 0; i < fieldEnmerable.Count; i++)
             {
-                var fieldName = fieldInfo.Name;
-                var fieldType = fieldInfo.FieldType;
+                TagFieldInfo fieldInfo = fieldEnmerable[i];
+                string fieldName = fieldInfo.Name;
+                Type fieldType = fieldInfo.FieldType;
 
                 // Checks if the field contains the padding flag
                 if (fieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding))
                 {
+                    string leading = FormatLeading(i);
+                    string trailing = FormatTrailing(i, fieldEnmerable.Count, true);
+
                     string length = string.Empty;
 
                     if (fieldInfo.Attribute.Length != 0)
@@ -123,31 +129,43 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         length = $"Length = 0x{fieldInfo.Attribute.Length.ToString("X")}, ";
                     }
 
-                    sb.Append($"{indent}[TagField({length}Flags = TagFieldFlags.Padding)]\n");
+                    sb.Append($"{leading}{indent}[TagField({length}Flags = TagFieldFlags.Padding)]\n");
 
-                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
+                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n{trailing}");
                 }
 
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
-                else if (ParseArray(fieldType))
+                else if (IsPrimitiveArray(fieldType))
                 {
-                    if (fieldInfo.Attribute.Length != 0)
+                    bool hasLength = fieldInfo.Attribute.Length != 0;
+
+                    string trailing = FormatTrailing(i, fieldEnmerable.Count, hasLength);
+
+                    if (hasLength)
                     {
-                        sb.Append($"{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
+                        string leading = FormatLeading(i);
+
+                        sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
+                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n{trailing}");
                 }
 
                 // Checks if the field is a type of array which uses objects or generics
                 else if (fieldType.IsArray)
                 {
-                    if (fieldInfo.Attribute.Length != 0)
+                    bool hasLength = fieldInfo.Attribute.Length != 0;
+
+                    string trailing = FormatTrailing(i, fieldEnmerable.Count, hasLength);
+
+                    if (hasLength)
                     {
-                        sb.Append($"{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
+                        string leading = FormatLeading(i);
+
+                        sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.Append($"{indent}public {FormatTypeName(fieldType.Name)} {fieldName};\n");
+                    sb.Append($"{indent}public {FormatTypeName(fieldType.Name)} {fieldName};\n{trailing}");
 
                     Type elementType = fieldType.GetElementType();
 
@@ -220,12 +238,18 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 // Checks if the field is a type of string
                 else if (fieldType == typeof(string))
                 {
-                    if (fieldInfo.Attribute.Length != 0)
+                    bool hasLength = fieldInfo.Attribute.Length != 0;
+
+                    string trailing = FormatTrailing(i, fieldEnmerable.Count, hasLength);
+
+                    if (hasLength)
                     {
-                        sb.Append($"{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
+                        string leading = FormatLeading(i);
+
+                        sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.Append($"{indent}public string {fieldName};\n");
+                    sb.Append($"{indent}public string {fieldName};\n{trailing}");
                 }
 
                 // Checks if the field is a type of object, and is not a generic, value or array type (basically anything that can't be parsed by the serializer). Also checks if it isn't some other TagTool specific types
@@ -293,7 +317,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                         Type underlyingType = bitFlags[structureType.Key];
 
-                        sb.Append($"{indent}[Flags]\n");
+                        sb.Append($"\n{indent}[Flags]\n");
                         sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
                         sb.Append($"{indent}{{\n");
 
@@ -332,7 +356,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     {
                         Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
 
-                        sb.Append($"{indent}[Flags]\n");
+                        sb.Append($"\n{indent}[Flags]\n");
                         sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
                         sb.Append($"{indent}{{\n");
 
@@ -375,7 +399,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     {
                         Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
 
-                        sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
+                        sb.Append($"\n{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
                         sb.Append($"{indent}{{\n");
 
                         if (enumTypeInfo.IsVersioned)
@@ -418,7 +442,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     uint structureTypeSize = structureTypeInfo != null ? structureTypeInfo.TotalSize : 0;
 
-                    sb.Append($"{indent}[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]\n");
+                    sb.Append($"\n{indent}[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]\n");
                     sb.Append($"{indent}public class {structureType.Key.Name} : TagStructure\n");
                     sb.Append($"{indent}{{\n");
 
@@ -517,7 +541,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
         }
 
-        private static bool ParseArray(Type type)
+        private static bool IsPrimitiveArray(Type type)
         {
             if (type.IsArray)
             {
@@ -565,6 +589,16 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             output = listName.Replace("`1", "");
 
             return output;
+        }
+
+        private static string FormatLeading(int currentIndex) 
+        {
+            return (currentIndex == 0 ? "" : "\n");
+        }
+
+        private static string FormatTrailing(int currentIndex, int count, bool hasLength)
+        {
+            return (currentIndex == (count - 1) || !hasLength ? "" : "\n");
         }
 
         private static string GetTagDefinitionAttributeVersion(ZeusVersion build)
