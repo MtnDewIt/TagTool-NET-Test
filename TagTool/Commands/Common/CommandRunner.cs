@@ -53,7 +53,7 @@ namespace TagTool.Commands.Common
                         string indentedMessage = string.Join("\n", error.Message.Split('\n').Select((line, i) => i > 0 ? $"  {line}" : line));
                         string errorMessage = $"Error executing \"{line}\"\n  in \"{fileName}\" on line {reader.LineNumber}: {indentedMessage}";
 
-                        if (SuppressErrors)
+                        if (SuppressErrors && error.Error != CommandError.CmdNotFound)
                         {
                             Log.Error(errorMessage);
                         }
@@ -153,8 +153,7 @@ namespace TagTool.Commands.Common
             Command command = context.GetCommand(commandAndArgs[0]);
             if (command == null)
             {
-                return new TagToolError(CommandError.CustomError, $"Unrecognized command \"{commandAndArgs[0]}\"\n" +
-                       "Use \"help\" to list available commands.");
+                return new TagToolError(CommandError.CmdNotFound, commandAndArgs[0]);
             }
 
             commandAndArgs.RemoveAt(0);

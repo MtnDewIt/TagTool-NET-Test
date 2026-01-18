@@ -191,12 +191,20 @@ namespace TagTool.Commands.Tags
                 {
                     var currentCommand = ContextStack.Context.GetCommand(commandToExecute[0]);
 
-                    if (currentCommand != null)
-                        currentCommand.Execute(commandToExecute.Skip(1).ToList());
-                    else
+                    var result = currentCommand is null
+                        ? new TagToolError(CommandError.CmdNotFound, commandToExecute[0])
+                        : currentCommand.Execute([.. commandToExecute.Skip(1)]);
+
+                    if (result is TagToolError error)
                     {
-                        ContextReturn(rootContext);
-                        return new TagToolError(CommandError.CustomError, "The command to execute could not be found... You may have made a typo.");
+                        if ((CommandRunner.Current?.SuppressErrors ?? true)
+                            && error.Error != CommandError.CmdNotFound)
+                            Log.Error(error.Message);
+                        else
+                        {
+                            ContextReturn(rootContext);
+                            return result;
+                        }
                     }
                 }
 
