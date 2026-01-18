@@ -128,7 +128,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     string length = fieldInfo.Attribute.Length != 0 ? $"Length = 0x{fieldInfo.Attribute.Length:X}, " : string.Empty;
 
-                    sb.Append($"{leading}{indent}[TagField({length}Flags = TagFieldFlags.Padding)] {previousPaddingCount} : {i}\n");
+                    sb.Append($"{leading}{indent}[TagField({length}Flags = TagFieldFlags.Padding)]\n");
 
                     sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
 
