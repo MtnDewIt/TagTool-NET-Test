@@ -38,7 +38,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
         }
 
-        public void GenerateFile(string tag, string name)
+        public static void GenerateFile(string tag, string name)
         {
             string layout = GenerateTagDefinitionLayout(tag, name);
 
@@ -54,27 +54,27 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             writer.WriteLine(layout);
         }
 
-        public string GenerateTagDefinitionLayout(string tag, string name)
+        public static string GenerateTagDefinitionLayout(string tag, string name)
         {
             string definition = GenerateTagDefinition(tag, name);
 
             StringBuilder sb = new();
 
-            sb.AppendLine($"using TagTool.Cache;");
-            sb.AppendLine($"using TagTool.Common;");
-            sb.AppendLine($"using TagTool.Tags;");
-            sb.AppendLine($"using System;");
-            sb.AppendLine($"using System.Collections.Generic;");
-            sb.AppendLine();
-            sb.AppendLine($"namespace TagTool.Tags.Definitions.{Build}");
-            sb.AppendLine($"{{");
-            sb.AppendLine(definition);
-            sb.AppendLine($"}}");
+            sb.Append($"using TagTool.Cache;\n");
+            sb.Append($"using TagTool.Common;\n");
+            sb.Append($"using TagTool.Tags;\n");
+            sb.Append($"using System;\n");
+            sb.Append($"using System.Collections.Generic;\n");
+            sb.Append($"\n");
+            sb.Append($"namespace TagTool.Tags.Definitions.{Build}\n");
+            sb.Append($"{{\n");
+            sb.Append(definition);
+            sb.Append($"}}");
 
             return sb.ToString();
         }
 
-        public string GenerateTagDefinition(string tag, string name)
+        public static string GenerateTagDefinition(string tag, string name)
         {
             string version = GetTagDefinitionAttributeVersion(Build);
             Type structureType = GroupHandler.GetType(Build, tag);
@@ -85,30 +85,28 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
             StringBuilder sb = new();
 
-            sb.AppendLine($"\t[TagStructure(Name = \"{name}\", Tag = \"{tag}\", Size = 0x{structureSize.ToString("X")}{version})]");
-            sb.AppendLine($"\tpublic class {name.ToPascalCase()} : TagStructure");
-            sb.AppendLine($"\t{{");
+            sb.Append($"\t[TagStructure(Name = \"{name}\", Tag = \"{tag}\", Size = 0x{structureSize.ToString("X")}{version})]\n");
+            sb.Append($"\tpublic class {name.ToPascalCase()} : TagStructure\n");
+            sb.Append($"\t{{\n");
 
-            string structure = structureInfo != null ? ParseTagStructure(structureInfo) : null;
+            string structure = structureInfo != null ? ParseTagStructure(structureInfo, $"\t\t") : null;
 
             if (structure != null)
             {
-                sb.AppendLine(structure);
+                sb.Append(structure);
             }
 
-            sb.AppendLine($"\t}}");
+            sb.Append($"\t}}\n");
 
             return sb.ToString();
         }
 
-        public static string ParseTagStructure(TagStructureInfo structureInfo)
+        public static string ParseTagStructure(TagStructureInfo structureInfo, string indent)
         {
             StringBuilder sb = new StringBuilder();
 
             Dictionary<Type, Type> bitFlags = new Dictionary<Type, Type>();
             Dictionary<Type, bool> structureTypes = new Dictionary<Type, bool>();
-
-            // #TODO: We need to handle indenting :/
 
             foreach (TagFieldInfo fieldInfo in TagStructure.GetTagFieldEnumerable(structureInfo))
             {
@@ -125,9 +123,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         length = $"Length = 0x{fieldInfo.Attribute.Length.ToString("X")}, ";
                     }
 
-                    sb.AppendLine($"\t\t[TagField({length}Flags = TagFieldFlags.Padding)]");
+                    sb.Append($"{indent}[TagField({length}Flags = TagFieldFlags.Padding)]\n");
 
-                    sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};");
+                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
                 }
 
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
@@ -135,10 +133,10 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     if (fieldInfo.Attribute.Length != 0)
                     {
-                        sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
+                        sb.Append($"{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};");
+                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
                 }
 
                 // Checks if the field is a type of array which uses objects or generics
@@ -146,10 +144,10 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     if (fieldInfo.Attribute.Length != 0)
                     {
-                        sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
+                        sb.Append($"{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.AppendLine($"\t\tpublic {FormatTypeName(fieldType.Name)} {fieldName};");
+                    sb.Append($"{indent}public {FormatTypeName(fieldType.Name)} {fieldName};\n");
 
                     Type elementType = fieldType.GetElementType();
 
@@ -172,7 +170,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 // Checks if the field is a type of list
                 else if (fieldType.GetInterface(typeof(IList).Name) != null)
                 {
-                    sb.AppendLine($"\t\tpublic {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};");
+                    sb.Append($"{indent}public {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};\n");
 
                     Type elementType = fieldType.GenericTypeArguments[0];
 
@@ -195,13 +193,13 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 // Checks if the field is a primitive type
                 else if (fieldType.IsPrimitive)
                 {
-                    sb.AppendLine($"\t\tpublic {FormatPrimitiveType(fieldType.Name)} {fieldName};");
+                    sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name)} {fieldName};\n");
                 }
 
                 // Checks if the field is a type of Enumerator
                 else if (fieldType.IsEnum)
                 {
-                    sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
+                    sb.Append($"{indent}public {fieldType.Name} {fieldName};\n");
 
                     structureTypes.TryAdd(fieldType, false);
                 }
@@ -213,7 +211,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     Type underlyingType = fieldInfo.Attribute.EnumType;
 
-                    sb.AppendLine($"\t\tpublic {elementType.Name} {fieldName};");
+                    sb.Append($"{indent}public {elementType.Name} {fieldName};\n");
 
                     bitFlags.Add(elementType, underlyingType);
                     structureTypes.TryAdd(elementType, true);
@@ -224,10 +222,10 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     if (fieldInfo.Attribute.Length != 0)
                     {
-                        sb.AppendLine($"\t\t[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]");
+                        sb.Append($"{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.AppendLine($"\t\tpublic string {fieldName};");
+                    sb.Append($"{indent}public string {fieldName};\n");
                 }
 
                 // Checks if the field is a type of object, and is not a generic, value or array type (basically anything that can't be parsed by the serializer). Also checks if it isn't some other TagTool specific types
@@ -247,14 +245,14 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                         foreach (TagFieldInfo structureFieldInfo in TagStructure.GetTagFieldEnumerable(structureTypeInfo))
                         {
-                            sb.AppendLine($"\t\tpublic {structureFieldInfo.FieldType.Name} {fieldName};");
+                            sb.Append($"{indent}public {structureFieldInfo.FieldType.Name} {fieldName};\n");
 
                             structureTypes.TryAdd(structureFieldInfo.FieldType, false);
                         }
                     }
                     else
                     {
-                        sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
+                        sb.Append($"{indent}public {fieldType.Name} {fieldName};\n");
 
                         if (fieldType != typeof(TagResourceReference) &&
                             fieldType != typeof(PixelShaderReference) &&
@@ -274,11 +272,11 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     if (fieldType.GetInterface(typeof(IBounds).Name) != null)
                     {
-                        sb.AppendLine($"\t\tpublic {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};");
+                        sb.Append($"{indent}public {FormatListName(fieldType.Name)}<{FormatTypeName($"{fieldType.GenericTypeArguments[0].Name}")}> {fieldName};\n");
                     }
                     else
                     {
-                        sb.AppendLine($"\t\tpublic {fieldType.Name} {fieldName};");
+                        sb.Append($"{indent}public {fieldType.Name} {fieldName};\n");
                     }
                 }
             }
@@ -295,9 +293,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                         Type underlyingType = bitFlags[structureType.Key];
 
-                        sb.AppendLine($"\t\t[Flags]");
-                        sb.AppendLine($"\t\tpublic enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}");
-                        sb.AppendLine($"\t\t{{");
+                        sb.Append($"{indent}[Flags]\n");
+                        sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
+                        sb.Append($"{indent}{{\n");
 
                         if (enumTypeInfo.IsVersioned)
                         {
@@ -305,11 +303,11 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                             if (enumMembers.Count != 0)
                             {
-                                sb.AppendLine($"\t\t\tNone = 0,");
+                                sb.Append($"{indent}\tNone = 0,\n");
 
                                 for (int i = 0; i < enumMembers.Count; i++)
                                 {
-                                    sb.AppendLine($"\t\t\t{enumMembers[i].Name} = 1 << {i},");
+                                    sb.Append($"{indent}\t{enumMembers[i].Name} = 1 << {i},\n");
                                 }
                             }
                         }
@@ -319,24 +317,24 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                             if (enumMembers.Length != 0)
                             {
-                                sb.AppendLine($"\t\t\tNone = 0,");
+                                sb.Append($"{indent}\tNone = 0,\n");
 
                                 for (int i = 0; i < enumMembers.Length; i++)
                                 {
-                                    sb.AppendLine($"\t\t\t{enumMembers[i]} = 1 << {i},");
+                                    sb.Append($"{indent}\t{enumMembers[i]} = 1 << {i},\n");
                                 }
                             }
                         }
 
-                        sb.AppendLine($"\t\t}}");
+                        sb.Append($"{indent}}}\n");
                     }
                     else if (structureType.Key.IsDefined(typeof(FlagsAttribute), false))
                     {
                         Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
 
-                        sb.AppendLine($"\t\t[Flags]");
-                        sb.AppendLine($"\t\tpublic enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}");
-                        sb.AppendLine($"\t\t{{");
+                        sb.Append($"{indent}[Flags]\n");
+                        sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
+                        sb.Append($"{indent}{{\n");
 
                         if (enumTypeInfo.IsVersioned)
                         {
@@ -344,13 +342,13 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                             if (enumMembers.Count != 0)
                             {
-                                sb.AppendLine($"\t\t\t{enumMembers[0].Name} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0].Name), underlyingType)},");
+                                sb.Append($"{indent}\t{enumMembers[0].Name} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0].Name), underlyingType)},\n");
 
                                 for (int i = 1; i < enumMembers.Count; i++)
                                 {
                                     object memberValue = Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[i].Name), underlyingType);
 
-                                    sb.AppendLine($"\t\t\t{enumMembers[i].Name} = 1 << {ParseFlagsValue(memberValue)},");
+                                    sb.Append($"{indent}\t{enumMembers[i].Name} = 1 << {ParseFlagsValue(memberValue)},\n");
                                 }
                             }
                         }
@@ -360,25 +358,25 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                             if (enumMembers.Length != 0)
                             {
-                                sb.AppendLine($"\t\t\t{enumMembers[0]} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0]), underlyingType)},");
+                                sb.Append($"{indent}\t{enumMembers[0]} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0]), underlyingType)},\n");
 
                                 for (int i = 1; i < enumMembers.Length; i++)
                                 {
                                     object memberValue = Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[i]), underlyingType);
 
-                                    sb.AppendLine($"\t\t\t{enumMembers[i]} = 1 << {ParseFlagsValue(memberValue)},");
+                                    sb.Append($"{indent}\t{enumMembers[i]} = 1 << {ParseFlagsValue(memberValue)},\n");
                                 }
                             }
                         }
 
-                        sb.AppendLine($"\t\t}}");
+                        sb.Append($"{indent}}}\n");
                     }
                     else
                     {
                         Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
 
-                        sb.AppendLine($"\t\tpublic enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}");
-                        sb.AppendLine($"\t\t{{");
+                        sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
+                        sb.Append($"{indent}{{\n");
 
                         if (enumTypeInfo.IsVersioned)
                         {
@@ -386,11 +384,11 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                             if (enumMembers.Count != 0)
                             {
-                                sb.AppendLine($"\t\t\t{enumMembers[0].Name} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0].Name), underlyingType)},");
+                                sb.Append($"{indent}\t{enumMembers[0].Name} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0].Name), underlyingType)},\n");
 
                                 for (int i = 1; i < enumMembers.Count; i++)
                                 {
-                                    sb.AppendLine($"\t\t\t{enumMembers[i].Name},");
+                                    sb.Append($"{indent}\t{enumMembers[i].Name},\n");
                                 }
                             }
                         }
@@ -400,16 +398,16 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                             if (enumMembers.Length != 0)
                             {
-                                sb.AppendLine($"\t\t\t{enumMembers[0]} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0]), underlyingType)},");
+                                sb.Append($"{indent}\t{enumMembers[0]} = {Convert.ChangeType(Enum.Parse(structureType.Key, enumMembers[0]), underlyingType)},\n");
 
                                 for (int i = 1; i < enumMembers.Length; i++)
                                 {
-                                    sb.AppendLine($"\t\t\t{enumMembers[i]},");
+                                    sb.Append($"{indent}\t{enumMembers[i]},\n");
                                 }
                             }
                         }
 
-                        sb.AppendLine($"\t\t}}");
+                        sb.Append($"{indent}}}\n");
                     }
                 }
                 else
@@ -420,18 +418,18 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     uint structureTypeSize = structureTypeInfo != null ? structureTypeInfo.TotalSize : 0;
 
-                    sb.AppendLine($"\t\t[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]");
-                    sb.AppendLine($"\t\tpublic class {structureType.Key.Name} : TagStructure");
-                    sb.AppendLine($"\t\t{{");
+                    sb.Append($"{indent}[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]\n");
+                    sb.Append($"{indent}public class {structureType.Key.Name} : TagStructure\n");
+                    sb.Append($"{indent}{{\n");
 
-                    string structure = structureTypeInfo != null ? ParseTagStructure(structureTypeInfo) : null;
+                    string structure = structureTypeInfo != null ? ParseTagStructure(structureTypeInfo, $"{indent}\t") : null;
 
                     if (structure != null)
                     {
-                        sb.AppendLine(structure);
+                        sb.Append(structure);
                     }
 
-                    sb.AppendLine($"\t\t}}");
+                    sb.Append($"{indent}}}\n");
                 }
             }
 
@@ -569,7 +567,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             return output;
         }
 
-        public static string GetTagDefinitionAttributeVersion(ZeusVersion build)
+        private static string GetTagDefinitionAttributeVersion(ZeusVersion build)
         {
             return build switch
             {
@@ -585,7 +583,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             };
         }
 
-        public static void GetTagDefinitionVersioning(ZeusVersion build, ref CacheVersion version, ref CachePlatform platform)
+        private static void GetTagDefinitionVersioning(ZeusVersion build, ref CacheVersion version, ref CachePlatform platform)
         {
             switch (build)
             {
