@@ -106,7 +106,7 @@ namespace TagTool.Bitmaps
         {
             var result = new Bitmap.Image()
             {
-                Signature = "mtib",
+                Signature = "bitm",
                 Width = definition.Width,
                 Height = definition.Height,
                 Depth = (sbyte)definition.Depth,
