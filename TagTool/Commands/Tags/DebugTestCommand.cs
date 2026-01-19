@@ -43,7 +43,8 @@ namespace TagTool.Commands
             definitionGenerator.GenerateFiles();
 
             TagGroupGenerator groupGenerator = new(build);
-            groupGenerator.GenerateFile();
+            groupGenerator.GenerateTableFile();
+            groupGenerator.GenerateGroupFile();
         }
     }
 }

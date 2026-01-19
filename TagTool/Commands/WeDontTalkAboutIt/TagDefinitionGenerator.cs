@@ -19,6 +19,15 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         private static CacheVersion Version;
         private static CachePlatform Platform;
 
+        private static Dictionary<Type, Type> BitFlags = new Dictionary<Type, Type>();
+        private static Dictionary<Type, bool> StructureTypes = new Dictionary<Type, bool>();
+        private static Dictionary<Type, string> RenamedTypes = new Dictionary<Type, string>();
+
+        private static int PreviousPaddingCount = 0;
+        private static int PreviousArrayCount = 0;
+        private static int PreviousPrimitiveArrayCount = 0;
+        private static int PreviousStringCount = 0;
+
         public TagDefinitionGenerator(ZeusVersion build)
         {
             Build = build;
@@ -108,26 +117,22 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         {
             StringBuilder sb = new StringBuilder();
 
-            Dictionary<Type, Type> bitFlags = new Dictionary<Type, Type>();
-            Dictionary<Type, bool> structureTypes = new Dictionary<Type, bool>();
+            BitFlags = new Dictionary<Type, Type>();
+            StructureTypes = new Dictionary<Type, bool>();
+            RenamedTypes = new Dictionary<Type, string>();
 
-            TagFieldEnumerable fieldEnmerable = TagStructure.GetTagFieldEnumerable(structureInfo);
+            TagFieldEnumerable fieldEnumerable = TagStructure.GetTagFieldEnumerable(structureInfo);
 
-            int previousPaddingCount = 0;
-            int previousArrayCount = 0;
-            int previousPrimitiveArrayCount = 0;
-            int previousStringCount = 0;
-
-            for (int i = 0; i < fieldEnmerable.Count; i++)
+            for (int i = 0; i < fieldEnumerable.Count; i++)
             {
-                TagFieldInfo fieldInfo = fieldEnmerable[i];
+                TagFieldInfo fieldInfo = fieldEnumerable[i];
                 string fieldName = fieldInfo.Name;
                 Type fieldType = fieldInfo.FieldType;
 
                 // Checks if the field contains the padding flag
                 if (fieldInfo.Attribute.Flags.HasFlag(TagFieldFlags.Padding))
                 {
-                    string leading = FormatLeading(i, previousPaddingCount);
+                    string leading = FormatLeading(i, PreviousPaddingCount);
 
                     string length = fieldInfo.Attribute.Length != 0 ? $"Length = 0x{fieldInfo.Attribute.Length:X}, " : string.Empty;
 
@@ -135,12 +140,12 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
 
-                    if (i < fieldEnmerable.Count - 1)
+                    if (i < fieldEnumerable.Count - 1)
                     {
                         sb.Append("\n");
                     }
 
-                    previousPaddingCount = i;
+                    PreviousPaddingCount = i;
                 }
 
                 // Checks if the field is a type of array which uses a primitive type, rather than objects or generics
@@ -150,19 +155,19 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     if (hasLength)
                     {
-                        string leading = FormatLeading(i, previousPrimitiveArrayCount);
+                        string leading = FormatLeading(i, PreviousPrimitiveArrayCount);
 
                         sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
                     sb.Append($"{indent}public {FormatPrimitiveType(fieldType.Name.Replace("[]", ""))}[] {fieldName};\n");
 
-                    if (i < fieldEnmerable.Count - 1 && hasLength)
+                    if (i < fieldEnumerable.Count - 1 && hasLength)
                     {
                         sb.Append("\n");
                     }
 
-                    previousPrimitiveArrayCount = i;
+                    PreviousPrimitiveArrayCount = i;
                 }
 
                 // Checks if the field is a type of array which uses objects or generics
@@ -172,19 +177,19 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     if (hasLength)
                     {
-                        string leading = FormatLeading(i, previousArrayCount);
+                        string leading = FormatLeading(i, PreviousArrayCount);
 
                         sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
                     sb.Append($"{indent}public {FormatTypeName(fieldType.Name)} {fieldName};\n");
 
-                    if (i < fieldEnmerable.Count - 1 && hasLength)
+                    if (i < fieldEnumerable.Count - 1 && hasLength)
                     {
                         sb.Append("\n");
                     }
 
-                    previousArrayCount = i;
+                    PreviousArrayCount = i;
 
                     Type elementType = fieldType.GetElementType();
 
@@ -200,7 +205,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         elementType != typeof(RealVector4d) &&
                         !elementType.IsPrimitive)
                     {
-                        structureTypes.TryAdd(elementType, false);
+                        StructureTypes.TryAdd(elementType, false);
                     }
                 }
 
@@ -223,7 +228,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         elementType != typeof(RealVector4d) &&
                         !elementType.IsPrimitive)
                     {
-                        structureTypes.TryAdd(elementType, false);
+                        StructureTypes.TryAdd(elementType, false);
                     }
                 }
 
@@ -238,7 +243,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 {
                     sb.Append($"{indent}public {fieldType.Name} {fieldName};\n");
 
-                    structureTypes.TryAdd(fieldType, false);
+                    StructureTypes.TryAdd(fieldType, false);
                 }
 
                 // Checks if the field is a type of BitFlags
@@ -250,8 +255,8 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     sb.Append($"{indent}public {elementType.Name} {fieldName};\n");
 
-                    bitFlags.Add(elementType, underlyingType);
-                    structureTypes.TryAdd(elementType, true);
+                    BitFlags.Add(elementType, underlyingType);
+                    StructureTypes.TryAdd(elementType, true);
                 }
 
                 // Checks if the field is a type of string
@@ -261,19 +266,19 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     if (hasLength)
                     {
-                        string leading = FormatLeading(i, previousStringCount);
+                        string leading = FormatLeading(i, PreviousStringCount);
 
                         sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
                     sb.Append($"{indent}public string {fieldName};\n");
 
-                    if (i < fieldEnmerable.Count - 1 && hasLength)
+                    if (i < fieldEnumerable.Count - 1 && hasLength)
                     {
                         sb.Append("\n");
                     }
 
-                    previousStringCount = i;
+                    PreviousStringCount = i;
                 }
 
                 // Checks if the field is a type of object, and is not a generic, value or array type (basically anything that can't be parsed by the serializer). Also checks if it isn't some other TagTool specific types
@@ -299,7 +304,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         {
                             sb.Append($"{indent}public {structureFieldInfo.FieldType.Name} {fieldName};\n");
 
-                            structureTypes.TryAdd(structureFieldInfo.FieldType, false);
+                            StructureTypes.TryAdd(structureFieldInfo.FieldType, false);
                         }
                     }
                     else
@@ -314,7 +319,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                             fieldType != typeof(TinyPositionVertex) &&
                             fieldType != typeof(RealVector4d))
                         {
-                            structureTypes.TryAdd(fieldType, false);
+                            StructureTypes.TryAdd(fieldType, false);
                         }
                     }
                 }
@@ -333,7 +338,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 }
             }
 
-            foreach (var structureType in structureTypes)
+            foreach (var structureType in StructureTypes)
             {
                 if (structureType.Key.IsEnum)
                 {
@@ -343,7 +348,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     {
                         //  Minor issue with this. It assumes the enum has no default member
 
-                        Type underlyingType = bitFlags[structureType.Key];
+                        Type underlyingType = BitFlags[structureType.Key];
 
                         sb.Append($"\n{indent}[Flags]\n");
                         sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
@@ -484,6 +489,15 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     sb.Append($"{indent}}}\n");
                 }
             }
+
+            BitFlags.Clear();
+            StructureTypes.Clear();
+            RenamedTypes.Clear();
+
+            PreviousPaddingCount = 0;
+            PreviousArrayCount = 0;
+            PreviousPrimitiveArrayCount = 0;
+            PreviousStringCount = 0;
 
             return sb.ToString();
         }
