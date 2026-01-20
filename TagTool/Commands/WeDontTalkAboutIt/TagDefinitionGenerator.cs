@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -604,11 +603,13 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
             if (structureType.IsArray)
             {
-                bool same = string.Equals(structureType.GetElementType().Name, fieldName, StringComparison.OrdinalIgnoreCase);
+                bool isStruct = structureType.GetElementType().IsValueType && !structureType.GetElementType().IsEnum && !structureType.GetElementType().IsPrimitive;
+
+                bool same = string.Equals(structureType.GetElementType().Name, fieldName, StringComparison.OrdinalIgnoreCase) && !isStruct;
 
                 renamedType = $"{FormatTypeName(structureType.Name.Replace("[]", ""))}";
 
-                renamedType = same ? $"{renamedType}Block" : renamedType;
+                renamedType = same || RenamedTypes.ContainsKey(structureType.GetElementType()) ? $"{renamedType}Block" : renamedType;
 
                 if (same)
                 {
@@ -622,11 +623,13 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
             else if (structureType.GetInterface(typeof(IList).Name) != null)
             {
-                bool same = string.Equals(structureType.GenericTypeArguments[0].Name, fieldName, StringComparison.OrdinalIgnoreCase);
+                bool isStruct = structureType.GenericTypeArguments[0].IsValueType && !structureType.GenericTypeArguments[0].IsEnum && !structureType.GenericTypeArguments[0].IsPrimitive;
+
+                bool same = string.Equals(structureType.GenericTypeArguments[0].Name, fieldName, StringComparison.OrdinalIgnoreCase) && !isStruct;
 
                 renamedType = $"{FormatTypeName($"{FormatPrimitiveType(structureType.GenericTypeArguments[0].Name)}")}";
 
-                renamedType = same ? $"{renamedType}Block" : renamedType;
+                renamedType = same || RenamedTypes.ContainsKey(structureType.GenericTypeArguments[0]) ? $"{renamedType}Block" : renamedType;
 
                 if (same)
                 {
@@ -640,11 +643,13 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
             else if (structureType.IsEnum) 
             {
-                bool same = string.Equals(structureType.Name, fieldName, StringComparison.OrdinalIgnoreCase);
+                bool isStruct = structureType.IsValueType && !structureType.IsEnum && !structureType.IsPrimitive;
+
+                bool same = string.Equals(structureType.Name, fieldName, StringComparison.OrdinalIgnoreCase) && !isStruct;
 
                 renamedType = $"{structureType.Name}";
 
-                renamedType = same ? $"{renamedType}Value" : renamedType;
+                renamedType = same || RenamedTypes.ContainsKey(structureType) ? $"{renamedType}Value" : renamedType;
 
                 if (same)
                 {
@@ -658,11 +663,13 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
             else
             {
-                bool same = string.Equals(structureType.Name, fieldName, StringComparison.OrdinalIgnoreCase);
+                bool isStruct = structureType.IsValueType && !structureType.IsEnum && !structureType.IsPrimitive;
+
+                bool same = string.Equals(structureType.Name, fieldName, StringComparison.OrdinalIgnoreCase) && !isStruct;
 
                 renamedType = $"{structureType.Name}";
 
-                renamedType = same ? $"{renamedType}Block" : renamedType;
+                renamedType = same || RenamedTypes.ContainsKey(structureType) ? $"{renamedType}Block" : renamedType;
 
                 if (same)
                 {
