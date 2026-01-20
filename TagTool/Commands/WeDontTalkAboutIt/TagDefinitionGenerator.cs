@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -19,8 +20,6 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         private static CacheVersion Version;
         private static CachePlatform Platform;
 
-        private static Dictionary<Type, Type> BitFlags = new Dictionary<Type, Type>();
-        private static Dictionary<Type, bool> StructureTypes = new Dictionary<Type, bool>();
         private static Dictionary<Type, string> RenamedTypes = new Dictionary<Type, string>();
 
         private static int PreviousPaddingCount = 0;
@@ -110,6 +109,8 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
             sb.Append($"\t}}\n");
 
+            RenamedTypes.Clear();
+
             return sb.ToString();
         }
 
@@ -117,9 +118,8 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         {
             StringBuilder sb = new StringBuilder();
 
-            BitFlags = new Dictionary<Type, Type>();
-            StructureTypes = new Dictionary<Type, bool>();
-            RenamedTypes = new Dictionary<Type, string>();
+            Dictionary<Type, Type> bitFlags = new Dictionary<Type, Type>();
+            Dictionary<Type, bool> structureTypes = new Dictionary<Type, bool>();
 
             TagFieldEnumerable fieldEnumerable = TagStructure.GetTagFieldEnumerable(structureInfo);
 
@@ -182,7 +182,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         sb.Append($"{leading}{indent}[TagField(Length = 0x{fieldInfo.Attribute.Length.ToString("X")})]\n");
                     }
 
-                    sb.Append($"{indent}public {FormatTypeName(fieldType.Name)} {fieldName};\n");
+                    sb.Append($"{indent}public {FormatClassName(fieldType, fieldName)}\n");
 
                     if (i < fieldEnumerable.Count - 1 && hasLength)
                     {
@@ -205,14 +205,14 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         elementType != typeof(RealVector4d) &&
                         !elementType.IsPrimitive)
                     {
-                        StructureTypes.TryAdd(elementType, false);
+                        structureTypes.TryAdd(elementType, false);
                     }
                 }
 
                 // Checks if the field is a type of list
                 else if (fieldType.GetInterface(typeof(IList).Name) != null)
                 {
-                    sb.Append($"{indent}public {FormatListName(fieldType.Name)}<{FormatTypeName($"{FormatPrimitiveType(fieldType.GenericTypeArguments[0].Name)}")}> {fieldName};\n");
+                    sb.Append($"{indent}public {FormatClassName(fieldType, fieldName)}\n");
 
                     Type elementType = fieldType.GenericTypeArguments[0];
 
@@ -228,7 +228,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         elementType != typeof(RealVector4d) &&
                         !elementType.IsPrimitive)
                     {
-                        StructureTypes.TryAdd(elementType, false);
+                        structureTypes.TryAdd(elementType, false);
                     }
                 }
 
@@ -241,9 +241,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 // Checks if the field is a type of Enumerator
                 else if (fieldType.IsEnum)
                 {
-                    sb.Append($"{indent}public {fieldType.Name} {fieldName};\n");
+                    sb.Append($"{indent}public {FormatClassName(fieldType, fieldName)}\n");
 
-                    StructureTypes.TryAdd(fieldType, false);
+                    structureTypes.TryAdd(fieldType, false);
                 }
 
                 // Checks if the field is a type of BitFlags
@@ -255,8 +255,8 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     sb.Append($"{indent}public {elementType.Name} {fieldName};\n");
 
-                    BitFlags.Add(elementType, underlyingType);
-                    StructureTypes.TryAdd(elementType, true);
+                    bitFlags.Add(elementType, underlyingType);
+                    structureTypes.TryAdd(elementType, true);
                 }
 
                 // Checks if the field is a type of string
@@ -304,12 +304,12 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         {
                             sb.Append($"{indent}public {structureFieldInfo.FieldType.Name} {fieldName};\n");
 
-                            StructureTypes.TryAdd(structureFieldInfo.FieldType, false);
+                            structureTypes.TryAdd(structureFieldInfo.FieldType, false);
                         }
                     }
                     else
                     {
-                        sb.Append($"{indent}public {fieldType.Name} {fieldName};\n");
+                        sb.Append($"{indent}public {FormatClassName(fieldType, fieldName)}\n");
 
                         if (fieldType != typeof(TagResourceReference) &&
                             fieldType != typeof(PixelShaderReference) &&
@@ -319,7 +319,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                             fieldType != typeof(TinyPositionVertex) &&
                             fieldType != typeof(RealVector4d))
                         {
-                            StructureTypes.TryAdd(fieldType, false);
+                            structureTypes.TryAdd(fieldType, false);
                         }
                     }
                 }
@@ -338,7 +338,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 }
             }
 
-            foreach (var structureType in StructureTypes)
+            foreach (var structureType in structureTypes)
             {
                 if (structureType.Key.IsEnum)
                 {
@@ -348,10 +348,12 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     {
                         //  Minor issue with this. It assumes the enum has no default member
 
-                        Type underlyingType = BitFlags[structureType.Key];
+                        Type underlyingType = bitFlags[structureType.Key];
+
+                        string structureName = RenamedTypes.TryGetValue(structureType.Key, out string name) ? name : structureType.Key.Name;
 
                         sb.Append($"\n{indent}[Flags]\n");
-                        sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
+                        sb.Append($"{indent}public enum {structureName} : {FormatPrimitiveType(underlyingType.Name)}\n");
                         sb.Append($"{indent}{{\n");
 
                         if (enumTypeInfo.IsVersioned)
@@ -389,8 +391,10 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     {
                         Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
 
+                        string structureName = RenamedTypes.TryGetValue(structureType.Key, out string name) ? name : structureType.Key.Name;
+
                         sb.Append($"\n{indent}[Flags]\n");
-                        sb.Append($"{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
+                        sb.Append($"{indent}public enum {structureName} : {FormatPrimitiveType(underlyingType.Name)}\n");
                         sb.Append($"{indent}{{\n");
 
                         if (enumTypeInfo.IsVersioned)
@@ -432,7 +436,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     {
                         Type underlyingType = Enum.GetUnderlyingType(structureType.Key);
 
-                        sb.Append($"\n{indent}public enum {structureType.Key.Name} : {FormatPrimitiveType(underlyingType.Name)}\n");
+                        string structureName = RenamedTypes.TryGetValue(structureType.Key, out string name) ? name : structureType.Key.Name;
+
+                        sb.Append($"\n{indent}public enum {structureName} : {FormatPrimitiveType(underlyingType.Name)}\n");
                         sb.Append($"{indent}{{\n");
 
                         if (enumTypeInfo.IsVersioned)
@@ -475,8 +481,10 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     uint structureTypeSize = structureTypeInfo != null ? structureTypeInfo.TotalSize : 0;
 
+                    string structureName = RenamedTypes.TryGetValue(structureType.Key, out string name) ? name : structureType.Key.Name;
+
                     sb.Append($"\n{indent}[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]\n");
-                    sb.Append($"{indent}public class {structureType.Key.Name} : TagStructure\n");
+                    sb.Append($"{indent}public class {structureName} : TagStructure\n");
                     sb.Append($"{indent}{{\n");
 
                     string structure = structureTypeInfo != null ? ParseTagStructure(structureTypeInfo, $"{indent}\t") : null;
@@ -489,10 +497,6 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     sb.Append($"{indent}}}\n");
                 }
             }
-
-            BitFlags.Clear();
-            StructureTypes.Clear();
-            RenamedTypes.Clear();
 
             PreviousPaddingCount = 0;
             PreviousArrayCount = 0;
@@ -591,6 +595,84 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     }
                 default:
                     return value;
+            }
+        }
+
+        private static string FormatClassName(Type structureType, string fieldName) 
+        {
+            string renamedType;
+
+            if (structureType.IsArray)
+            {
+                bool same = string.Equals(structureType.GetElementType().Name, fieldName, StringComparison.OrdinalIgnoreCase);
+
+                renamedType = $"{FormatTypeName(structureType.Name.Replace("[]", ""))}";
+
+                renamedType = same ? $"{renamedType}Block" : renamedType;
+
+                if (same)
+                {
+                    if (!RenamedTypes.ContainsKey(structureType.GetElementType()))
+                    {
+                        RenamedTypes.Add(structureType.GetElementType(), renamedType);
+                    }
+                }
+
+                return $"{renamedType}[] {fieldName};";
+            }
+            else if (structureType.GetInterface(typeof(IList).Name) != null)
+            {
+                bool same = string.Equals(structureType.GenericTypeArguments[0].Name, fieldName, StringComparison.OrdinalIgnoreCase);
+
+                renamedType = $"{FormatTypeName($"{FormatPrimitiveType(structureType.GenericTypeArguments[0].Name)}")}";
+
+                renamedType = same ? $"{renamedType}Block" : renamedType;
+
+                if (same)
+                {
+                    if (!RenamedTypes.ContainsKey(structureType.GenericTypeArguments[0]))
+                    {
+                        RenamedTypes.Add(structureType.GenericTypeArguments[0], renamedType);
+                    }
+                }
+
+                return $"{FormatListName(structureType.Name)}<{renamedType}> {fieldName};";
+            }
+            else if (structureType.IsEnum) 
+            {
+                bool same = string.Equals(structureType.Name, fieldName, StringComparison.OrdinalIgnoreCase);
+
+                renamedType = $"{structureType.Name}";
+
+                renamedType = same ? $"{renamedType}Value" : renamedType;
+
+                if (same)
+                {
+                    if (!RenamedTypes.ContainsKey(structureType)) 
+                    {
+                        RenamedTypes.Add(structureType, renamedType);
+                    }
+                }
+
+                return $"{renamedType} {fieldName};";
+            }
+            else
+            {
+                bool same = string.Equals(structureType.Name, fieldName, StringComparison.OrdinalIgnoreCase);
+
+                renamedType = $"{structureType.Name}";
+
+                renamedType = same ? $"{renamedType}Block" : renamedType;
+
+                if (same)
+                {
+                    if (!RenamedTypes.ContainsKey(structureType))
+                    {
+                        RenamedTypes.Add(structureType, renamedType);
+                    }
+                }
+
+                return $"{renamedType} {fieldName};";
             }
         }
 
