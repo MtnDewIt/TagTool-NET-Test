@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using TagTool.Cache;
 using TagTool.Commands.WeDontTalkAboutIt.Groups;
@@ -20,6 +21,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
         private static CachePlatform Platform;
 
         private static Dictionary<Type, string> RenamedTypes = new Dictionary<Type, string>();
+        private static List<Type> ParentTypes = new List<Type>();
 
         private static int PreviousPaddingCount = 0;
         private static int PreviousArrayCount = 0;
@@ -77,7 +79,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             sb.Append($"using System.Collections.Generic;\n");
             sb.Append($"\n");
             sb.Append($"namespace TagTool.Tags.Definitions.{Build}\n");
-            sb.Append($"{{\n");
+            sb.Append($"{{");
             sb.Append(definition);
             sb.Append($"}}");
 
@@ -86,41 +88,133 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
         public static string GenerateTagDefinition(string tag, string name)
         {
-            string version = GetTagDefinitionAttributeVersion(Build);
-            Type structureType = GroupHandler.GetType(Build, tag);
-
-            TagStructureInfo structureInfo = structureType != null ? TagStructure.GetTagStructureInfo(structureType, Version, Platform) : null;
-
-            uint structureSize = structureInfo != null ? structureInfo.TotalSize : 0;
-
             StringBuilder sb = new();
 
-            sb.Append($"\t[TagStructure(Name = \"{name}\", Tag = \"{tag}\", Size = 0x{structureSize.ToString("X")}{version})]\n");
-            sb.Append($"\tpublic class {name.ToPascalCase()} : TagStructure\n");
+            Type structureType = GroupHandler.GetType(Build, tag);
+
+            List<TagFieldInfo> fieldEnumerable = ParseStructureType(sb, structureType, name, tag, $"\t");
+
             sb.Append($"\t{{\n");
 
-            string structure = structureInfo != null ? ParseTagStructure(structureInfo, $"\t\t") : null;
+            string structure = structureType != null ? ParseTagStructure(fieldEnumerable, $"\t\t") : null;
 
             if (structure != null)
             {
                 sb.Append(structure);
             }
 
+            foreach (Type parentType in ParentTypes) 
+            {
+                List<TagFieldInfo> parentFieldEnumerable = ParseStructureType(sb, parentType, string.Empty, string.Empty, $"\t\t");
+
+                sb.Append($"\t\t{{\n");
+
+                string parentStructure = parentType != null ? ParseTagStructure(parentFieldEnumerable, $"\t\t\t") : null;
+
+                if (parentStructure != null)
+                {
+                    sb.Append(parentStructure);
+                }
+
+                sb.Append($"\t\t}}\n");
+            }
+
             sb.Append($"\t}}\n");
 
             RenamedTypes.Clear();
+            ParentTypes.Clear();
 
             return sb.ToString();
         }
 
-        public static string ParseTagStructure(TagStructureInfo structureInfo, string indent)
+        public static List<TagFieldInfo> ParseStructureType(StringBuilder sb, Type structureType, string name, string tag, string indent) 
+        {
+            string version = GetTagDefinitionAttributeVersion(Build);
+
+            Type parentStructureType = null;
+
+            TagStructureInfo structureInfo = null;
+            TagStructureInfo parentStructureInfo = null;
+            TagFieldEnumerable structureFieldEnumerable = null;
+            TagFieldEnumerable parentFieldEnumerable = null;
+            uint structureSize = 0;
+
+            string parentName = "TagStructure";
+
+            if (structureType != null)
+            {
+                structureInfo = TagStructure.GetTagStructureInfo(structureType, Version, Platform);
+
+                if (structureInfo != null)
+                {
+                    structureFieldEnumerable = TagStructure.GetTagFieldEnumerable(structureInfo);
+                    structureSize = structureInfo.TotalSize;
+
+                    if (structureInfo.Types.Count > 1)
+                    {
+                        if (!structureInfo.ParentGroupTag.IsNull())
+                        {
+                            parentStructureType = GroupHandler.GetType(Build, structureInfo.ParentGroupTag.ToString());
+                            parentName = GroupHandler.GetGroups(Build).Where(x => x.Key == structureInfo.ParentGroupTag).FirstOrDefault().Value.ToPascalCase();
+                        }
+                        else 
+                        {
+                            parentStructureType = structureInfo.Types[1];
+                            parentName = structureInfo.Types[1].Name;
+                        }
+
+                        if (parentStructureType != null)
+                        {
+                            parentStructureInfo = TagStructure.GetTagStructureInfo(parentStructureType, Version, Platform);
+
+                            if (parentStructureInfo != null)
+                            {
+                                parentFieldEnumerable = TagStructure.GetTagFieldEnumerable(parentStructureInfo);
+                                structureSize = structureInfo.TotalSize - parentStructureInfo.TotalSize;
+                            }
+                        }
+                    }
+                }
+            }
+
+            string groupName = string.IsNullOrEmpty(name) ? "" : $"Name = \"{name}\", ";
+            string groupTag = string.IsNullOrEmpty(tag) ? "" : $"Tag = \"{tag}\", ";
+
+            string structureName = "";
+
+            if (structureType != null) 
+            {
+                structureName = RenamedTypes.TryGetValue(structureType, out string value) ? value : structureType.Name;
+            }
+
+            structureName = string.IsNullOrEmpty(name) ? structureName : name.ToPascalCase();
+
+            sb.Append($"\n{indent}[TagStructure({groupName}{groupTag}Size = 0x{structureSize.ToString("X")}{version})]\n");
+            sb.Append($"{indent}public class {structureName} : {parentName}\n");
+
+            if (structureFieldEnumerable != null) 
+            {
+                if (parentFieldEnumerable != null)
+                {
+                    return [.. structureFieldEnumerable.Where(field => !parentFieldEnumerable.Any(parentField => parentField.Name == field.Name && parentField.FieldType == field.FieldType))];
+                }
+                else
+                {
+                    return [.. structureFieldEnumerable];
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static string ParseTagStructure(List<TagFieldInfo> fieldEnumerable, string indent)
         {
             StringBuilder sb = new StringBuilder();
 
             Dictionary<Type, Type> bitFlags = new Dictionary<Type, Type>();
             Dictionary<Type, bool> structureTypes = new Dictionary<Type, bool>();
-
-            TagFieldEnumerable fieldEnumerable = TagStructure.GetTagFieldEnumerable(structureInfo);
 
             for (int i = 0; i < fieldEnumerable.Count; i++)
             {
@@ -205,6 +299,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         !elementType.IsPrimitive)
                     {
                         structureTypes.TryAdd(elementType, false);
+                        ParseInheritanceTree(elementType, fieldEnumerable);
                     }
                 }
 
@@ -228,6 +323,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                         !elementType.IsPrimitive)
                     {
                         structureTypes.TryAdd(elementType, false);
+                        ParseInheritanceTree(elementType, fieldEnumerable);
                     }
                 }
 
@@ -295,7 +391,9 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                     if (fieldType.Name.StartsWith("GameObjectType") ||
                         fieldType.Name.StartsWith("DamageReportingType") ||
                         fieldType.Name.StartsWith("WeaponFlags") ||
-                        fieldType.Name.StartsWith("ItemDefinitionFlags"))
+                        fieldType.Name.StartsWith("ItemDefinitionFlags") ||
+                        fieldType.Name.StartsWith("ObjectPlacementFlags") ||
+                        fieldType.Name.StartsWith("UnitDefinitionFlags"))
                     {
                         TagStructureInfo structureTypeInfo = TagStructure.GetTagStructureInfo(fieldType, Version, Platform);
 
@@ -319,6 +417,7 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                             fieldType != typeof(RealVector4d))
                         {
                             structureTypes.TryAdd(fieldType, false);
+                            ParseInheritanceTree(fieldType, fieldEnumerable);
                         }
                     }
                 }
@@ -474,19 +573,11 @@ namespace TagTool.Commands.WeDontTalkAboutIt
                 }
                 else
                 {
-                    string version = GetTagDefinitionAttributeVersion(Build);
+                    List<TagFieldInfo> structureFieldEnumerable = ParseStructureType(sb, structureType.Key, string.Empty, string.Empty, indent);
 
-                    TagStructureInfo structureTypeInfo = structureType.Key != null ? TagStructure.GetTagStructureInfo(structureType.Key, Version, Platform) : null;
-
-                    uint structureTypeSize = structureTypeInfo != null ? structureTypeInfo.TotalSize : 0;
-
-                    string structureName = RenamedTypes.TryGetValue(structureType.Key, out string name) ? name : structureType.Key.Name;
-
-                    sb.Append($"\n{indent}[TagStructure(Size = 0x{structureTypeSize.ToString("X")}{version})]\n");
-                    sb.Append($"{indent}public class {structureName} : TagStructure\n");
                     sb.Append($"{indent}{{\n");
 
-                    string structure = structureTypeInfo != null ? ParseTagStructure(structureTypeInfo, $"{indent}\t") : null;
+                    string structure = structureType.Key != null ? ParseTagStructure(structureFieldEnumerable, $"{indent}\t") : null;
 
                     if (structure != null)
                     {
@@ -503,6 +594,22 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             PreviousStringCount = 0;
 
             return sb.ToString();
+        }
+
+        private static void ParseInheritanceTree(Type fieldType, List<TagFieldInfo> rootFields) 
+        {
+            Type currentType = fieldType.BaseType;
+
+            while (currentType != null && currentType != typeof(object) && currentType != typeof(TagStructure)) 
+            {
+                if (!rootFields.Any(x => x.FieldType == currentType))
+                {
+                    ParentTypes.Remove(currentType);
+                    ParentTypes.Add(currentType);
+                }
+
+                currentType = currentType.BaseType;
+            }
         }
 
         private static object ParseFlagsValue(object value)
