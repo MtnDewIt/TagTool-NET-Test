@@ -428,14 +428,10 @@ namespace TagTool.Porting.Gen3
 
             switch (blamTag.Group.Tag.ToString())
             {
-                case "udlg":
-                    if (!FlagIsSet(PortingFlags.Dialogue))
-                    {
-                        PortingConstants.DefaultTagNames.TryGetValue(blamTag.Group.Tag, out string defaultUdlgName);
-                        CacheContext.TagCache.TryGetTag($"{defaultUdlgName}.{blamTag.Group.Tag}", out resultTag);
-                        return false;
-                    }
-                    break;
+                case "snd!" when !FlagIsSet(PortingFlags.Audio):
+                case "udlg" when !FlagIsSet(PortingFlags.Dialogue):
+                    resultTag = GetFallbackTag(blamTag);
+                    return false;
 
                 case "bipd":
                     if (!FlagIsSet(PortingFlags.Elites) && (blamTag.Name.Contains("elite") || blamTag.Name.Contains("dervish")))
@@ -446,7 +442,7 @@ namespace TagTool.Porting.Gen3
                     return false;
 
                 case "sncl" when BlamCache.Version >= CacheVersion.HaloReach:
-                    resultTag = CacheContext.TagCache.GetTag<SoundClasses>(@"sound\sound_classes");
+                    resultTag = GetFallbackTag(blamTag);
                     return false;
 
                 // these tags will be generated in the template generation code
@@ -461,13 +457,6 @@ namespace TagTool.Porting.Gen3
 
             if (blamTag.Group.Tag == "snd!")
             {
-                if (!FlagIsSet(PortingFlags.Audio))
-                {
-                    PortingConstants.DefaultTagNames.TryGetValue(blamTag.Group.Tag, out string defaultSoundName);
-                    CacheContext.TagCache.TryGetTag($"{defaultSoundName}.{blamTag.Group.Tag}", out resultTag);
-                    return false;
-                }
-
                 var sound = (Sound)blamDefinition;
                 BlamSoundGestalt ??= PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
 
@@ -491,6 +480,7 @@ namespace TagTool.Porting.Gen3
                     if (sound.Resource.Gen3ResourceID == DatumHandle.None || !CheckSoundBank(sound))
                     {
                         Log.Warning($"Invalid resource for sound {blamTag.Name}");
+                        resultTag = GetFallbackTag(blamTag);
                         return false;
                     }
                 }
@@ -535,7 +525,7 @@ namespace TagTool.Porting.Gen3
                     {
                         case "rmcs":
                         case "rmgl":
-                            resultTag = GetDefaultShader(blamTag.Group.Tag);
+                            resultTag = GetDefaultShader(blamTag);
                             return false;
                     }
                 }
