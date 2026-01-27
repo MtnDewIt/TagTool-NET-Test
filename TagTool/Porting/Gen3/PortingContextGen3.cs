@@ -469,12 +469,12 @@ namespace TagTool.Porting.Gen3
                 }
 
                 var sound = (Sound)blamDefinition;
+                BlamSoundGestalt ??= PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
 
                 if (BlamCache.Platform != CachePlatform.MCC)
                 {
                     if (sound.SoundReference != null)
                     {
-                        BlamSoundGestalt ??= PortingContextFactory.LoadSoundGestalt(BlamCache, blamCacheStream);
                         var xmaFileSize = BlamSoundGestalt.GetFileSize(sound.SoundReference.PitchRangeIndex, sound.SoundReference.PitchRangeCount, BlamCache.Platform);
                         if (xmaFileSize < 0)
                             return false;
@@ -488,7 +488,7 @@ namespace TagTool.Porting.Gen3
                 }
                 else
                 {
-                    if (sound.Resource.Gen3ResourceID == DatumHandle.None)
+                    if (sound.Resource.Gen3ResourceID == DatumHandle.None || !CheckSoundBank(sound))
                     {
                         Log.Warning($"Invalid resource for sound {blamTag.Name}");
                         return false;
