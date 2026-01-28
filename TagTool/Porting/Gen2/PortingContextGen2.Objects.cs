@@ -168,7 +168,7 @@ namespace TagTool.Porting.Gen2
 
             AutoConverter.TranslateEnum(gen2Tag.WeaponFlags, out newweapon.WeaponFlags.NewFlags, newweapon.WeaponFlags.NewFlags.GetType());
             AutoConverter.TranslateEnum(gen2Tag.Tracking, out newweapon.Tracking, newweapon.Tracking.GetType());
-            newweapon.SpecialHudVersion = Weapon.SpecialHudVersionValue.DefaultNoOutline2;
+            newweapon.SpecialHudVersion = Weapon.SpecialHudVersionValue.NoOutline;
 
             GeneratePhysicsFromCollision(newweapon, cacheStream);
 

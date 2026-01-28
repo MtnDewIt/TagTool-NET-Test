@@ -125,7 +125,10 @@ namespace TagTool.Tags.Definitions
             InstantSoundPropagation = 1 << 9,
             FakeSpatializationWithDistance = 1 << 10,
             PlayPermutationsInOrder = 1 << 11,
-            Bit12 = 1 << 12
+            Bit12 = 1 << 12,
+            Invalid = 1 << 13,
+            Bit14 = 1 << 14,
+            Bit15 = 1 << 15
         }
 
         [Flags]
