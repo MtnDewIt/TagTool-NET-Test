@@ -121,9 +121,9 @@ namespace TagTool.Tags.Definitions
             FakeSpatializationWithDistance = 1 << 10,
             PlayPermutationsInOrder = 1 << 11,
             Bit12 = 1 << 12,
-            Bit13 = 1 << 13,
+            Invalid = 1 << 13,
             Bit14 = 1 << 14,
-            Bit15 = 1 << 15,
+            Bit15 = 1 << 15
         }
 
         [Flags]

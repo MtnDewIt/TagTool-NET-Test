@@ -62,7 +62,7 @@ namespace TagTool.Commands.Strings
 
             if (Cache.StringTable.Contains(str))
             {
-                Log.Error("That string already exists!");
+                Log.Info($"StringID \"{str}\" already exists");
                 return true;
             }
 
