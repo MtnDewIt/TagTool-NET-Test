@@ -93,7 +93,7 @@ namespace TagTool.Porting.Gen3
                 {
                     Permutation blamPermutation = BlamSoundGestalt.GetPermutation(pitchRange, permutationIndex, BlamCache.Platform);
 
-                    // Convert the audio audio
+                    // Convert the audio
                     BlamSound convertedAudio = ConvertAudio(sound, blamTagName, targetFormat, pitchRangeIndex, permutationIndex, blamPermutation);
                     convertedAudioList.Add(convertedAudio);
 
@@ -491,6 +491,21 @@ namespace TagTool.Porting.Gen3
             return sncl;
         }
 
+        private bool CheckSoundBank(Sound sound)
+        {
+            BlamCache.LoadSoundBanks();
+
+            PitchRange pitchRange = BlamSoundGestalt.PitchRanges[sound.SoundReference.PitchRangeIndex];
+            int permutationCount = BlamSoundGestalt.GetPermutationCount(pitchRange, BlamCache.Platform);
+            for (int permutationIndex = 0; permutationIndex < permutationCount; permutationIndex++)
+            {
+                Permutation permutation = BlamSoundGestalt.GetPermutation(pitchRange, permutationIndex, BlamCache.Platform);
+                if (BlamCache.SoundBanks.FindSound(permutation.FsbSoundHash, out _) == -1)
+                    return false;
+            }
+
+            return true;
+        }
 
         // ODST MCC onwards has the DangerLevel default value as -1
         private AiDialogueGlobals ConvertDialogueGlobals(AiDialogueGlobals adlg) 

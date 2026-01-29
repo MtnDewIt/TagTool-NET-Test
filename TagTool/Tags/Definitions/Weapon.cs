@@ -298,14 +298,14 @@ namespace TagTool.Tags.Definitions
 
         public enum SpecialHudVersionValue : int
         {
-            DefaultNoOutline2 = -28,
-            Default30 = 0,
-            Ammo31,
-            Damage32,
-            Accuracy33,
-            RateOfFire34,
-            Range35,
-            Power36,
+            NoOutline = -1,
+            Default = 0,
+            Ammo,
+            Damage,
+            Accuracy,
+            RateOfFire,
+            Range,
+            Power,
         }
 
         public enum TrackingType : short
