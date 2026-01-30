@@ -21,7 +21,7 @@ namespace TagTool.BlamFile
 
             if (mapInfo.Exists)
             {
-                ReadBlf(cache, campaignBlf, mapInfo);
+                campaignBlf = ReadBlf(cache, mapInfo);
             }
             else if (modInfo.Exists)
             {
@@ -151,9 +151,9 @@ namespace TagTool.BlamFile
             return null;
         }
 
-        public static void ReadBlf(GameCache cache, Blf campaignBlf, FileInfo srcFile)
+        public static Blf ReadBlf(GameCache cache, FileInfo srcFile)
         {
-            campaignBlf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
+            Blf campaignBlf = new Blf(CacheVersion.Halo3Retail, CachePlatform.Original);
 
             using (var stream = srcFile.Open(FileMode.Open, FileAccess.Read))
             using (var reader = new EndianReader(stream))
@@ -161,6 +161,8 @@ namespace TagTool.BlamFile
                 campaignBlf.Read(reader);
                 campaignBlf.ConvertBlf(cache.Version);
             }
+
+            return campaignBlf;
         }
 
         public static void WriteBlf(GameCache cache, Blf campaignBlf, string fileName)
