@@ -22,22 +22,42 @@ namespace TagTool.Common
         public RealVector3d Forward
         {
             get => new RealVector3d(m11, m12, m13);
-            set => Forward = value;
-        } 
+            set
+            {
+                m11 = value.I;
+                m12 = value.J;
+                m13 = value.K;
+            }
+        }
         public RealVector3d Left
         {
             get => new RealVector3d(m21, m22, m23);
-            set => Left = value;
+            set
+            {
+                m21 = value.I;
+                m22 = value.J;
+                m23 = value.K;
+            }
         }
         public RealVector3d Up
         {
             get => new RealVector3d(m31, m32, m33);
-            set => Up = value;
+            set
+            {
+                m31 = value.I;
+                m32 = value.J;
+                m33 = value.K;
+            }
         }
         public RealPoint3d Position
         {
             get => new RealPoint3d(m41, m42, m43);
-            set => Position = value;
+            set
+            {
+                m41 = value.X;
+                m42 = value.Y;
+                m43 = value.Z;
+            }
         }
 
         public bool IsIdentity =>

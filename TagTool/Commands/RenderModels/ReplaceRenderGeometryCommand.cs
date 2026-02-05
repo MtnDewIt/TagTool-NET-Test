@@ -39,13 +39,17 @@ namespace TagTool.Commands.RenderModels
         name: "ReplaceRenderGeometry",
         description: "Replaces the render_geometry of the current render_model tag.",
         usage: "ReplaceRenderGeometry <COLLADA or FBX Scene> [IndexBufferFormat] [updatenodes] [markers]",
-        examples: "ReplaceRenderGeometry d:\\model.dae trianglestrip updatenodes markers\nReplaceRenderGeometry d:\\model.fbx updatenodes markers",
+        examples: "ReplaceRenderGeometry d:\\model.dae trianglelist\nReplaceRenderGeometry d:\\model.fbx updatenodes markers",
         helpMessage: "- Replaces the render_geometry of the current render_model tag with geometry compiled from a COLLADA (.DAE) or FBX (.FBX) scene file.\n" +
                      "- Name your meshes as {region}:{permutation} (e.g. hull:base).\n" +
                      "- IndexBufferFormat is TriangleStrip unless TriangleList specified.\n" +
                      "- When the optional flag 'updatenodes' is specified the tool will update the transform values for all Nodes and Runtime Node Orientations.\n" +
                      "- When the optional flag 'markers' is specified the tool will remove all existing markers and generate new marker groups by reading nodes whose names begin with '#' from the source file.\n" +
-                     "Note: FBX is only supported for updating nodes and markers")
+                     "- Important info:\n" +
+                     " - FBX is the only format supported for updating nodes and replacing markers.\n" +
+                     " - Add material tags to the materials block for automatic assignment of these materials to the meshes.\n" +
+                     " - The command will always try to conserve original Regions/Permutations as empty to prevent region related issues, but if you don't want that, just remove all region blocks before running the command.\n" +
+                     " - After running this don't forget to use UpdateModelRegions/Nodes on the .model/.hlmt")
         {
             Cache = cache;
             Tag = tag;
