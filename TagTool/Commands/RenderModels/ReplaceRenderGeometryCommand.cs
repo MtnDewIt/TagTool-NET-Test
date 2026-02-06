@@ -38,12 +38,13 @@ namespace TagTool.Commands.RenderModels
             base(false,
         name: "ReplaceRenderGeometry",
         description: "Replaces the render_geometry of the current render_model tag.",
-        usage: "ReplaceRenderGeometry <COLLADA or FBX Scene> [IndexBufferFormat] [updatenodes] [markers]",
+        usage: "ReplaceRenderGeometry <COLLADA or FBX Scene> [IndexBufferFormat] [updatenodes] [nodes] [markers]",
         examples: "ReplaceRenderGeometry d:\\model.dae trianglelist\nReplaceRenderGeometry d:\\model.fbx updatenodes markers",
         helpMessage: "- Replaces the render_geometry of the current render_model tag with geometry compiled from a COLLADA (.DAE) or FBX (.FBX) scene file.\n" +
                      "- Name your meshes as {region}:{permutation} (e.g. hull:base).\n" +
                      "- IndexBufferFormat is TriangleStrip unless TriangleList specified.\n" +
-                     "- When the optional flag 'updatenodes' is specified the tool will update the transform values for all Nodes and Runtime Node Orientations.\n" +
+                     "- When the optional flag 'updatenodes' is specified the tool will update the transform values for existing Nodes and append new nodes from the source hierarchy.\n" +
+                     "- When the optional flag 'nodes' is specified the tool will replace all nodes with those from the source file, ordered like in Halo 3 EK.\n" +
                      "- When the optional flag 'markers' is specified the tool will remove all existing markers and generate new marker groups by reading nodes whose names begin with '#' from the source file.\n" +
                      "- Important info:\n" +
                      " - FBX is the only format supported for updating nodes and replacing markers.\n" +
@@ -59,14 +60,16 @@ namespace TagTool.Commands.RenderModels
         public override object Execute(List<string> args)
         {
             Console.WriteLine();
-            if (args.Count < 1 || args.Count > 4)
+            if (args.Count < 1 || args.Count > 5)
                 return new TagToolError(CommandError.ArgCount);
 
             bool updateNodes = args.Any(a => a.Equals("updatenodes", StringComparison.OrdinalIgnoreCase));
+            bool replaceNodes = args.Any(a => a.Equals("nodes", StringComparison.OrdinalIgnoreCase));
             bool updateMarkers = args.Any(a => a.Equals("markers", StringComparison.OrdinalIgnoreCase));
             var sceneFile = new FileInfo(args[0]);
             string indexBufferFormatArg = args.FirstOrDefault(a => !a.Equals(sceneFile.FullName, StringComparison.OrdinalIgnoreCase)
                                                                     && !a.Equals("updatenodes", StringComparison.OrdinalIgnoreCase)
+                                                                    && !a.Equals("nodes", StringComparison.OrdinalIgnoreCase)
                                                                     && !a.Equals("markers", StringComparison.OrdinalIgnoreCase));
 
             if (!sceneFile.Exists)
@@ -81,16 +84,23 @@ namespace TagTool.Commands.RenderModels
                                     : IndexBufferFormat.TriangleStrip;
 
             var stringIdCount = Cache.StringTable.Count;
-            return ExecuteInternal(Cache, Tag, Definition, stringIdCount, sceneFile, indexBufferFormat, updateNodes, updateMarkers);
+            return ExecuteInternal(Cache, Tag, Definition, stringIdCount, sceneFile, indexBufferFormat, updateNodes, replaceNodes, updateMarkers);
         }
-
         private static string MakeHEKCompatibleName(string str)
         {
-            if (!string.IsNullOrEmpty(str) && str.StartsWith("Armature_", StringComparison.OrdinalIgnoreCase))
-                return str.Substring(str.IndexOf('_') + 1).Replace('.', '_').ToLower();
-            return str?.Replace('.', '_').ToLower();
-        }
+            if (string.IsNullOrEmpty(str)) return "";
 
+            if (Regex.IsMatch(str, @"^Armature_\d{3}_", RegexOptions.IgnoreCase))
+            {
+                str = Regex.Replace(str, @"^Armature_\d{3}_", "", RegexOptions.IgnoreCase);
+            }
+            else if (str.StartsWith("Armature_", StringComparison.OrdinalIgnoreCase))
+            {
+                str = str.Substring(9);
+            }
+
+            return str.Replace(' ', '_').ToLower();
+        }
         private static void ProcessNode(Assimp.Node node, Matrix4x4 parentWorld)
         {
             string key = MakeHEKCompatibleName(node.Name);
@@ -101,6 +111,92 @@ namespace TagTool.Commands.RenderModels
                 ProcessNode(child, world);
         }
 
+        private static void TraverseNodes(Assimp.Node assimpNode, short parentIndex, Matrix4x4 parentWorld, GameCache cache, RenderModel definition, Dictionary<string, short> nodes, Dictionary<string, Matrix4x4> boneOffsetMap)
+        {
+            if (assimpNode.Name.StartsWith("#"))
+                return; // skip markers
+            if (assimpNode.HasMeshes)
+                return; // skip mesh nodes
+            string nodeName = MakeHEKCompatibleName(assimpNode.Name);
+            if (string.IsNullOrEmpty(nodeName) || nodeName.Equals("rootnode", StringComparison.OrdinalIgnoreCase) || nodeName.Equals("armature", StringComparison.OrdinalIgnoreCase))
+            {
+                Matrix4x4 childWorld = parentWorld * assimpNode.Transform;
+                foreach (var child in assimpNode.Children)
+                    TraverseNodes(child, parentIndex, childWorld, cache, definition, nodes, boneOffsetMap);
+                return;
+            }
+            Matrix4x4 localTransform = assimpNode.Transform;
+            Matrix4x4 nodeWorld = parentWorld * localTransform;
+            short index;
+            bool exists = nodes.TryGetValue(nodeName, out index);
+            if (exists)
+            {
+                // Check if parent matches
+                if (definition.Nodes[index].ParentNode != parentIndex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Warning: Existing node '{nodeName}' has different parent in source file.");
+                    Console.ResetColor();
+                }
+            }
+            else
+            {
+                // Add new node
+                localTransform.Decompose(out var s, out var r, out var t);
+                var newNode = new RenderModel.Node
+                {
+                    Name = cache.StringTable.GetOrAddString(nodeName),
+                    ParentNode = parentIndex,
+                    FirstChildNode = -1,
+                    NextSiblingNode = -1,
+                    DefaultTranslation = new RealPoint3d(t.X * ScaleFactor, t.Y * ScaleFactor, t.Z * ScaleFactor),
+                    DefaultRotation = new RealQuaternion(r.X, r.Y, r.Z, r.W),
+                    DefaultScale = s.X,
+                    DistanceFromParent = t.Length() * ScaleFactor,
+                };
+                Matrix4x4 invBind;
+                if (boneOffsetMap.TryGetValue(nodeName, out invBind))
+                {
+                    // already inverse bind
+                }
+                else
+                {
+                    invBind = nodeWorld;
+                    invBind.Inverse();
+                }
+                var m = invBind;
+                newNode.Inverse = new RealMatrix4x3
+                {
+                    Forward = new RealVector3d(m.A1, m.B1, m.C1),
+                    Left = new RealVector3d(m.A2, m.B2, m.C2),
+                    Up = new RealVector3d(m.A3, m.B3, m.C3),
+                    Position = new RealPoint3d(m.A4 * ScaleFactor, m.B4 * ScaleFactor, m.C4 * ScaleFactor)
+                };
+                index = (short)definition.Nodes.Count;
+                definition.Nodes.Add(newNode);
+                nodes[nodeName] = index;
+                // Insert into parent's child/sibling chain
+                if (parentIndex != -1)
+                {
+                    var parent = definition.Nodes[parentIndex];
+                    if (parent.FirstChildNode == -1)
+                    {
+                        parent.FirstChildNode = index;
+                    }
+                    else
+                    {
+                        short sib = parent.FirstChildNode;
+                        while (definition.Nodes[sib].NextSiblingNode != -1)
+                            sib = definition.Nodes[sib].NextSiblingNode;
+                        definition.Nodes[sib].NextSiblingNode = index;
+                    }
+                    definition.Nodes[parentIndex] = parent;
+                }
+            }
+            // Recurse to children
+            foreach (var child in assimpNode.Children)
+                TraverseNodes(child, index, nodeWorld, cache, definition, nodes, boneOffsetMap);
+        }
         public static object ExecuteInternal(
             GameCache Cache,
             CachedTag Tag,
@@ -109,6 +205,7 @@ namespace TagTool.Commands.RenderModels
             FileInfo SceneFile,
             IndexBufferFormat IndexBufferFormat,
             bool updateNodes = false,
+            bool replaceNodes = false,
             bool updateMarkers = false)
         {
             Console.WriteLine();
@@ -135,10 +232,9 @@ namespace TagTool.Commands.RenderModels
                     PostProcessSteps.Triangulate |
                     PostProcessSteps.JoinIdenticalVertices);
             }
-            if (updateNodes)
+            if (updateNodes || replaceNodes)
             {
-                Console.WriteLine("Updating node transforms from scene hierarchy...");
-
+                Console.WriteLine("Processing node transforms from scene hierarchy...");
                 // 1) build maps of every Assimp node and its world‐transform
                 assimpNodesByName.Clear();
                 worldTransforms.Clear();
@@ -149,67 +245,204 @@ namespace TagTool.Commands.RenderModels
                 foreach (var mesh in scene.Meshes)
                     foreach (var bone in mesh.Bones)
                         boneOffsetMap[MakeHEKCompatibleName(bone.Name)] = bone.OffsetMatrix;
-
-                // 3) for each Halo node, assign defaults and compute inverse‐bind axes
-                for (int i = 0; i < Definition.Nodes.Count; i++)
+                // Process nodes
+                var nodesTemp = new Dictionary<string, short>(); // temporary for traversal
+                if (replaceNodes)
                 {
-                    var haloNode = Definition.Nodes[i];
-                    var rawName = Cache.StringTable.GetString(haloNode.Name);
-                    var nodeName = MakeHEKCompatibleName(rawName);
+                    Definition.Nodes.Clear();
+                    List<string> nodeOrder = new List<string>();
+                    Queue<Assimp.Node> queue = new Queue<Assimp.Node>();
+                    var rootChildren = scene.RootNode.Children.OrderBy(c => MakeHEKCompatibleName(c.Name), StringComparer.Ordinal).ToList();
+                    foreach (var child in rootChildren)
+                        queue.Enqueue(child);
 
-                    if (!assimpNodesByName.TryGetValue(nodeName, out var srcNode) ||
-                        !worldTransforms.TryGetValue(nodeName, out var world))
+                    while (queue.Count > 0)
                     {
-                        Console.WriteLine($"Warning: Missing node {nodeName}");
-                        continue;
+                        var current = queue.Dequeue();
+                        string nodeName = MakeHEKCompatibleName(current.Name);
+                        if (string.IsNullOrEmpty(nodeName) || nodeName.Equals("rootnode", StringComparison.OrdinalIgnoreCase) || nodeName.Equals("armature", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var sortedChildren = current.Children.OrderBy(c => MakeHEKCompatibleName(c.Name), StringComparer.Ordinal).ToList();
+                            foreach (var child in sortedChildren)
+                                queue.Enqueue(child);
+                            continue;
+                        }
+                        if (current.Name.StartsWith("#") || current.HasMeshes)
+                            continue;
+                        nodeOrder.Add(nodeName);
+                        var currentChildren = current.Children.OrderBy(c => MakeHEKCompatibleName(c.Name), StringComparer.Ordinal).ToList();
+                        foreach (var child in currentChildren)
+                            queue.Enqueue(child);
                     }
-
-                    // decompose LOCAL for defaults
-                    srcNode.Transform.Decompose(out var s, out var r, out var t);
-                    haloNode.DefaultTranslation = new RealPoint3d(t.X * ScaleFactor, t.Y * ScaleFactor, t.Z * ScaleFactor);
-                    haloNode.DefaultRotation = new RealQuaternion(r.X, r.Y, r.Z, r.W);
-                    haloNode.DefaultScale = s.X;
-                    haloNode.DistanceFromParent = srcNode.Parent == null
-                        ? 0f
-                        : t.Length() * ScaleFactor;
-
-                    // pick inverse‑bind matrix
-                    Matrix4x4 invBind;
-                    if (!boneOffsetMap.TryGetValue(nodeName, out invBind))
+                    // Build hierarchy maps
+                    Dictionary<string, string> parentMap = new Dictionary<string, string>();
+                    Dictionary<string, List<string>> childrenMap = new Dictionary<string, List<string>>();
+                    void BuildHierarchy(Assimp.Node assimpNode, string parentName)
                     {
-                        invBind = world;
-                        invBind.Inverse();
+                        string nodeName = MakeHEKCompatibleName(assimpNode.Name);
+                        if (string.IsNullOrEmpty(nodeName) || nodeName.Equals("rootnode", StringComparison.OrdinalIgnoreCase) || nodeName.Equals("armature", StringComparison.OrdinalIgnoreCase))
+                        {
+                            foreach (var child in assimpNode.Children)
+                                BuildHierarchy(child, parentName);
+                            return;
+                        }
+                        if (assimpNode.Name.StartsWith("#") || assimpNode.HasMeshes)
+                            return;
+                        parentMap[nodeName] = parentName;
+                        var validChildren = assimpNode.Children
+                            .Where(c => {
+                                var cn = MakeHEKCompatibleName(c.Name);
+                                return !string.IsNullOrEmpty(cn) && !c.Name.StartsWith("#") && !c.HasMeshes;
+                            })
+                            .OrderBy(c => MakeHEKCompatibleName(c.Name), StringComparer.Ordinal)
+                            .Select(c => MakeHEKCompatibleName(c.Name))
+                            .ToList();
+                        childrenMap[nodeName] = validChildren;
+                        foreach (var child in assimpNode.Children)
+                            BuildHierarchy(child, nodeName);
                     }
-
-                    var m = invBind;  // alias
-
-                    haloNode.Inverse.Forward = new RealVector3d(m.A1, m.B1, m.C1);
-                    haloNode.Inverse.Left = new RealVector3d(m.A2, m.B2, m.C2);
-                    haloNode.Inverse.Up = new RealVector3d(m.A3, m.B3, m.C3);
-
-                    haloNode.Inverse.Position = new RealPoint3d(
-                        m.A4 * ScaleFactor,
-                        m.B4 * ScaleFactor,
-                        m.C4 * ScaleFactor
-                    );
+                    BuildHierarchy(scene.RootNode, null);
+                    Dictionary<string, short> nodeIndices = new Dictionary<string, short>();
+                    short currentIndex = 0;
+                    foreach (var name in nodeOrder)
+                    {
+                        nodeIndices[name] = currentIndex++;
+                    }
+                    Definition.Nodes = new List<RenderModel.Node>(nodeOrder.Count);
+                    foreach (var name in nodeOrder)
+                    {
+                        var assimpNode = assimpNodesByName[name];
+                        var localTransform = assimpNode.Transform;
+                        localTransform.Decompose(out var s, out var r, out var t);
+                        var newNode = new RenderModel.Node
+                        {
+                            Name = Cache.StringTable.GetOrAddString(name),
+                            ParentNode = -1,
+                            FirstChildNode = -1,
+                            NextSiblingNode = -1,
+                            DefaultTranslation = new RealPoint3d(t.X * ScaleFactor, t.Y * ScaleFactor, t.Z * ScaleFactor),
+                            DefaultRotation = new RealQuaternion(r.X, r.Y, r.Z, r.W),
+                            DefaultScale = s.X,
+                            DistanceFromParent = t.Length() * ScaleFactor,
+                        };
+                        Matrix4x4 invBind;
+                        if (boneOffsetMap.TryGetValue(name, out invBind))
+                        {
+                        }
+                        else
+                        {
+                            invBind = worldTransforms[name];
+                            invBind.Inverse();
+                        }
+                        var m = invBind;
+                        newNode.Inverse = new RealMatrix4x3
+                        {
+                            Forward = new RealVector3d(m.A1, m.B1, m.C1),
+                            Left = new RealVector3d(m.A2, m.B2, m.C2),
+                            Up = new RealVector3d(m.A3, m.B3, m.C3),
+                            Position = new RealPoint3d(m.A4 * ScaleFactor, m.B4 * ScaleFactor, m.C4 * ScaleFactor)
+                        };
+                        Definition.Nodes.Add(newNode);
+                    }
+                    // Set hierarchy indices
+                    foreach (var name in nodeOrder)
+                    {
+                        short idx = nodeIndices[name];
+                        if (parentMap.TryGetValue(name, out var pName) && !string.IsNullOrEmpty(pName))
+                        {
+                            Definition.Nodes[idx].ParentNode = nodeIndices[pName];
+                        }
+                        if (childrenMap.TryGetValue(name, out var children) && children.Count > 0)
+                        {
+                            short firstChildIdx = nodeIndices[children[0]];
+                            Definition.Nodes[idx].FirstChildNode = firstChildIdx;
+                            short prevIdx = firstChildIdx;
+                            for (int ci = 1; ci < children.Count; ci++)
+                            {
+                                short thisIdx = nodeIndices[children[ci]];
+                                Definition.Nodes[prevIdx].NextSiblingNode = thisIdx;
+                                prevIdx = thisIdx;
+                            }
+                        }
+                    }
+                    // Populate nodesTemp with new indices
+                    foreach (var kv in nodeIndices)
+                    {
+                        nodesTemp[kv.Key] = kv.Value;
+                    }
                 }
-
-                    if (Definition.RuntimeNodeOrientations?.Count == Definition.Nodes.Count)
+                else // updateNodes
                 {
+                    // First, update existing nodes
                     for (int i = 0; i < Definition.Nodes.Count; i++)
                     {
-                        Definition.RuntimeNodeOrientations[i] = new RuntimeNodeOrientation
+                        var haloNode = Definition.Nodes[i];
+                        var rawName = Cache.StringTable.GetString(haloNode.Name);
+                        var nodeName = MakeHEKCompatibleName(rawName);
+                        if (!assimpNodesByName.TryGetValue(nodeName, out var srcNode) ||
+                            !worldTransforms.TryGetValue(nodeName, out var world))
                         {
-                            Translation = Definition.Nodes[i].DefaultTranslation,
-                            Rotation = Definition.Nodes[i].DefaultRotation,
-                            Scale = Definition.Nodes[i].DefaultScale
-                        };
+                            Console.WriteLine($"Warning: Missing node {nodeName}");
+                            continue;
+                        }
+                        // decompose LOCAL for defaults
+                        srcNode.Transform.Decompose(out var s, out var r, out var t);
+                        haloNode.DefaultTranslation = new RealPoint3d(t.X * ScaleFactor, t.Y * ScaleFactor, t.Z * ScaleFactor);
+                        haloNode.DefaultRotation = new RealQuaternion(r.X, r.Y, r.Z, r.W);
+                        haloNode.DefaultScale = s.X;
+                        haloNode.DistanceFromParent = t.Length() * ScaleFactor;
+                        // pick inverse‑bind matrix
+                        Matrix4x4 invBind;
+                        if (!boneOffsetMap.TryGetValue(nodeName, out invBind))
+                        {
+                            invBind = world;
+                            invBind.Inverse();
+                        }
+                        var m = invBind; // alias
+                        haloNode.Inverse.Forward = new RealVector3d(m.A1, m.B1, m.C1);
+                        haloNode.Inverse.Left = new RealVector3d(m.A2, m.B2, m.C2);
+                        haloNode.Inverse.Up = new RealVector3d(m.A3, m.B3, m.C3);
+                        haloNode.Inverse.Position = new RealPoint3d(
+                            m.A4 * ScaleFactor,
+                            m.B4 * ScaleFactor,
+                            m.C4 * ScaleFactor
+                        );
+                        Definition.Nodes[i] = haloNode;
+                    }
+                    // Populate temp nodes for existing
+                    for (int i = 0; i < Definition.Nodes.Count; i++)
+                    {
+                        var name = MakeHEKCompatibleName(Cache.StringTable.GetString(Definition.Nodes[i].Name));
+                        nodesTemp[name] = (short)i;
+                    }
+                    // Then append new nodes via traversal
+                    TraverseNodes(scene.RootNode, -1, Matrix4x4.Identity, Cache, Definition, nodesTemp, boneOffsetMap);
+                }
+                // Rebuild RuntimeNodeOrientations if present
+                if (Definition.RuntimeNodeOrientations != null)
+                {
+                    Definition.RuntimeNodeOrientations.Clear();
+                    foreach (var node in Definition.Nodes)
+                    {
+                        Definition.RuntimeNodeOrientations.Add(new RuntimeNodeOrientation
+                        {
+                            Translation = node.DefaultTranslation,
+                            Rotation = node.DefaultRotation,
+                            Scale = node.DefaultScale
+                        });
                     }
                 }
-                Console.WriteLine("Node update complete.\n");
+                Console.WriteLine("Node processing complete.\n");
             }
             RenderModelBuilder builder = new RenderModelBuilder(Cache);
-            Dictionary<string, sbyte> nodes = new Dictionary<string, sbyte>();
+            Dictionary<string, short> nodes = new Dictionary<string, short>();
+            // Add nodes to builder after processing
+            foreach (var node in Definition.Nodes)
+            {
+                string name = MakeHEKCompatibleName(Cache.StringTable.GetString(node.Name));
+                short index = builder.AddNode(node);
+                nodes[name] = index;
+            }
             Dictionary<string, short> materialIndices = new Dictionary<string, short>();
             Dictionary<string, RenderMaterial> originalMaterialMap = new Dictionary<string, RenderMaterial>();
             bool usePerMeshNodeMapping = true;
@@ -248,13 +481,6 @@ namespace TagTool.Commands.RenderModels
                     Console.ResetColor();
                 }
             }
-
-            foreach (var oldNode in Definition.Nodes)
-            {
-                var name = Cache.StringTable.GetString(oldNode.Name).Replace('.', '_').ToLower();
-                nodes.Add(name, builder.AddNode(oldNode));
-            }
-
             var sceneMeshGroups = new Dictionary<string, Dictionary<string, List<AssimpMesh>>>();
             foreach (var mesh in scene.Meshes)
             {
@@ -334,7 +560,7 @@ namespace TagTool.Commands.RenderModels
                         foreach (var bone in part.Bones)
                         {
                             if (bone.VertexWeights.Any(vw => vw.Weight > 0.0f))
-                                assignedNodes.Add(FixBoneName(bone.Name));
+                                assignedNodes.Add(MakeHEKCompatibleName(bone.Name));
                         }
                     }
 
@@ -373,8 +599,8 @@ namespace TagTool.Commands.RenderModels
                                         if (vw.VertexID == i && vw.Weight > 0.0f)
                                         {
                                             influenceCount++;
-                                            if (nodes.TryGetValue(FixBoneName(bone.Name), out sbyte boneNode))
-                                                currentBone = boneNode;
+                                            if (nodes.TryGetValue(MakeHEKCompatibleName(bone.Name), out short boneNode))
+                                                currentBone = (sbyte)boneNode;
                                             else
                                             {
                                                 Log.Warning($"Bone {bone.Name} not found for permutation {regionName}:{permName}");
@@ -453,8 +679,8 @@ namespace TagTool.Commands.RenderModels
                         {
                             foreach (var bone in part.Bones)
                             {
-                                string bonefix = FixBoneName(bone.Name);
-                                if (nodes.TryGetValue(bonefix, out sbyte nodeIndex))
+                                string bonefix = MakeHEKCompatibleName(bone.Name);
+                                if (nodes.TryGetValue(bonefix, out short nodeIndex))
                                 {
                                     byte b = (byte)nodeIndex;
                                     if (!combinedBoneOrder.Contains(b))
@@ -486,12 +712,12 @@ namespace TagTool.Commands.RenderModels
                         {
                             foreach (var bone in part.Bones)
                             {
-                                string bonefix = FixBoneName(bone.Name);
+                                string bonefix = MakeHEKCompatibleName(bone.Name);
                                 if (!nodes.ContainsKey(bonefix))
                                     Log.Warning($"There is no node {bonefix} to match bone {bone.Name}");
                                 else
                                 {
-                                    sbyte nodeIndex = nodes[bonefix];
+                                    short nodeIndex = nodes[bonefix];
                                     int meshNodeIndex = meshNodeIndices.IndexOf((byte)nodeIndex);
                                     if (meshNodeIndex == -1)
                                         meshNodeIndices.Add((byte)nodeIndex);
@@ -520,10 +746,10 @@ namespace TagTool.Commands.RenderModels
                                     {
                                         if (vertexInfo.VertexID == i && vertexInfo.Weight > 0.0f)
                                         {
-                                            string bonefix = FixBoneName(bone.Name);
+                                            string bonefix = MakeHEKCompatibleName(bone.Name);
                                             if (!nodes.ContainsKey(bonefix))
                                                 Log.Error($"There is no node {bonefix} to match bone {bone.Name}");
-                                            sbyte nodeIndex = nodes[bonefix];
+                                            short nodeIndex = nodes[bonefix];
                                             blendIndicesList.Add((byte)skinnedBoneMapping.IndexOf((byte)nodeIndex));
                                             blendWeightsList.Add(vertexInfo.Weight);
                                         }
@@ -784,9 +1010,9 @@ namespace TagTool.Commands.RenderModels
                         sbyte parentNodeIndex = -1;
                         if (node.Parent != null)
                         {
-                            string parentName = FixBoneName(node.Parent.Name);
-                            if (nodes.TryGetValue(parentName, out sbyte index))
-                                parentNodeIndex = index;
+                            string parentName = MakeHEKCompatibleName(node.Parent.Name);
+                            if (nodes.TryGetValue(parentName, out short tempIndex))
+                                parentNodeIndex = (sbyte)tempIndex;
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -822,7 +1048,6 @@ namespace TagTool.Commands.RenderModels
 
             Definition.Regions = newDefinition.Regions;
             Definition.Geometry = newDefinition.Geometry;
-            Definition.Nodes = newDefinition.Nodes;
             Definition.Materials = newDefinition.Materials;
             Definition.MarkerGroups = newDefinition.MarkerGroups;
             Console.WriteLine("done.");
@@ -847,15 +1072,6 @@ namespace TagTool.Commands.RenderModels
 			}
 
             return true;
-        }
-
-        private static string FixBoneName(string name)
-        {
-            if (Regex.IsMatch(name, @"Armature_\d\d\d_.*"))
-                return Regex.Match(name, @"Armature_\d\d\d_(.*)").Groups[1].Value.ToLower();
-            else if (Regex.IsMatch(name, @"Armature_.*"))
-                return Regex.Match(name, @"Armature_(.*)").Groups[1].Value.ToLower();
-            return name.ToLower();
         }
     }
 }
