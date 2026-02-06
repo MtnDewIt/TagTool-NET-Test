@@ -21,7 +21,7 @@ namespace TagTool.Commands.Models
                    "Updates collision regions (and variant regions, if specified) based on the linked render_model. " +
                    "Collision regions preserve existing indices; new regions get indices -1. " +
                    "Permutation lists are synchronized to match the render_model.",
-                   "UpdateModelRegions [variant_index ...] [random]",
+                   "UpdateModelRegions [variant_index ...] [random] [coll] [phmo]",
                    "Updates the collision regions and, optionally, specified variant regions and permutations to match the linked render_model.")
         {
             CacheContext = cacheContext;
@@ -34,12 +34,19 @@ namespace TagTool.Commands.Models
             // Parse variant indices and random flag from the command arguments.
             List<int> variantIndices = new List<int>();
             bool randomFlag = false;
+            bool updateColl = false;
+            bool updatePhmo = false;
+
             foreach (string arg in args)
             {
                 if (int.TryParse(arg, out int idx))
                     variantIndices.Add(idx);
                 else if (arg.Equals("random", StringComparison.OrdinalIgnoreCase))
                     randomFlag = true;
+                else if (arg.Equals("coll", StringComparison.OrdinalIgnoreCase))
+                    updateColl = true;
+                else if (arg.Equals("phmo", StringComparison.OrdinalIgnoreCase))
+                    updatePhmo = true;
             }
 
             // Deserialize the linked render_model.
@@ -52,6 +59,32 @@ namespace TagTool.Commands.Models
             {
                 Console.WriteLine("Render model or its regions not found.");
                 return false;
+            }
+
+            CollisionModel collisionModel = null;
+            PhysicsModel physicsModel = null;
+            if (updateColl && ModelTag.CollisionModel != null)
+            {
+                using (Stream s = CacheContext.OpenCacheRead())
+                {
+                    collisionModel = CacheContext.Deserialize<CollisionModel>(s, ModelTag.CollisionModel);
+                }
+            }
+            else if (updateColl)
+            {
+                Console.WriteLine("coll argument supplied but no collision model linked.");
+            }
+
+            if (updatePhmo && ModelTag.PhysicsModel != null)
+            {
+                using (Stream s = CacheContext.OpenCacheRead())
+                {
+                    physicsModel = CacheContext.Deserialize<PhysicsModel>(s, ModelTag.PhysicsModel);
+                }
+            }
+            else if (updatePhmo)
+            {
+                Console.WriteLine("phmo argument supplied but no physics model linked.");
             }
 
             // ================================
@@ -142,6 +175,39 @@ namespace TagTool.Commands.Models
                 {
                     modelRegion.Permutations.RemoveAt(modelRegion.Permutations.Count - 1);
                 }
+
+                // Determine region indices in the linked collision/physics models (if requested).
+                int collRegionIndex = -1;
+                int phmoRegionIndex = -1;
+
+                if (updateColl && collisionModel?.Regions != null)
+                {
+                    for (int r = 0; r < collisionModel.Regions.Count; r++)
+                    {
+                        if (collisionModel.Regions[r].Name == rmRegion.Name)
+                        {
+                            collRegionIndex = r;
+                            break;
+                        }
+                    }
+                }
+
+                if (updatePhmo && physicsModel?.Regions != null)
+                {
+                    for (int r = 0; r < physicsModel.Regions.Count; r++)
+                    {
+                        if (physicsModel.Regions[r].Name == rmRegion.Name)
+                        {
+                            phmoRegionIndex = r;
+                            break;
+                        }
+                    }
+                }
+
+                // Update modelRegion indices for region-level mapping.
+                modelRegion.CollisionRegionIndex = (sbyte)collRegionIndex;
+                modelRegion.PhysicsRegionIndex = (sbyte)phmoRegionIndex;
+
                 // Update permutation indices and names.
                 for (int i = 0; i < targetPermCount; i++)
                 {
@@ -149,25 +215,90 @@ namespace TagTool.Commands.Models
                     var modelPerm = modelRegion.Permutations[i];
 
                     modelPerm.Name = rmPerm.Name;
-                    if (hasExistingPermData)
+
+                    // If user requested coll/phmo mapping, resolve indices from the linked tags.
+                    if (updateColl && collRegionIndex != -1 && collisionModel.Regions[collRegionIndex].Permutations != null && collisionModel.Regions[collRegionIndex].Permutations.Count > 0)
                     {
-                        var existingPerm = modelRegion.Permutations.FirstOrDefault(p => p.Name == rmPerm.Name);
-                        if (existingPerm != null)
+                        // Try to find matching permutation by name in collision model
+                        int foundIndex = -1;
+                        var collPerms = collisionModel.Regions[collRegionIndex].Permutations;
+                        for (int p = 0; p < collPerms.Count; p++)
                         {
-                            modelPerm.CollisionPermutationIndex = existingPerm.CollisionPermutationIndex;
-                            modelPerm.PhysicsPermutationIndex = existingPerm.PhysicsPermutationIndex;
+                            if (collPerms[p].Name == rmPerm.Name)
+                            {
+                                foundIndex = p;
+                                break;
+                            }
+                        }
+
+                        if (foundIndex != -1)
+                            modelPerm.CollisionPermutationIndex = (sbyte)foundIndex;
+                        else
+                            modelPerm.CollisionPermutationIndex = 0; // default to first available permutation
+                    }
+                    else if (updateColl)
+                    {
+                        // Either no region found or region has no permutations -> set -1
+                        modelPerm.CollisionPermutationIndex = -1;
+                    }
+                    else
+                    {
+                        // Preserve existing behavior: try to keep existing indices if we had existing data
+                        if (hasExistingPermData)
+                        {
+                            var existingPerm = modelRegion.Permutations.FirstOrDefault(p => p.Name == rmPerm.Name);
+                            if (existingPerm != null)
+                                modelPerm.CollisionPermutationIndex = existingPerm.CollisionPermutationIndex;
+                            else if (modelRegion.Permutations.Count > 0)
+                                modelPerm.CollisionPermutationIndex = modelRegion.Permutations[0].CollisionPermutationIndex;
+                            else
+                                modelPerm.CollisionPermutationIndex = -1;
                         }
                         else
                         {
                             modelPerm.CollisionPermutationIndex = -1;
-                            modelPerm.PhysicsPermutationIndex = -1;
                         }
+                    }
+
+                    // Physics permutation mapping (phmo)
+                    if (updatePhmo && phmoRegionIndex != -1 && physicsModel.Regions[phmoRegionIndex].Permutations != null && physicsModel.Regions[phmoRegionIndex].Permutations.Count > 0)
+                    {
+                        int foundIndex = -1;
+                        var phPerms = physicsModel.Regions[phmoRegionIndex].Permutations;
+                        for (int p = 0; p < phPerms.Count; p++)
+                        {
+                            if (phPerms[p].Name == rmPerm.Name)
+                            {
+                                foundIndex = p;
+                                break;
+                            }
+                        }
+
+                        if (foundIndex != -1)
+                            modelPerm.PhysicsPermutationIndex = (sbyte)foundIndex;
+                        else
+                            modelPerm.PhysicsPermutationIndex = 0; // default to first available permutation
+                    }
+                    else if (updatePhmo)
+                    {
+                        modelPerm.PhysicsPermutationIndex = -1;
                     }
                     else
                     {
-                        // For a new region, indices remain -1.
-                        modelPerm.CollisionPermutationIndex = -1;
-                        modelPerm.PhysicsPermutationIndex = -1;
+                        if (hasExistingPermData)
+                        {
+                            var existingPerm = modelRegion.Permutations.FirstOrDefault(p => p.Name == rmPerm.Name);
+                            if (existingPerm != null)
+                                modelPerm.PhysicsPermutationIndex = existingPerm.PhysicsPermutationIndex;
+                            else if (modelRegion.Permutations.Count > 0)
+                                modelPerm.PhysicsPermutationIndex = modelRegion.Permutations[0].PhysicsPermutationIndex;
+                            else
+                                modelPerm.PhysicsPermutationIndex = -1;
+                        }
+                        else
+                        {
+                            modelPerm.PhysicsPermutationIndex = -1;
+                        }
                     }
                 }
                 updatedCollisionRegions.Add(modelRegion);
