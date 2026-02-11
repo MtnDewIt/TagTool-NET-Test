@@ -19,7 +19,7 @@ namespace TagTool.Commands.Tags
                    "DiffTag",
                    "Deep compares two tags and lists their differences.",
 
-                   "DiffTag [simple] <tag> [other tag]",
+                   "DiffTag [simple] [ignore_data] [same_count_only] <tag> [other tag]",
 
                    "Deep compares two tags and lists their differences. Use the \"simple\" argument to list only the difference count.\n" +
                    "In a porting context, you can specify only one tag name to compare between caches.")
@@ -35,33 +35,43 @@ namespace TagTool.Commands.Tags
 
             bool simple = false;
             bool ignoreData = false;
+            bool sameCountOnly = false;
 
-            if (args[0].ToLower() == "simple")
+            List<string> names = [];
+            foreach (var arg in args)
             {
-                simple = true;
-                args.RemoveAt(0);
-
-                if (args.Count < 1)
-                    return new TagToolError(CommandError.ArgCount);
+                switch (arg.ToLower())
+                {
+                    case "simple":
+                        simple = true;
+                        break;
+                    case "ignore_data":
+                        ignoreData = true;
+                        break;
+                    case "same_count_only":
+                        sameCountOnly = true;
+                        break;
+                    default:
+                        names.Add(arg);
+                        break;
+                }
             }
 
-            if (ignoreData = args[0].ToLower() == "ignore_data")
-                args.RemoveAt(0);
+            if (names.Count == 0 || names.Count > 2)
+                return new TagToolError(CommandError.ArgCount, $"Invalid tag name count: {names.Count}"
+                    + $"\n> {string.Join("\n> ", names)}");
 
-            if (!Cache1.TagCache.TryGetCachedTag(args[0], out CachedTag tag1))
-                return new TagToolError(CommandError.TagInvalid, $"\"{args[0]}\"");
+            if (!Cache1.TagCache.TryGetCachedTag(names.First(), out CachedTag tag1))
+                return new TagToolError(CommandError.TagInvalid, $"\"{names.First()}\"");
 
-            string tag2name = args[0];
-            if (args.Count > 1)
-                tag2name = args[1];
-
-            if (!Cache2.TagCache.TryGetCachedTag(tag2name, out CachedTag tag2))
-                return new TagToolError(CommandError.TagInvalid, $"\"{tag2name}\"");
+            if (!Cache2.TagCache.TryGetCachedTag(names.Last(), out CachedTag tag2))
+                return new TagToolError(CommandError.TagInvalid, $"\"{names.Last()}\"");
 
             List<TagStructureDiffer.Difference> differences;
             var differ = new TagStructureDiffer(Cache1, Cache2)
             {
-                IgnoreData = ignoreData
+                IgnoreData = ignoreData,
+                SameCountOnly = sameCountOnly,
             };
 
             using var stream1 = Cache1.OpenCacheRead();
