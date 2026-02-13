@@ -205,9 +205,10 @@ namespace TagTool.Commands.Models
                 }
 
                 // Update modelRegion indices for region-level mapping.
-                modelRegion.CollisionRegionIndex = (sbyte)collRegionIndex;
-                modelRegion.PhysicsRegionIndex = (sbyte)phmoRegionIndex;
-
+                if (updateColl)
+                    modelRegion.CollisionRegionIndex = (sbyte)collRegionIndex;
+                if (updatePhmo)
+                    modelRegion.PhysicsRegionIndex = (sbyte)phmoRegionIndex;
                 // Update permutation indices and names.
                 for (int i = 0; i < targetPermCount; i++)
                 {
@@ -249,8 +250,6 @@ namespace TagTool.Commands.Models
                             var existingPerm = modelRegion.Permutations.FirstOrDefault(p => p.Name == rmPerm.Name);
                             if (existingPerm != null)
                                 modelPerm.CollisionPermutationIndex = existingPerm.CollisionPermutationIndex;
-                            else if (modelRegion.Permutations.Count > 0)
-                                modelPerm.CollisionPermutationIndex = modelRegion.Permutations[0].CollisionPermutationIndex;
                             else
                                 modelPerm.CollisionPermutationIndex = -1;
                         }
@@ -290,8 +289,6 @@ namespace TagTool.Commands.Models
                             var existingPerm = modelRegion.Permutations.FirstOrDefault(p => p.Name == rmPerm.Name);
                             if (existingPerm != null)
                                 modelPerm.PhysicsPermutationIndex = existingPerm.PhysicsPermutationIndex;
-                            else if (modelRegion.Permutations.Count > 0)
-                                modelPerm.PhysicsPermutationIndex = modelRegion.Permutations[0].PhysicsPermutationIndex;
                             else
                                 modelPerm.PhysicsPermutationIndex = -1;
                         }
