@@ -144,7 +144,7 @@ namespace TagTool.Commands.Tags
                 foreach (var line in File.ReadAllLines(filename))
                 {
                     if (!Cache.TagCache.TryGetTag(line, out CachedTag tag))
-                        return new TagToolError(CommandError.TagInvalid, tag.ToString());
+                        return new TagToolError(CommandError.TagInvalid, line);
 
                     if (!tag.IsInGroup(groupTag))
                         Log.Info($"Tag \"{tag}\" is not in group \"{groupTag}\". Skipping...");
