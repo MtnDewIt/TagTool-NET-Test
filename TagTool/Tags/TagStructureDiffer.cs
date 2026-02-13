@@ -13,6 +13,8 @@ namespace TagTool.Tags
         private readonly GameCache _cache2;
 
         public bool IgnoreData { get; set; }
+        public bool SameCountOnly { get; set; }
+        public bool ConvertFunctions { get; set; } = true;
 
         public TagStructureDiffer(GameCache cache1, GameCache cache2)
         {
@@ -66,6 +68,15 @@ namespace TagTool.Tags
                     var fields2 = struct2.GetTagFieldEnumerable(_cache2.Version, _cache2.Platform);
                     var commonFields = fields1.Join(fields2, a => a.Name, b => b.Name, (a, b) => (a, b));
 
+                    if (typeof(TagFunction).IsAssignableFrom(type))
+                    {
+                        if (_cache1.Endianness != _cache2.Endianness && ConvertFunctions)
+                        {
+                            TagFunction.ConvertTagFunction(_cache1.Endianness, (TagFunction)struct1);
+                            TagFunction.ConvertTagFunction(_cache2.Endianness, (TagFunction)struct2);
+                        }
+                    }
+
                     foreach (var (field1, field2) in commonFields)
                     {
                         var value1 = field1.GetValue(struct1);
@@ -77,18 +88,23 @@ namespace TagTool.Tags
                 {
                     var list1 = (IList)data1;
                     var list2 = (IList)data2;
+                    int elementCount = list1.Count;
+                    bool isData = type == typeof(byte[]);
 
                     if (list1.Count != list2.Count)
                     {
                         differences.Add(new Difference(DifferenceKind.ElementCount, path, list1, list2));
-                        return;
+                        if (SameCountOnly || isData)
+                            return;
+                        else if (list2.Count < list1.Count)
+                            elementCount = list2.Count;
                     }
 
-                    if (IgnoreData && type == typeof(byte[]))
+                    if (IgnoreData && isData)
                         return;
 
                     Type elementType = type.IsArray ? type.GetElementType() : type.GetGenericArguments().First();
-                    for (int i = 0; i < list1.Count; i++)
+                    for (int i = 0; i < elementCount; i++)
                         DiffData(elementType, list1[i], list2[i], differences, $"{path}[{i}]");
                 }
                 else if (typeof(CachedTag).IsAssignableFrom(type))
