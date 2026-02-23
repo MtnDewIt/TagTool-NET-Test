@@ -29,6 +29,12 @@ namespace TagTool.Commands.RenderMethods
 
         public override object Execute(List<string> args)
         {
+            // Ignore MS30 shaders
+            if (Tag.Name.StartsWith("ms30")) 
+            {
+                return false;
+            }
+
             using (var stream = Cache.OpenCacheReadWrite())
             {
                 // Validate shader properties and template
@@ -57,6 +63,13 @@ namespace TagTool.Commands.RenderMethods
 
                 // Get RenderMethodDefinition (rmdf) to validate category count
                 var rmdfTag = RenderMethod.BaseRenderMethod;
+
+                // Ignroe MS30 render method definitons
+                if (rmdfTag.Name.StartsWith("ms30")) 
+                {
+                    return false;
+                }
+
                 if (rmdfTag == null || rmdfTag.Index == -1)
                     return new TagToolError(CommandError.TagInvalid, "Invalid RenderMethodDefinition reference.");
 
