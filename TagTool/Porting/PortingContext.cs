@@ -138,8 +138,6 @@ namespace TagTool.Porting
             {
                 if (CacheContext.TagCache.TryGetTag($"{blamTag}", out result))
                     Log.Warning($"using existing bitmap \"{blamTag}\"");
-                else
-                    result = GetFallbackTag(blamTag);
             }
 
             PortedTags[cacheKey] = result;
