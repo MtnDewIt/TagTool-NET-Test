@@ -283,14 +283,6 @@ namespace TagTool.Shaders.ShaderMatching
 
                         if (PortingCache.Version == CacheVersion.HaloReach)
                         {
-                            switch ($"{methodName}") 
-                            {
-                                // #TODO: Figure out way around this - I hit the sampler limit :/
-                                case "alpha_blend_source" when srcRmt2Descriptor.Type == "shader":
-                                    optionName = "from_albedo_alpha_without_fresnel";
-                                    break;
-                            }
-
                             switch ($"{methodName}\\{optionName}") 
                             {
                                 // keep in sync with cubemap conversion - not needed anymore?

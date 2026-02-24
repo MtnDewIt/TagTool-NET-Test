@@ -57,7 +57,7 @@ namespace TagTool.Tags
 
         public bool TagDefinitionExists(Tag tag)
         {
-			return Definitions.TagToTypeLookup.ContainsKey(tag);
+			return Definitions.TagToTypeLookup.TryGetValue(tag, out var val) && val != null;
         }
 
         public Type GetTagDefinitionType(TagGroup group)
