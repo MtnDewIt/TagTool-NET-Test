@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -623,77 +623,43 @@ namespace TagTool.Scripting.Compiler
 
             if (node is ScriptSymbol symbol)
             {
-                // Variables storing info used in fixing Object and ObjectList parameter compilation
-                bool fixObjectCompilation = (type == HsType.ObjectList || type == HsType.Object);
-                HsType originalParamType = HsType.Invalid;
-                bool modified = false;
-
                 //
-                // Check if the symbol is a reference to a parameter
+                // Check if the symbol is a reference to a script parameter
                 //
 
                 if (CurrentScript != null)
                 {
-                    foreach (var parameter in CurrentScript?.Parameters)
+                    foreach (var parameter in CurrentScript.Parameters)
                     {
-                        if (parameter.Name != symbol.Value) 
-                        { 
-                            continue; 
-                        }
+                        if (parameter.Name != symbol.Value)
+                            continue;
 
-                        // Fix for incorrect Object and ObjectList reference compilation
-                        if (fixObjectCompilation && IsObject(parameter.Type))
-                        {
-                            // store a reference to the parameter we're modifying, and its initial type
-                            originalParamType = parameter.Type;
-                            parameter.Type = type;
-                            modified = true;
-                        }
-
-                        // Compile the parameter reference
-                        var returnValue = CompileParameterReference(symbol, parameter);
-
-                        // Ensure the parameter is reset to its original state if it was modified
-                        if (modified) 
-                        { 
-                            parameter.Type = originalParamType; 
-                        }
-
-                        return returnValue;
+                        // When an implicit cast from the parameter's declared type to the
+                        // expected type is valid (e.g. unit -> object, vehicle -> unit,
+                        // unit -> object_list), emit the node with the TARGET type so the
+                        // engine interprets the runtime handle in the correct type context.
+                        // Otherwise keep the parameter's natural declared type.
+                        var emitType = IsImplicitlyCastable(parameter.Type, type) ? type : parameter.Type;
+                        return CompileParameterReference(symbol, parameter, emitType);
                     }
                 }
 
                 //
-                // Check if the symbol is a reference to a global
+                // Check if the symbol is a reference to a script-local global
                 //
 
                 foreach (var global in Globals)
                 {
-                    if (global.Name != symbol.Value) 
-                    { 
-                        continue; 
-                    }
+                    if (global.Name != symbol.Value)
+                        continue;
 
-                    // Fix for incorrect Object and ObjectList reference compilation
-                    if (fixObjectCompilation && IsObject(global.Type))
-                    {
-                        // store a reference to the parameter we're modifying, and its initial type
-                        originalParamType = global.Type;
-                        global.Type = type;
-                        modified = true;
-                    }
-
-                    // Compile the global reference
-                    DatumHandle returnValue = CompileGlobalReference(symbol, global);
-
-                    // Ensure the parameter is reset to its original state if it was modified
-                    if (modified) 
-                    { 
-                        global.Type = originalParamType; 
-                    }
-
-                    return returnValue;
+                    var emitType = IsImplicitlyCastable(global.Type, type) ? type : global.Type;
+                    return CompileGlobalReference(symbol, global, emitType);
                 }
+
+                //
+                // Check if the symbol is a reference to a cache (engine-built-in) global
+                //
 
                 foreach (var global in Cache.ScriptDefinitions.Globals)
                     if (global.Value == symbol.Value)
@@ -1217,19 +1183,114 @@ namespace TagTool.Scripting.Compiler
             return new DatumHandle(identifier, (ushort)ScriptExpressions.IndexOf(expression));
         }
 
-        private static bool IsObject(HsType type) 
+        // Returns true if type is a concrete object subtype
+        // (i.e. a runtime object handle that can be upcast to HsType.Object
+        // Does NOT include ObjectList, which is a container, not a subtype.
+        private static bool IsObjectSubtype(HsType type)
         {
             switch (type)
             {
                 case HsType.Object:
-                case HsType.ObjectList:
-                case HsType.Device:
-                case HsType.EffectScenery:
-                case HsType.Scenery:
-                case HsType.Weapon:
                 case HsType.Unit:
                 case HsType.Vehicle:
+                case HsType.Weapon:
+                case HsType.Device:
+                case HsType.Scenery:
+                case HsType.EffectScenery:
                     return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Returns true if type is an object-name index type
+        // (scenario ObjectNames table reference).
+        private static bool IsObjectNameType(HsType type)
+        {
+            switch (type)
+            {
+                case HsType.ObjectName:
+                case HsType.UnitName:
+                case HsType.VehicleName:
+                case HsType.WeaponName:
+                case HsType.DeviceName:
+                case HsType.SceneryName:
+                case HsType.EffectSceneryName:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        // Returns true if sourceType can be implicitly cast to
+        // targetType according to the HaloScript type-casting rules:
+        //   passthrough → any type
+        //   any type → void
+        //   boolean ← real, long, short, string
+        //   real ← short, long
+        //   long ← short, real
+        //   short ← long, real
+        //   object ← any object subtype or object_name type
+        //   unit ← vehicle (and their name equivalents)
+        //   vehicle/weapon/device/scenery/effect_scenery ← matching _name type
+        //   object_list ← any object subtype or object_name type
+        private static bool IsImplicitlyCastable(HsType sourceType, HsType targetType)
+        {
+            if (sourceType == targetType)
+                return true;
+            if (sourceType == HsType.Passthrough)
+                return true;    // passthrough is compatible with every target
+            if (targetType == HsType.Void)
+                return true;    // any expression can be discarded as void
+
+            switch (targetType)
+            {
+                case HsType.Boolean:
+                    return sourceType == HsType.Real
+                        || sourceType == HsType.Long
+                        || sourceType == HsType.Short
+                        || sourceType == HsType.String;
+
+                case HsType.Real:
+                    return sourceType == HsType.Short || sourceType == HsType.Long;
+
+                case HsType.Long:
+                    return sourceType == HsType.Short || sourceType == HsType.Real;
+
+                case HsType.Short:
+                    return sourceType == HsType.Long || sourceType == HsType.Real;
+
+                // object accepts any object subtype or any object-name type
+                case HsType.Object:
+                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType);
+
+                // unit accepts vehicle (a vehicle IS a unit at the HaloScript level)
+                // also accepts unit_name / vehicle_name references
+                case HsType.Unit:
+                    return sourceType == HsType.Vehicle
+                        || sourceType == HsType.UnitName
+                        || sourceType == HsType.VehicleName;
+
+                // specific subtypes accept their matching _name counterpart
+                case HsType.Vehicle:
+                    return sourceType == HsType.VehicleName;
+
+                case HsType.Weapon:
+                    return sourceType == HsType.WeaponName;
+
+                case HsType.Device:
+                    return sourceType == HsType.DeviceName;
+
+                case HsType.Scenery:
+                    return sourceType == HsType.SceneryName;
+
+                case HsType.EffectScenery:
+                    return sourceType == HsType.EffectSceneryName;
+
+                // object_list accepts a single object/object_name; engine wraps it into a list
+                case HsType.ObjectList:
+                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType);
+
                 default:
                     return false;
             }
@@ -1259,6 +1320,26 @@ namespace TagTool.Scripting.Compiler
                     {
                         var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
+                        // Allocate the group and functionName nodes FIRST, before any body
+                        // expressions, so that the parent node precedes its children in the
+                        // ScriptExpressions list. All other special forms (if, cond, sleep, etc.)
+                        // follow this pattern. The old order - compiling body first - produced an
+                        // inverted layout where the root begin node sat at a higher index than all
+                        // its children, which causes incorrect execution in the engine.
+
+                        var beginHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                        var beginExpr = ScriptExpressions[beginHandle.Index];
+
+                        var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
+                        var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                        functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                        Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), beginExpr.Data, 4);
+                        Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                        // Now compile the body expressions. They will receive consecutive indices
+                        // immediately following the begin/functionName nodes above.
+
                         var firstHandle = DatumHandle.None;
                         HsSyntaxNode prevExpr = null;
 
@@ -1277,20 +1358,7 @@ namespace TagTool.Scripting.Compiler
                             prevExpr = ScriptExpressions[currentHandle.Index];
                         }
 
-                        //
-                        // Allocate the function name expression
-                        //
-
-                        var beginHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
-                        var beginExpr = ScriptExpressions[beginHandle.Index];
-
-                        var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
-                        var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
                         functionNameExpr.NextExpressionHandle = firstHandle;
-                        functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
-
-                        Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), beginExpr.Data, 4);
-                        Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         return beginHandle;
                     }
@@ -1415,7 +1483,7 @@ namespace TagTool.Scripting.Compiler
 
                             var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
-                            var setHandle = AllocateExpression(global.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                            var setHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                             var setExpr = ScriptExpressions[setHandle.Index];
 
                             var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
@@ -1480,7 +1548,16 @@ namespace TagTool.Scripting.Compiler
                     {
                         var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
-                        var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                        // If the calling context needs a specific type and the arithmetic function's
+                        // natural Real return is implicitly castable to it (e.g. set assigns to a
+                        // Short global), emit the Group with the context type so the engine knows
+                        // to convert the result.  When context is Unparsed (no specific target),
+                        // fall back to the function's natural Real return type.
+                        var groupType = (type != HsType.Unparsed && IsImplicitlyCastable(builtin.Value.Type, type))
+                            ? type
+                            : builtin.Value.Type;
+
+                        var handle = AllocateExpression(groupType, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
 
                         var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
@@ -1499,19 +1576,12 @@ namespace TagTool.Scripting.Compiler
                             if (!(currentGroup.Tail is ScriptGroup) && !(currentGroup.Tail is ScriptInvalid))
                                 throw new FormatException(group.ToString());
 
-                            var currentHandle = DatumHandle.None;
-
-                            switch (currentGroup.Head)
-                            {
-                                case ScriptInteger _:
-                                case ScriptReal _:
-                                    currentHandle = CompileExpression(HsType.Real, currentGroup.Head);
-                                    break;
-
-                                default:
-                                    currentHandle = CompileExpression(HsType.Unparsed, currentGroup.Head);
-                                    break;
-                            }
+                            // All arithmetic operands are compiled as Real regardless of whether
+                            // they are literals or symbol references.  Previously non-literal
+                            // operands (globals, parameters) were compiled as Unparsed, which
+                            // left them with their declared type (e.g. Short) instead of Real,
+                            // causing the engine to misread the value during arithmetic.
+                            var currentHandle = CompileExpression(HsType.Real, currentGroup.Head);
 
                             prevExpr.NextExpressionHandle = currentHandle;
                             prevExpr = ScriptExpressions[currentHandle.Index];
@@ -1839,7 +1909,7 @@ namespace TagTool.Scripting.Compiler
             var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "dew_method_stub");
             var scriptIndex = (short)Scripts.IndexOf(script);
 
-            var handle = AllocateExpression(script.ReturnType, HsSyntaxNodeFlags.Group |  HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
+            var handle = AllocateExpression(script.ReturnType, HsSyntaxNodeFlags.Group | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
             var expr = ScriptExpressions[handle.Index];
 
             var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Expression | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
@@ -1876,8 +1946,11 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileGlobalReference(ScriptSymbol symbol, HsGlobal global)
+            => CompileGlobalReference(symbol, global, global.Type);
+
+        private DatumHandle CompileGlobalReference(ScriptSymbol symbol, HsGlobal global, HsType emitType)
         {
-            var handle = AllocateExpression(global.Type, HsSyntaxNodeFlags.GlobalsReference, line: (short)symbol.Line);
+            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.GlobalsReference, line: (short)symbol.Line);
 
             var expr = ScriptExpressions[handle.Index];
             expr.StringAddress = CompileStringAddress(global.Name);
@@ -1898,8 +1971,11 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileParameterReference(ScriptSymbol symbol, HsScriptParameter parameter)
+            => CompileParameterReference(symbol, parameter, parameter.Type);
+
+        private DatumHandle CompileParameterReference(ScriptSymbol symbol, HsScriptParameter parameter, HsType emitType)
         {
-            var handle = AllocateExpression(parameter.Type, HsSyntaxNodeFlags.ParameterReference, line: (short)symbol.Line);
+            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.ParameterReference, line: (short)symbol.Line);
 
             var expr = ScriptExpressions[handle.Index];
             expr.StringAddress = CompileStringAddress(parameter.Name);
@@ -3124,7 +3200,7 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                
+
                 var vehicleIndex = vehicleString.Value == "none" ? -1 :
                     Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
 
@@ -3251,9 +3327,10 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Biped ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Giant ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Vehicle)
+                var unitObjType = Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline;
+                if (unitObjType != GameObjectTypeHaloOnline.Biped &&
+                    unitObjType != GameObjectTypeHaloOnline.Giant &&
+                    unitObjType != GameObjectTypeHaloOnline.Vehicle)
                 {
                     throw new FormatException(objectNameString.Value);
                 }
@@ -3321,9 +3398,10 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new FormatException(objectNameString.Value);
 
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.AlternateRealityDevice ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Control ||
-                    Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Machine)
+                var deviceObjType = Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline;
+                if (deviceObjType != GameObjectTypeHaloOnline.AlternateRealityDevice &&
+                    deviceObjType != GameObjectTypeHaloOnline.Control &&
+                    deviceObjType != GameObjectTypeHaloOnline.Machine)
                 {
                     throw new FormatException(objectNameString.Value);
                 }
@@ -3418,9 +3496,9 @@ namespace TagTool.Scripting.Compiler
                 };
 
                 bool hasReference = false;
-                foreach(var tagEntry in ScriptSourceFileReferences)
+                foreach (var tagEntry in ScriptSourceFileReferences)
                 {
-                    if(tagEntry.Instance.Index == tagReference.Instance.Index)
+                    if (tagEntry.Instance.Index == tagReference.Instance.Index)
                     {
                         hasReference = true;
                         break;
