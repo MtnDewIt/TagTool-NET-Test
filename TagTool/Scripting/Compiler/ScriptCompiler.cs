@@ -1185,11 +1185,9 @@ namespace TagTool.Scripting.Compiler
             return new DatumHandle(identifier, (ushort)ScriptExpressions.IndexOf(expression));
         }
 
-        /// <summary>
-        /// Returns true if <paramref name="type"/> is a concrete object subtype
-        /// (i.e. a runtime object handle that can be upcast to <see cref="HsType.Object"/>).
-        /// Does NOT include ObjectList, which is a container, not a subtype.
-        /// </summary>
+        // Returns true if type is a concrete object subtype
+        // (i.e. a runtime object handle that can be upcast to HsType.Object).
+        // Does NOT include ObjectList, which is a container, not a subtype.
         private static bool IsObjectSubtype(HsType type)
         {
             switch (type)
@@ -1207,10 +1205,8 @@ namespace TagTool.Scripting.Compiler
             }
         }
 
-        /// <summary>
-        /// Returns true if <paramref name="type"/> is an object-name index type
-        /// (scenario ObjectNames table reference).
-        /// </summary>
+        // Returns true if type is an object-name index type
+        // (scenario ObjectNames table reference).
         private static bool IsObjectNameType(HsType type)
         {
             switch (type)
@@ -1228,22 +1224,18 @@ namespace TagTool.Scripting.Compiler
             }
         }
 
-        /// <summary>
-        /// Returns true if <paramref name="sourceType"/> can be implicitly cast to
-        /// <paramref name="targetType"/> according to the HaloScript type-casting rules:
-        /// <list type="bullet">
-        ///   <item><description>passthrough → any type</description></item>
-        ///   <item><description>any type → void</description></item>
-        ///   <item><description>boolean ← real, long, short, string</description></item>
-        ///   <item><description>real ← short, long</description></item>
-        ///   <item><description>long ← short, real</description></item>
-        ///   <item><description>short ← long, real</description></item>
-        ///   <item><description>object ← any object subtype or object_name type</description></item>
-        ///   <item><description>unit ← vehicle (and their name equivalents)</description></item>
-        ///   <item><description>vehicle/weapon/device/scenery/effect_scenery ← matching _name type</description></item>
-        ///   <item><description>object_list ← any object subtype or object_name type</description></item>
-        /// </list>
-        /// </summary>
+        // Returns true if sourceType can be implicitly cast to targetType
+        // according to the HaloScript type-casting rules:
+        //   passthrough -> any type
+        //   any type -> void
+        //   boolean <- real, long, short, string
+        //   real <- short, long
+        //   long <- short, real
+        //   short <- long, real
+        //   object <- any object subtype or object_name type
+        //   unit <- vehicle (and their name equivalents)
+        //   vehicle/weapon/device/scenery/effect_scenery <- matching _name type
+        //   object_list <- any object subtype or object_name type
         private static bool IsImplicitlyCastable(HsType sourceType, HsType targetType)
         {
             if (sourceType == targetType)
