@@ -824,7 +824,9 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.Style:
-                    if (node is ScriptString styleString)
+                    if (node is ScriptSymbol styleNoneSymbol && styleNoneSymbol.Value == "none")
+                        return CompileStyleExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString styleString)
                         return CompileStyleExpression(styleString);
                     else throw new FormatException(node.ToString());
 
@@ -2572,8 +2574,32 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileStyleExpression(ScriptString styleString) =>
-            throw new NotImplementedException();
+        private DatumHandle CompileStyleExpression(ScriptString styleString)
+        {
+            var handle = AllocateExpression(HsType.Style, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)styleString.Line);
+
+            if (handle != DatumHandle.None)
+            {
+                if (styleString.Value == "none")
+                {
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = CompileStringAddress(styleString.Value);
+                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
+                    return handle;
+                }
+
+                if (!Cache.TagCache.TryGetTag<Style>(styleString.Value, out var instance))
+                    throw new FormatException(styleString.Value);
+
+                WriteTagToSourceFileReferences(new ScriptString { Value = styleString.Value + "." + instance.Group.ToString() });
+
+                var expr2 = ScriptExpressions[handle.Index];
+                expr2.StringAddress = CompileStringAddress(styleString.Value);
+                Array.Copy(BitConverter.GetBytes(instance.Index), expr2.Data, 4);
+            }
+
+            return handle;
+        }
 
         private DatumHandle CompileObjectListExpression(ScriptString objectListString)
         {
