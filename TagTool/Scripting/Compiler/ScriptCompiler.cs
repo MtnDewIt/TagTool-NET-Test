@@ -1275,19 +1275,19 @@ namespace TagTool.Scripting.Compiler
 
                 // specific subtypes accept their matching _name counterpart
                 case HsType.Vehicle:
-                    return sourceType == HsType.VehicleName;
+                    return sourceType == HsType.Object || sourceType == HsType.VehicleName;
 
                 case HsType.Weapon:
-                    return sourceType == HsType.WeaponName;
+                    return sourceType == HsType.Object || sourceType == HsType.WeaponName;
 
                 case HsType.Device:
-                    return sourceType == HsType.DeviceName;
+                    return sourceType == HsType.Object || sourceType == HsType.DeviceName;
 
                 case HsType.Scenery:
-                    return sourceType == HsType.SceneryName;
+                    return sourceType == HsType.Object || sourceType == HsType.SceneryName;
 
                 case HsType.EffectScenery:
-                    return sourceType == HsType.EffectSceneryName;
+                    return sourceType == HsType.Object || sourceType == HsType.EffectSceneryName;
 
                 // object_list accepts a single object/object_name; engine wraps it into a list
                 case HsType.ObjectList:
