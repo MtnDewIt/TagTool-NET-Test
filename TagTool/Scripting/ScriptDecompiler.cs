@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
@@ -90,12 +90,7 @@ namespace TagTool.Scripting
                     WriteScript(Scripts[s], indentWriter);
                     indentWriter.Indent--;
 
-                    if (script != Definition.Scripts.Last())
-                    {
-                        indentWriter.WriteLine(')');
-                    }
-                    else
-                        indentWriter.Write(')');
+                    indentWriter.WriteLine(')');
                 }
 
                 indentWriter.WriteLine();
@@ -132,13 +127,8 @@ namespace TagTool.Scripting
                     WriteScript(Scripts[s], indentWriter);
                     indentWriter.Indent--;
 
-                    if (script != Definition.Scripts.Last())
-                    {
-                        indentWriter.WriteLine(')');
-                        indentWriter.WriteLine();
-                    }
-                    else
-                        indentWriter.Write(')');
+                    indentWriter.WriteLine(')');
+                    indentWriter.WriteLine();
                 }
             }
         }
@@ -203,18 +193,31 @@ namespace TagTool.Scripting
             WriteExpression(expr.ChildExpressions[0], indentWriter);
             indentWriter.Indent++;
 
-            //if statements have first member on the same line
+            // if statements keep their boolean condition on the same line
             if (expr.Opcode == GetOpcode("if"))
+            {
                 indentWriter.Write(' ');
+            }
             else
+            {
                 indentWriter.WriteLine();
+            }
 
             for (var i = 1; i < expr.ChildExpressions.Count; i++)
             {
-                WriteExpression(expr.ChildExpressions[i], indentWriter);
-                //multiline groups make their own newlines
-                if (expr.ChildExpressions[i].Type != GenericExpression.ExpressionType.MultilineGroup)
+                var child = expr.ChildExpressions[i];
+                WriteExpression(child, indentWriter);
+
+                if (child.Type == GenericExpression.ExpressionType.MultilineGroup)
+                {
+                    // MultilineGroup already wrote its own closing ) + newline.
+                    // If there are more siblings after this, the indent writer will
+                    // handle the leading whitespace automatically on the next Write.
+                }
+                else
+                {
                     indentWriter.WriteLine();
+                }
             }
             indentWriter.Indent--;
             indentWriter.WriteLine(')');
@@ -267,7 +270,8 @@ namespace TagTool.Scripting
                     break;
 
                 case "Real":
-                    result.Name = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0).ToString();
+                    var realVal = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
+                    result.Name = realVal % 1 == 0 ? $"{realVal:F1}" : realVal.ToString();
                     break;
 
                 case "Short":
@@ -301,41 +305,78 @@ namespace TagTool.Scripting
                     break;
 
                 case "CinematicLightprobe":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"{ReadScriptString(scriptStringReader, expr.StringAddress)}";
+                    // Stored as a symbol reference (no quotes)
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
-                case "Folder":
-                case "Unit":
-                case "AnimationGraph":
-                case "Object":
-                case "Device":
-                case "CutsceneCameraPoint":
-                case "CutsceneFlag":
-                case "TriggerVolume":
-                case "UnitSeatMapping":
-                case "Vehicle":
-                case "VehicleName":
-                case "Effect":
-                case "Sound":
-                case "LoopingSound":
-                case "AnyTag":
-                case "ObjectName":
-                case "Scenery":
-                case "Ai":
-                case "PointReference":
-                case "ObjectDefinition":
+
                 case "CutsceneTitle":
-                case "ZoneSet":
-                case "Damage":
-                case "StartingProfile":
-                case "ObjectList":
-                case "MpTeam":
-                case "DeviceGroup":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
+                    // Compiler takes ScriptSymbol - no quotes
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
                 case "Team":
+                case "MpTeam":
+                    // Enum values - compiler takes ScriptSymbol, no quotes
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    break;
+
                 case "AiCommandScript":
+                    // Script name reference - compiler takes ScriptSymbol, no quotes
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    break;
+
+                // Tag reference and named-object types - compiler takes ScriptString, quoted
+                case "Folder":
+                case "Unit":
+                case "UnitName":
+                case "Vehicle":
+                case "VehicleName":
+                case "Weapon":
+                case "WeaponName":
+                case "Device":
+                case "DeviceName":
+                case "Scenery":
+                case "SceneryName":
+                case "EffectScenery":
+                case "EffectSceneryName":
+                case "Object":
+                case "ObjectName":
+                case "ObjectList":
+                case "ObjectDefinition":
+                case "AnimationGraph":
+                case "Effect":
+                case "Sound":
+                case "LoopingSound":
+                case "Damage":
+                case "DamageEffect":
+                case "Shader":
+                case "RenderModel":
+                case "Style":
+                case "AnyTag":
+                case "AnyTagNotResolving":
+                case "CutsceneCameraPoint":
+                case "CutsceneFlag":
+                case "CutsceneRecording":
+                case "TriggerVolume":
+                case "UnitSeatMapping":
+                case "Ai":
+                case "AiCommandList":
+                case "AiBehavior":
+                case "AiOrders":
                 case "AiLine":
+                case "PointReference":
+                case "ZoneSet":
+                case "DesignerZone":
+                case "Conversation":
+                case "StartingProfile":
+                case "DeviceGroup":
+                case "LightmapDefinition":
+                case "StructureDefinition":
+                case "CinematicDefinition":
+                case "CinematicSceneDefinition":
+                case "CinematicTransitionDefinition":
+                case "BinkDefinition":
+                case "CuiScreenDefinition":
                     result.Name = expr.StringAddress == 0 ? "none" : $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
                     break;
 
