@@ -282,7 +282,8 @@ namespace TagTool.Scripting
                     result.Name = BitConverter.ToInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0).ToString();
                     break;
                 case "String":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
+                    var strVal = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    result.Name = strVal == "none" ? "none" : $"\"{strVal}\"";
                     break;
 
                 case "Script":
@@ -290,7 +291,14 @@ namespace TagTool.Scripting
                     break;
 
                 case "StringId":
-                    result.Name = $"\"{Cache.StringTable.GetString(new StringId(BitConverter.ToUInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0)))}\"";
+                    var stringIdVal = BitConverter.ToUInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
+                    if (stringIdVal == 0)
+                        result.Name = "none";
+                    else
+                    {
+                        var resolvedStr = Cache.StringTable.GetString(new StringId(stringIdVal));
+                        result.Name = string.IsNullOrEmpty(resolvedStr) ? "none" : $"\"{resolvedStr}\"";
+                    }
                     break;
 
                 case "GameDifficulty":
@@ -377,7 +385,8 @@ namespace TagTool.Scripting
                 case "CinematicTransitionDefinition":
                 case "BinkDefinition":
                 case "CuiScreenDefinition":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
+                    var tagRefStr = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    result.Name = (tagRefStr == "none" || tagRefStr == "") ? "none" : $"\"{tagRefStr}\"";
                     break;
 
                 default:
