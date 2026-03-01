@@ -777,8 +777,10 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.AiCommandScript:
-                    if (node is ScriptString aiCommandScriptString)
-                        return CompileAiCommandScriptExpression(aiCommandScriptString);
+                    if (node is ScriptSymbol aiCommandScriptSymbol)
+                        return CompileAiCommandScriptExpression(aiCommandScriptSymbol);
+                    else if (node is ScriptString aiCommandScriptString)
+                        return CompileAiCommandScriptExpression(new ScriptSymbol { Value = aiCommandScriptString.Value, Line = aiCommandScriptString.Line });
                     else throw new FormatException(node.ToString());
 
                 case HsType.AiBehavior:
@@ -1184,7 +1186,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         // Returns true if type is a concrete object subtype
-        // (i.e. a runtime object handle that can be upcast to HsType.Object
+        // (i.e. a runtime object handle that can be upcast to HsType.Object).
         // Does NOT include ObjectList, which is a container, not a subtype.
         private static bool IsObjectSubtype(HsType type)
         {
@@ -1222,18 +1224,18 @@ namespace TagTool.Scripting.Compiler
             }
         }
 
-        // Returns true if sourceType can be implicitly cast to
-        // targetType according to the HaloScript type-casting rules:
-        //   passthrough → any type
-        //   any type → void
-        //   boolean ← real, long, short, string
-        //   real ← short, long
-        //   long ← short, real
-        //   short ← long, real
-        //   object ← any object subtype or object_name type
-        //   unit ← vehicle (and their name equivalents)
-        //   vehicle/weapon/device/scenery/effect_scenery ← matching _name type
-        //   object_list ← any object subtype or object_name type
+        // Returns true if sourceType can be implicitly cast to targetType
+        // according to the HaloScript type-casting rules:
+        //   passthrough -> any type
+        //   any type -> void
+        //   boolean <- real, long, short, string
+        //   real <- short, long
+        //   long <- short, real
+        //   short <- long, real
+        //   object <- any object subtype or object_name type
+        //   unit <- vehicle (and their name equivalents)
+        //   vehicle/weapon/device/scenery/effect_scenery <- matching _name type
+        //   object_list <- any object subtype or object_name type
         private static bool IsImplicitlyCastable(HsType sourceType, HsType targetType)
         {
             if (sourceType == targetType)
@@ -1320,12 +1322,14 @@ namespace TagTool.Scripting.Compiler
                     {
                         var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
+                        //
                         // Allocate the group and functionName nodes FIRST, before any body
                         // expressions, so that the parent node precedes its children in the
                         // ScriptExpressions list. All other special forms (if, cond, sleep, etc.)
                         // follow this pattern. The old order - compiling body first - produced an
                         // inverted layout where the root begin node sat at a higher index than all
                         // its children, which causes incorrect execution in the engine.
+                        //
 
                         var beginHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var beginExpr = ScriptExpressions[beginHandle.Index];
@@ -1337,8 +1341,10 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), beginExpr.Data, 4);
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
+                        //
                         // Now compile the body expressions. They will receive consecutive indices
                         // immediately following the begin/functionName nodes above.
+                        //
 
                         var firstHandle = DatumHandle.None;
                         HsSyntaxNode prevExpr = null;
@@ -1825,7 +1831,13 @@ namespace TagTool.Scripting.Compiler
                 if (functionNameSymbol.Value != entry.Value.Name)
                     continue;
 
-                var handle = AllocateExpression(entry.Value.Type, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
+                // Emit the Group node with the calling context type when a valid implicit cast
+                // exists from the function's natural return type (e.g. player_get returns Unit,
+                // but the caller expects Object or ObjectList — both are valid downcasts).
+                var builtinEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
+                    ? type
+                    : entry.Value.Type;
+                var handle = AllocateExpression(builtinEmitType, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
                 var expr = ScriptExpressions[handle.Index];
 
                 var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Expression, (ushort)entry.Key, (short)functionNameSymbol.Line);
@@ -1862,10 +1874,13 @@ namespace TagTool.Scripting.Compiler
                     continue;
 
                 if (script.Type == HsScriptType.Extern)
-                    return CompileExternMethodReference(group, functionNameSymbol, script);
+                    return CompileExternMethodReference(group, functionNameSymbol, script, type);
 
+                var scriptEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
+                    ? type
+                    : script.ReturnType;
                 var handle = AllocateExpression(
-                    script.ReturnType,
+                    scriptEmitType,
                     HsSyntaxNodeFlags.ScriptReference,
                     (ushort)Scripts.IndexOf(script),
                     (short)functionNameSymbol.Line);
@@ -1904,12 +1919,15 @@ namespace TagTool.Scripting.Compiler
             throw new KeyNotFoundException(functionNameSymbol.Value);
         }
 
-        private DatumHandle CompileExternMethodReference(ScriptGroup group, ScriptSymbol functionNameSymbol, HsScript script)
+        private DatumHandle CompileExternMethodReference(ScriptGroup group, ScriptSymbol functionNameSymbol, HsScript script, HsType type = HsType.Unparsed)
         {
             var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "dew_method_stub");
             var scriptIndex = (short)Scripts.IndexOf(script);
 
-            var handle = AllocateExpression(script.ReturnType, HsSyntaxNodeFlags.Group | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
+            var externEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
+                ? type
+                : script.ReturnType;
+            var handle = AllocateExpression(externEmitType, HsSyntaxNodeFlags.Group | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
             var expr = ScriptExpressions[handle.Index];
 
             var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Expression | HsSyntaxNodeFlags.Extern, (ushort)builtin.Key, scriptIndex);
@@ -2085,13 +2103,14 @@ namespace TagTool.Scripting.Compiler
             {
                 using (var stream = Cache.OpenCacheRead())
                 {
+                    // Build the list of per-unit seat mapping blocks that match the substring.
+                    // By Bungie design, seat label strings always start with the vehicle/unit name
+                    // so a well-formed substring will only match seats on the intended unit tag.
+                    // Correctness of the substring is intentionally left to the script author.
                     var seatsStack = new List<Scenario.UnitSeatsMappingBlock>();
 
-                    // There is probably a better way to get the actual unit tag
                     foreach (var unitTag in Cache.TagCache.FindAllInGroup("unit"))
                     {
-                        bool isUnitMapping = false;
-
                         var unitSeatMapping = new Scenario.UnitSeatsMappingBlock
                         {
                             Unit = unitTag,
@@ -2099,76 +2118,81 @@ namespace TagTool.Scripting.Compiler
 
                         var unitDefinition = Cache.Deserialize<Unit>(stream, unitTag);
 
+                        // Accumulate ALL seats on this unit whose label contains the substring.
+                        // The old code broke after the first match, discarding every subsequent
+                        // matching seat on the same unit.
                         for (int seatIndex = 0; seatIndex < unitDefinition.Seats.Count; seatIndex++)
                         {
-                            var seat = unitDefinition.Seats[seatIndex];
-                            var seatName = Cache.StringTable.GetString(seat.Label);
+                            var seatName = Cache.StringTable.GetString(unitDefinition.Seats[seatIndex].Label);
 
-                            // I assume that the seat mapping string from the script string is what we are checking exists in the seat name?
-                            if (seatName.Contains(unitSeatMappingString.Value))
-                            {
-                                if (seatIndex < 32)
-                                {
-                                    unitSeatMapping.Seats1 = (Scenario.UnitSeatFlags)(1 << seatIndex);
-                                }
-                                else
-                                {
-                                    unitSeatMapping.Seats2 = (Scenario.UnitSeatFlags)(1 << (seatIndex - 32));
-                                }
+                            if (!seatName.Contains(unitSeatMappingString.Value))
+                                continue;
 
-                                isUnitMapping = true;
-
-                                break;
-                            }
+                            if (seatIndex < 32)
+                                unitSeatMapping.Seats1 |= (Scenario.UnitSeatFlags)(1 << seatIndex);
+                            else
+                                unitSeatMapping.Seats2 |= (Scenario.UnitSeatFlags)(1 << (seatIndex - 32));
                         }
 
-                        if (isUnitMapping)
+                        // Only add a block if at least one seat matched on this unit.
+                        if (unitSeatMapping.Seats1 != 0 || unitSeatMapping.Seats2 != 0)
                         {
-                            if (seatsStack.Count > 256)
+                            // Cap at 256 entries (count field is 16-bit, and this is a sanity
+                            // guard against runaway matches from an overly-broad substring).
+                            if (seatsStack.Count >= 256)
                             {
-                                Log.Warning("Too many units match this seat substring");
+                                Log.Warning($"Unit seat mapping '{unitSeatMappingString.Value}': more than 256 units match; truncating.");
                                 break;
                             }
 
-                            // if we did find a match for the the seat substring, we can add the mapping to out seats stack
                             seatsStack.Add(unitSeatMapping);
                         }
                     }
 
-                    var unitSeatStartIndex = -1;
-                    var unitSeatMappingCount = seatsStack.Count;
+                    int unitSeatMappingCount = seatsStack.Count;
 
-                    // Loop through each unit seat mapping in the scenario
-                    for (var unitSeatMappingIndex = 0; unitSeatMappingIndex < Definition.UnitSeatsMapping.Count; unitSeatMappingIndex++)
+                    if (unitSeatMappingCount == 0)
+                        throw new FormatException($"Unit seat mapping '{unitSeatMappingString.Value}': no unit tag in the cache has a seat whose label contains this substring.");
+
+                    // Check whether this exact contiguous run of blocks already exists in the
+                    // scenario's UnitSeatsMapping block array from a previous compile pass.
+                    // We must verify the full run, not just a single entry.
+                    int unitSeatStartIndex = -1;
+
+                    for (int scenarioIndex = 0; scenarioIndex <= Definition.UnitSeatsMapping.Count - unitSeatMappingCount; scenarioIndex++)
                     {
-                        var currentMapping = Definition.UnitSeatsMapping[unitSeatMappingIndex];
+                        bool runMatches = true;
 
-                        // Loop through each unit seat mapping in the seats stack
-                        for (var stackIndex = 0; stackIndex < seatsStack.Count; stackIndex++)
+                        for (int stackIndex = 0; stackIndex < unitSeatMappingCount; stackIndex++)
                         {
-                            var stackMapping = seatsStack[stackIndex];
+                            var s = seatsStack[stackIndex];
+                            var m = Definition.UnitSeatsMapping[scenarioIndex + stackIndex];
 
-                            // Check if the current stack unit seat mapping equals the current scenario unit seat mapping
-                            if (stackMapping.Unit == currentMapping.Unit && stackMapping.Seats1 == currentMapping.Seats1 && stackMapping.Seats2 == currentMapping.Seats2)
+                            if (s.Unit != m.Unit || s.Seats1 != m.Seats1 || s.Seats2 != m.Seats2)
                             {
-                                // Set the starting index to equal the index of the current scenario unit seat mapping
-                                unitSeatStartIndex = unitSeatMappingIndex;
+                                runMatches = false;
                                 break;
                             }
                         }
+
+                        if (runMatches)
+                        {
+                            unitSeatStartIndex = scenarioIndex;
+                            break;
+                        }
                     }
 
+                    // If no matching run was found, append the new blocks to the scenario array
+                    // and use the newly-appended start index.  This is the normal path on a
+                    // fresh compile; the dedup path above handles recompile/append workflows.
                     if (unitSeatStartIndex == -1)
                     {
-                        // Ideally we would get the data for the correct unit mapping, however if the start index is equal to -1,
-                        // that means that no corresponding mapping was found in the scenario, which means there is no way to add the correct data to the scenario
-                        // What we would need to do is figure out some means of getting the unit index from the script expression itself
-
-                        // For now we will just warn the user when no mapping can be found
-                        Log.Warning("Unable to find corresponding unit seat mapping in scenario");
+                        unitSeatStartIndex = Definition.UnitSeatsMapping.Count;
+                        Definition.UnitSeatsMapping.AddRange(seatsStack);
                     }
 
-                    var data = (unitSeatMappingCount << 16) | unitSeatStartIndex;
+                    // Pack as: high 16 bits = count, low 16 bits = start index.
+                    var data = ((unitSeatMappingCount & 0xFFFF) << 16) | (unitSeatStartIndex & 0xFFFF);
 
                     var expr = ScriptExpressions[handle.Index];
                     expr.StringAddress = CompileStringAddress(unitSeatMappingString.Value);
@@ -2412,8 +2436,30 @@ namespace TagTool.Scripting.Compiler
         private DatumHandle CompileAiCommandListExpression(ScriptString aiCommandListString) =>
             throw new NotImplementedException();
 
-        private DatumHandle CompileAiCommandScriptExpression(ScriptString aiCommandScriptString) =>
-            throw new NotImplementedException();
+        private DatumHandle CompileAiCommandScriptExpression(ScriptSymbol aiCommandScriptSymbol)
+        {
+            // An ai_command_script reference is the name of a command_script-type script defined
+            // in the same scenario. It encodes identically to the Script type: a 2-byte index into
+            // the Scripts list. The node uses Flags Expression (not Primitive), matching the
+            // 2-byte script index in Data, script name as StringAddress.
+            var handle = AllocateExpression(HsType.AiCommandScript, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiCommandScriptSymbol.Line);
+
+            if (handle != DatumHandle.None)
+            {
+                var scriptIndex = Scripts.FindIndex(s =>
+                    s.ScriptName == aiCommandScriptSymbol.Value &&
+                    s.Type == HsScriptType.CommandScript);
+
+                if (scriptIndex == -1)
+                    throw new KeyNotFoundException($"No command_script named '{aiCommandScriptSymbol.Value}' is defined.");
+
+                var expr = ScriptExpressions[handle.Index];
+                expr.StringAddress = CompileStringAddress(aiCommandScriptSymbol.Value);
+                Array.Copy(BitConverter.GetBytes((short)scriptIndex), expr.Data, 2);
+            }
+
+            return handle;
+        }
 
         private DatumHandle CompileAiBehaviorExpression(ScriptString aiBehaviorString) =>
             throw new NotImplementedException();
