@@ -1692,19 +1692,13 @@ namespace TagTool.Scripting.Compiler
                         if (!(group.Tail is ScriptGroup tailGroup))
                             throw new FormatException(group.ToString());
 
-                        switch (tailGroup.Head)
-                        {
-                            case ScriptInteger _:
-                            case ScriptReal _:
-                                functionNameExpr.NextExpressionHandle = (type == HsType.Unparsed) ?
-                                    CompileExpression(HsType.Real, tailGroup.Head) :
-                                    CompileExpression(type, tailGroup.Head);
-                                break;
-
-                            default:
-                                functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Unparsed, tailGroup.Head);
-                                break;
-                        }
+                        // Comparison args are always compiled by their own type, never
+                        // the caller's context type (which is Boolean for if conditions).
+                        // Literals compile as Real; symbols/groups compile as Unparsed so
+                        // the second arg can match the first arg's resolved type.
+                        functionNameExpr.NextExpressionHandle = (tailGroup.Head is ScriptInteger || tailGroup.Head is ScriptReal)
+                            ? CompileExpression(HsType.Real, tailGroup.Head)
+                            : CompileExpression(HsType.Unparsed, tailGroup.Head);
 
                         var firstExpr = ScriptExpressions[functionNameExpr.NextExpressionHandle.Index];
 
