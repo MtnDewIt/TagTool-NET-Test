@@ -1455,54 +1455,94 @@ namespace TagTool.Scripting.Compiler
 
                 case "cond":
                     {
-                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
+                        // cond compiles to nested if expressions.
+                        // (cond ((= a 0) body0) ((= a 1) body1)) becomes:
+                        //
+                        // if Group
+                        //   FnName.next -> boolGroup[0]
+                        //   boolGroup[0].next -> body[0]
+                        //   body[0].next -> inner_if Group  (or NONE for last case)
+                        //     inner_if FnName.next -> boolGroup[1]
+                        //     boolGroup[1].next -> body[1]
+                        //     body[1].next -> ... (or NONE)
 
-                        var condHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
-                        var condExpr = ScriptExpressions[condHandle.Index];
+                        var ifBuiltin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "if");
 
-                        var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
-                        var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
-                        functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
-
-                        Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), condExpr.Data, 4);
-                        Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
-
-                        var current = group.Tail;
-
-                        if (!(current is ScriptGroup) && !(current is ScriptInvalid))
-                            throw new FormatException(group.ToString());
-
-                        var prevExpr = functionNameExpr;
-
-                        while (current is ScriptGroup currentGroup)
+                        // Collect cases first
+                        var cases = new System.Collections.Generic.List<(IScriptSyntax condition, IScriptSyntax thenGroup)>();
+                        for (IScriptSyntax cur = group.Tail; cur is ScriptGroup cg; cur = cg.Tail)
                         {
-                            if (!(currentGroup.Head is ScriptGroup condGroup))
+                            if (!(cg.Head is ScriptGroup condGroup) || !(condGroup.Tail is ScriptGroup thenGroup))
                                 throw new FormatException(group.ToString());
-
-                            if (!(condGroup.Tail is ScriptGroup thenGroup))
-                                throw new FormatException(group.ToString());
-
-                            var booleanGroupHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, line: (short)condGroup.Line);
-                            var booleanGroupExpr = ScriptExpressions[booleanGroupHandle.Index];
-
-                            var booleanHandle = CompileExpression(HsType.Boolean, condGroup.Head);
-                            var booleanExpr = ScriptExpressions[booleanHandle.Index];
-                            booleanExpr.NextExpressionHandle = CompileExpression(type,
-                                new ScriptGroup
-                                {
-                                    Head = new ScriptSymbol { Value = "begin" },
-                                    Tail = thenGroup
-                                });
-
-                            Array.Copy(BitConverter.GetBytes(booleanHandle.Value), booleanGroupExpr.Data, 4);
-
-                            prevExpr.NextExpressionHandle = booleanGroupHandle;
-                            prevExpr = booleanGroupExpr;
-
-                            current = currentGroup.Tail;
+                            cases.Add((condGroup.Head, thenGroup));
                         }
 
-                        return condHandle;
+                        if (cases.Count == 0)
+                            throw new FormatException(group.ToString());
+
+                        // Build innermost to outermost so body[N].next can point to inner_if[N+1]
+                        // We compile inside-out: start from the last case, work backwards.
+                        // But AllocateExpression must be in forward order for correct indexing.
+                        // Instead compile forward and patch body.next after each inner if is allocated.
+
+                        // Allocate the outermost if group first
+                        var outerHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)ifBuiltin.Key, (short)group.Line);
+                        var outerExpr = ScriptExpressions[outerHandle.Index];
+
+                        var outerFnHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)ifBuiltin.Key, (short)group.Line);
+                        var outerFnExpr = ScriptExpressions[outerFnHandle.Index];
+                        outerFnExpr.StringAddress = CompileStringAddress("if");
+                        Array.Copy(BitConverter.GetBytes(outerFnHandle.Value), outerExpr.Data, 4);
+                        Array.Copy(BitConverter.GetBytes(0), outerFnExpr.Data, 4);
+
+                        HsSyntaxNode prevFnExpr = outerFnExpr;
+
+                        for (int i = 0; i < cases.Count; i++)
+                        {
+                            var (condition, thenGroupSyntax) = cases[i];
+                            var thenGroup = (ScriptGroup)thenGroupSyntax;
+
+                            // Compile condition
+                            var boolHandle = CompileExpression(HsType.Boolean, condition);
+                            var boolExpr = ScriptExpressions[boolHandle.Index];
+
+                            // Wire previous FnName -> this condition
+                            prevFnExpr.NextExpressionHandle = boolHandle;
+
+                            // Compile body
+                            var bodyHandle = thenGroup.Tail is ScriptInvalid
+                                ? CompileExpression(HsType.Void, thenGroup.Head)
+                                : CompileExpression(HsType.Void, new ScriptGroup { Head = new ScriptSymbol { Value = "begin" }, Tail = thenGroup });
+                            var bodyExpr = ScriptExpressions[bodyHandle.Index];
+
+                            // condition.next -> body
+                            boolExpr.NextExpressionHandle = bodyHandle;
+
+                            // Wire previous body.next -> this condition's if group
+                            // (for i>0, prevBodyExpr is body[i-1] which needs to point to this inner if)
+                            // We do this BEFORE allocating the inner if so we can patch it
+                            // Actually we need the inner if handle - allocate it now if not last case
+                            if (i + 1 < cases.Count)
+                            {
+                                // Allocate inner if group for next case
+                                var innerHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)ifBuiltin.Key, (short)group.Line);
+                                var innerExpr = ScriptExpressions[innerHandle.Index];
+
+                                var innerFnHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)ifBuiltin.Key, (short)group.Line);
+                                var innerFnExpr = ScriptExpressions[innerFnHandle.Index];
+                                innerFnExpr.StringAddress = CompileStringAddress("if");
+                                Array.Copy(BitConverter.GetBytes(innerFnHandle.Value), innerExpr.Data, 4);
+                                Array.Copy(BitConverter.GetBytes(0), innerFnExpr.Data, 4);
+
+                                // body[i].next -> inner_if[i+1]
+                                bodyExpr.NextExpressionHandle = innerHandle;
+
+                                prevFnExpr = innerFnExpr;
+                            }
+                            // last case: body.next stays NONE
+                        }
+
+                        return outerHandle;
                     }
 
                 case "set":
@@ -1860,42 +1900,56 @@ namespace TagTool.Scripting.Compiler
             // Check if function name is a built-in function
             //
 
-            foreach (var entry in Cache.ScriptDefinitions.Scripts)
+            // Count the arguments supplied at this call site so we can resolve overloads
+            // (e.g. object_set_velocity exists with 1 and 3 real parameters).
+            var argCount = 0;
+            for (IScriptSyntax argNode = group.Tail; argNode is ScriptGroup; argNode = ((ScriptGroup)argNode).Tail)
+                argCount++;
+
+            // First pass: try to find an exact name+parameter-count match.
+            // Second pass: fall back to name-only match for functions with no overloads.
+            foreach (var pass in new[] { true, false })
             {
-                if (functionNameSymbol.Value != entry.Value.Name)
-                    continue;
-
-                // Emit the Group node with the calling context type when a valid implicit cast
-                // exists from the function's natural return type (e.g. player_get returns Unit,
-                // but the caller expects Object or ObjectList — both are valid downcasts).
-                var builtinEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
-                    ? type
-                    : entry.Value.Type;
-                var handle = AllocateExpression(builtinEmitType, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
-                var expr = ScriptExpressions[handle.Index];
-
-                var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Expression, (ushort)entry.Key, (short)functionNameSymbol.Line);
-                var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
-                functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
-
-                Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), expr.Data, 4);
-                Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
-
-                IScriptSyntax parameters = group.Tail;
-                var prevExpr = functionNameExpr;
-
-                foreach (var parameter in entry.Value.Parameters)
+                foreach (var entry in Cache.ScriptDefinitions.Scripts)
                 {
-                    if (!(parameters is ScriptGroup parametersGroup))
-                        throw new FormatException(group.ToString());
+                    if (functionNameSymbol.Value != entry.Value.Name)
+                        continue;
 
-                    prevExpr.NextExpressionHandle = CompileExpression(parameter.Type, parametersGroup.Head);
-                    prevExpr = ScriptExpressions[prevExpr.NextExpressionHandle.Index];
+                    if (pass && entry.Value.Parameters.Count != argCount)
+                        continue;
 
-                    parameters = parametersGroup.Tail;
+                    // Emit the Group node with the calling context type when a valid implicit cast
+                    // exists from the function's natural return type (e.g. player_get returns Unit,
+                    // but the caller expects Object or ObjectList — both are valid downcasts).
+                    var builtinEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
+                        ? type
+                        : entry.Value.Type;
+                    var handle = AllocateExpression(builtinEmitType, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
+                    var expr = ScriptExpressions[handle.Index];
+
+                    var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Expression, (ushort)entry.Key, (short)functionNameSymbol.Line);
+                    var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                    functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                    Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), expr.Data, 4);
+                    Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                    IScriptSyntax parameters = group.Tail;
+                    var prevExpr = functionNameExpr;
+
+                    foreach (var parameter in entry.Value.Parameters)
+                    {
+                        if (!(parameters is ScriptGroup parametersGroup))
+                            throw new FormatException(group.ToString());
+
+                        prevExpr.NextExpressionHandle = CompileExpression(parameter.Type, parametersGroup.Head);
+                        prevExpr = ScriptExpressions[prevExpr.NextExpressionHandle.Index];
+
+                        parameters = parametersGroup.Tail;
+                    }
+
+                    return handle;
                 }
-
-                return handle;
             }
 
             //
