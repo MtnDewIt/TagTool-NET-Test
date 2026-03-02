@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
@@ -90,12 +90,7 @@ namespace TagTool.Scripting
                     WriteScript(Scripts[s], indentWriter);
                     indentWriter.Indent--;
 
-                    if (script != Definition.Scripts.Last())
-                    {
-                        indentWriter.WriteLine(')');
-                    }
-                    else
-                        indentWriter.Write(')');
+                    indentWriter.WriteLine(')');
                 }
 
                 indentWriter.WriteLine();
@@ -132,13 +127,8 @@ namespace TagTool.Scripting
                     WriteScript(Scripts[s], indentWriter);
                     indentWriter.Indent--;
 
-                    if (script != Definition.Scripts.Last())
-                    {
-                        indentWriter.WriteLine(')');
-                        indentWriter.WriteLine();
-                    }
-                    else
-                        indentWriter.Write(')');
+                    indentWriter.WriteLine(')');
+                    indentWriter.WriteLine();
                 }
             }
         }
@@ -182,6 +172,9 @@ namespace TagTool.Scripting
                 case GenericExpression.ExpressionType.Value:
                     indentWriter.Write(expr.Name);
                     break;
+                case GenericExpression.ExpressionType.CondCase:
+                    WriteCondCaseExpression(expr, indentWriter);
+                    break;
             }
         }
 
@@ -199,21 +192,69 @@ namespace TagTool.Scripting
 
         private void WriteMultiLineGroupExpression(GenericExpression expr, IndentedTextWriter indentWriter)
         {
+            if (expr.Name == "cond")
+            {
+                indentWriter.WriteLine("(cond");
+                indentWriter.Indent++;
+                foreach (var child in expr.ChildExpressions)
+                {
+                    WriteExpression(child, indentWriter);
+                    if (child.Type != GenericExpression.ExpressionType.CondCase)
+                        indentWriter.WriteLine();
+                }
+                indentWriter.Indent--;
+                indentWriter.WriteLine(')');
+                return;
+            }
+
             indentWriter.Write('(');
             WriteExpression(expr.ChildExpressions[0], indentWriter);
             indentWriter.Indent++;
 
-            //if statements have first member on the same line
+            // if statements keep their boolean condition on the same line
             if (expr.Opcode == GetOpcode("if"))
+            {
                 indentWriter.Write(' ');
+            }
             else
+            {
                 indentWriter.WriteLine();
+            }
 
             for (var i = 1; i < expr.ChildExpressions.Count; i++)
             {
-                WriteExpression(expr.ChildExpressions[i], indentWriter);
-                //multiline groups make their own newlines
-                if (expr.ChildExpressions[i].Type != GenericExpression.ExpressionType.MultilineGroup)
+                var child = expr.ChildExpressions[i];
+                WriteExpression(child, indentWriter);
+
+                if (child.Type == GenericExpression.ExpressionType.MultilineGroup ||
+                    child.Type == GenericExpression.ExpressionType.CondCase)
+                {
+                    // MultilineGroup and CondCase already wrote their own closing ) + newline.
+                }
+                else
+                {
+                    indentWriter.WriteLine();
+                }
+            }
+            indentWriter.Indent--;
+            indentWriter.WriteLine(')');
+        }
+
+        private void WriteCondCaseExpression(GenericExpression expr, IndentedTextWriter indentWriter)
+        {
+            // Output: ((condition)
+            //             body
+            //         )
+            indentWriter.Write('(');
+            if (expr.ChildExpressions.Count > 0)
+                WriteExpression(expr.ChildExpressions[0], indentWriter);
+            indentWriter.Indent++;
+            indentWriter.WriteLine();
+            if (expr.ChildExpressions.Count > 1)
+            {
+                var body = expr.ChildExpressions[1];
+                WriteExpression(body, indentWriter);
+                if (body.Type != GenericExpression.ExpressionType.MultilineGroup)
                     indentWriter.WriteLine();
             }
             indentWriter.Indent--;
@@ -267,7 +308,8 @@ namespace TagTool.Scripting
                     break;
 
                 case "Real":
-                    result.Name = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0).ToString();
+                    var realVal = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
+                    result.Name = realVal % 1 == 0 ? $"{realVal:F1}" : realVal.ToString();
                     break;
 
                 case "Short":
@@ -278,7 +320,8 @@ namespace TagTool.Scripting
                     result.Name = BitConverter.ToInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0).ToString();
                     break;
                 case "String":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
+                    var strVal = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    result.Name = strVal == "none" ? "none" : $"\"{strVal}\"";
                     break;
 
                 case "Script":
@@ -286,7 +329,14 @@ namespace TagTool.Scripting
                     break;
 
                 case "StringId":
-                    result.Name = $"\"{Cache.StringTable.GetString(new StringId(BitConverter.ToUInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0)))}\"";
+                    var stringIdVal = BitConverter.ToUInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
+                    if (stringIdVal == 0)
+                        result.Name = "none";
+                    else
+                    {
+                        var resolvedStr = Cache.StringTable.GetString(new StringId(stringIdVal));
+                        result.Name = string.IsNullOrEmpty(resolvedStr) ? "none" : $"\"{resolvedStr}\"";
+                    }
                     break;
 
                 case "GameDifficulty":
@@ -301,42 +351,80 @@ namespace TagTool.Scripting
                     break;
 
                 case "CinematicLightprobe":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"{ReadScriptString(scriptStringReader, expr.StringAddress)}";
+                    // Stored as a symbol reference (no quotes)
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
-                case "Folder":
-                case "Unit":
-                case "AnimationGraph":
-                case "Object":
-                case "Device":
-                case "CutsceneCameraPoint":
-                case "CutsceneFlag":
-                case "TriggerVolume":
-                case "UnitSeatMapping":
-                case "Vehicle":
-                case "VehicleName":
-                case "Effect":
-                case "Sound":
-                case "LoopingSound":
-                case "AnyTag":
-                case "ObjectName":
-                case "Scenery":
-                case "Ai":
-                case "PointReference":
-                case "ObjectDefinition":
+
                 case "CutsceneTitle":
-                case "ZoneSet":
-                case "Damage":
-                case "StartingProfile":
-                case "ObjectList":
-                case "MpTeam":
-                case "DeviceGroup":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
+                    // Compiler takes ScriptSymbol - no quotes
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
                 case "Team":
+                case "MpTeam":
+                    // Enum values - compiler takes ScriptSymbol, no quotes
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    break;
+
                 case "AiCommandScript":
+                    // Script name reference - compiler takes ScriptSymbol, no quotes
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    break;
+
+                // Tag reference and named-object types - compiler takes ScriptString, quoted
+                case "Folder":
+                case "Unit":
+                case "UnitName":
+                case "Vehicle":
+                case "VehicleName":
+                case "Weapon":
+                case "WeaponName":
+                case "Device":
+                case "DeviceName":
+                case "Scenery":
+                case "SceneryName":
+                case "EffectScenery":
+                case "EffectSceneryName":
+                case "Object":
+                case "ObjectName":
+                case "ObjectList":
+                case "ObjectDefinition":
+                case "AnimationGraph":
+                case "Effect":
+                case "Sound":
+                case "LoopingSound":
+                case "Damage":
+                case "DamageEffect":
+                case "Shader":
+                case "RenderModel":
+                case "Style":
+                case "AnyTag":
+                case "AnyTagNotResolving":
+                case "CutsceneCameraPoint":
+                case "CutsceneFlag":
+                case "CutsceneRecording":
+                case "TriggerVolume":
+                case "UnitSeatMapping":
+                case "Ai":
+                case "AiCommandList":
+                case "AiBehavior":
+                case "AiOrders":
                 case "AiLine":
-                    result.Name = expr.StringAddress == 0 ? "none" : $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
+                case "PointReference":
+                case "ZoneSet":
+                case "DesignerZone":
+                case "Conversation":
+                case "StartingProfile":
+                case "DeviceGroup":
+                case "LightmapDefinition":
+                case "StructureDefinition":
+                case "CinematicDefinition":
+                case "CinematicSceneDefinition":
+                case "CinematicTransitionDefinition":
+                case "BinkDefinition":
+                case "CuiScreenDefinition":
+                    var tagRefStr = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    result.Name = (tagRefStr == "none" || tagRefStr == "") ? "none" : $"\"{tagRefStr}\"";
                     break;
 
                 default:
@@ -369,6 +457,40 @@ namespace TagTool.Scripting
                     break;
             }
 
+            // cond has a special bytecode structure that requires custom parsing.
+            // Each case is encoded as a condCaseGroup (op=cond) followed by a
+            // synthetic begin wrapper, alternating in the child chain.
+            // We reconstruct the logical ((condition) body) pairs for output.
+            // cond compiles to nested if expressions.
+            // Detect: if Group where body.next is also an if Group (inner case).
+            // Normal if never chains body to another if like this.
+            if (expr.Flags == HsSyntaxNodeFlags.Group && result.Name == "if")
+            {
+                int fnIdx = GetGroupStartExpressionIndex(exprIndex); // FnName
+                if (fnIdx != -1)
+                {
+                    int condIdx = GetNextExpressionIndex(fnIdx);     // boolGroup
+                    if (condIdx != -1)
+                    {
+                        int bodyIdx = GetNextExpressionIndex(condIdx); // body
+                        if (bodyIdx != -1)
+                        {
+                            int afterBodyIdx = GetNextExpressionIndex(bodyIdx);
+                            if (afterBodyIdx != -1)
+                            {
+                                var afterBody = Definition.ScriptExpressions[afterBodyIdx];
+                                if (afterBody.Flags == HsSyntaxNodeFlags.Group &&
+                                    afterBody.Opcode == expr.Opcode) // another if group
+                                {
+                                    result.Name = "cond";
+                                    return ParseCondExpression(exprIndex, result);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             //This is the first expression within the group
             int nextIndex = GetGroupStartExpressionIndex(exprIndex);
 
@@ -380,6 +502,37 @@ namespace TagTool.Scripting
                 IndexHistory.Add(nextIndex);
             }
 
+            return result;
+        }
+
+        private GenericExpression ParseCondExpression(int exprIndex, GenericExpression result)
+        {
+            // cond = nested if groups:
+            // outer_if: fnName->condition[0], condition[0].next->body[0], body[0].next->inner_if
+            // inner_if: fnName->condition[1], condition[1].next->body[1], body[1].next->... or NONE
+            int currentIfIndex = exprIndex;
+            while (currentIfIndex != -1)
+            {
+                int fnIdx = GetGroupStartExpressionIndex(currentIfIndex);
+                if (fnIdx == -1) break;
+                int condIdx = GetNextExpressionIndex(fnIdx);
+                if (condIdx == -1) break;
+                int bodyIdx = GetNextExpressionIndex(condIdx);
+
+                var caseExpr = new GenericExpression { Type = GenericExpression.ExpressionType.CondCase, Name = "" };
+                caseExpr.ChildExpressions.Add(ParseExpression(condIdx));
+                if (bodyIdx != -1)
+                    caseExpr.ChildExpressions.Add(ParseExpression(bodyIdx));
+                result.ChildExpressions.Add(caseExpr);
+
+                // Advance to next inner if (body.next) or stop
+                if (bodyIdx == -1) break;
+                int nextIfIdx = GetNextExpressionIndex(bodyIdx);
+                if (nextIfIdx == -1) break;
+                var nextNode = Definition.ScriptExpressions[nextIfIdx];
+                if (nextNode.Flags != HsSyntaxNodeFlags.Group) break;
+                currentIfIndex = nextIfIdx;
+            }
             return result;
         }
 
@@ -481,7 +634,8 @@ namespace TagTool.Scripting
             Group,
             MultilineGroup,
             ScriptReference,
-            Value
+            Value,
+            CondCase
         }
     }
 }

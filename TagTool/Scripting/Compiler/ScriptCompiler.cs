@@ -711,7 +711,9 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.String:
-                    if (node is ScriptString stringValue)
+                    if (node is ScriptSymbol stringNoneSymbol && stringNoneSymbol.Value == "none")
+                        return CompileStringExpression(new ScriptString { Value = "none", Line = stringNoneSymbol.Line });
+                    else if (node is ScriptString stringValue)
                         return CompileStringExpression(stringValue);
                     else throw new FormatException(node.ToString());
 
@@ -721,7 +723,9 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.StringId:
-                    if (node is ScriptString stringIdString)
+                    if (node is ScriptSymbol stringIdNoneSymbol && stringIdNoneSymbol.Value == "none")
+                        return CompileStringIdExpression(new ScriptString { Value = "none", Line = stringIdNoneSymbol.Line });
+                    else if (node is ScriptString stringIdString)
                         return CompileStringIdExpression(stringIdString);
                     else throw new FormatException(node.ToString());
 
@@ -740,12 +744,16 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.CutsceneFlag:
-                    if (node is ScriptString cutsceneFlagString)
+                    if (node is ScriptSymbol cutsceneFlagNoneSymbol && cutsceneFlagNoneSymbol.Value == "none")
+                        return CompileCutsceneFlagExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString cutsceneFlagString)
                         return CompileCutsceneFlagExpression(cutsceneFlagString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.CutsceneCameraPoint:
-                    if (node is ScriptString cutsceneCameraPointString)
+                    if (node is ScriptSymbol cutsceneCameraPointNoneSymbol && cutsceneCameraPointNoneSymbol.Value == "none")
+                        return CompileCutsceneCameraPointExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString cutsceneCameraPointString)
                         return CompileCutsceneCameraPointExpression(cutsceneCameraPointString);
                     else throw new FormatException(node.ToString());
 
@@ -755,12 +763,16 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.CutsceneRecording:
-                    if (node is ScriptString cutsceneRecordingString)
+                    if (node is ScriptSymbol cutsceneRecordingNoneSymbol && cutsceneRecordingNoneSymbol.Value == "none")
+                        return CompileCutsceneRecordingExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString cutsceneRecordingString)
                         return CompileCutsceneRecordingExpression(cutsceneRecordingString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.DeviceGroup:
-                    if (node is ScriptString deviceGroupString)
+                    if (node is ScriptSymbol deviceGroupNoneSymbol && deviceGroupNoneSymbol.Value == "none")
+                        return CompileDeviceGroupExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString deviceGroupString)
                         return CompileDeviceGroupExpression(deviceGroupString);
                     else throw new FormatException(node.ToString());
 
@@ -772,7 +784,9 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.AiCommandList:
-                    if (node is ScriptString aiCommandListString)
+                    if (node is ScriptSymbol aiCommandListNoneSymbol && aiCommandListNoneSymbol.Value == "none")
+                        return CompileAiCommandListExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString aiCommandListString)
                         return CompileAiCommandListExpression(aiCommandListString);
                     else throw new FormatException(node.ToString());
 
@@ -784,52 +798,72 @@ namespace TagTool.Scripting.Compiler
                     else throw new FormatException(node.ToString());
 
                 case HsType.AiBehavior:
-                    if (node is ScriptString aiBehaviorString)
+                    if (node is ScriptSymbol aiBehaviorNoneSymbol && aiBehaviorNoneSymbol.Value == "none")
+                        return CompileAiBehaviorExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString aiBehaviorString)
                         return CompileAiBehaviorExpression(aiBehaviorString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.AiOrders:
-                    if (node is ScriptString aiOrdersString)
+                    if (node is ScriptSymbol aiOrdersNoneSymbol && aiOrdersNoneSymbol.Value == "none")
+                        return CompileAiOrdersExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString aiOrdersString)
                         return CompileAiOrdersExpression(aiOrdersString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.AiLine:
-                    if (node is ScriptString aiLineString)
+                    if (node is ScriptSymbol aiLineNoneSymbol && aiLineNoneSymbol.Value == "none")
+                        return CompileAiLineExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString aiLineString)
                         return CompileAiLineExpression(aiLineString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.StartingProfile:
-                    if (node is ScriptString startingProfileString)
+                    if (node is ScriptSymbol startingProfileNoneSymbol && startingProfileNoneSymbol.Value == "none")
+                        return CompileStartingProfileExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString startingProfileString)
                         return CompileStartingProfileExpression(startingProfileString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.Conversation:
-                    if (node is ScriptString conversationString)
+                    if (node is ScriptSymbol conversationNoneSymbol && conversationNoneSymbol.Value == "none")
+                        return CompileConversationExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString conversationString)
                         return CompileConversationExpression(conversationString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.ZoneSet:
-                    if (node is ScriptString zoneSetString)
+                    if (node is ScriptSymbol zoneSetNoneSymbol && zoneSetNoneSymbol.Value == "none")
+                        return CompileZoneSetExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString zoneSetString)
                         return CompileZoneSetExpression(zoneSetString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.DesignerZone:
-                    if (node is ScriptString designerZoneString)
+                    if (node is ScriptSymbol designerZoneNoneSymbol && designerZoneNoneSymbol.Value == "none")
+                        return CompileDesignerZoneExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString designerZoneString)
                         return CompileDesignerZoneExpression(designerZoneString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.PointReference:
-                    if (node is ScriptString pointReferenceString)
+                    if (node is ScriptSymbol pointReferenceNoneSymbol && pointReferenceNoneSymbol.Value == "none")
+                        return CompilePointReferenceExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString pointReferenceString)
                         return CompilePointReferenceExpression(pointReferenceString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.Style:
-                    if (node is ScriptString styleString)
+                    if (node is ScriptSymbol styleNoneSymbol && styleNoneSymbol.Value == "none")
+                        return CompileStyleExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString styleString)
                         return CompileStyleExpression(styleString);
                     else throw new FormatException(node.ToString());
 
                 case HsType.ObjectList:
-                    if (node is ScriptString objectListString)
+                    if (node is ScriptSymbol objectListNoneSymbol && objectListNoneSymbol.Value == "none")
+                        return CompileObjectListExpression(new ScriptString { Value = "none" });
+                    else if (node is ScriptString objectListString)
                         return CompileObjectListExpression(objectListString);
                     else throw new FormatException(node.ToString());
 
@@ -1275,19 +1309,19 @@ namespace TagTool.Scripting.Compiler
 
                 // specific subtypes accept their matching _name counterpart
                 case HsType.Vehicle:
-                    return sourceType == HsType.VehicleName;
+                    return sourceType == HsType.Object || sourceType == HsType.VehicleName;
 
                 case HsType.Weapon:
-                    return sourceType == HsType.WeaponName;
+                    return sourceType == HsType.Object || sourceType == HsType.WeaponName;
 
                 case HsType.Device:
-                    return sourceType == HsType.DeviceName;
+                    return sourceType == HsType.Object || sourceType == HsType.DeviceName;
 
                 case HsType.Scenery:
-                    return sourceType == HsType.SceneryName;
+                    return sourceType == HsType.Object || sourceType == HsType.SceneryName;
 
                 case HsType.EffectScenery:
-                    return sourceType == HsType.EffectSceneryName;
+                    return sourceType == HsType.Object || sourceType == HsType.EffectSceneryName;
 
                 // object_list accepts a single object/object_name; engine wraps it into a list
                 case HsType.ObjectList:
@@ -1421,54 +1455,94 @@ namespace TagTool.Scripting.Compiler
 
                 case "cond":
                     {
-                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
+                        // cond compiles to nested if expressions.
+                        // (cond ((= a 0) body0) ((= a 1) body1)) becomes:
+                        //
+                        // if Group
+                        //   FnName.next -> boolGroup[0]
+                        //   boolGroup[0].next -> body[0]
+                        //   body[0].next -> inner_if Group  (or NONE for last case)
+                        //     inner_if FnName.next -> boolGroup[1]
+                        //     boolGroup[1].next -> body[1]
+                        //     body[1].next -> ... (or NONE)
 
-                        var condHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
-                        var condExpr = ScriptExpressions[condHandle.Index];
+                        var ifBuiltin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "if");
 
-                        var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
-                        var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
-                        functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
-
-                        Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), condExpr.Data, 4);
-                        Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
-
-                        var current = group.Tail;
-
-                        if (!(current is ScriptGroup) && !(current is ScriptInvalid))
-                            throw new FormatException(group.ToString());
-
-                        var prevExpr = functionNameExpr;
-
-                        while (current is ScriptGroup currentGroup)
+                        // Collect cases first
+                        var cases = new System.Collections.Generic.List<(IScriptSyntax condition, IScriptSyntax thenGroup)>();
+                        for (IScriptSyntax cur = group.Tail; cur is ScriptGroup cg; cur = cg.Tail)
                         {
-                            if (!(currentGroup.Head is ScriptGroup condGroup))
+                            if (!(cg.Head is ScriptGroup condGroup) || !(condGroup.Tail is ScriptGroup thenGroup))
                                 throw new FormatException(group.ToString());
-
-                            if (!(condGroup.Tail is ScriptGroup thenGroup))
-                                throw new FormatException(group.ToString());
-
-                            var booleanGroupHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, line: (short)condGroup.Line);
-                            var booleanGroupExpr = ScriptExpressions[booleanGroupHandle.Index];
-
-                            var booleanHandle = CompileExpression(HsType.Boolean, condGroup.Head);
-                            var booleanExpr = ScriptExpressions[booleanHandle.Index];
-                            booleanExpr.NextExpressionHandle = CompileExpression(type,
-                                new ScriptGroup
-                                {
-                                    Head = new ScriptSymbol { Value = "begin" },
-                                    Tail = thenGroup
-                                });
-
-                            Array.Copy(BitConverter.GetBytes(booleanHandle.Value), booleanGroupExpr.Data, 4);
-
-                            prevExpr.NextExpressionHandle = booleanGroupHandle;
-                            prevExpr = booleanGroupExpr;
-
-                            current = currentGroup.Tail;
+                            cases.Add((condGroup.Head, thenGroup));
                         }
 
-                        return condHandle;
+                        if (cases.Count == 0)
+                            throw new FormatException(group.ToString());
+
+                        // Build innermost to outermost so body[N].next can point to inner_if[N+1]
+                        // We compile inside-out: start from the last case, work backwards.
+                        // But AllocateExpression must be in forward order for correct indexing.
+                        // Instead compile forward and patch body.next after each inner if is allocated.
+
+                        // Allocate the outermost if group first
+                        var outerHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)ifBuiltin.Key, (short)group.Line);
+                        var outerExpr = ScriptExpressions[outerHandle.Index];
+
+                        var outerFnHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)ifBuiltin.Key, (short)group.Line);
+                        var outerFnExpr = ScriptExpressions[outerFnHandle.Index];
+                        outerFnExpr.StringAddress = CompileStringAddress("if");
+                        Array.Copy(BitConverter.GetBytes(outerFnHandle.Value), outerExpr.Data, 4);
+                        Array.Copy(BitConverter.GetBytes(0), outerFnExpr.Data, 4);
+
+                        HsSyntaxNode prevFnExpr = outerFnExpr;
+
+                        for (int i = 0; i < cases.Count; i++)
+                        {
+                            var (condition, thenGroupSyntax) = cases[i];
+                            var thenGroup = (ScriptGroup)thenGroupSyntax;
+
+                            // Compile condition
+                            var boolHandle = CompileExpression(HsType.Boolean, condition);
+                            var boolExpr = ScriptExpressions[boolHandle.Index];
+
+                            // Wire previous FnName -> this condition
+                            prevFnExpr.NextExpressionHandle = boolHandle;
+
+                            // Compile body
+                            var bodyHandle = thenGroup.Tail is ScriptInvalid
+                                ? CompileExpression(HsType.Void, thenGroup.Head)
+                                : CompileExpression(HsType.Void, new ScriptGroup { Head = new ScriptSymbol { Value = "begin" }, Tail = thenGroup });
+                            var bodyExpr = ScriptExpressions[bodyHandle.Index];
+
+                            // condition.next -> body
+                            boolExpr.NextExpressionHandle = bodyHandle;
+
+                            // Wire previous body.next -> this condition's if group
+                            // (for i>0, prevBodyExpr is body[i-1] which needs to point to this inner if)
+                            // We do this BEFORE allocating the inner if so we can patch it
+                            // Actually we need the inner if handle - allocate it now if not last case
+                            if (i + 1 < cases.Count)
+                            {
+                                // Allocate inner if group for next case
+                                var innerHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)ifBuiltin.Key, (short)group.Line);
+                                var innerExpr = ScriptExpressions[innerHandle.Index];
+
+                                var innerFnHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)ifBuiltin.Key, (short)group.Line);
+                                var innerFnExpr = ScriptExpressions[innerFnHandle.Index];
+                                innerFnExpr.StringAddress = CompileStringAddress("if");
+                                Array.Copy(BitConverter.GetBytes(innerFnHandle.Value), innerExpr.Data, 4);
+                                Array.Copy(BitConverter.GetBytes(0), innerFnExpr.Data, 4);
+
+                                // body[i].next -> inner_if[i+1]
+                                bodyExpr.NextExpressionHandle = innerHandle;
+
+                                prevFnExpr = innerFnExpr;
+                            }
+                            // last case: body.next stays NONE
+                        }
+
+                        return outerHandle;
                     }
 
                 case "set":
@@ -1618,19 +1692,13 @@ namespace TagTool.Scripting.Compiler
                         if (!(group.Tail is ScriptGroup tailGroup))
                             throw new FormatException(group.ToString());
 
-                        switch (tailGroup.Head)
-                        {
-                            case ScriptInteger _:
-                            case ScriptReal _:
-                                functionNameExpr.NextExpressionHandle = (type == HsType.Unparsed) ?
-                                    CompileExpression(HsType.Real, tailGroup.Head) :
-                                    CompileExpression(type, tailGroup.Head);
-                                break;
-
-                            default:
-                                functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Unparsed, tailGroup.Head);
-                                break;
-                        }
+                        // Comparison args are always compiled by their own type, never
+                        // the caller's context type (which is Boolean for if conditions).
+                        // Literals compile as Real; symbols/groups compile as Unparsed so
+                        // the second arg can match the first arg's resolved type.
+                        functionNameExpr.NextExpressionHandle = (tailGroup.Head is ScriptInteger || tailGroup.Head is ScriptReal)
+                            ? CompileExpression(HsType.Real, tailGroup.Head)
+                            : CompileExpression(HsType.Unparsed, tailGroup.Head);
 
                         var firstExpr = ScriptExpressions[functionNameExpr.NextExpressionHandle.Index];
 
@@ -1826,42 +1894,56 @@ namespace TagTool.Scripting.Compiler
             // Check if function name is a built-in function
             //
 
-            foreach (var entry in Cache.ScriptDefinitions.Scripts)
+            // Count the arguments supplied at this call site so we can resolve overloads
+            // (e.g. object_set_velocity exists with 1 and 3 real parameters).
+            var argCount = 0;
+            for (IScriptSyntax argNode = group.Tail; argNode is ScriptGroup; argNode = ((ScriptGroup)argNode).Tail)
+                argCount++;
+
+            // First pass: try to find an exact name+parameter-count match.
+            // Second pass: fall back to name-only match for functions with no overloads.
+            foreach (var pass in new[] { true, false })
             {
-                if (functionNameSymbol.Value != entry.Value.Name)
-                    continue;
-
-                // Emit the Group node with the calling context type when a valid implicit cast
-                // exists from the function's natural return type (e.g. player_get returns Unit,
-                // but the caller expects Object or ObjectList — both are valid downcasts).
-                var builtinEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
-                    ? type
-                    : entry.Value.Type;
-                var handle = AllocateExpression(builtinEmitType, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
-                var expr = ScriptExpressions[handle.Index];
-
-                var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Expression, (ushort)entry.Key, (short)functionNameSymbol.Line);
-                var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
-                functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
-
-                Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), expr.Data, 4);
-                Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
-
-                IScriptSyntax parameters = group.Tail;
-                var prevExpr = functionNameExpr;
-
-                foreach (var parameter in entry.Value.Parameters)
+                foreach (var entry in Cache.ScriptDefinitions.Scripts)
                 {
-                    if (!(parameters is ScriptGroup parametersGroup))
-                        throw new FormatException(group.ToString());
+                    if (functionNameSymbol.Value != entry.Value.Name)
+                        continue;
 
-                    prevExpr.NextExpressionHandle = CompileExpression(parameter.Type, parametersGroup.Head);
-                    prevExpr = ScriptExpressions[prevExpr.NextExpressionHandle.Index];
+                    if (pass && entry.Value.Parameters.Count != argCount)
+                        continue;
 
-                    parameters = parametersGroup.Tail;
+                    // Emit the Group node with the calling context type when a valid implicit cast
+                    // exists from the function's natural return type (e.g. player_get returns Unit,
+                    // but the caller expects Object or ObjectList — both are valid downcasts).
+                    var builtinEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
+                        ? type
+                        : entry.Value.Type;
+                    var handle = AllocateExpression(builtinEmitType, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
+                    var expr = ScriptExpressions[handle.Index];
+
+                    var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Expression, (ushort)entry.Key, (short)functionNameSymbol.Line);
+                    var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                    functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                    Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), expr.Data, 4);
+                    Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                    IScriptSyntax parameters = group.Tail;
+                    var prevExpr = functionNameExpr;
+
+                    foreach (var parameter in entry.Value.Parameters)
+                    {
+                        if (!(parameters is ScriptGroup parametersGroup))
+                            throw new FormatException(group.ToString());
+
+                        prevExpr.NextExpressionHandle = CompileExpression(parameter.Type, parametersGroup.Head);
+                        prevExpr = ScriptExpressions[prevExpr.NextExpressionHandle.Index];
+
+                        parameters = parametersGroup.Tail;
+                    }
+
+                    return handle;
                 }
-
-                return handle;
             }
 
             //
@@ -2085,11 +2167,18 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var stringId = Cache.StringTable.GetStringId(stringIdString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(stringIdString.Value);
-                Array.Copy(BitConverter.GetBytes(stringId.Value), expr.Data, 4);
+                if (stringIdString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes(0u), expr.Data, 4);
+                }
+                else
+                {
+                    var stringId = Cache.StringTable.GetStringId(stringIdString.Value);
+                    expr.StringAddress = CompileStringAddress(stringIdString.Value);
+                    Array.Copy(BitConverter.GetBytes(stringId.Value), expr.Data, 4);
+                }
             }
 
             return handle;
@@ -2209,14 +2298,23 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var triggerVolumeIndex = Definition.TriggerVolumes.FindIndex(tv => triggerVolumeString.Value == Cache.StringTable.GetString(tv.Name));
-
-                if (triggerVolumeIndex == -1)
-                    throw new FormatException(triggerVolumeString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(triggerVolumeString.Value);
-                Array.Copy(BitConverter.GetBytes((short)triggerVolumeIndex), expr.Data, 2);
+
+                if (triggerVolumeString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
+                }
+                else
+                {
+                    var triggerVolumeIndex = Definition.TriggerVolumes.FindIndex(tv => triggerVolumeString.Value == Cache.StringTable.GetString(tv.Name));
+
+                    if (triggerVolumeIndex == -1)
+                        throw new FormatException(triggerVolumeString.Value);
+
+                    expr.StringAddress = CompileStringAddress(triggerVolumeString.Value);
+                    Array.Copy(BitConverter.GetBytes((short)triggerVolumeIndex), expr.Data, 2);
+                }
             }
 
             return handle;
@@ -2228,14 +2326,20 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var cutsceneFlagIndex = Definition.CutsceneFlags.FindIndex(cf => cutsceneFlagString.Value == Cache.StringTable.GetString(cf.Name));
-
-                if (cutsceneFlagIndex == -1)
-                    throw new FormatException(cutsceneFlagString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(cutsceneFlagString.Value);
-                Array.Copy(BitConverter.GetBytes((short)cutsceneFlagIndex), expr.Data, 2);
+                if (cutsceneFlagString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
+                }
+                else
+                {
+                    var cutsceneFlagIndex = Definition.CutsceneFlags.FindIndex(cf => cutsceneFlagString.Value == Cache.StringTable.GetString(cf.Name));
+                    if (cutsceneFlagIndex == -1)
+                        throw new FormatException(cutsceneFlagString.Value);
+                    expr.StringAddress = CompileStringAddress(cutsceneFlagString.Value);
+                    Array.Copy(BitConverter.GetBytes((short)cutsceneFlagIndex), expr.Data, 2);
+                }
             }
 
             return handle;
@@ -2247,14 +2351,20 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var cutsceneCameraPointIndex = Definition.CutsceneCameraPoints.FindIndex(ccp => cutsceneCameraPointString.Value == ccp.Name);
-
-                if (cutsceneCameraPointIndex == -1)
-                    throw new FormatException(cutsceneCameraPointString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(cutsceneCameraPointString.Value);
-                Array.Copy(BitConverter.GetBytes((short)cutsceneCameraPointIndex), expr.Data, 2);
+                if (cutsceneCameraPointString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
+                }
+                else
+                {
+                    var cutsceneCameraPointIndex = Definition.CutsceneCameraPoints.FindIndex(ccp => cutsceneCameraPointString.Value == ccp.Name);
+                    if (cutsceneCameraPointIndex == -1)
+                        throw new FormatException(cutsceneCameraPointString.Value);
+                    expr.StringAddress = CompileStringAddress(cutsceneCameraPointString.Value);
+                    Array.Copy(BitConverter.GetBytes((short)cutsceneCameraPointIndex), expr.Data, 2);
+                }
             }
 
             return handle;
@@ -2266,14 +2376,20 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var cutsceneTitleIndex = Definition.CutsceneTitles.FindIndex(ct => cutsceneTitleSymbol.Value == Cache.StringTable.GetString(ct.Name));
-
-                if (cutsceneTitleIndex == -1)
-                    throw new FormatException(cutsceneTitleSymbol.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(cutsceneTitleSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)cutsceneTitleIndex), expr.Data, 2);
+                if (cutsceneTitleSymbol.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
+                }
+                else
+                {
+                    var cutsceneTitleIndex = Definition.CutsceneTitles.FindIndex(ct => cutsceneTitleSymbol.Value == Cache.StringTable.GetString(ct.Name));
+                    if (cutsceneTitleIndex == -1)
+                        throw new FormatException(cutsceneTitleSymbol.Value);
+                    expr.StringAddress = CompileStringAddress(cutsceneTitleSymbol.Value);
+                    Array.Copy(BitConverter.GetBytes((short)cutsceneTitleIndex), expr.Data, 2);
+                }
             }
 
             return handle;
@@ -2288,14 +2404,20 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var deviceGroupIndex = Definition.DeviceGroups.FindIndex(dg => dg.Name == deviceGroupString.Value);
-
-                if (deviceGroupIndex == -1)
-                    throw new FormatException(deviceGroupString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(deviceGroupString.Value);
-                Array.Copy(BitConverter.GetBytes(deviceGroupIndex), expr.Data, 4);
+                if (deviceGroupString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
+                }
+                else
+                {
+                    var deviceGroupIndex = Definition.DeviceGroups.FindIndex(dg => dg.Name == deviceGroupString.Value);
+                    if (deviceGroupIndex == -1)
+                        throw new FormatException(deviceGroupString.Value);
+                    expr.StringAddress = CompileStringAddress(deviceGroupString.Value);
+                    Array.Copy(BitConverter.GetBytes(deviceGroupIndex), expr.Data, 4);
+                }
             }
 
             return handle;
@@ -2473,11 +2595,18 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var lineStringId = Cache.StringTable.GetStringId(aiLineString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(aiLineString.Value);
-                Array.Copy(BitConverter.GetBytes(lineStringId.Value), expr.Data, 4);
+                if (aiLineString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes(0u), expr.Data, 4);
+                }
+                else
+                {
+                    var lineStringId = Cache.StringTable.GetStringId(aiLineString.Value);
+                    expr.StringAddress = CompileStringAddress(aiLineString.Value);
+                    Array.Copy(BitConverter.GetBytes(lineStringId.Value), expr.Data, 4);
+                }
             }
 
             return handle;
@@ -2489,14 +2618,20 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var startingProfileIndex = Definition.PlayerStartingProfile.FindIndex(sp => sp.Name == startingProfileString.Value);
-
-                if (startingProfileIndex == -1)
-                    throw new FormatException(startingProfileString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(startingProfileString.Value);
-                expr.Data = new byte[] { (byte)((startingProfileIndex & 0xFF)), (byte)(startingProfileIndex >> 8), 0xFF, 0xFF };
+                if (startingProfileString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    expr.Data = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF };
+                }
+                else
+                {
+                    var startingProfileIndex = Definition.PlayerStartingProfile.FindIndex(sp => sp.Name == startingProfileString.Value);
+                    if (startingProfileIndex == -1)
+                        throw new FormatException(startingProfileString.Value);
+                    expr.StringAddress = CompileStringAddress(startingProfileString.Value);
+                    expr.Data = new byte[] { (byte)((startingProfileIndex & 0xFF)), (byte)(startingProfileIndex >> 8), 0xFF, 0xFF };
+                }
             }
 
             return handle;
@@ -2511,14 +2646,20 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var zoneSetIndex = Definition.ZoneSets.FindIndex(zs => zoneSetString.Value == Cache.StringTable.GetString(zs.Name));
-
-                if (zoneSetIndex == -1)
-                    throw new FormatException(zoneSetString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(zoneSetString.Value);
-                Array.Copy(BitConverter.GetBytes((short)zoneSetIndex), expr.Data, 2);
+                if (zoneSetString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
+                }
+                else
+                {
+                    var zoneSetIndex = Definition.ZoneSets.FindIndex(zs => zoneSetString.Value == Cache.StringTable.GetString(zs.Name));
+                    if (zoneSetIndex == -1)
+                        throw new FormatException(zoneSetString.Value);
+                    expr.StringAddress = CompileStringAddress(zoneSetString.Value);
+                    Array.Copy(BitConverter.GetBytes((short)zoneSetIndex), expr.Data, 2);
+                }
             }
 
             return handle;
@@ -2530,14 +2671,20 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var designerZoneIndex = Definition.DesignerZoneSets.FindIndex(dz => designerZoneString.Value == Cache.StringTable.GetString(dz.Name));
-
-                if (designerZoneIndex == -1)
-                    throw new FormatException(designerZoneString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(designerZoneString.Value);
-                Array.Copy(BitConverter.GetBytes((short)designerZoneIndex), expr.Data, 2);
+                if (designerZoneString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
+                }
+                else
+                {
+                    var designerZoneIndex = Definition.DesignerZoneSets.FindIndex(dz => designerZoneString.Value == Cache.StringTable.GetString(dz.Name));
+                    if (designerZoneIndex == -1)
+                        throw new FormatException(designerZoneString.Value);
+                    expr.StringAddress = CompileStringAddress(designerZoneString.Value);
+                    Array.Copy(BitConverter.GetBytes((short)designerZoneIndex), expr.Data, 2);
+                }
             }
 
             return handle;
@@ -2549,31 +2696,57 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var tokens = pointReferenceString.Value.Split('/');
-
-                if (tokens.Length != 2)
-                    throw new FormatException(pointReferenceString.Value);
-
-                var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
-
-                if (pointSetIndex == -1)
-                    throw new FormatException(pointReferenceString.Value);
-
-                var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
-
-                if (pointIndex == -1)
-                    throw new FormatException(pointReferenceString.Value);
-
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
-                Array.Copy(BitConverter.GetBytes((int)((ushort)pointIndex | (ushort)(pointSetIndex << 16))), expr.Data, 4);
+                if (pointReferenceString.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
+                }
+                else
+                {
+                    var tokens = pointReferenceString.Value.Split('/');
+                    if (tokens.Length != 2)
+                        throw new FormatException(pointReferenceString.Value);
+                    var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
+                    if (pointSetIndex == -1)
+                        throw new FormatException(pointReferenceString.Value);
+                    var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
+                    if (pointIndex == -1)
+                        throw new FormatException(pointReferenceString.Value);
+                    expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
+                    Array.Copy(BitConverter.GetBytes((int)((ushort)pointIndex | (ushort)(pointSetIndex << 16))), expr.Data, 4);
+                }
             }
 
             return handle;
         }
 
-        private DatumHandle CompileStyleExpression(ScriptString styleString) =>
-            throw new NotImplementedException();
+        private DatumHandle CompileStyleExpression(ScriptString styleString)
+        {
+            var handle = AllocateExpression(HsType.Style, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)styleString.Line);
+
+            if (handle != DatumHandle.None)
+            {
+                if (styleString.Value == "none")
+                {
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = CompileStringAddress(styleString.Value);
+                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
+                    return handle;
+                }
+
+                if (!Cache.TagCache.TryGetTag<Style>(styleString.Value, out var instance))
+                    throw new FormatException(styleString.Value);
+
+                WriteTagToSourceFileReferences(new ScriptString { Value = styleString.Value + "." + instance.Group.ToString() });
+
+                var expr2 = ScriptExpressions[handle.Index];
+                expr2.StringAddress = CompileStringAddress(styleString.Value);
+                Array.Copy(BitConverter.GetBytes(instance.Index), expr2.Data, 4);
+            }
+
+            return handle;
+        }
 
         private DatumHandle CompileObjectListExpression(ScriptString objectListString)
         {
