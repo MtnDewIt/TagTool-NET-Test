@@ -2198,6 +2198,15 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
+                // Empty string or "none" means "all seats for any unit" - encode data as 0.
+                if (string.IsNullOrEmpty(unitSeatMappingString.Value) || unitSeatMappingString.Value == "none")
+                {
+                    var noneExpr = ScriptExpressions[handle.Index];
+                    noneExpr.StringAddress = CompileStringAddress(unitSeatMappingString.Value);
+                    Array.Copy(BitConverter.GetBytes(0), noneExpr.Data, 4);
+                    return handle;
+                }
+
                 using (var stream = Cache.OpenCacheRead())
                 {
                     // Build the list of per-unit seat mapping blocks that match the substring.
@@ -2249,7 +2258,7 @@ namespace TagTool.Scripting.Compiler
                     int unitSeatMappingCount = seatsStack.Count;
 
                     if (unitSeatMappingCount == 0)
-                        throw new ScriptCompilerException(0, "Syntax error in script.");
+                        throw new ScriptCompilerException(unitSeatMappingString.Line, $"No unit seats found matching '{unitSeatMappingString.Value}'. Check that the substring matches a seat label on a unit tag in the cache.");
 
                     // Check whether this exact contiguous run of blocks already exists in the
                     // scenario's UnitSeatsMapping block array from a previous compile pass.
