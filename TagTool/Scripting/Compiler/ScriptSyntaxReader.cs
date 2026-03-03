@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,21 +7,20 @@ namespace TagTool.Scripting.Compiler
 {
     public class ScriptSyntaxReader
     {
-        /// <summary>
-        /// The binary reader which reads from the expression data stream.
-        /// </summary>
         public BinaryReader Reader { get; }
 
         public int Line = 1;
+        public int ParenDepth = 0;
+
+        // Stack of line numbers where '(' was opened, so we can report the
+        // outermost unclosed one rather than the deepest recursive call site.
+        private readonly Stack<int> _openLines = new Stack<int>();
 
         public ScriptSyntaxReader(Stream stream)
         {
             Reader = new BinaryReader(stream);
         }
 
-        /// <summary>
-        /// Expression syntax delimiters.
-        /// </summary>
         public const string Delimiters = "()\"'`,;";
 
         public bool LastTokenValid = false;
@@ -40,10 +39,8 @@ namespace TagTool.Scripting.Compiler
             if (LastTokenValid)
             {
                 result = LastToken;
-
                 LastToken = "";
                 LastTokenValid = false;
-
                 return result;
             }
 
@@ -53,7 +50,7 @@ namespace TagTool.Scripting.Compiler
             var c = '\0';
             while ((Reader.BaseStream.Position < Reader.BaseStream.Length) && char.IsWhiteSpace(c = Reader.ReadChar()))
             {
-                if (c == '\r' || c == '\n')
+                if (c == '\n')
                     Line++;
             }
 
@@ -69,7 +66,7 @@ namespace TagTool.Scripting.Compiler
             {
                 c = Reader.ReadChar();
 
-                if (c == '\r' || c == '\n')
+                if (c == '\n')
                     Line++;
 
                 if (Delimiters.Contains(c) || char.IsWhiteSpace(c))
@@ -86,22 +83,37 @@ namespace TagTool.Scripting.Compiler
 
         public IScriptSyntax ReadGroup()
         {
+            int openLine = Line;
             var token = ReadToken();
 
             switch (token)
             {
                 case ")":
+                    ParenDepth--;
+                    if (_openLines.Count > 0) _openLines.Pop();
                     return new ScriptInvalid { Line = Line };
 
                 case "eof":
-                    return new EndOfFile { Line = Line };
+                    if (ParenDepth > 0)
+                    {
+                        int errorLine = _openLines.Count > 0 ? _openLines.Peek() : openLine;
+                        throw new ScriptCompilerException(errorLine,
+                            "Unclosed '(' - this expression was never closed.");
+                    }
+                    return new ScriptInvalid { Line = openLine };
 
                 case ".":
                     {
                         var node = Read();
+                        token = ReadToken();
 
-                        if ((token = ReadToken()) == "eof" || token != ")")
-                            throw new Exception(token != "eof" ? $"Syntax error: {token}" : "End of file");
+                        if (token == "eof")
+                            throw new ScriptCompilerException(Line,
+                                "Unexpected end of file after '.' - expected a closing ')'.");
+
+                        if (token != ")")
+                            throw new ScriptCompilerException(Line,
+                                $"Expected ')' after dotted expression but found '{token}'.");
 
                         return node;
                     }
@@ -123,11 +135,23 @@ namespace TagTool.Scripting.Compiler
         public ScriptString ReadString()
         {
             var result = "";
+            int stringStartLine = Line;
 
-            for (char c; (c = Reader.ReadChar()) != '"'; result += c)
+            while (true)
             {
-                if (c == '\r' || c == '\n')
+                if (Reader.BaseStream.Position >= Reader.BaseStream.Length)
+                    throw new ScriptCompilerException(stringStartLine,
+                        "Unterminated string - the '\"' opened here was never closed.");
+
+                char c = Reader.ReadChar();
+
+                if (c == '"')
+                    break;
+
+                if (c == '\n')
                     Line++;
+
+                result += c;
             }
 
             return new ScriptString
@@ -190,9 +214,11 @@ namespace TagTool.Scripting.Compiler
             switch (token)
             {
                 case "eof":
-                    return new EndOfFile { Line = Line }; //handle this in a way that does not suck. Ew.
+                    return new EndOfFile { Line = Line };
 
                 case "(":
+                    ParenDepth++;
+                    _openLines.Push(Line);
                     return ReadGroup();
 
                 case "\"":
@@ -210,8 +236,7 @@ namespace TagTool.Scripting.Compiler
                 case ";":
                     for (char c; (Reader.BaseStream.Position < Reader.BaseStream.Length) && ((c = Reader.ReadChar()) != '\r' && c != '\n');)
                     {
-                        if (c == '\r' || c == '\n')
-                            Line++;
+                        // consume until end of line
                     }
                     goto begin;
 
