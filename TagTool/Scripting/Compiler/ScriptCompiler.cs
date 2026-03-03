@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -90,8 +90,21 @@ namespace TagTool.Scripting.Compiler
 
             List<IScriptSyntax> nodes;
 
-            using (var stream = file.OpenRead())
-                nodes = new ScriptSyntaxReader(stream).ReadToEnd();
+            using (var fileStream = file.OpenRead())
+            {
+                // Ensure the file ends with a newline so the parser always
+                // sees a clean terminator after the last closing parenthesis.
+                var fileBytes = new byte[fileStream.Length];
+                fileStream.Read(fileBytes, 0, fileBytes.Length);
+
+                var paddedStream = new MemoryStream();
+                paddedStream.Write(fileBytes, 0, fileBytes.Length);
+                if (fileBytes.Length == 0 || (fileBytes[fileBytes.Length - 1] != 10 && fileBytes[fileBytes.Length - 1] != 13))
+                    paddedStream.WriteByte(10);
+                paddedStream.Position = 0;
+
+                nodes = new ScriptSyntaxReader(paddedStream).ReadToEnd();
+            }
 
             //
             // Parse the input syntax nodes
@@ -130,12 +143,12 @@ namespace TagTool.Scripting.Compiler
                             break;
 
                         default:
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
                     }
                     break;
 
                 default:
-                    throw new FormatException(node.ToString());
+                    throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
         }
 
@@ -160,12 +173,12 @@ namespace TagTool.Scripting.Compiler
                             break;
 
                         default:
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
                     }
                     break;
 
                 default:
-                    throw new FormatException(node.ToString());
+                    throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
         }
 
@@ -174,7 +187,7 @@ namespace TagTool.Scripting.Compiler
             var result = new HsType();
 
             if (!(node is ScriptSymbol symbol))
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
             if (!Enum.TryParse(symbol.Value, true, out result))
                 result = HsType.Invalid;
@@ -187,7 +200,7 @@ namespace TagTool.Scripting.Compiler
             if (!(node is ScriptSymbol symbol) ||
                 !Enum.TryParse<HsScriptType>(symbol.Value, true, out var result))
             {
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
 
             return result;
@@ -216,7 +229,7 @@ namespace TagTool.Scripting.Compiler
                 !(group.Head is ScriptSymbol symbol && symbol.Value == "global") ||
                 !(group.Tail is ScriptGroup declGroup))
             {
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
 
             //
@@ -230,10 +243,10 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new FormatException(declGroup.Tail.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
             if (!(declTailGroup.Head is ScriptSymbol declName))
-                throw new FormatException(declTailGroup.Head.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
             var globalName = declName.Value;
 
@@ -242,7 +255,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declTailGroup.Tail is ScriptGroup declTailTailGroup))
-                throw new FormatException(declTailGroup.Tail.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
             var globalInit = CompileExpression(globalType, declTailTailGroup.Head);
 
@@ -265,13 +278,13 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(node is ScriptGroup group))
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Head is ScriptSymbol symbol && symbol.Value == "script"))
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Tail is ScriptGroup declGroup))
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
             //
             // Compile the script type
@@ -284,7 +297,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new FormatException(declGroup.Tail.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
             var scriptReturnType = ParseHsType(declTailGroup.Head);
 
@@ -301,9 +314,9 @@ namespace TagTool.Scripting.Compiler
 
             ScriptGroup declTailTailGroup;
             if (!skipReturnType && !(declTailGroup.Tail is ScriptGroup))
-                throw new FormatException(declTailGroup.Tail.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
             else if (skipReturnType && !(declTailGroup.Head is ScriptSymbol))
-                throw new FormatException(declTailGroup.Head.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
             else
             {
                 if (!skipReturnType)
@@ -330,7 +343,7 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Head is ScriptSymbol declGroupName))
-                            throw new FormatException(declNameGroup.Head.ToString());
+                            throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                         scriptName = declGroupName.Value;
 
@@ -339,10 +352,10 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Tail is ScriptGroup tailGroup))
-                            throw new FormatException(declNameGroup.Tail.ToString());
+                            throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                         if (!(tailGroup is ScriptGroup declParamGroup))
-                            throw new FormatException(tailGroup.ToString());
+                            throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                         for (IScriptSyntax param = declParamGroup;
                             param is ScriptGroup paramGroup;
@@ -353,14 +366,14 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramGroup.Head is ScriptGroup paramDeclGroup))
-                                throw new FormatException(paramGroup.Head.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             //
                             // Get the parameter type
                             //
 
                             if (!(paramDeclGroup.Head is ScriptSymbol paramDeclType))
-                                throw new FormatException(paramDeclGroup.Head.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             var paramType = ParseHsType(paramDeclType);
 
@@ -369,15 +382,15 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramDeclGroup.Tail is ScriptGroup paramDeclTailGroup))
-                                throw new FormatException(paramDeclGroup.Tail.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             if (!(paramDeclTailGroup.Head is ScriptSymbol paramDeclName))
-                                throw new FormatException(paramDeclTailGroup.Head.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             var paramName = paramDeclName.Value;
 
                             if (!(paramDeclTailGroup.Tail is ScriptInvalid))
-                                throw new FormatException(paramDeclTailGroup.Tail.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             //
                             // Add an entry to the script parameters list
@@ -393,7 +406,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new FormatException(declTailGroup.Head.ToString());
+                    throw new ScriptCompilerException(0, $"Malformed declaration.");
             }
 
             //
@@ -435,7 +448,7 @@ namespace TagTool.Scripting.Compiler
             }
 
             if (exists)
-                throw new Exception($"Script {scriptName} already defined.");
+                throw new ScriptCompilerException(0, $"Script '{scriptName}' is already defined.");
 
             Scripts.Add(script);
         }
@@ -447,13 +460,13 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(node is ScriptGroup group))
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Head is ScriptSymbol symbol && symbol.Value == "script"))
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Tail is ScriptGroup declGroup))
-                throw new FormatException(node.ToString());
+                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
             //
             // Compile the script type
@@ -466,7 +479,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new FormatException(declGroup.Tail.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
             var scriptReturnType = ParseHsType(declTailGroup.Head);
 
@@ -483,9 +496,9 @@ namespace TagTool.Scripting.Compiler
 
             ScriptGroup declTailTailGroup;
             if (!skipReturnType && !(declTailGroup.Tail is ScriptGroup))
-                throw new FormatException(declTailGroup.Tail.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
             else if (skipReturnType && !(declTailGroup.Head is ScriptSymbol))
-                throw new FormatException(declTailGroup.Head.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
             else
             {
                 if (!skipReturnType)
@@ -512,7 +525,7 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Head is ScriptSymbol declGroupName))
-                            throw new FormatException(declNameGroup.Head.ToString());
+                            throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                         scriptName = declGroupName.Value;
 
@@ -521,10 +534,10 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Tail is ScriptGroup tailGroup))
-                            throw new FormatException(declNameGroup.Tail.ToString());
+                            throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                         if (!(tailGroup is ScriptGroup declParamGroup))
-                            throw new FormatException(tailGroup.ToString());
+                            throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                         for (IScriptSyntax param = declParamGroup;
                             param is ScriptGroup paramGroup;
@@ -535,14 +548,14 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramGroup.Head is ScriptGroup paramDeclGroup))
-                                throw new FormatException(paramGroup.Head.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             //
                             // Get the parameter type
                             //
 
                             if (!(paramDeclGroup.Head is ScriptSymbol paramDeclType))
-                                throw new FormatException(paramDeclGroup.Head.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             var paramType = ParseHsType(paramDeclType);
 
@@ -551,15 +564,15 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramDeclGroup.Tail is ScriptGroup paramDeclTailGroup))
-                                throw new FormatException(paramDeclGroup.Tail.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             if (!(paramDeclTailGroup.Head is ScriptSymbol paramDeclName))
-                                throw new FormatException(paramDeclTailGroup.Head.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             var paramName = paramDeclName.Value;
 
                             if (!(paramDeclTailGroup.Tail is ScriptInvalid))
-                                throw new FormatException(paramDeclTailGroup.Tail.ToString());
+                                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
                             //
                             // Add an entry to the script parameters list
@@ -575,7 +588,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new FormatException(declTailGroup.Head.ToString());
+                    throw new ScriptCompilerException(0, $"Malformed declaration.");
             }
 
             HsScript script = null;
@@ -601,7 +614,7 @@ namespace TagTool.Scripting.Compiler
             }
 
             if (script == null)
-                throw new Exception($"Script {scriptName} not defined.");
+                throw new ScriptCompilerException(0, $"Script '{scriptName}' is not defined.");
 
             CurrentScript = script;
 
@@ -687,7 +700,7 @@ namespace TagTool.Scripting.Compiler
                 case HsType.Boolean:
                     if (node is ScriptBoolean boolValue)
                         return CompileBooleanExpression(boolValue);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Real:
                     if (node is ScriptReal realValue)
@@ -698,399 +711,399 @@ namespace TagTool.Scripting.Compiler
                             Value = (double)realIntegerValue.Value,
                             Line = realIntegerValue.Line
                         });
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Short:
                     if (node is ScriptInteger shortValue)
                         return CompileShortExpression(shortValue);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Long:
                     if (node is ScriptInteger longValue)
                         return CompileLongExpression(longValue);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.String:
                     if (node is ScriptSymbol stringNoneSymbol && stringNoneSymbol.Value == "none")
                         return CompileStringExpression(new ScriptString { Value = "none", Line = stringNoneSymbol.Line });
                     else if (node is ScriptString stringValue)
                         return CompileStringExpression(stringValue);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Script:
                     if (node is ScriptSymbol scriptSymbol)
                         return CompileScriptExpression(scriptSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.StringId:
                     if (node is ScriptSymbol stringIdNoneSymbol && stringIdNoneSymbol.Value == "none")
                         return CompileStringIdExpression(new ScriptString { Value = "none", Line = stringIdNoneSymbol.Line });
                     else if (node is ScriptString stringIdString)
                         return CompileStringIdExpression(stringIdString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.UnitSeatMapping:
                     if (node is ScriptSymbol unitSeatMappingSymbol && unitSeatMappingSymbol.Value == "none")
                         return CompileUnitSeatMappingExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString unitSeatMappingString)
                         return CompileUnitSeatMappingExpression(unitSeatMappingString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.TriggerVolume:
                     if (node is ScriptString triggerVolumeString)
                         return CompileTriggerVolumeExpression(triggerVolumeString);
                     else if (node is ScriptSymbol triggerVolumeSymbolString)
                         return CompileTriggerVolumeExpression(new ScriptString { Value = triggerVolumeSymbolString.Value });
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneFlag:
                     if (node is ScriptSymbol cutsceneFlagNoneSymbol && cutsceneFlagNoneSymbol.Value == "none")
                         return CompileCutsceneFlagExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString cutsceneFlagString)
                         return CompileCutsceneFlagExpression(cutsceneFlagString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneCameraPoint:
                     if (node is ScriptSymbol cutsceneCameraPointNoneSymbol && cutsceneCameraPointNoneSymbol.Value == "none")
                         return CompileCutsceneCameraPointExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString cutsceneCameraPointString)
                         return CompileCutsceneCameraPointExpression(cutsceneCameraPointString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneTitle:
                     if (node is ScriptSymbol cutsceneTitleSymbol)
                         return CompileCutsceneTitleExpression(cutsceneTitleSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneRecording:
                     if (node is ScriptSymbol cutsceneRecordingNoneSymbol && cutsceneRecordingNoneSymbol.Value == "none")
                         return CompileCutsceneRecordingExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString cutsceneRecordingString)
                         return CompileCutsceneRecordingExpression(cutsceneRecordingString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DeviceGroup:
                     if (node is ScriptSymbol deviceGroupNoneSymbol && deviceGroupNoneSymbol.Value == "none")
                         return CompileDeviceGroupExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString deviceGroupString)
                         return CompileDeviceGroupExpression(deviceGroupString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Ai:
                     if (node is ScriptSymbol aiSymbol && aiSymbol.Value == "none")
                         return CompileAiExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString aiString)
                         return CompileAiExpression(aiString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiCommandList:
                     if (node is ScriptSymbol aiCommandListNoneSymbol && aiCommandListNoneSymbol.Value == "none")
                         return CompileAiCommandListExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString aiCommandListString)
                         return CompileAiCommandListExpression(aiCommandListString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiCommandScript:
                     if (node is ScriptSymbol aiCommandScriptSymbol)
                         return CompileAiCommandScriptExpression(aiCommandScriptSymbol);
                     else if (node is ScriptString aiCommandScriptString)
                         return CompileAiCommandScriptExpression(new ScriptSymbol { Value = aiCommandScriptString.Value, Line = aiCommandScriptString.Line });
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiBehavior:
                     if (node is ScriptSymbol aiBehaviorNoneSymbol && aiBehaviorNoneSymbol.Value == "none")
                         return CompileAiBehaviorExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString aiBehaviorString)
                         return CompileAiBehaviorExpression(aiBehaviorString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiOrders:
                     if (node is ScriptSymbol aiOrdersNoneSymbol && aiOrdersNoneSymbol.Value == "none")
                         return CompileAiOrdersExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString aiOrdersString)
                         return CompileAiOrdersExpression(aiOrdersString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiLine:
                     if (node is ScriptSymbol aiLineNoneSymbol && aiLineNoneSymbol.Value == "none")
                         return CompileAiLineExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString aiLineString)
                         return CompileAiLineExpression(aiLineString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.StartingProfile:
                     if (node is ScriptSymbol startingProfileNoneSymbol && startingProfileNoneSymbol.Value == "none")
                         return CompileStartingProfileExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString startingProfileString)
                         return CompileStartingProfileExpression(startingProfileString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Conversation:
                     if (node is ScriptSymbol conversationNoneSymbol && conversationNoneSymbol.Value == "none")
                         return CompileConversationExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString conversationString)
                         return CompileConversationExpression(conversationString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ZoneSet:
                     if (node is ScriptSymbol zoneSetNoneSymbol && zoneSetNoneSymbol.Value == "none")
                         return CompileZoneSetExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString zoneSetString)
                         return CompileZoneSetExpression(zoneSetString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DesignerZone:
                     if (node is ScriptSymbol designerZoneNoneSymbol && designerZoneNoneSymbol.Value == "none")
                         return CompileDesignerZoneExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString designerZoneString)
                         return CompileDesignerZoneExpression(designerZoneString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.PointReference:
                     if (node is ScriptSymbol pointReferenceNoneSymbol && pointReferenceNoneSymbol.Value == "none")
                         return CompilePointReferenceExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString pointReferenceString)
                         return CompilePointReferenceExpression(pointReferenceString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Style:
                     if (node is ScriptSymbol styleNoneSymbol && styleNoneSymbol.Value == "none")
                         return CompileStyleExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString styleString)
                         return CompileStyleExpression(styleString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ObjectList:
                     if (node is ScriptSymbol objectListNoneSymbol && objectListNoneSymbol.Value == "none")
                         return CompileObjectListExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString objectListString)
                         return CompileObjectListExpression(objectListString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Folder:
                     if (node is ScriptSymbol folderSymbol && folderSymbol.Value == "none")
                         return CompileFolderExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString folderString)
                         return CompileFolderExpression(folderString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Sound:
                     if (node is ScriptSymbol soundSymbol && soundSymbol.Value == "none")
                         return CompileSoundExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString soundString)
                         return CompileSoundExpression(soundString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Effect:
                     if (node is ScriptSymbol effectSymbol && effectSymbol.Value == "none")
                         return CompileEffectExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString effectString)
                         return CompileEffectExpression(effectString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Damage:
                     if (node is ScriptSymbol damageSymbol && damageSymbol.Value == "none")
                         return CompileDamageExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString damageString)
                         return CompileDamageExpression(damageString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.LoopingSound:
                     if (node is ScriptSymbol loopingSoundSymbol && loopingSoundSymbol.Value == "none")
                         return CompileLoopingSoundExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString loopingSoundString)
                         return CompileLoopingSoundExpression(loopingSoundString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnimationGraph:
                     if (node is ScriptSymbol animationGraphSymbol && animationGraphSymbol.Value == "none")
                         return CompileAnimationGraphExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString animationGraphString)
                         return CompileAnimationGraphExpression(animationGraphString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DamageEffect:
                     if (node is ScriptSymbol damageEffectSymbol && damageEffectSymbol.Value == "none")
                         return CompileDamageEffectExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString damageEffectString)
                         return CompileDamageEffectExpression(damageEffectString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ObjectDefinition:
                     if (node is ScriptSymbol objectDefinitionSymbol && objectDefinitionSymbol.Value == "none")
                         return CompileObjectDefinitionExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString objectDefinitionString)
                         return CompileObjectDefinitionExpression(objectDefinitionString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Bitmap:
                     if (node is ScriptSymbol bitmapSymbol && bitmapSymbol.Value == "none")
                         return CompileBitmapExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString bitmapString)
                         return CompileBitmapExpression(bitmapString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Shader:
                     if (node is ScriptSymbol shaderSymbol && shaderSymbol.Value == "none")
                         return CompileShaderExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString shaderString)
                         return CompileShaderExpression(shaderString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.RenderModel:
                     if (node is ScriptSymbol renderModelSymbol && renderModelSymbol.Value == "none")
                         return CompileRenderModelExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString renderModelString)
                         return CompileRenderModelExpression(renderModelString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.StructureDefinition:
                     if (node is ScriptSymbol structureDefinitionSymbol && structureDefinitionSymbol.Value == "none")
                         return CompileStructureDefinitionExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString structureDefinitionString)
                         return CompileStructureDefinitionExpression(structureDefinitionString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.LightmapDefinition:
                     if (node is ScriptSymbol lightmapDefinitionSymbol && lightmapDefinitionSymbol.Value == "none")
                         return CompileLightmapDefinitionExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString lightmapDefinitionString)
                         return CompileLightmapDefinitionExpression(lightmapDefinitionString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CinematicDefinition:
                     if (node is ScriptSymbol cinematicDefinitionSymbol && cinematicDefinitionSymbol.Value == "none")
                         return CompileCinematicDefinitionExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString cinematicDefinitionString)
                         return CompileCinematicDefinitionExpression(cinematicDefinitionString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CinematicSceneDefinition:
                     if (node is ScriptSymbol cinematicSceneSymbol && cinematicSceneSymbol.Value == "none")
                         return CompileCinematicSceneDefinitionExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString cinematicSceneDefinitionString)
                         return CompileCinematicSceneDefinitionExpression(cinematicSceneDefinitionString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.BinkDefinition:
                     if (node is ScriptSymbol binkDefinitionSymbol && binkDefinitionSymbol.Value == "none")
                         return CompileBinkDefinitionExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString binkDefinitionString)
                         return CompileBinkDefinitionExpression(binkDefinitionString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnyTag:
                     if (node is ScriptSymbol anyTagSymbol && anyTagSymbol.Value == "none")
                         return CompileAnyTagExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString anyTagString)
                         return CompileAnyTagExpression(anyTagString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnyTagNotResolving:
                     if (node is ScriptSymbol anyTagNotResolvingSymbol && anyTagNotResolvingSymbol.Value == "none")
                         return CompileAnyTagNotResolvingExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString anyTagNotResolvingString)
                         return CompileAnyTagNotResolvingExpression(anyTagNotResolvingString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.GameDifficulty:
                     if (node is ScriptSymbol gameDifficultySymbol)
                         return CompileGameDifficultyExpression(gameDifficultySymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Team:
                     if (node is ScriptSymbol teamSymbol)
                         return CompileTeamExpression(teamSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.MpTeam:
                     if (node is ScriptSymbol mpTeamSymbol)
                         return CompileMpTeamExpression(mpTeamSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Controller:
                     if (node is ScriptSymbol controllerSymbol)
                         return CompileControllerExpression(controllerSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ButtonPreset:
                     if (node is ScriptSymbol buttonPresetSymbol)
                         return CompileButtonPresetExpression(buttonPresetSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.JoystickPreset:
                     if (node is ScriptSymbol joystickPresetSymbol)
                         return CompileJoystickPresetExpression(joystickPresetSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 //case HsType.PlayerColor:
                 //    if (node is ScriptSymbol playerColorSymbol)
                 //        return CompilePlayerColorExpression(playerColorSymbol);
-                //    else throw new FormatException(node.ToString());
+                //    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.PlayerCharacterType:
                     if (node is ScriptSymbol playerCharacterTypeSymbol)
                         return CompilePlayerCharacterTypeExpression(playerCharacterTypeSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.VoiceOutputSetting:
                     if (node is ScriptSymbol voiceOutputSettingSymbol)
                         return CompileVoiceOutputSettingExpression(voiceOutputSettingSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.VoiceMask:
                     if (node is ScriptSymbol voiceMaskSymbol)
                         return CompileVoiceMaskExpression(voiceMaskSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SubtitleSetting:
                     if (node is ScriptSymbol subtitleSettingSymbol)
                         return CompileSubtitleSettingExpression(subtitleSettingSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ActorType:
                     if (node is ScriptSymbol actorTypeSymbol)
                         return CompileActorTypeExpression(actorTypeSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ModelState:
                     if (node is ScriptSymbol modelStateSymbol)
                         return CompileModelStateExpression(modelStateSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Event:
                     if (node is ScriptSymbol eventSymbol)
                         return CompileEventExpression(eventSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CharacterPhysics:
                     if (node is ScriptSymbol characterPhysicsSymbol)
                         return CompileCharacterPhysicsExpression(characterPhysicsSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.PrimarySkull:
                     if (node is ScriptSymbol primarySkullSymbol)
                         return CompilePrimarySkullExpression(primarySkullSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SecondarySkull:
                     if (node is ScriptSymbol secondarySkullSymbol)
                         return CompileSecondarySkullExpression(secondarySkullSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Object:
                     if (node is ScriptSymbol objectSymbol && objectSymbol.Value == "none")
                         return CompileObjectExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString objectString)
                         return CompileObjectExpression(objectString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Unit:
                     if (node is ScriptSymbol unitSymbol && unitSymbol.Value == "none")
                         return CompileUnitExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString unitString)
                         return CompileUnitExpression(unitString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Vehicle:
                     if (node is ScriptSymbol vehicleSymbol && vehicleSymbol.Value == "none")
@@ -1099,93 +1112,93 @@ namespace TagTool.Scripting.Compiler
                         return CompileVehicleExpression(vehicleString);
                     else if (node is ScriptSymbol vehicleSymbolString)
                         return CompileVehicleExpression(new ScriptString { Value = vehicleSymbolString.Value });
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Weapon:
                     if (node is ScriptSymbol weaponSymbol && weaponSymbol.Value == "none")
                         return CompileWeaponExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString weaponString)
                         return CompileWeaponExpression(weaponString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Device:
                     if (node is ScriptSymbol deviceSymbol && deviceSymbol.Value == "none")
                         return CompileDeviceExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString deviceString)
                         return CompileDeviceExpression(deviceString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Scenery:
                     if (node is ScriptSymbol scenerySymbol && scenerySymbol.Value == "none")
                         return CompileSceneryExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString sceneryString)
                         return CompileSceneryExpression(sceneryString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.EffectScenery:
                     if (node is ScriptSymbol effectScenerySymbol && effectScenerySymbol.Value == "none")
                         return CompileEffectSceneryExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString effectSceneryString)
                         return CompileEffectSceneryExpression(effectSceneryString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ObjectName:
                     if (node is ScriptString objectNameString)
                         return CompileObjectNameExpression(objectNameString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.UnitName:
                     if (node is ScriptString unitNameString)
                         return CompileUnitNameExpression(unitNameString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.VehicleName:
                     if (node is ScriptString vehicleNameString)
                         return CompileVehicleNameExpression(vehicleNameString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.WeaponName:
                     if (node is ScriptString weaponNameString)
                         return CompileWeaponNameExpression(weaponNameString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DeviceName:
                     if (node is ScriptString deviceNameString)
                         return CompileDeviceNameExpression(deviceNameString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SceneryName:
                     if (node is ScriptString sceneryNameString)
                         return CompileSceneryNameExpression(sceneryNameString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.EffectSceneryName:
                     if (node is ScriptString effectSceneryNameString)
                         return CompileEffectSceneryNameExpression(effectSceneryNameString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CinematicLightprobe:
                     if (node is ScriptSymbol cinematicLightprobeSymbol)
                         return CompileCinematicLightprobeExpression(cinematicLightprobeSymbol);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnimationBudgetReference:
                     if (node is ScriptString animationBudgetReferenceString)
                         return CompileAnimationBudgetReferenceExpression(animationBudgetReferenceString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.LoopingSoundBudgetReference:
                     if (node is ScriptString loopingSoundBudgetReferenceString)
                         return CompileLoopingSoundBudgetReferenceExpression(loopingSoundBudgetReferenceString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SoundBudgetReference:
                     if (node is ScriptString soundBudgetReferenceString)
                         return CompileSoundBudgetReferenceExpression(soundBudgetReferenceString);
-                    else throw new FormatException(node.ToString());
+                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
 
-            throw new NotImplementedException(type.ToString());
+            throw new ScriptCompilerException(0, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
         }
 
         private DatumHandle AllocateExpression(HsType valueType, HsSyntaxNodeFlags expressionType, ushort? opcode = null, short? line = null)
@@ -1340,10 +1353,10 @@ namespace TagTool.Scripting.Compiler
         private DatumHandle CompileGroupExpression(HsType type, ScriptGroup group)
         {
             if (!(group.Head is ScriptSymbol functionNameSymbol))
-                throw new FormatException(group.Head.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
             if (!(group.Tail is ScriptGroup) && !(group.Tail is ScriptInvalid))
-                throw new FormatException(group.Tail.ToString());
+                throw new ScriptCompilerException(0, $"Malformed declaration.");
 
             //
             // Handle special builtin functions
@@ -1418,7 +1431,7 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup booleanGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         var booleanHandle = CompileExpression(HsType.Boolean, booleanGroup.Head);
                         var booleanExpr = ScriptExpressions[booleanHandle.Index];
@@ -1426,7 +1439,7 @@ namespace TagTool.Scripting.Compiler
                         functionNameExpr.NextExpressionHandle = booleanHandle;
 
                         if (!(booleanGroup.Tail is ScriptGroup thenGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         var thenHandle = CompileExpression(type, thenGroup.Head);
                         var thenExpr = ScriptExpressions[thenHandle.Index];
@@ -1473,12 +1486,12 @@ namespace TagTool.Scripting.Compiler
                         for (IScriptSyntax cur = group.Tail; cur is ScriptGroup cg; cur = cg.Tail)
                         {
                             if (!(cg.Head is ScriptGroup condGroup) || !(condGroup.Tail is ScriptGroup thenGroup))
-                                throw new FormatException(group.ToString());
+                                throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
                             cases.Add((condGroup.Head, thenGroup));
                         }
 
                         if (cases.Count == 0)
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         // Build innermost to outermost so body[N].next can point to inner_if[N+1]
                         // We compile inside-out: start from the last case, work backwards.
@@ -1548,13 +1561,13 @@ namespace TagTool.Scripting.Compiler
                 case "set":
                     {
                         if (!(group.Tail is ScriptGroup setGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         if (!(setGroup.Head is ScriptSymbol globalName))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         if (!(setGroup.Tail is ScriptGroup setValueGroup) || !(setValueGroup.Tail is ScriptInvalid))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         foreach (var global in Globals)
                         {
@@ -1582,7 +1595,7 @@ namespace TagTool.Scripting.Compiler
                             return setHandle;
                         }
 
-                        throw new KeyNotFoundException(globalName.Value);
+                        throw new ScriptCompilerException(globalName.Line, $"Unknown global variable: '{globalName.Value}'.");
                     }
 
                 case "and":
@@ -1607,7 +1620,7 @@ namespace TagTool.Scripting.Compiler
                             current = currentGroup.Tail)
                         {
                             if (!(currentGroup.Tail is ScriptGroup) && !(currentGroup.Tail is ScriptInvalid))
-                                throw new FormatException(group.ToString());
+                                throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                             var currentHandle = CompileExpression(HsType.Boolean, currentGroup.Head);
 
@@ -1654,13 +1667,9 @@ namespace TagTool.Scripting.Compiler
                             current = currentGroup.Tail)
                         {
                             if (!(currentGroup.Tail is ScriptGroup) && !(currentGroup.Tail is ScriptInvalid))
-                                throw new FormatException(group.ToString());
+                                throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                            // All arithmetic operands are compiled as Real regardless of whether
-                            // they are literals or symbol references.  Previously non-literal
-                            // operands (globals, parameters) were compiled as Unparsed, which
-                            // left them with their declared type (e.g. Short) instead of Real,
-                            // causing the engine to misread the value during arithmetic.
+                            // Engine's hs_parse_arithmetic always parses operands as Real.
                             var currentHandle = CompileExpression(HsType.Real, currentGroup.Head);
 
                             prevExpr.NextExpressionHandle = currentHandle;
@@ -1690,24 +1699,26 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup tailGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                        // Comparison args are always compiled by their own type, never
-                        // the caller's context type (which is Boolean for if conditions).
-                        // Literals compile as Real; symbols/groups compile as Unparsed so
-                        // the second arg can match the first arg's resolved type.
-                        functionNameExpr.NextExpressionHandle = (tailGroup.Head is ScriptInteger || tailGroup.Head is ScriptReal)
-                            ? CompileExpression(HsType.Real, tailGroup.Head)
-                            : CompileExpression(HsType.Unparsed, tailGroup.Head);
+                        // Match hs_parse_equality: parse first arg as Unparsed so it resolves
+                        // to its own type. Bare literals have no type so fall back to Real,
+                        // matching the engine's own fallback path in hs_parse_equality.
+                        var firstArgType = (tailGroup.Head is ScriptInteger || tailGroup.Head is ScriptReal)
+                            ? HsType.Real
+                            : HsType.Unparsed;
+                        functionNameExpr.NextExpressionHandle = CompileExpression(firstArgType, tailGroup.Head);
 
                         var firstExpr = ScriptExpressions[functionNameExpr.NextExpressionHandle.Index];
 
                         if (!(tailGroup.Tail is ScriptGroup tailTailGroup) || !(tailTailGroup.Tail is ScriptInvalid))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                        firstExpr.NextExpressionHandle = (tailTailGroup.Head is ScriptGroup) ?
-                            CompileExpression(HsType.Unparsed, tailTailGroup.Head) :
-                            CompileExpression(firstExpr.ValueType, tailTailGroup.Head);
+                        // Second arg matches first's resolved type. If first resolved to Unparsed
+                        // (e.g. a sub-expression group), compile second as Unparsed too.
+                        firstExpr.NextExpressionHandle = (tailTailGroup.Head is ScriptGroup)
+                            ? CompileExpression(HsType.Unparsed, tailTailGroup.Head)
+                            : CompileExpression(firstExpr.ValueType, tailTailGroup.Head);
 
                         return handle;
                     }
@@ -1727,7 +1738,7 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup tailGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         switch (tailGroup.Head)
                         {
@@ -1746,7 +1757,7 @@ namespace TagTool.Scripting.Compiler
                         var lengthExpr = ScriptExpressions[functionNameExpr.NextExpressionHandle.Index];
 
                         if (!(tailGroup.Tail is ScriptGroup tailTailGroup) || !(tailTailGroup.Tail is ScriptInvalid))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         lengthExpr.NextExpressionHandle = CompileExpression(HsType.Script, tailTailGroup.Head);
 
@@ -1771,7 +1782,7 @@ namespace TagTool.Scripting.Compiler
                             return handle;
 
                         if (!(group.Tail is ScriptGroup tailGroup) || !(tailGroup.Tail is ScriptInvalid))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Script, tailGroup.Head);
 
@@ -1793,7 +1804,7 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup tailGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Boolean, tailGroup.Head);
 
@@ -1805,19 +1816,19 @@ namespace TagTool.Scripting.Compiler
                             if (tailTailGroup.Tail is ScriptGroup tailTailTailGroup)
                             {
                                 if (!(tailTailTailGroup.Tail is ScriptInvalid))
-                                    throw new FormatException(group.ToString());
+                                    throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                                 var tickExpr = ScriptExpressions[booleanExpr.NextExpressionHandle.Index];
                                 tickExpr.NextExpressionHandle = CompileExpression(HsType.Short, tailTailTailGroup.Head);
                             }
                             else if (!(tailTailGroup.Tail is ScriptInvalid))
                             {
-                                throw new FormatException(group.ToString());
+                                throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
                             }
                         }
                         else if (!(tailGroup.Tail is ScriptInvalid))
                         {
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
                         }
 
                         return handle;
@@ -1838,7 +1849,7 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup tailGroup) || !(tailGroup.Tail is ScriptInvalid))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Script, tailGroup.Head);
 
@@ -1860,7 +1871,7 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup tailGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Unparsed, tailGroup.Head);
 
@@ -1882,7 +1893,7 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup tailGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Object, tailGroup.Head);
 
@@ -1934,7 +1945,7 @@ namespace TagTool.Scripting.Compiler
                     foreach (var parameter in entry.Value.Parameters)
                     {
                         if (!(parameters is ScriptGroup parametersGroup))
-                            throw new FormatException(group.ToString());
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                         prevExpr.NextExpressionHandle = CompileExpression(parameter.Type, parametersGroup.Head);
                         prevExpr = ScriptExpressions[prevExpr.NextExpressionHandle.Index];
@@ -1958,11 +1969,8 @@ namespace TagTool.Scripting.Compiler
                 if (script.Type == HsScriptType.Extern)
                     return CompileExternMethodReference(group, functionNameSymbol, script, type);
 
-                var scriptEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
-                    ? type
-                    : script.ReturnType;
                 var handle = AllocateExpression(
-                    scriptEmitType,
+                    script.ReturnType,
                     HsSyntaxNodeFlags.ScriptReference,
                     (ushort)Scripts.IndexOf(script),
                     (short)functionNameSymbol.Line);
@@ -1987,7 +1995,7 @@ namespace TagTool.Scripting.Compiler
                 foreach (var parameter in script.Parameters)
                 {
                     if (!(parameters is ScriptGroup parametersGroup))
-                        throw new FormatException(group.ToString());
+                        throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                     prevExpr.NextExpressionHandle = CompileExpression(parameter.Type, parametersGroup.Head);
                     prevExpr = ScriptExpressions[prevExpr.NextExpressionHandle.Index];
@@ -1998,7 +2006,7 @@ namespace TagTool.Scripting.Compiler
                 return handle;
             }
 
-            throw new KeyNotFoundException(functionNameSymbol.Value);
+            throw new ScriptCompilerException(functionNameSymbol.Line, $"Unknown function or script: '{functionNameSymbol.Value}'.");
         }
 
         private DatumHandle CompileExternMethodReference(ScriptGroup group, ScriptSymbol functionNameSymbol, HsScript script, HsType type = HsType.Unparsed)
@@ -2025,7 +2033,7 @@ namespace TagTool.Scripting.Compiler
             foreach (var parameter in script.Parameters)
             {
                 if (!(parameters is ScriptGroup parametersGroup))
-                    throw new FormatException(group.ToString());
+                    throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                 prevExpr.NextExpressionHandle = CompileExpression(parameter.Type, parametersGroup.Head);
                 prevExpr = ScriptExpressions[prevExpr.NextExpressionHandle.Index];
@@ -2151,7 +2159,7 @@ namespace TagTool.Scripting.Compiler
                 var scriptIndex = Scripts.FindIndex(s => s.ScriptName == scriptSymbol.Value);
 
                 if (scriptIndex == -1)
-                    throw new KeyNotFoundException(scriptSymbol.Value);
+                    throw new ScriptCompilerException(scriptSymbol.Line, $"Script not defined: '{scriptSymbol.Value}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(scriptSymbol.Value);
@@ -2230,7 +2238,7 @@ namespace TagTool.Scripting.Compiler
                             // guard against runaway matches from an overly-broad substring).
                             if (seatsStack.Count >= 256)
                             {
-                                Log.Warning($"Unit seat mapping '{unitSeatMappingString.Value}': more than 256 units match; truncating.");
+                                Log.Warning($"Unit seat mapping '{ unitSeatMappingString.Value }': more than 256 units match; truncating.");
                                 break;
                             }
 
@@ -2241,7 +2249,7 @@ namespace TagTool.Scripting.Compiler
                     int unitSeatMappingCount = seatsStack.Count;
 
                     if (unitSeatMappingCount == 0)
-                        throw new FormatException($"Unit seat mapping '{unitSeatMappingString.Value}': no unit tag in the cache has a seat whose label contains this substring.");
+                        throw new ScriptCompilerException(0, "Syntax error in script.");
 
                     // Check whether this exact contiguous run of blocks already exists in the
                     // scenario's UnitSeatsMapping block array from a previous compile pass.
@@ -2310,7 +2318,7 @@ namespace TagTool.Scripting.Compiler
                     var triggerVolumeIndex = Definition.TriggerVolumes.FindIndex(tv => triggerVolumeString.Value == Cache.StringTable.GetString(tv.Name));
 
                     if (triggerVolumeIndex == -1)
-                        throw new FormatException(triggerVolumeString.Value);
+                        throw new ScriptCompilerException(triggerVolumeString.Line, $"No trigger volume named '{triggerVolumeString.Value}' found in the scenario.");
 
                     expr.StringAddress = CompileStringAddress(triggerVolumeString.Value);
                     Array.Copy(BitConverter.GetBytes((short)triggerVolumeIndex), expr.Data, 2);
@@ -2336,7 +2344,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var cutsceneFlagIndex = Definition.CutsceneFlags.FindIndex(cf => cutsceneFlagString.Value == Cache.StringTable.GetString(cf.Name));
                     if (cutsceneFlagIndex == -1)
-                        throw new FormatException(cutsceneFlagString.Value);
+                        throw new ScriptCompilerException(cutsceneFlagString.Line, $"No cutscene flag named '{cutsceneFlagString.Value}' found in the scenario.");
                     expr.StringAddress = CompileStringAddress(cutsceneFlagString.Value);
                     Array.Copy(BitConverter.GetBytes((short)cutsceneFlagIndex), expr.Data, 2);
                 }
@@ -2361,7 +2369,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var cutsceneCameraPointIndex = Definition.CutsceneCameraPoints.FindIndex(ccp => cutsceneCameraPointString.Value == ccp.Name);
                     if (cutsceneCameraPointIndex == -1)
-                        throw new FormatException(cutsceneCameraPointString.Value);
+                        throw new ScriptCompilerException(cutsceneCameraPointString.Line, $"No cutscene camera point named '{cutsceneCameraPointString.Value}' found in the scenario.");
                     expr.StringAddress = CompileStringAddress(cutsceneCameraPointString.Value);
                     Array.Copy(BitConverter.GetBytes((short)cutsceneCameraPointIndex), expr.Data, 2);
                 }
@@ -2386,7 +2394,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var cutsceneTitleIndex = Definition.CutsceneTitles.FindIndex(ct => cutsceneTitleSymbol.Value == Cache.StringTable.GetString(ct.Name));
                     if (cutsceneTitleIndex == -1)
-                        throw new FormatException(cutsceneTitleSymbol.Value);
+                        throw new ScriptCompilerException(cutsceneTitleSymbol.Line, $"Value not found or invalid: '{(cutsceneTitleSymbol.Value)}'.");
                     expr.StringAddress = CompileStringAddress(cutsceneTitleSymbol.Value);
                     Array.Copy(BitConverter.GetBytes((short)cutsceneTitleIndex), expr.Data, 2);
                 }
@@ -2396,7 +2404,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileCutsceneRecordingExpression(ScriptString cutsceneRecordingString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
 
         private DatumHandle CompileDeviceGroupExpression(ScriptString deviceGroupString)
         {
@@ -2414,7 +2422,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var deviceGroupIndex = Definition.DeviceGroups.FindIndex(dg => dg.Name == deviceGroupString.Value);
                     if (deviceGroupIndex == -1)
-                        throw new FormatException(deviceGroupString.Value);
+                        throw new ScriptCompilerException(deviceGroupString.Line, $"No device group named '{deviceGroupString.Value}' found in the scenario.");
                     expr.StringAddress = CompileStringAddress(deviceGroupString.Value);
                     Array.Copy(BitConverter.GetBytes(deviceGroupIndex), expr.Data, 4);
                 }
@@ -2548,7 +2556,7 @@ namespace TagTool.Scripting.Compiler
                         }
 
                     default:
-                        throw new FormatException(aiString.Value);
+                        throw new ScriptCompilerException(aiString.Line, $"No AI reference named '{aiString.Value}' found in the scenario. Expected format: 'squad', 'squad/group', or 'squad/group/actor'.");
                 }
             }
 
@@ -2556,7 +2564,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAiCommandListExpression(ScriptString aiCommandListString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'AiCommandList' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiCommandScriptExpression(ScriptSymbol aiCommandScriptSymbol)
         {
@@ -2573,7 +2581,7 @@ namespace TagTool.Scripting.Compiler
                     s.Type == HsScriptType.CommandScript);
 
                 if (scriptIndex == -1)
-                    throw new KeyNotFoundException($"No command_script named '{aiCommandScriptSymbol.Value}' is defined.");
+                    throw new ScriptCompilerException(aiCommandScriptSymbol.Line, $"No command_script named '{aiCommandScriptSymbol.Value}' is defined.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(aiCommandScriptSymbol.Value);
@@ -2584,10 +2592,10 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAiBehaviorExpression(ScriptString aiBehaviorString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'AiBehavior' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiOrdersExpression(ScriptString aiOrdersString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'AiOrders' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiLineExpression(ScriptString aiLineString)
         {
@@ -2628,7 +2636,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var startingProfileIndex = Definition.PlayerStartingProfile.FindIndex(sp => sp.Name == startingProfileString.Value);
                     if (startingProfileIndex == -1)
-                        throw new FormatException(startingProfileString.Value);
+                        throw new ScriptCompilerException(startingProfileString.Line, $"No starting profile named '{startingProfileString.Value}' found in the scenario.");
                     expr.StringAddress = CompileStringAddress(startingProfileString.Value);
                     expr.Data = new byte[] { (byte)((startingProfileIndex & 0xFF)), (byte)(startingProfileIndex >> 8), 0xFF, 0xFF };
                 }
@@ -2638,7 +2646,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileConversationExpression(ScriptString conversationString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'Conversation' is not yet supported by the compiler.");
 
         private DatumHandle CompileZoneSetExpression(ScriptString zoneSetString)
         {
@@ -2656,7 +2664,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var zoneSetIndex = Definition.ZoneSets.FindIndex(zs => zoneSetString.Value == Cache.StringTable.GetString(zs.Name));
                     if (zoneSetIndex == -1)
-                        throw new FormatException(zoneSetString.Value);
+                        throw new ScriptCompilerException(zoneSetString.Line, $"No zone set named '{zoneSetString.Value}' found in the scenario.");
                     expr.StringAddress = CompileStringAddress(zoneSetString.Value);
                     Array.Copy(BitConverter.GetBytes((short)zoneSetIndex), expr.Data, 2);
                 }
@@ -2681,7 +2689,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var designerZoneIndex = Definition.DesignerZoneSets.FindIndex(dz => designerZoneString.Value == Cache.StringTable.GetString(dz.Name));
                     if (designerZoneIndex == -1)
-                        throw new FormatException(designerZoneString.Value);
+                        throw new ScriptCompilerException(designerZoneString.Line, $"No designer zone named '{designerZoneString.Value}' found in the scenario.");
                     expr.StringAddress = CompileStringAddress(designerZoneString.Value);
                     Array.Copy(BitConverter.GetBytes((short)designerZoneIndex), expr.Data, 2);
                 }
@@ -2706,13 +2714,13 @@ namespace TagTool.Scripting.Compiler
                 {
                     var tokens = pointReferenceString.Value.Split('/');
                     if (tokens.Length != 2)
-                        throw new FormatException(pointReferenceString.Value);
+                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
                     var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
                     if (pointSetIndex == -1)
-                        throw new FormatException(pointReferenceString.Value);
+                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
                     var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
                     if (pointIndex == -1)
-                        throw new FormatException(pointReferenceString.Value);
+                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
                     expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
                     Array.Copy(BitConverter.GetBytes((int)((ushort)pointIndex | (ushort)(pointSetIndex << 16))), expr.Data, 4);
                 }
@@ -2736,7 +2744,7 @@ namespace TagTool.Scripting.Compiler
                 }
 
                 if (!Cache.TagCache.TryGetTag<Style>(styleString.Value, out var instance))
-                    throw new FormatException(styleString.Value);
+                    throw new ScriptCompilerException(styleString.Line, $"Could not find Style tag: '{(styleString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = styleString.Value + "." + instance.Group.ToString() });
 
@@ -2759,7 +2767,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectListString.Value);
 
                 if (objectListString.Value != "none" && objectIndex == -1)
-                    throw new FormatException(objectListString.Value);
+                    throw new ScriptCompilerException(objectListString.Line, $"Value not found or invalid: '{(objectListString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectListString.Value);
@@ -2778,7 +2786,7 @@ namespace TagTool.Scripting.Compiler
                 var folderIndex = folderString.Value == "none" ? -1 : Definition.EditorFolders.FindIndex(ef => ef.Name == folderString.Value);
 
                 if (folderString.Value != "none" && folderIndex == -1)
-                    throw new FormatException(folderString.Value);
+                    throw new ScriptCompilerException(folderString.Line, $"Value not found or invalid: '{(folderString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(folderString.Value);
@@ -2795,7 +2803,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<Sound>(soundString.Value, out var instance))
-                    throw new FormatException(soundString.Value);
+                    throw new ScriptCompilerException(soundString.Line, $"Could not find Sound tag: '{(soundString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = soundString.Value + "." + instance.Group.ToString() });
 
@@ -2814,7 +2822,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<Effect>(effectString.Value, out var instance))
-                    throw new FormatException(effectString.Value);
+                    throw new ScriptCompilerException(effectString.Line, $"Could not find Effect tag: '{(effectString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = effectString.Value + "." + instance.Group.ToString() });
 
@@ -2833,7 +2841,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<DamageEffect>(damageString.Value, out var instance))
-                    throw new FormatException(damageString.Value);
+                    throw new ScriptCompilerException(damageString.Line, $"Could not find DamageEffect tag: '{(damageString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = damageString.Value + "." + instance.Group.ToString() });
 
@@ -2852,7 +2860,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<SoundLooping>(loopingSoundString.Value, out var instance))
-                    throw new FormatException(loopingSoundString.Value);
+                    throw new ScriptCompilerException(loopingSoundString.Line, $"Could not find SoundLooping tag: '{(loopingSoundString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = loopingSoundString.Value + "." + instance.Group.ToString() });
 
@@ -2871,7 +2879,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<ModelAnimationGraph>(animationGraphString.Value, out var instance))
-                    throw new FormatException(animationGraphString.Value);
+                    throw new ScriptCompilerException(animationGraphString.Line, $"Could not find ModelAnimationGraph tag: '{(animationGraphString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = animationGraphString.Value + "." + instance.Group.ToString() });
 
@@ -2890,7 +2898,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<DamageEffect>(damageEffectString.Value, out var instance))
-                    throw new FormatException(damageEffectString.Value);
+                    throw new ScriptCompilerException(damageEffectString.Line, $"Could not find DamageEffect tag: '{(damageEffectString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = damageEffectString.Value + "." + instance.Group.ToString() });
 
@@ -2909,7 +2917,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag(objectDefinitionString.Value, out var instance) || !instance.IsInGroup("obje"))
-                    throw new FormatException(objectDefinitionString.Value);
+                    throw new ScriptCompilerException(objectDefinitionString.Line, $"Value not found or invalid: '{(objectDefinitionString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = objectDefinitionString.Value + "." + instance.Group.ToString() });
 
@@ -2928,7 +2936,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<Bitmap>(bitmapString.Value, out var instance))
-                    throw new FormatException(bitmapString.Value);
+                    throw new ScriptCompilerException(bitmapString.Line, $"Could not find Bitmap tag: '{(bitmapString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = bitmapString.Value + "." + instance.Group.ToString() });
 
@@ -2947,7 +2955,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<RenderMethod>(shaderString.Value, out var instance))
-                    throw new FormatException(shaderString.Value);
+                    throw new ScriptCompilerException(shaderString.Line, $"Could not find RenderMethod tag: '{(shaderString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = shaderString.Value + "." + instance.Group.ToString() });
 
@@ -2966,7 +2974,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<RenderModel>(renderModelString.Value, out var instance))
-                    throw new FormatException(renderModelString.Value);
+                    throw new ScriptCompilerException(renderModelString.Line, $"Could not find RenderModel tag: '{(renderModelString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = renderModelString.Value + "." + instance.Group.ToString() });
 
@@ -2985,7 +2993,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<ScenarioStructureBsp>(structureDefinitionString.Value, out var instance))
-                    throw new FormatException(structureDefinitionString.Value);
+                    throw new ScriptCompilerException(structureDefinitionString.Line, $"Could not find ScenarioStructureBsp tag: '{(structureDefinitionString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = structureDefinitionString.Value + "." + instance.Group.ToString() });
 
@@ -2998,7 +3006,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileLightmapDefinitionExpression(ScriptString lightmapDefinitionString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
 
         private DatumHandle CompileCinematicDefinitionExpression(ScriptString cinematicDefinitionString)
         {
@@ -3007,7 +3015,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<Cinematic>(cinematicDefinitionString.Value, out var instance))
-                    throw new FormatException(cinematicDefinitionString.Value);
+                    throw new ScriptCompilerException(cinematicDefinitionString.Line, $"Could not find Cinematic tag: '{(cinematicDefinitionString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = cinematicDefinitionString.Value + "." + instance.Group.ToString() });
 
@@ -3026,7 +3034,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<CinematicScene>(cinematicSceneDefinitionString.Value, out var instance))
-                    throw new FormatException(cinematicSceneDefinitionString.Value);
+                    throw new ScriptCompilerException(cinematicSceneDefinitionString.Line, $"Could not find CinematicScene tag: '{(cinematicSceneDefinitionString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = cinematicSceneDefinitionString.Value + "." + instance.Group.ToString() });
 
@@ -3045,7 +3053,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag<Bink>(binkDefinitionString.Value, out var instance))
-                    throw new FormatException(binkDefinitionString.Value);
+                    throw new ScriptCompilerException(binkDefinitionString.Line, $"Could not find Bink tag: '{(binkDefinitionString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = binkDefinitionString.Value + "." + instance.Group.ToString() });
 
@@ -3064,7 +3072,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag(anyTagString.Value, out var instance))
-                    throw new FormatException(anyTagString.Value);
+                    throw new ScriptCompilerException(anyTagString.Line, $"Value not found or invalid: '{(anyTagString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = anyTagString.Value + "." + instance.Group.ToString() });
 
@@ -3083,7 +3091,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Cache.TagCache.TryGetTag(anyTagNotResolvingString.Value, out var instance))
-                    throw new FormatException(anyTagNotResolvingString.Value);
+                    throw new ScriptCompilerException(anyTagNotResolvingString.Line, $"Value not found or invalid: '{(anyTagNotResolvingString.Value)}'.");
 
                 WriteTagToSourceFileReferences(new ScriptString { Value = anyTagNotResolvingString.Value + "." + instance.Group.ToString() });
 
@@ -3102,7 +3110,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameDifficulty>(gameDifficultySymbol.Value, true, out var difficulty))
-                    throw new FormatException(gameDifficultySymbol.Value);
+                    throw new ScriptCompilerException(gameDifficultySymbol.Line, $"Unknown GameDifficulty value: '{(gameDifficultySymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(gameDifficultySymbol.Value);
@@ -3119,7 +3127,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameTeam>(teamSymbol.Value, true, out var team))
-                    throw new FormatException(teamSymbol.Value);
+                    throw new ScriptCompilerException(teamSymbol.Line, $"Unknown GameTeam value: '{(teamSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(teamSymbol.Value);
@@ -3136,7 +3144,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameMultiplayerTeam>(mpTeamSymbol.Value, true, out var mpTeam))
-                    throw new FormatException(mpTeamSymbol.Value);
+                    throw new ScriptCompilerException(mpTeamSymbol.Line, $"Unknown GameMultiplayerTeam value: '{(mpTeamSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(mpTeamSymbol.Value);
@@ -3153,7 +3161,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameController>(controllerSymbol.Value, true, out var controller))
-                    throw new FormatException(controllerSymbol.Value);
+                    throw new ScriptCompilerException(controllerSymbol.Line, $"Unknown GameController value: '{(controllerSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(controllerSymbol.Value);
@@ -3170,7 +3178,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameControllerButtonPreset>(buttonPresetSymbol.Value, true, out var buttonPreset))
-                    throw new FormatException(buttonPresetSymbol.Value);
+                    throw new ScriptCompilerException(buttonPresetSymbol.Line, $"Unknown GameControllerButtonPreset value: '{(buttonPresetSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(buttonPresetSymbol.Value);
@@ -3187,7 +3195,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameControllerJoystickPreset>(joystickPresetSymbol.Value, true, out var joystickPreset))
-                    throw new FormatException(joystickPresetSymbol.Value);
+                    throw new ScriptCompilerException(joystickPresetSymbol.Line, $"Unknown GameControllerJoystickPreset value: '{(joystickPresetSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(joystickPresetSymbol.Value);
@@ -3198,7 +3206,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompilePlayerColorExpression(ScriptSymbol playerColorSymbol) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'PlayerColor' is not yet supported by the compiler.");
 
         private DatumHandle CompilePlayerCharacterTypeExpression(ScriptSymbol playerCharacterTypeSymbol)
         {
@@ -3207,7 +3215,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GamePlayerCharacterType>(playerCharacterTypeSymbol.Value, true, out var playerCharacterType))
-                    throw new FormatException(playerCharacterTypeSymbol.Value);
+                    throw new ScriptCompilerException(playerCharacterTypeSymbol.Line, $"Unknown GamePlayerCharacterType value: '{(playerCharacterTypeSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(playerCharacterTypeSymbol.Value);
@@ -3224,7 +3232,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameVoiceOutputSetting>(voiceOutputSettingSymbol.Value, true, out var voiceOutputSetting))
-                    throw new FormatException(voiceOutputSettingSymbol.Value);
+                    throw new ScriptCompilerException(voiceOutputSettingSymbol.Line, $"Unknown GameVoiceOutputSetting value: '{(voiceOutputSettingSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(voiceOutputSettingSymbol.Value);
@@ -3241,7 +3249,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameVoiceMask>(voiceMaskSymbol.Value, true, out var voiceMask))
-                    throw new FormatException(voiceMaskSymbol.Value);
+                    throw new ScriptCompilerException(voiceMaskSymbol.Line, $"Unknown GameVoiceMask value: '{(voiceMaskSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(voiceMaskSymbol.Value);
@@ -3258,7 +3266,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameSubtitleSetting>(subtitleSettingSymbol.Value, true, out var subtitleSetting))
-                    throw new FormatException(subtitleSettingSymbol.Value);
+                    throw new ScriptCompilerException(subtitleSettingSymbol.Line, $"Unknown GameSubtitleSetting value: '{(subtitleSettingSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(subtitleSettingSymbol.Value);
@@ -3275,7 +3283,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<ActorTypeEnum>(actorTypeSymbol.Value, true, out var actorType))
-                    throw new FormatException(actorTypeSymbol.Value);
+                    throw new ScriptCompilerException(actorTypeSymbol.Line, $"Unknown ActorTypeEnum value: '{(actorTypeSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(actorTypeSymbol.Value);
@@ -3292,7 +3300,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameModelState>(modelStateSymbol.Value, true, out var modelState))
-                    throw new FormatException(modelStateSymbol.Value);
+                    throw new ScriptCompilerException(modelStateSymbol.Line, $"Unknown GameModelState value: '{(modelStateSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(modelStateSymbol.Value);
@@ -3309,7 +3317,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameEventType>(eventSymbol.Value, true, out var eventType))
-                    throw new FormatException(eventSymbol.Value);
+                    throw new ScriptCompilerException(eventSymbol.Line, $"Unknown GameEventType value: '{(eventSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(eventSymbol.Value);
@@ -3326,7 +3334,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameCharacterPhysics>(characterPhysicsSymbol.Value, true, out var characterPhysics))
-                    throw new FormatException(characterPhysicsSymbol.Value);
+                    throw new ScriptCompilerException(characterPhysicsSymbol.Line, $"Unknown GameCharacterPhysics value: '{(characterPhysicsSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(characterPhysicsSymbol.Value);
@@ -3343,7 +3351,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GamePrimarySkull>(primarySkullSymbol.Value, true, out var primarySkull))
-                    throw new FormatException(primarySkullSymbol.Value);
+                    throw new ScriptCompilerException(primarySkullSymbol.Line, $"Unknown GamePrimarySkull value: '{(primarySkullSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(primarySkullSymbol.Value);
@@ -3360,7 +3368,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 if (!Enum.TryParse<GameSecondarySkull>(secondarySkullSymbol.Value, true, out var secondarySkull))
-                    throw new FormatException(secondarySkullSymbol.Value);
+                    throw new ScriptCompilerException(secondarySkullSymbol.Line, $"Unknown GameSecondarySkull value: '{(secondarySkullSymbol.Value)}'. Check the valid values for this type.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(secondarySkullSymbol.Value);
@@ -3381,7 +3389,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectString.Value);
 
                 if (objectString.Value != "none" && objectIndex == -1)
-                    throw new FormatException(objectString.Value);
+                    throw new ScriptCompilerException(objectString.Line, $"Value not found or invalid: '{(objectString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectString.Value);
@@ -3402,7 +3410,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == unitString.Value);
 
                 if (unitString.Value != "none" && unitIndex == -1)
-                    throw new FormatException(unitString.Value);
+                    throw new ScriptCompilerException(unitString.Line, $"Value not found or invalid: '{(unitString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(unitString.Value);
@@ -3419,12 +3427,12 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-
+                
                 var vehicleIndex = vehicleString.Value == "none" ? -1 :
                     Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
 
                 if (vehicleString.Value != "none" && vehicleIndex == -1)
-                    throw new FormatException(vehicleString.Value);
+                    throw new ScriptCompilerException(vehicleString.Line, $"Value not found or invalid: '{(vehicleString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(vehicleString.Value);
@@ -3444,7 +3452,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.Find(on => on.Name == weaponString.Value).PlacementIndex;
 
                 if (weaponString.Value != "none" && weaponIndex == -1)
-                    throw new FormatException(weaponString.Value);
+                    throw new ScriptCompilerException(weaponString.Line, $"Value not found or invalid: '{(weaponString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(weaponString.Value);
@@ -3465,7 +3473,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == deviceString.Value);
 
                 if (deviceString.Value != "none" && deviceIndex == -1)
-                    throw new FormatException(deviceString.Value);
+                    throw new ScriptCompilerException(deviceString.Line, $"Value not found or invalid: '{(deviceString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(deviceString.Value);
@@ -3486,7 +3494,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == sceneryString.Value);
 
                 if (sceneryString.Value != "none" && sceneryIndex == -1)
-                    throw new FormatException(sceneryString.Value);
+                    throw new ScriptCompilerException(sceneryString.Line, $"Value not found or invalid: '{(sceneryString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(sceneryString.Value);
@@ -3506,7 +3514,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.Find(on => on.Name == effectSceneryString.Value).PlacementIndex;
 
                 if (effectSceneryString.Value != "none" && effectSceneryIndex == -1)
-                    throw new FormatException(effectSceneryString.Value);
+                    throw new ScriptCompilerException(effectSceneryString.Line, $"Value not found or invalid: '{(effectSceneryString.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(effectSceneryString.Value);
@@ -3525,7 +3533,7 @@ namespace TagTool.Scripting.Compiler
                 var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
 
                 if (objectNameIndex == -1)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectNameString.Value);
@@ -3544,14 +3552,14 @@ namespace TagTool.Scripting.Compiler
                 var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
 
                 if (objectNameIndex == -1)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var unitObjType = Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline;
                 if (unitObjType != GameObjectTypeHaloOnline.Biped &&
                     unitObjType != GameObjectTypeHaloOnline.Giant &&
                     unitObjType != GameObjectTypeHaloOnline.Vehicle)
                 {
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
                 }
 
                 var expr = ScriptExpressions[handle.Index];
@@ -3571,10 +3579,10 @@ namespace TagTool.Scripting.Compiler
                 var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
 
                 if (objectNameIndex == -1)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Vehicle)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectNameString.Value);
@@ -3593,10 +3601,10 @@ namespace TagTool.Scripting.Compiler
                 var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
 
                 if (objectNameIndex == -1)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Weapon)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectNameString.Value);
@@ -3615,14 +3623,14 @@ namespace TagTool.Scripting.Compiler
                 var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
 
                 if (objectNameIndex == -1)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var deviceObjType = Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline;
                 if (deviceObjType != GameObjectTypeHaloOnline.AlternateRealityDevice &&
                     deviceObjType != GameObjectTypeHaloOnline.Control &&
                     deviceObjType != GameObjectTypeHaloOnline.Machine)
                 {
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
                 }
 
                 var expr = ScriptExpressions[handle.Index];
@@ -3642,10 +3650,10 @@ namespace TagTool.Scripting.Compiler
                 var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
 
                 if (objectNameIndex == -1)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Scenery)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectNameString.Value);
@@ -3664,10 +3672,10 @@ namespace TagTool.Scripting.Compiler
                 var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
 
                 if (objectNameIndex == -1)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.EffectScenery)
-                    throw new FormatException(objectNameString.Value);
+                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectNameString.Value);
@@ -3686,7 +3694,7 @@ namespace TagTool.Scripting.Compiler
                 var cinematicLightprobeIndex = Definition.CinematicLighting.FindIndex(cl => cinematicLightprobeSymbol.Value == Cache.StringTable.GetString(cl.Name));
 
                 if (cinematicLightprobeIndex == -1)
-                    throw new FormatException(cinematicLightprobeSymbol.Value);
+                    throw new ScriptCompilerException(cinematicLightprobeSymbol.Line, $"Value not found or invalid: '{(cinematicLightprobeSymbol.Value)}'.");
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(cinematicLightprobeSymbol.Value);
@@ -3697,13 +3705,13 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAnimationBudgetReferenceExpression(ScriptString animationBudgetReferenceString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'AnimationBudgetReference' is not yet supported by the compiler.");
 
         private DatumHandle CompileLoopingSoundBudgetReferenceExpression(ScriptString loopingSoundBudgetReferenceString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'LoopingSoundBudgetReference' is not yet supported by the compiler.");
 
         private DatumHandle CompileSoundBudgetReferenceExpression(ScriptString soundBudgetReferenceString) =>
-            throw new NotImplementedException();
+            throw new ScriptCompilerException(0, $"The type 'SoundBudgetReference' is not yet supported by the compiler.");
 
         private void WriteTagToSourceFileReferences(ScriptString tagString)
         {
@@ -3715,9 +3723,9 @@ namespace TagTool.Scripting.Compiler
                 };
 
                 bool hasReference = false;
-                foreach (var tagEntry in ScriptSourceFileReferences)
+                foreach(var tagEntry in ScriptSourceFileReferences)
                 {
-                    if (tagEntry.Instance.Index == tagReference.Instance.Index)
+                    if(tagEntry.Instance.Index == tagReference.Instance.Index)
                     {
                         hasReference = true;
                         break;
