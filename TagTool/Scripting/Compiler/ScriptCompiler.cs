@@ -1669,11 +1669,7 @@ namespace TagTool.Scripting.Compiler
                             if (!(currentGroup.Tail is ScriptGroup) && !(currentGroup.Tail is ScriptInvalid))
                                 throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                            // All arithmetic operands are compiled as Real regardless of whether
-                            // they are literals or symbol references.  Previously non-literal
-                            // operands (globals, parameters) were compiled as Unparsed, which
-                            // left them with their declared type (e.g. Short) instead of Real,
-                            // causing the engine to misread the value during arithmetic.
+                            // Engine's hs_parse_arithmetic always parses operands as Real.
                             var currentHandle = CompileExpression(HsType.Real, currentGroup.Head);
 
                             prevExpr.NextExpressionHandle = currentHandle;
@@ -1705,22 +1701,24 @@ namespace TagTool.Scripting.Compiler
                         if (!(group.Tail is ScriptGroup tailGroup))
                             throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                        // Comparison args are always compiled by their own type, never
-                        // the caller's context type (which is Boolean for if conditions).
-                        // Literals compile as Real; symbols/groups compile as Unparsed so
-                        // the second arg can match the first arg's resolved type.
-                        functionNameExpr.NextExpressionHandle = (tailGroup.Head is ScriptInteger || tailGroup.Head is ScriptReal)
-                            ? CompileExpression(HsType.Real, tailGroup.Head)
-                            : CompileExpression(HsType.Unparsed, tailGroup.Head);
+                        // Match hs_parse_equality: parse first arg as Unparsed so it resolves
+                        // to its own type. Bare literals have no type so fall back to Real,
+                        // matching the engine's own fallback path in hs_parse_equality.
+                        var firstArgType = (tailGroup.Head is ScriptInteger || tailGroup.Head is ScriptReal)
+                            ? HsType.Real
+                            : HsType.Unparsed;
+                        functionNameExpr.NextExpressionHandle = CompileExpression(firstArgType, tailGroup.Head);
 
                         var firstExpr = ScriptExpressions[functionNameExpr.NextExpressionHandle.Index];
 
                         if (!(tailGroup.Tail is ScriptGroup tailTailGroup) || !(tailTailGroup.Tail is ScriptInvalid))
                             throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                        firstExpr.NextExpressionHandle = (tailTailGroup.Head is ScriptGroup) ?
-                            CompileExpression(HsType.Unparsed, tailTailGroup.Head) :
-                            CompileExpression(firstExpr.ValueType, tailTailGroup.Head);
+                        // Second arg matches first's resolved type. If first resolved to Unparsed
+                        // (e.g. a sub-expression group), compile second as Unparsed too.
+                        firstExpr.NextExpressionHandle = (tailTailGroup.Head is ScriptGroup)
+                            ? CompileExpression(HsType.Unparsed, tailTailGroup.Head)
+                            : CompileExpression(firstExpr.ValueType, tailTailGroup.Head);
 
                         return handle;
                     }
@@ -1971,11 +1969,8 @@ namespace TagTool.Scripting.Compiler
                 if (script.Type == HsScriptType.Extern)
                     return CompileExternMethodReference(group, functionNameSymbol, script, type);
 
-                var scriptEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
-                    ? type
-                    : script.ReturnType;
                 var handle = AllocateExpression(
-                    scriptEmitType,
+                    script.ReturnType,
                     HsSyntaxNodeFlags.ScriptReference,
                     (ushort)Scripts.IndexOf(script),
                     (short)functionNameSymbol.Line);
