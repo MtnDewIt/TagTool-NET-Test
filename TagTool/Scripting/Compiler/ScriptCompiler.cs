@@ -453,6 +453,48 @@ namespace TagTool.Scripting.Compiler
             Scripts.Add(script);
         }
 
+        // Compiles a script body (the statements after the declaration).
+        // Bungie's compiler emits the body expressions first, then places the
+        // begin Group and FunctionName nodes at the end - so the root node sits
+        // at a higher index than its children. We replicate that layout here.
+        private DatumHandle CompileScriptBody(HsType returnType, IScriptSyntax body)
+        {
+            var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "begin");
+
+            // Compile all body statements first - they get the lower indices
+            var firstHandle = DatumHandle.None;
+            HsSyntaxNode prevExpr = null;
+
+            for (IScriptSyntax current = body;
+                current is ScriptGroup currentGroup;
+                current = currentGroup.Tail)
+            {
+                bool isLast = !(currentGroup.Tail is ScriptGroup);
+                var currentHandle = CompileExpression(isLast ? returnType : HsType.Unparsed, currentGroup.Head);
+
+                if (firstHandle == DatumHandle.None)
+                    firstHandle = currentHandle;
+
+                if (prevExpr != null)
+                    prevExpr.NextExpressionHandle = currentHandle;
+
+                prevExpr = ScriptExpressions[currentHandle.Index];
+            }
+
+            // Now allocate the begin Group and FunctionName nodes at the end
+            var beginHandle = AllocateExpression(returnType, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, 0);
+            var beginExpr = ScriptExpressions[beginHandle.Index];
+
+            var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, 0);
+            var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+
+            Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), beginExpr.Data, 4);
+            Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+            functionNameExpr.NextExpressionHandle = firstHandle;
+
+            return beginHandle;
+        }
+
         private void CompileScript(IScriptSyntax node)
         {
             //
@@ -618,13 +660,9 @@ namespace TagTool.Scripting.Compiler
 
             CurrentScript = script;
 
-            script.RootExpressionHandle = CompileExpression(
-                scriptReturnType,
-                new ScriptGroup
-                {
-                    Head = new ScriptSymbol { Value = "begin" },
-                    Tail = declTailTailGroup.Tail
-                });
+            // Bungie emits body expressions first, then the begin Group/FunctionName wrapper
+            // at the end. The engine navigates via pointers so order in the array matters.
+            script.RootExpressionHandle = CompileScriptBody(scriptReturnType, declTailTailGroup.Tail);
 
             CurrentScript = null;
         }
@@ -1404,7 +1442,11 @@ namespace TagTool.Scripting.Compiler
                             current is ScriptGroup currentGroup;
                             current = currentGroup.Tail)
                         {
-                            var currentHandle = CompileExpression(HsType.Unparsed, currentGroup.Head);
+                            // Pass the context type to the last statement so the return
+                            // type is correctly promoted (e.g. Short context -> Short result
+                            // for arithmetic). All earlier statements are Unparsed.
+                            bool isLast = !(currentGroup.Tail is ScriptGroup);
+                            var currentHandle = CompileExpression(isLast ? type : HsType.Unparsed, currentGroup.Head);
 
                             if (firstHandle == DatumHandle.None)
                                 firstHandle = currentHandle;
@@ -1591,6 +1633,8 @@ namespace TagTool.Scripting.Compiler
                             Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                             var globalHandle = CompileGlobalReference(globalName, global);
+                            // Bungie uses opcode 65535 for the set-target global node
+                            ScriptExpressions[globalHandle.Index].Opcode = ushort.MaxValue;
                             functionNameExpr.NextExpressionHandle = globalHandle;
 
                             var globalExpr = ScriptExpressions[globalHandle.Index];
@@ -1973,8 +2017,13 @@ namespace TagTool.Scripting.Compiler
                 if (script.Type == HsScriptType.Extern)
                     return CompileExternMethodReference(group, functionNameSymbol, script, type);
 
+                // Promote the return type when the calling context requires it
+                // (e.g. Unit returned where Object is expected). Matches bungie behavior.
+                var scriptEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
+                    ? type
+                    : script.ReturnType;
                 var handle = AllocateExpression(
-                    script.ReturnType,
+                    scriptEmitType,
                     HsSyntaxNodeFlags.ScriptReference,
                     (ushort)Scripts.IndexOf(script),
                     (short)functionNameSymbol.Line);
