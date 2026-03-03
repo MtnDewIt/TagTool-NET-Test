@@ -1084,11 +1084,15 @@ namespace TagTool.Scripting.Compiler
                 case HsType.PrimarySkull:
                     if (node is ScriptSymbol primarySkullSymbol)
                         return CompilePrimarySkullExpression(primarySkullSymbol);
+                    else if (node is ScriptInteger primarySkullInt)
+                        return CompilePrimarySkullExpression(new ScriptSymbol { Value = primarySkullInt.Value.ToString(), Line = primarySkullInt.Line });
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SecondarySkull:
                     if (node is ScriptSymbol secondarySkullSymbol)
                         return CompileSecondarySkullExpression(secondarySkullSymbol);
+                    else if (node is ScriptInteger secondarySkullInt)
+                        return CompileSecondarySkullExpression(new ScriptSymbol { Value = secondarySkullInt.Value.ToString(), Line = secondarySkullInt.Line });
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Object:
@@ -2440,6 +2444,39 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
+        private bool TryGetAiEncodedValue(string value, out int encodedValue)
+        {
+            encodedValue = 0;
+            if (string.IsNullOrEmpty(value) || value == "none")
+                return false;
+            var tokens = value.Split('/');
+            if (tokens.Length == 1)
+            {
+                // Squad
+                var si = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
+                if (si != -1) { encodedValue = (1 << 29) | (si & 0xFFFF); return true; }
+                // Squad group
+                var sgi = Definition.SquadGroups.FindIndex(sg => sg.Name == tokens[0]);
+                if (sgi != -1) { encodedValue = (2 << 29) | (sgi & 0xFFFF); return true; }
+                // Note: objectives are not included - they are AI logic tasks, not physical objects
+            }
+            else if (tokens.Length == 2)
+            {
+                var si = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
+                if (si != -1)
+                {
+                    var squad = Definition.Squads[si];
+                    // Spawn point
+                    var spi = squad.SpawnPoints.FindIndex(sp => tokens[1] == Cache.StringTable.GetString(sp.Name));
+                    if (spi != -1) { encodedValue = (4 << 29) | ((si & 0x1FFF) << 16) | (spi & 0xFF); return true; }
+                    // Spawn formation
+                    var sfi = squad.SpawnFormations.FindIndex(sf => tokens[1] == Cache.StringTable.GetString(sf.Name));
+                    if (sfi != -1) { encodedValue = (5 << 29) | ((si & 0x1FFF) << 16) | (sfi & 0xFF); return true; }
+                }
+            }
+            return false;
+        }
+
         private DatumHandle CompileAiExpression(ScriptString aiString)
         {
             var handle = AllocateExpression(HsType.Ai, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiString.Line);
@@ -2776,7 +2813,17 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectListString.Value);
 
                 if (objectListString.Value != "none" && objectIndex == -1)
-                    throw new ScriptCompilerException(objectListString.Line, $"Value not found or invalid: '{(objectListString.Value)}'.");
+                {
+                    if (TryGetAiEncodedValue(objectListString.Value, out int aiEncoded))
+                    {
+                        var expr2 = ScriptExpressions[handle.Index];
+                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
+                        expr2.StringAddress = CompileStringAddress(objectListString.Value);
+                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
+                        return handle;
+                    }
+                    throw new ScriptCompilerException(objectListString.Line, $"No object name or AI reference named '{objectListString.Value}' found in the scenario.");
+                }
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectListString.Value);
@@ -3359,12 +3406,27 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                if (!Enum.TryParse<GamePrimarySkull>(primarySkullSymbol.Value, true, out var primarySkull))
-                    throw new ScriptCompilerException(primarySkullSymbol.Line, $"Unknown GamePrimarySkull value: '{(primarySkullSymbol.Value)}'. Check the valid values for this type.");
+                short skullIndex;
+                // Accept either the enum name (e.g. "iron") or a raw integer index
+                if (short.TryParse(primarySkullSymbol.Value, out var rawIndex))
+                {
+                    var maxIndex = (short)(Enum.GetValues(typeof(GamePrimarySkull)).Length - 1);
+                    if (rawIndex < 0 || rawIndex > maxIndex)
+                        throw new ScriptCompilerException(primarySkullSymbol.Line, $"Primary skull index {rawIndex} is out of range (0-{maxIndex}).");
+                    skullIndex = rawIndex;
+                }
+                else if (Enum.TryParse<GamePrimarySkull>(primarySkullSymbol.Value, true, out var primarySkull))
+                {
+                    skullIndex = (short)primarySkull;
+                }
+                else
+                {
+                    throw new ScriptCompilerException(primarySkullSymbol.Line, $"Unknown primary skull '{primarySkullSymbol.Value}'. Use the enum name (e.g. iron) or a numeric index.");
+                }
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(primarySkullSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)primarySkull), expr.Data, 2);
+                Array.Copy(BitConverter.GetBytes(skullIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3376,12 +3438,27 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                if (!Enum.TryParse<GameSecondarySkull>(secondarySkullSymbol.Value, true, out var secondarySkull))
-                    throw new ScriptCompilerException(secondarySkullSymbol.Line, $"Unknown GameSecondarySkull value: '{(secondarySkullSymbol.Value)}'. Check the valid values for this type.");
+                short skullIndex;
+                // Accept either the enum name (e.g. "birthdayparty") or a raw integer index
+                if (short.TryParse(secondarySkullSymbol.Value, out var rawIndex))
+                {
+                    var maxIndex = (short)(Enum.GetValues(typeof(GameSecondarySkull)).Length - 1);
+                    if (rawIndex < 0 || rawIndex > maxIndex)
+                        throw new ScriptCompilerException(secondarySkullSymbol.Line, $"Secondary skull index {rawIndex} is out of range (0-{maxIndex}).");
+                    skullIndex = rawIndex;
+                }
+                else if (Enum.TryParse<GameSecondarySkull>(secondarySkullSymbol.Value, true, out var secondarySkull))
+                {
+                    skullIndex = (short)secondarySkull;
+                }
+                else
+                {
+                    throw new ScriptCompilerException(secondarySkullSymbol.Line, $"Unknown secondary skull '{secondarySkullSymbol.Value}'. Use the enum name (e.g. catch) or a numeric index.");
+                }
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(secondarySkullSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)secondarySkull), expr.Data, 2);
+                Array.Copy(BitConverter.GetBytes(skullIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3398,7 +3475,19 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectString.Value);
 
                 if (objectString.Value != "none" && objectIndex == -1)
-                    throw new ScriptCompilerException(objectString.Line, $"Value not found or invalid: '{(objectString.Value)}'.");
+                {
+                    // Try resolving as an AI reference (squad or squad/spawnpoint).
+                    // The engine accepts the AI-encoded value for object-typed parameters.
+                    if (TryGetAiEncodedValue(objectString.Value, out int aiEncoded))
+                    {
+                        var expr2 = ScriptExpressions[handle.Index];
+                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
+                        expr2.StringAddress = CompileStringAddress(objectString.Value);
+                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
+                        return handle;
+                    }
+                    throw new ScriptCompilerException(objectString.Line, $"No object or AI reference named '{objectString.Value}' found in the scenario.");
+                }
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectString.Value);
@@ -3419,7 +3508,17 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == unitString.Value);
 
                 if (unitString.Value != "none" && unitIndex == -1)
-                    throw new ScriptCompilerException(unitString.Line, $"Value not found or invalid: '{(unitString.Value)}'.");
+                {
+                    if (TryGetAiEncodedValue(unitString.Value, out int aiEncoded))
+                    {
+                        var expr2 = ScriptExpressions[handle.Index];
+                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
+                        expr2.StringAddress = CompileStringAddress(unitString.Value);
+                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
+                        return handle;
+                    }
+                    throw new ScriptCompilerException(unitString.Line, $"No unit or AI reference named '{unitString.Value}' found in the scenario.");
+                }
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(unitString.Value);
@@ -3441,7 +3540,17 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
 
                 if (vehicleString.Value != "none" && vehicleIndex == -1)
-                    throw new ScriptCompilerException(vehicleString.Line, $"Value not found or invalid: '{(vehicleString.Value)}'.");
+                {
+                    if (TryGetAiEncodedValue(vehicleString.Value, out int aiEncoded))
+                    {
+                        var expr2 = ScriptExpressions[handle.Index];
+                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
+                        expr2.StringAddress = CompileStringAddress(vehicleString.Value);
+                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
+                        return handle;
+                    }
+                    throw new ScriptCompilerException(vehicleString.Line, $"No vehicle or AI reference named '{vehicleString.Value}' found in the scenario.");
+                }
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(vehicleString.Value);
