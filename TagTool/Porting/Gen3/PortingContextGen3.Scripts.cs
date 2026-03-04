@@ -410,9 +410,9 @@ namespace TagTool.Porting.Gen3
                 if (expr.Data[2] == 0xFF && expr.Data[3] == 0xFF)
                 {
                     var opcode = BitConverter.ToUInt16(expr.Data, 0) & ~0x8000;
-                    var name = BlamCache.ScriptDefinitions.Globals[opcode];
-                    var global = CacheContext.ScriptDefinitions.Globals.FirstOrDefault(p => p.Value == name);
-                    if (global.Value == null)
+                    var name = BlamCache.ScriptDefinitions.Globals[opcode].Name;
+                    var global = CacheContext.ScriptDefinitions.Globals.FirstOrDefault(p => p.Value.Name == name);
+                    if (global.Value.Name == null)
                     {
                         Log.Warning($"No equivalent script global was found for '{name}' (0x{expr.Opcode:X3}, expr {scnr.ScriptExpressions.IndexOf(expr)})");
                         ConvertScriptExpressionUnsupportedOpcode(expr);

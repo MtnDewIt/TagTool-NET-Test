@@ -8,7 +8,7 @@ namespace TagTool.Scripting
     {
         private readonly string _filePath;
         private readonly Dictionary<int, string> _types = [];
-        private readonly Dictionary<int, string> _globals = [];
+        private readonly Dictionary<int, GlobalInfo> _globals = [];
         private readonly Dictionary<int, ScriptInfo> _functions = [];
 
         public ScriptDefinitionsXml(string filePath)
@@ -18,7 +18,7 @@ namespace TagTool.Scripting
         }
 
         IReadOnlyDictionary<int, string> IScriptDefinitions.ValueTypes => _types;
-        IReadOnlyDictionary<int, string> IScriptDefinitions.Globals => _globals;
+        IReadOnlyDictionary<int, GlobalInfo> IScriptDefinitions.Globals => _globals;
         IReadOnlyDictionary<int, ScriptInfo> IScriptDefinitions.Scripts => _functions;
 
         private void Load()
@@ -87,7 +87,7 @@ namespace TagTool.Scripting
             }
         }
 
-        private static void ReadGlobals(XmlReader reader, Dictionary<int, string> globals)
+        private static void ReadGlobals(XmlReader reader, Dictionary<int, GlobalInfo> globals)
         {
             while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
             {
@@ -98,8 +98,8 @@ namespace TagTool.Scripting
 
                     int opcode = Convert.ToInt32(reader.GetAttribute("opcode"), 16);
                     string name = reader.GetAttribute("name");
-                    globals.Add(opcode, name);
-
+                    HsType type = HsTypeFromString(reader.GetAttribute("type"));
+                    globals.Add(opcode, new GlobalInfo(type, name));
                 }
             }
         }

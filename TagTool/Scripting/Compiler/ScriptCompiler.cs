@@ -713,8 +713,8 @@ namespace TagTool.Scripting.Compiler
                 //
 
                 foreach (var global in Cache.ScriptDefinitions.Globals)
-                    if (global.Value == symbol.Value)
-                        return CompileGlobalReference(symbol, type, global.Value, (ushort)(global.Key | 0x8000));
+                    if (global.Value.Name == symbol.Value)
+                        return CompileGlobalReference(symbol, global.Value.Type, global.Value.Name, (ushort)(global.Key | 0x8000));
             }
 
             switch (type)
@@ -1615,6 +1615,7 @@ namespace TagTool.Scripting.Compiler
                         if (!(setGroup.Tail is ScriptGroup setValueGroup) || !(setValueGroup.Tail is ScriptInvalid))
                             throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
+                        // --- Check user-defined (script-local) globals first ---
                         foreach (var global in Globals)
                         {
                             if (global.Name != globalName.Value)
@@ -1639,6 +1640,37 @@ namespace TagTool.Scripting.Compiler
 
                             var globalExpr = ScriptExpressions[globalHandle.Index];
                             globalExpr.NextExpressionHandle = CompileExpression(global.Type, setValueGroup.Head);
+
+                            return setHandle;
+                        }
+
+                        // --- Check engine (cache) globals ---
+                        foreach (var cacheGlobal in Cache.ScriptDefinitions.Globals)
+                        {
+                            if (cacheGlobal.Value.Name != globalName.Value)
+                                continue;
+
+                            var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
+
+                            var setHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                            var setExpr = ScriptExpressions[setHandle.Index];
+
+                            var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
+                            var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                            functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                            Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), setExpr.Data, 4);
+                            Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                            // Engine globals use (opcode | 0x8000) as their index, and their
+                            // type comes from the definition table entry's type field.
+                            var globalHandle = CompileGlobalReference(globalName, cacheGlobal.Value.Type, cacheGlobal.Value.Name, (ushort)(cacheGlobal.Key | 0x8000));
+                            // Bungie uses opcode 65535 for the set-target global node
+                            ScriptExpressions[globalHandle.Index].Opcode = ushort.MaxValue;
+                            functionNameExpr.NextExpressionHandle = globalHandle;
+
+                            var globalExpr = ScriptExpressions[globalHandle.Index];
+                            globalExpr.NextExpressionHandle = CompileExpression(cacheGlobal.Value.Type, setValueGroup.Head);
 
                             return setHandle;
                         }
