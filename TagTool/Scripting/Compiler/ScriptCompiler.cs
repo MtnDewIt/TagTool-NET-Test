@@ -243,10 +243,10 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             if (!(declTailGroup.Head is ScriptSymbol declName))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var globalName = declName.Value;
 
@@ -255,7 +255,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declTailGroup.Tail is ScriptGroup declTailTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var globalInit = CompileExpression(globalType, declTailTailGroup.Head);
 
@@ -297,7 +297,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var scriptReturnType = ParseHsType(declTailGroup.Head);
 
@@ -314,9 +314,9 @@ namespace TagTool.Scripting.Compiler
 
             ScriptGroup declTailTailGroup;
             if (!skipReturnType && !(declTailGroup.Tail is ScriptGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else if (skipReturnType && !(declTailGroup.Head is ScriptSymbol))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else
             {
                 if (!skipReturnType)
@@ -343,7 +343,7 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Head is ScriptSymbol declGroupName))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         scriptName = declGroupName.Value;
 
@@ -352,10 +352,10 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Tail is ScriptGroup tailGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         if (!(tailGroup is ScriptGroup declParamGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         for (IScriptSyntax param = declParamGroup;
                             param is ScriptGroup paramGroup;
@@ -366,14 +366,14 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramGroup.Head is ScriptGroup paramDeclGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Get the parameter type
                             //
 
                             if (!(paramDeclGroup.Head is ScriptSymbol paramDeclType))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramType = ParseHsType(paramDeclType);
 
@@ -382,15 +382,15 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramDeclGroup.Tail is ScriptGroup paramDeclTailGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             if (!(paramDeclTailGroup.Head is ScriptSymbol paramDeclName))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramName = paramDeclName.Value;
 
                             if (!(paramDeclTailGroup.Tail is ScriptInvalid))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Add an entry to the script parameters list
@@ -406,7 +406,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new ScriptCompilerException(0, $"Malformed declaration.");
+                    throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             }
 
             //
@@ -448,7 +448,7 @@ namespace TagTool.Scripting.Compiler
             }
 
             if (exists)
-                throw new ScriptCompilerException(0, $"Script '{scriptName}' is already defined.");
+                throw new ScriptCompilerException(group.Line, $"Script '{scriptName}' is already defined.");
 
             Scripts.Add(script);
         }
@@ -521,7 +521,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var scriptReturnType = ParseHsType(declTailGroup.Head);
 
@@ -538,9 +538,9 @@ namespace TagTool.Scripting.Compiler
 
             ScriptGroup declTailTailGroup;
             if (!skipReturnType && !(declTailGroup.Tail is ScriptGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else if (skipReturnType && !(declTailGroup.Head is ScriptSymbol))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else
             {
                 if (!skipReturnType)
@@ -567,7 +567,7 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Head is ScriptSymbol declGroupName))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         scriptName = declGroupName.Value;
 
@@ -576,10 +576,10 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Tail is ScriptGroup tailGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         if (!(tailGroup is ScriptGroup declParamGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         for (IScriptSyntax param = declParamGroup;
                             param is ScriptGroup paramGroup;
@@ -590,14 +590,14 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramGroup.Head is ScriptGroup paramDeclGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Get the parameter type
                             //
 
                             if (!(paramDeclGroup.Head is ScriptSymbol paramDeclType))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramType = ParseHsType(paramDeclType);
 
@@ -606,15 +606,15 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramDeclGroup.Tail is ScriptGroup paramDeclTailGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             if (!(paramDeclTailGroup.Head is ScriptSymbol paramDeclName))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramName = paramDeclName.Value;
 
                             if (!(paramDeclTailGroup.Tail is ScriptInvalid))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Add an entry to the script parameters list
@@ -630,7 +630,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new ScriptCompilerException(0, $"Malformed declaration.");
+                    throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             }
 
             HsScript script = null;
@@ -656,7 +656,7 @@ namespace TagTool.Scripting.Compiler
             }
 
             if (script == null)
-                throw new ScriptCompilerException(0, $"Script '{scriptName}' is not defined.");
+                throw new ScriptCompilerException(group.Line, $"Script '{scriptName}' is not defined.");
 
             CurrentScript = script;
 
@@ -1240,7 +1240,7 @@ namespace TagTool.Scripting.Compiler
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
 
-            throw new ScriptCompilerException(0, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
+            throw new ScriptCompilerException(node.Line, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
         }
 
         private DatumHandle AllocateExpression(HsType valueType, HsSyntaxNodeFlags expressionType, ushort? opcode = null, short? line = null)
@@ -1395,10 +1395,10 @@ namespace TagTool.Scripting.Compiler
         private DatumHandle CompileGroupExpression(HsType type, ScriptGroup group)
         {
             if (!(group.Head is ScriptSymbol functionNameSymbol))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             if (!(group.Tail is ScriptGroup) && !(group.Tail is ScriptInvalid))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             //
             // Handle special builtin functions
@@ -2498,7 +2498,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileCutsceneRecordingExpression(ScriptString cutsceneRecordingString) =>
-            throw new ScriptCompilerException(0, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(cutsceneRecordingString.Line, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
 
         private DatumHandle CompileDeviceGroupExpression(ScriptString deviceGroupString)
         {
@@ -2691,7 +2691,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAiCommandListExpression(ScriptString aiCommandListString) =>
-            throw new ScriptCompilerException(0, $"The type 'AiCommandList' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(aiCommandListString.Line, $"The type 'AiCommandList' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiCommandScriptExpression(ScriptSymbol aiCommandScriptSymbol)
         {
@@ -2719,10 +2719,10 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAiBehaviorExpression(ScriptString aiBehaviorString) =>
-            throw new ScriptCompilerException(0, $"The type 'AiBehavior' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(aiBehaviorString.Line, $"The type 'AiBehavior' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiOrdersExpression(ScriptString aiOrdersString) =>
-            throw new ScriptCompilerException(0, $"The type 'AiOrders' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(aiOrdersString.Line, $"The type 'AiOrders' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiLineExpression(ScriptString aiLineString)
         {
@@ -2773,7 +2773,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileConversationExpression(ScriptString conversationString) =>
-            throw new ScriptCompilerException(0, $"The type 'Conversation' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(conversationString.Line, $"The type 'Conversation' is not yet supported by the compiler.");
 
         private DatumHandle CompileZoneSetExpression(ScriptString zoneSetString)
         {
@@ -3143,7 +3143,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileLightmapDefinitionExpression(ScriptString lightmapDefinitionString) =>
-            throw new ScriptCompilerException(0, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(lightmapDefinitionString.Line, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
 
         private DatumHandle CompileCinematicDefinitionExpression(ScriptString cinematicDefinitionString)
         {
@@ -3343,7 +3343,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompilePlayerColorExpression(ScriptSymbol playerColorSymbol) =>
-            throw new ScriptCompilerException(0, $"The type 'PlayerColor' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(playerColorSymbol.Line, $"The type 'PlayerColor' is not yet supported by the compiler.");
 
         private DatumHandle CompilePlayerCharacterTypeExpression(ScriptSymbol playerCharacterTypeSymbol)
         {
@@ -3904,13 +3904,13 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAnimationBudgetReferenceExpression(ScriptString animationBudgetReferenceString) =>
-            throw new ScriptCompilerException(0, $"The type 'AnimationBudgetReference' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(animationBudgetReferenceString.Line, $"The type 'AnimationBudgetReference' is not yet supported by the compiler.");
 
         private DatumHandle CompileLoopingSoundBudgetReferenceExpression(ScriptString loopingSoundBudgetReferenceString) =>
-            throw new ScriptCompilerException(0, $"The type 'LoopingSoundBudgetReference' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(loopingSoundBudgetReferenceString.Line, $"The type 'LoopingSoundBudgetReference' is not yet supported by the compiler.");
 
         private DatumHandle CompileSoundBudgetReferenceExpression(ScriptString soundBudgetReferenceString) =>
-            throw new ScriptCompilerException(0, $"The type 'SoundBudgetReference' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(soundBudgetReferenceString.Line, $"The type 'SoundBudgetReference' is not yet supported by the compiler.");
 
         private void WriteTagToSourceFileReferences(ScriptString tagString)
         {
