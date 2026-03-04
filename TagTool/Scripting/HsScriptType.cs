@@ -6,7 +6,7 @@ namespace TagTool.Scripting
         Dormant,
         Continuous,
         Static,
-        CommandScript,
+        Command_Script,
         Stub,
         Extern
     }

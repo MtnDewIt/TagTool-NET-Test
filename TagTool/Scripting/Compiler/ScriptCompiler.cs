@@ -2705,7 +2705,7 @@ namespace TagTool.Scripting.Compiler
             {
                 var scriptIndex = Scripts.FindIndex(s =>
                     s.ScriptName == aiCommandScriptSymbol.Value &&
-                    s.Type == HsScriptType.CommandScript);
+                    s.Type == HsScriptType.Command_Script);
 
                 if (scriptIndex == -1)
                     throw new ScriptCompilerException(aiCommandScriptSymbol.Line, $"No command_script named '{aiCommandScriptSymbol.Value}' is defined.");
