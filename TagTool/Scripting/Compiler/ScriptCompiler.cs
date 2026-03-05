@@ -29,6 +29,7 @@ namespace TagTool.Scripting.Compiler
         private HsScript CurrentScript = null;
 
         private bool IgnoreExternDuplicates;
+        private bool EmitPaddingBlocks;
 
         public ScriptCompiler(GameCache cache, Scenario definition)
         {
@@ -46,8 +47,9 @@ namespace TagTool.Scripting.Compiler
             IgnoreExternDuplicates = false;
         }
 
-        public void AppendCompileFile(FileInfo file)
+        public void AppendCompileFile(FileInfo file, bool emitPaddingBlocks = false)
         {
+            EmitPaddingBlocks = emitPaddingBlocks;
             IgnoreExternDuplicates = true;
 
             //
@@ -76,11 +78,12 @@ namespace TagTool.Scripting.Compiler
             ScriptSourceFileReferences = Definition.ScriptSourceFileReferences;
 
             //proceed normally
-            CompileFile(file);
+            CompileFile(file, EmitPaddingBlocks);
         }
 
-        public void CompileFile(FileInfo file)
+        public void CompileFile(FileInfo file, bool emitPaddingBlocks = false)
         {
+            EmitPaddingBlocks = emitPaddingBlocks;
             if (!file.Exists)
                 throw new FileNotFoundException(file.FullName);
 
@@ -164,10 +167,12 @@ namespace TagTool.Scripting.Compiler
                             {
                                 case "global":
                                     CompileGlobal(group);
+                                    if (EmitPaddingBlocks) EmitScriptPaddingBlocks();
                                     break;
 
                                 case "script":
                                     CompileScript(group);
+                                    if (EmitPaddingBlocks) EmitScriptPaddingBlocks();
                                     break;
                             }
                             break;
@@ -1247,6 +1252,25 @@ namespace TagTool.Scripting.Compiler
             }
 
             throw new ScriptCompilerException(node.Line, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
+        }
+
+        private void EmitScriptPaddingBlocks()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                ScriptExpressions.Add(new HsSyntaxNode
+                {
+                    Identifier          = 0,
+                    Opcode              = 0xBABA,
+                    ValueType           = HsType.Invalid,
+                    Flags               = HsSyntaxNodeFlags.Invalid,
+                    NextExpressionHandle = new DatumHandle(0xBABA, 0xBABA),
+                    StringAddress       = 0xBABABABA,
+                    Data                = new byte[] { 0xBA, 0xBA, 0xBA, 0xBA },
+                    LineNumber          = unchecked((short)0xBABA),
+                    Unknown             = unchecked((short)0xBABA),
+                });
+            }
         }
 
         private DatumHandle AllocateExpression(HsType valueType, HsSyntaxNodeFlags expressionType, ushort? opcode = null, short? line = null)
@@ -2647,7 +2671,7 @@ namespace TagTool.Scripting.Compiler
                         }
 
                     default:
-                        throw new ScriptCompilerException(aiString.Line, $"No AI reference named '{aiString.Value}' found in the scenario. Expected format: 'squad', 'squad/group', or 'squad/group/actor'.");
+                        throw new ScriptCompilerException(aiString.Line, $"No AI reference named '{aiString.Value}' found in the scenario. Expected format: 'squad', 'squad_group', 'objective', 'squad/spawn_point', 'squad/spawn_formation', or 'objective/task'.");
                 }
 
                 expr.StringAddress = CompileStringAddress(aiString.Value);
