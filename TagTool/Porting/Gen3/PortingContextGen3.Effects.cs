@@ -50,7 +50,7 @@ namespace TagTool.Porting.Gen3
 
                     if (BlamCache.Version >= CacheVersion.HaloReach)
                     {
-                        Enum.TryParse(particleSystem.ReachFlags.ToString(), out particleSystem.Flags);
+                        particleSystem.Flags = particleSystem.ReachFlags.ConvertLexical<Effect.Event.ParticleSystem.ParticleSystemFlags>();
 
                         for (int i = 0; i < particleSystem.Emitters.Count; i++)
                         {
