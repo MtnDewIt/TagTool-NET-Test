@@ -1254,9 +1254,9 @@ namespace TagTool.Scripting.Compiler
             throw new ScriptCompilerException(node.Line, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
         }
 
-        private void EmitScriptPaddingBlocks()
+        private void EmitScriptPaddingBlocks(int count = 5)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < count; i++)
             {
                 ScriptExpressions.Add(new HsSyntaxNode
                 {
@@ -1422,6 +1422,62 @@ namespace TagTool.Scripting.Compiler
             return (ushort)VersionedEnum.ExportValue(typeof(HsType), type, Cache.Version, Cache.Platform);
         }
 
+        private DatumHandle CompileCondRecursive(
+            HsType type,
+            int line,
+            List<(IScriptSyntax condition, ScriptGroup bodyGroup)> cases,
+            int caseIndex)
+        {
+            var ifBuiltin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "if");
+
+            // Base case: no more pairs — emit terminal default primitive (type, value=0)
+            if (caseIndex >= cases.Count)
+            {
+                var termHandle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)line);
+                Array.Copy(BitConverter.GetBytes(0), ScriptExpressions[termHandle.Index].Data, 4);
+                return termHandle;
+            }
+
+            var (condition, bodyGroup) = cases[caseIndex];
+
+            // Allocate if group
+            var ifHandle = AllocateExpression(type, HsSyntaxNodeFlags.Group, (ushort)ifBuiltin.Key, (short)line);
+            var ifExpr = ScriptExpressions[ifHandle.Index];
+
+            // Allocate if function-name predicate node
+            var fnHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)ifBuiltin.Key, (short)line);
+            var fnExpr = ScriptExpressions[fnHandle.Index];
+            fnExpr.StringAddress = CompileStringAddress("if");
+            Array.Copy(BitConverter.GetBytes(fnHandle.Value), ifExpr.Data, 4);
+            Array.Copy(BitConverter.GetBytes(0), fnExpr.Data, 4);
+
+            // Compile condition as boolean
+            var condHandle = CompileExpression(HsType.Boolean, condition);
+            var condExpr = ScriptExpressions[condHandle.Index];
+            fnExpr.NextExpressionHandle = condHandle;
+
+            // Compile body — wrap in implicit begin unless it already is one
+            bool bodyIsAlreadyBegin = bodyGroup.Head is ScriptGroup bg &&
+                                      bg.Head is ScriptSymbol bs &&
+                                      bs.Value == "begin" &&
+                                      bodyGroup.Tail is ScriptInvalid;
+            var bodyHandle = bodyIsAlreadyBegin
+                ? CompileExpression(type, bodyGroup.Head)
+                : CompileExpression(type, new ScriptGroup { Head = new ScriptSymbol { Value = "begin" }, Tail = bodyGroup });
+            var bodyExpr = ScriptExpressions[bodyHandle.Index];
+            condExpr.NextExpressionHandle = bodyHandle;
+
+            // Propagate resolved type when parent is Unparsed
+            if (type == HsType.Unparsed)
+                ifExpr.ValueType = bodyExpr.ValueType;
+
+            // Compile else branch recursively (next case or terminal default)
+            var elseHandle = CompileCondRecursive(type, line, cases, caseIndex + 1);
+            bodyExpr.NextExpressionHandle = elseHandle;
+
+            return ifHandle;
+        }
+
         private DatumHandle CompileGroupExpression(HsType type, ScriptGroup group)
         {
             if (!(group.Head is ScriptSymbol functionNameSymbol))
@@ -1544,94 +1600,18 @@ namespace TagTool.Scripting.Compiler
 
                 case "cond":
                     {
-                        // cond compiles to nested if expressions.
-                        // (cond ((= a 0) body0) ((= a 1) body1)) becomes:
-                        //
-                        // if Group
-                        //   FnName.next -> boolGroup[0]
-                        //   boolGroup[0].next -> body[0]
-                        //   body[0].next -> inner_if Group  (or NONE for last case)
-                        //     inner_if FnName.next -> boolGroup[1]
-                        //     boolGroup[1].next -> body[1]
-                        //     body[1].next -> ... (or NONE)
-
-                        var ifBuiltin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == "if");
-
-                        // Collect cases first
-                        var cases = new System.Collections.Generic.List<(IScriptSyntax condition, IScriptSyntax thenGroup)>();
+                        var cases = new List<(IScriptSyntax condition, ScriptGroup bodyGroup)>();
                         for (IScriptSyntax cur = group.Tail; cur is ScriptGroup cg; cur = cg.Tail)
                         {
-                            if (!(cg.Head is ScriptGroup condGroup) || !(condGroup.Tail is ScriptGroup thenGroup))
+                            if (!(cg.Head is ScriptGroup condGroup) || !(condGroup.Tail is ScriptGroup bodyGroup))
                                 throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
-                            cases.Add((condGroup.Head, thenGroup));
+                            cases.Add((condGroup.Head, bodyGroup));
                         }
 
                         if (cases.Count == 0)
                             throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                        // Build innermost to outermost so body[N].next can point to inner_if[N+1]
-                        // We compile inside-out: start from the last case, work backwards.
-                        // But AllocateExpression must be in forward order for correct indexing.
-                        // Instead compile forward and patch body.next after each inner if is allocated.
-
-                        // Allocate the outermost if group first
-                        var outerHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)ifBuiltin.Key, (short)group.Line);
-                        var outerExpr = ScriptExpressions[outerHandle.Index];
-
-                        var outerFnHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)ifBuiltin.Key, (short)group.Line);
-                        var outerFnExpr = ScriptExpressions[outerFnHandle.Index];
-                        outerFnExpr.StringAddress = CompileStringAddress("if");
-                        Array.Copy(BitConverter.GetBytes(outerFnHandle.Value), outerExpr.Data, 4);
-                        Array.Copy(BitConverter.GetBytes(0), outerFnExpr.Data, 4);
-
-                        HsSyntaxNode prevFnExpr = outerFnExpr;
-
-                        for (int i = 0; i < cases.Count; i++)
-                        {
-                            var (condition, thenGroupSyntax) = cases[i];
-                            var thenGroup = (ScriptGroup)thenGroupSyntax;
-
-                            // Compile condition
-                            var boolHandle = CompileExpression(HsType.Boolean, condition);
-                            var boolExpr = ScriptExpressions[boolHandle.Index];
-
-                            // Wire previous FnName -> this condition
-                            prevFnExpr.NextExpressionHandle = boolHandle;
-
-                            // Compile body
-                            var bodyHandle = thenGroup.Tail is ScriptInvalid
-                                ? CompileExpression(HsType.Void, thenGroup.Head)
-                                : CompileExpression(HsType.Void, new ScriptGroup { Head = new ScriptSymbol { Value = "begin" }, Tail = thenGroup });
-                            var bodyExpr = ScriptExpressions[bodyHandle.Index];
-
-                            // condition.next -> body
-                            boolExpr.NextExpressionHandle = bodyHandle;
-
-                            // Wire previous body.next -> this condition's if group
-                            // (for i>0, prevBodyExpr is body[i-1] which needs to point to this inner if)
-                            // We do this BEFORE allocating the inner if so we can patch it
-                            // Actually we need the inner if handle - allocate it now if not last case
-                            if (i + 1 < cases.Count)
-                            {
-                                // Allocate inner if group for next case
-                                var innerHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)ifBuiltin.Key, (short)group.Line);
-                                var innerExpr = ScriptExpressions[innerHandle.Index];
-
-                                var innerFnHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)ifBuiltin.Key, (short)group.Line);
-                                var innerFnExpr = ScriptExpressions[innerFnHandle.Index];
-                                innerFnExpr.StringAddress = CompileStringAddress("if");
-                                Array.Copy(BitConverter.GetBytes(innerFnHandle.Value), innerExpr.Data, 4);
-                                Array.Copy(BitConverter.GetBytes(0), innerFnExpr.Data, 4);
-
-                                // body[i].next -> inner_if[i+1]
-                                bodyExpr.NextExpressionHandle = innerHandle;
-
-                                prevFnExpr = innerFnExpr;
-                            }
-                            // last case: body.next stays NONE
-                        }
-
-                        return outerHandle;
+                        return CompileCondRecursive(type, group.Line, cases, 0);
                     }
 
                 case "set":

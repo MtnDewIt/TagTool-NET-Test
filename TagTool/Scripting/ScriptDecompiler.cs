@@ -253,9 +253,26 @@ namespace TagTool.Scripting
             if (expr.ChildExpressions.Count > 1)
             {
                 var body = expr.ChildExpressions[1];
-                WriteExpression(body, indentWriter);
-                if (body.Type != GenericExpression.ExpressionType.MultilineGroup)
-                    indentWriter.WriteLine();
+
+                // If the body is a begin group, write its children directly to avoid
+                // double-begin when the bytecode already has an implicit begin wrapper.
+                if ((body.Type == GenericExpression.ExpressionType.MultilineGroup ||
+                     body.Type == GenericExpression.ExpressionType.Group) &&
+                    body.Name == "begin")
+                {
+                    foreach (var child in body.ChildExpressions.Skip(1)) // skip the "begin" fnname child
+                    {
+                        WriteExpression(child, indentWriter);
+                        if (child.Type != GenericExpression.ExpressionType.MultilineGroup)
+                            indentWriter.WriteLine();
+                    }
+                }
+                else
+                {
+                    WriteExpression(body, indentWriter);
+                    if (body.Type != GenericExpression.ExpressionType.MultilineGroup)
+                        indentWriter.WriteLine();
+                }
             }
             indentWriter.Indent--;
             indentWriter.WriteLine(')');
