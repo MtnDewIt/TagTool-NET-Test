@@ -15,13 +15,14 @@ namespace TagTool.Commands.Scenarios
         private GameCache Cache { get; }
         private Scenario Definition { get; }
         private bool OmitData { get; set; }
+        private bool OnlyDiffs { get; set; }
 
         public DiffScriptsCommand(GameCache cache, Scenario definition) :
             base(true,
                 "DiffScripts",
                 "Diff script expression blocks between this scenario and another.",
 
-                "DiffScripts <other_tag> [script_name|script_index|start_index-end_index] [omit_data]",
+                "DiffScripts <other_tag> [script_name|script_index|start_index-end_index] [omit_data] [only_diffs]",
 
                 "Compares script expression blocks between the current scenario and another.\n" +
                 "Prints a decompiled representation of each script and highlights differences in:\n" +
@@ -51,13 +52,15 @@ namespace TagTool.Commands.Scenarios
 
             // Parse remaining args: optional flags and optional script selector
             OmitData = false;
+            OnlyDiffs = false;
             string selector = null;
 
             for (int i = 1; i < args.Count; i++)
             {
                 switch (args[i])
                 {
-                    case "omit_data": OmitData = true; break;
+                    case "omit_data":   OmitData = true;   break;
+                    case "only_diffs":  OnlyDiffs = true;  break;
                     default:
                         if (selector != null)
                             return new TagToolError(CommandError.ArgInvalid, $"Unexpected argument '{args[i]}'.");
@@ -88,11 +91,66 @@ namespace TagTool.Commands.Scenarios
                 var thisScript  = Definition.Scripts[thisIdx];
                 var otherScript = other.Scripts[otherIdx];
 
+                // Collect expression ranges and diff first
+                var thisExprs  = CollectScriptExpressions(Definition, thisIdx);
+                var otherExprs = CollectScriptExpressions(other, otherIdx);
+
+                int maxCount = Math.Max(thisExprs.Count, otherExprs.Count);
+                bool anyDiff = false;
+                var diffLines = new List<Action>(); // deferred print
+
+                for (int i = 0; i < maxCount; i++)
+                {
+                    bool hasThis  = i < thisExprs.Count;
+                    bool hasOther = i < otherExprs.Count;
+
+                    if (hasThis  && IsPaddingBlock(thisExprs[i]))  continue;
+                    if (hasOther && IsPaddingBlock(otherExprs[i])) continue;
+
+                    if (!hasThis)
+                    {
+                        anyDiff = true;
+                        int ci = i;
+                        diffLines.Add(() => { WriteColored($"  [{ci}] ONLY IN OTHER: {FormatExpr(otherExprs[ci])}", ConsoleColor.Red); Console.WriteLine(); });
+                        continue;
+                    }
+
+                    if (!hasOther)
+                    {
+                        anyDiff = true;
+                        int ci = i;
+                        diffLines.Add(() => { WriteColored($"  [{ci}] ONLY IN THIS: {FormatExpr(thisExprs[ci])}", ConsoleColor.Red); Console.WriteLine(); });
+                        continue;
+                    }
+
+                    var t = thisExprs[i];
+                    var o = otherExprs[i];
+                    var diffs = GetExprDiffs(t, o);
+                    if (diffs.Count == 0)
+                        continue;
+
+                    anyDiff = true;
+                    int fi = i;
+                    var td = t; var od = o; var fd = diffs;
+                    diffLines.Add(() =>
+                    {
+                        Console.Write($"  [{fi}]  THIS:  ");
+                        PrintExprWithDiffs(td, fd, ConsoleColor.Green);
+                        Console.WriteLine();
+                        Console.Write($"  [{fi}] OTHER:  ");
+                        PrintExprWithDiffs(od, fd, ConsoleColor.Red);
+                        Console.WriteLine();
+                    });
+                }
+
+                // Only print anything if there were differences (or OnlyDiffs not set)
+                if (OnlyDiffs && !anyDiff)
+                    continue;
+
                 Console.WriteLine();
                 WriteColored($"=== Script: {thisScript.ScriptName} ===", ConsoleColor.Cyan);
                 Console.WriteLine();
 
-                // Print decompiled source for both
                 WriteColored("-- This --", ConsoleColor.Yellow);
                 Console.WriteLine();
                 if (thisDecomp.TryGetValue(thisScript.ScriptName, out var thisText))
@@ -103,57 +161,11 @@ namespace TagTool.Commands.Scenarios
                 if (otherDecomp.TryGetValue(otherScript.ScriptName, out var otherText))
                     Console.WriteLine(otherText);
 
-                // Collect expression ranges
-                var thisExprs  = CollectScriptExpressions(Definition, thisIdx);
-                var otherExprs = CollectScriptExpressions(other, otherIdx);
-
                 WriteColored("-- Expression Diff --", ConsoleColor.Yellow);
                 Console.WriteLine();
 
-                int maxCount = Math.Max(thisExprs.Count, otherExprs.Count);
-                bool anyDiff = false;
-
-                for (int i = 0; i < maxCount; i++)
-                {
-                    bool hasThis  = i < thisExprs.Count;
-                    bool hasOther = i < otherExprs.Count;
-
-                    // Skip padding blocks (0xBA fill)
-                    if (hasThis  && IsPaddingBlock(thisExprs[i]))  continue;
-                    if (hasOther && IsPaddingBlock(otherExprs[i])) continue;
-
-
-                    if (!hasThis)
-                    {
-                        WriteColored($"  [{i}] ONLY IN OTHER: {FormatExpr(otherExprs[i])}", ConsoleColor.Red);
-                        Console.WriteLine();
-                        anyDiff = true;
-                        continue;
-                    }
-
-                    if (!hasOther)
-                    {
-                        WriteColored($"  [{i}] ONLY IN THIS: {FormatExpr(thisExprs[i])}", ConsoleColor.Red);
-                        Console.WriteLine();
-                        anyDiff = true;
-                        continue;
-                    }
-
-                    var t = thisExprs[i];
-                    var o = otherExprs[i];
-
-                    var diffs = GetExprDiffs(t, o);
-                    if (diffs.Count == 0)
-                        continue;
-
-                    anyDiff = true;
-                    Console.Write($"  [{i}]  THIS:  ");
-                    PrintExprWithDiffs(t, diffs, ConsoleColor.Green);
-                    Console.WriteLine();
-                    Console.Write($"  [{i}] OTHER:  ");
-                    PrintExprWithDiffs(o, diffs, ConsoleColor.Red);
-                    Console.WriteLine();
-                }
+                foreach (var line in diffLines)
+                    line();
 
                 if (!anyDiff)
                 {
