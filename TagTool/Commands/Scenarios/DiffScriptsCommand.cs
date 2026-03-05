@@ -14,13 +14,14 @@ namespace TagTool.Commands.Scenarios
     {
         private GameCache Cache { get; }
         private Scenario Definition { get; }
+        private bool OmitData { get; set; }
 
         public DiffScriptsCommand(GameCache cache, Scenario definition) :
             base(true,
                 "DiffScripts",
                 "Diff script expression blocks between this scenario and another.",
 
-                "DiffScripts <other_tag> [script_name|script_index|start_index-end_index]",
+                "DiffScripts <other_tag> [script_name|script_index|start_index-end_index] [omit_data]",
 
                 "Compares script expression blocks between the current scenario and another.\n" +
                 "Prints a decompiled representation of each script and highlights differences in:\n" +
@@ -37,7 +38,7 @@ namespace TagTool.Commands.Scenarios
 
         public override object Execute(List<string> args)
         {
-            if (args.Count < 1 || args.Count > 2)
+            if (args.Count < 1)
                 return new TagToolError(CommandError.ArgCount);
 
             // --- Load other scenario ---
@@ -48,9 +49,26 @@ namespace TagTool.Commands.Scenarios
             using (var stream = Cache.OpenCacheRead())
                 other = Cache.Deserialize<Scenario>(stream, otherTagInstance);
 
+            // Parse remaining args: optional flags and optional script selector
+            OmitData = false;
+            string selector = null;
+
+            for (int i = 1; i < args.Count; i++)
+            {
+                switch (args[i])
+                {
+                    case "omit_data": OmitData = true; break;
+                    default:
+                        if (selector != null)
+                            return new TagToolError(CommandError.ArgInvalid, $"Unexpected argument '{args[i]}'.");
+                        selector = args[i];
+                        break;
+                }
+            }
+
             // --- Resolve which scripts to compare ---
             // Returns list of (thisIndex, otherIndex) pairs matched by name
-            var pairs = ResolveScriptPairs(Definition, other, args.Count == 2 ? args[1] : null);
+            var pairs = ResolveScriptPairs(Definition, other, selector);
             if (pairs == null)
                 return false;
 
@@ -270,8 +288,8 @@ namespace TagTool.Commands.Scenarios
             if (a.ValueType != b.ValueType) diffs.Add("ValueType");
             if (a.Flags     != b.Flags)     diffs.Add("Flags");
 
-            // Skip data diff for Real to avoid float precision noise
-            if (a.ValueType != HsType.Real && b.ValueType != HsType.Real)
+            // Skip data diff when omit_data is set, or for Real to avoid float precision noise
+            if (!OmitData && a.ValueType != HsType.Real && b.ValueType != HsType.Real)
                 if (!a.Data.SequenceEqual(b.Data))
                     diffs.Add("Data");
 
@@ -280,14 +298,16 @@ namespace TagTool.Commands.Scenarios
 
         private void PrintExprWithDiffs(HsSyntaxNode expr, List<string> diffFields, ConsoleColor highlightColor)
         {
-            // Print each field, highlighting diffed ones
-            PrintField("Opcode",    $"0x{expr.Opcode:X3}",              diffFields, highlightColor);
+            PrintField("Opcode",    $"0x{expr.Opcode:X3}",           diffFields, highlightColor);
             Console.Write("  ");
-            PrintField("ValueType", expr.ValueType.ToString(),           diffFields, highlightColor);
+            PrintField("ValueType", expr.ValueType.ToString(),        diffFields, highlightColor);
             Console.Write("  ");
-            PrintField("Flags",     expr.Flags.ToString(),               diffFields, highlightColor);
-            Console.Write("  ");
-            PrintField("Data",      BitConverter.ToString(expr.Data),    diffFields, highlightColor);
+            PrintField("Flags",     expr.Flags.ToString(),            diffFields, highlightColor);
+            if (!OmitData)
+            {
+                Console.Write("  ");
+                PrintField("Data",  BitConverter.ToString(expr.Data), diffFields, highlightColor);
+            }
         }
 
         private void PrintField(string fieldName, string value, List<string> diffFields, ConsoleColor highlightColor)
