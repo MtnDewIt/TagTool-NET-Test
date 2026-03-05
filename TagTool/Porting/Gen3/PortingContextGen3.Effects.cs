@@ -44,7 +44,7 @@ namespace TagTool.Porting.Gen3
                     {
                         particleSystem.NearRange = 1 / particleSystem.NearRange;
 
-                        if (particleSystem.Flags.HasFlag(Effect.Event.ParticleSystem.ParticleSystemFlags.OverrideNearFade))
+                        if (particleSystem.Flags.HasFlag(Effect.Event.ParticleSystem.ParticleSystemFlags.OverrideNearFadeUseWithCaution))
                             particleSystem.NearCutoff = particleSystem.NearFadeOverride;
                     }
 
