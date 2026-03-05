@@ -1826,16 +1826,7 @@ namespace TagTool.Scripting.Compiler
                         if (!(group.Tail is ScriptGroup tailGroup))
                             throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
-                        switch (tailGroup.Head)
-                        {
-                            case ScriptInteger _:
-                                functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Short, tailGroup.Head);
-                                break;
-
-                            default:
-                                functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Unparsed, tailGroup.Head);
-                                break;
-                        }
+                        functionNameExpr.NextExpressionHandle = CompileExpression(HsType.Short, tailGroup.Head);
 
                         if (tailGroup.Tail is ScriptInvalid)
                             return handle;
