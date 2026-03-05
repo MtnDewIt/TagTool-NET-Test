@@ -690,6 +690,9 @@ namespace TagTool.Scripting.Compiler
                         // unit -> object_list), emit the node with the TARGET type so the
                         // engine interprets the runtime handle in the correct type context.
                         // Otherwise keep the parameter's natural declared type.
+                        if (type == HsType.Unit && !IsImplicitlyCastable(parameter.Type, HsType.Unit))
+                            Log.Warning($"Line {symbol.Line}: '{symbol.Value}' has type '{parameter.Type}' which cannot be implicitly cast to 'unit'. Use the (unit) cast function instead.");
+
                         var emitType = IsImplicitlyCastable(parameter.Type, type) ? type : parameter.Type;
                         return CompileParameterReference(symbol, parameter, emitType);
                     }
@@ -703,6 +706,9 @@ namespace TagTool.Scripting.Compiler
                 {
                     if (global.Name != symbol.Value)
                         continue;
+
+                    if (type == HsType.Unit && !IsImplicitlyCastable(global.Type, HsType.Unit))
+                        Log.Warning($"Line {symbol.Line}: '{symbol.Value}' has type '{global.Type}' which cannot be implicitly cast to 'unit'. Use the (unit) cast function instead.");
 
                     var emitType = IsImplicitlyCastable(global.Type, type) ? type : global.Type;
                     return CompileGlobalReference(symbol, global, emitType);
@@ -829,9 +835,9 @@ namespace TagTool.Scripting.Compiler
 
                 case HsType.Ai:
                     if (node is ScriptSymbol aiSymbol && aiSymbol.Value == "none")
-                        return CompileAiExpression(new ScriptString { Value = "none" });
+                        return CompileAiExpression(new ScriptString { Value = "none" }, type);
                     else if (node is ScriptString aiString)
-                        return CompileAiExpression(aiString);
+                        return CompileAiExpression(aiString, type);
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiCommandList:
@@ -1351,20 +1357,20 @@ namespace TagTool.Scripting.Compiler
                 case HsType.Short:
                     return sourceType == HsType.Long || sourceType == HsType.Real;
 
-                // object accepts any object subtype or any object-name type
+                // object accepts any object subtype, any object-name type, or an AI reference
                 case HsType.Object:
-                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType);
+                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType) || sourceType == HsType.Ai;
 
-                // unit accepts vehicle (a vehicle IS a unit at the HaloScript level)
-                // also accepts unit_name / vehicle_name references
+                // unit accepts vehicle, unit_name, vehicle_name, or an AI reference
                 case HsType.Unit:
                     return sourceType == HsType.Vehicle
                         || sourceType == HsType.UnitName
-                        || sourceType == HsType.VehicleName;
+                        || sourceType == HsType.VehicleName
+                        || sourceType == HsType.Ai;
 
                 // specific subtypes accept their matching _name counterpart
                 case HsType.Vehicle:
-                    return sourceType == HsType.Object || sourceType == HsType.VehicleName;
+                    return sourceType == HsType.Object || sourceType == HsType.VehicleName || sourceType == HsType.Ai;
 
                 case HsType.Weapon:
                     return sourceType == HsType.Object || sourceType == HsType.WeaponName;
@@ -1378,9 +1384,9 @@ namespace TagTool.Scripting.Compiler
                 case HsType.EffectScenery:
                     return sourceType == HsType.Object || sourceType == HsType.EffectSceneryName;
 
-                // object_list accepts a single object/object_name; engine wraps it into a list
+                // object_list accepts a single object/object_name or an AI reference
                 case HsType.ObjectList:
-                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType);
+                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType) || sourceType == HsType.Ai;
 
                 default:
                     return false;
@@ -2525,45 +2531,18 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private bool TryGetAiEncodedValue(string value, out int encodedValue)
+        private DatumHandle CompileAiExpression(ScriptString aiString, HsType emitType = HsType.Ai)
         {
-            encodedValue = 0;
-            if (string.IsNullOrEmpty(value) || value == "none")
-                return false;
-            var tokens = value.Split('/');
-            if (tokens.Length == 1)
-            {
-                // Squad
-                var si = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
-                if (si != -1) { encodedValue = (1 << 29) | (si & 0xFFFF); return true; }
-                // Squad group
-                var sgi = Definition.SquadGroups.FindIndex(sg => sg.Name == tokens[0]);
-                if (sgi != -1) { encodedValue = (2 << 29) | (sgi & 0xFFFF); return true; }
-                // Note: objectives are not included - they are AI logic tasks, not physical objects
-            }
-            else if (tokens.Length == 2)
-            {
-                var si = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
-                if (si != -1)
-                {
-                    var squad = Definition.Squads[si];
-                    // Spawn point
-                    var spi = squad.SpawnPoints.FindIndex(sp => tokens[1] == Cache.StringTable.GetString(sp.Name));
-                    if (spi != -1) { encodedValue = (4 << 29) | ((si & 0x1FFF) << 16) | (spi & 0xFF); return true; }
-                    // Spawn formation
-                    var sfi = squad.SpawnFormations.FindIndex(sf => tokens[1] == Cache.StringTable.GetString(sf.Name));
-                    if (sfi != -1) { encodedValue = (5 << 29) | ((si & 0x1FFF) << 16) | (sfi & 0xFF); return true; }
-                }
-            }
-            return false;
-        }
-
-        private DatumHandle CompileAiExpression(ScriptString aiString)
-        {
-            var handle = AllocateExpression(HsType.Ai, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiString.Line);
+            // The expression ValueType reflects the slot context (e.g. Object, Unit) so the
+            // engine places the value correctly, but the opcode must always be HsType.Ai (0x13)
+            // so the engine knows to interpret the encoded value as an AI reference.
+            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiString.Line);
 
             if (handle != DatumHandle.None)
             {
+                var expr = ScriptExpressions[handle.Index];
+                expr.Opcode = GetHsTypeAsInteger(HsType.Ai);
+
                 var tokens = aiString.Value.Split('/');
                 var value = 0;
 
@@ -2586,9 +2565,6 @@ namespace TagTool.Scripting.Compiler
                             if (squadIndex != -1)
                             {
                                 value = (1 << 29) | (squadIndex & 0xFFFF);
-                                var expr = ScriptExpressions[handle.Index];
-                                expr.StringAddress = CompileStringAddress(aiString.Value);
-                                Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                 break;
                             }
 
@@ -2641,9 +2617,6 @@ namespace TagTool.Scripting.Compiler
                                 if (spawnPointIndex != -1)
                                 {
                                     value = (4 << 29) | ((squadIndex & 0x1FFF) << 16) | (spawnPointIndex & 0xFF);
-                                    var expr = ScriptExpressions[handle.Index];
-                                    expr.StringAddress = CompileStringAddress(aiString.Value);
-                                    Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                     break;
                                 }
 
@@ -2685,6 +2658,9 @@ namespace TagTool.Scripting.Compiler
                     default:
                         throw new ScriptCompilerException(aiString.Line, $"No AI reference named '{aiString.Value}' found in the scenario. Expected format: 'squad', 'squad/group', or 'squad/group/actor'.");
                 }
+
+                expr.StringAddress = CompileStringAddress(aiString.Value);
+                Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
             }
 
             return handle;
@@ -2894,17 +2870,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectListString.Value);
 
                 if (objectListString.Value != "none" && objectIndex == -1)
-                {
-                    if (TryGetAiEncodedValue(objectListString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(objectListString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(objectListString.Line, $"No object name or AI reference named '{objectListString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(objectListString, HsType.ObjectList);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectListString.Value);
@@ -3556,19 +3522,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectString.Value);
 
                 if (objectString.Value != "none" && objectIndex == -1)
-                {
-                    // Try resolving as an AI reference (squad or squad/spawnpoint).
-                    // The engine accepts the AI-encoded value for object-typed parameters.
-                    if (TryGetAiEncodedValue(objectString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(objectString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(objectString.Line, $"No object or AI reference named '{objectString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(objectString, HsType.Object);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectString.Value);
@@ -3589,17 +3543,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == unitString.Value);
 
                 if (unitString.Value != "none" && unitIndex == -1)
-                {
-                    if (TryGetAiEncodedValue(unitString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(unitString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(unitString.Line, $"No unit or AI reference named '{unitString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(unitString, HsType.Unit);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(unitString.Value);
@@ -3621,17 +3565,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
 
                 if (vehicleString.Value != "none" && vehicleIndex == -1)
-                {
-                    if (TryGetAiEncodedValue(vehicleString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(vehicleString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(vehicleString.Line, $"No vehicle or AI reference named '{vehicleString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(vehicleString, HsType.Vehicle);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(vehicleString.Value);
