@@ -166,13 +166,13 @@ namespace TagTool.Scripting.Compiler
                             switch (symbol.Value)
                             {
                                 case "global":
-                                    CompileGlobal(group);
                                     if (EmitPaddingBlocks) EmitScriptPaddingBlocks();
+                                    CompileGlobal(group);
                                     break;
 
                                 case "script":
-                                    CompileScript(group);
                                     if (EmitPaddingBlocks) EmitScriptPaddingBlocks();
+                                    CompileScript(group);
                                     break;
                             }
                             break;

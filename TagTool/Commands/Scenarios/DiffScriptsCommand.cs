@@ -221,20 +221,29 @@ namespace TagTool.Commands.Scenarios
         {
             var result = new List<HsSyntaxNode>();
             var script = scnr.Scripts[scriptIndex];
-            int start = script.RootExpressionHandle.Index;
+            int root = script.RootExpressionHandle.Index;
 
-            // Gather contiguous block from root until we hit another script's root
-            // or run out. We walk ALL reachable nodes via index ordering from root.
-            // Simpler: collect the flat range from root up to next script root.
-            int end = scnr.ScriptExpressions.Count;
-            for (int si = 0; si < scnr.Scripts.Count; si++)
+            // Find the lower bound: the highest root index that is still below our root,
+            // i.e. the previous script/global's root. Used as a fallback when no padding exists.
+            int lowerBound = 0;
+            foreach (var s in scnr.Scripts)
             {
-                int ri = scnr.Scripts[si].RootExpressionHandle.Index;
-                if (ri > start && ri < end)
-                    end = ri;
+                int ri = s.RootExpressionHandle.Index;
+                if (ri < root && ri > lowerBound)
+                    lowerBound = ri;
+            }
+            foreach (var g in scnr.Globals)
+            {
+                int gi = g.InitializationExpressionHandle.Index;
+                if (gi < root && gi > lowerBound)
+                    lowerBound = gi;
             }
 
-            for (int i = start; i < end; i++)
+            // Expressions are compiled in reverse — body first at lower indexes,
+            // root wrapper last at the highest index. Walk backwards from root,
+            // stopping at padding (Bungie emits 5 padding blocks before each script)
+            // or at the lower bound if no padding is present.
+            for (int i = root; i > lowerBound; i--)
             {
                 var expr = scnr.ScriptExpressions[i];
                 if (IsPaddingBlock(expr))
@@ -242,6 +251,8 @@ namespace TagTool.Commands.Scenarios
                 result.Add(expr);
             }
 
+            // Reverse so index 0 = first body expression, last = root wrapper
+            result.Reverse();
             return result;
         }
 
