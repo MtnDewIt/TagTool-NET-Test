@@ -243,10 +243,10 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             if (!(declTailGroup.Head is ScriptSymbol declName))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var globalName = declName.Value;
 
@@ -255,7 +255,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declTailGroup.Tail is ScriptGroup declTailTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var globalInit = CompileExpression(globalType, declTailTailGroup.Head);
 
@@ -297,7 +297,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var scriptReturnType = ParseHsType(declTailGroup.Head);
 
@@ -314,9 +314,9 @@ namespace TagTool.Scripting.Compiler
 
             ScriptGroup declTailTailGroup;
             if (!skipReturnType && !(declTailGroup.Tail is ScriptGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else if (skipReturnType && !(declTailGroup.Head is ScriptSymbol))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else
             {
                 if (!skipReturnType)
@@ -343,7 +343,7 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Head is ScriptSymbol declGroupName))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         scriptName = declGroupName.Value;
 
@@ -352,10 +352,10 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Tail is ScriptGroup tailGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         if (!(tailGroup is ScriptGroup declParamGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         for (IScriptSyntax param = declParamGroup;
                             param is ScriptGroup paramGroup;
@@ -366,14 +366,14 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramGroup.Head is ScriptGroup paramDeclGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Get the parameter type
                             //
 
                             if (!(paramDeclGroup.Head is ScriptSymbol paramDeclType))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramType = ParseHsType(paramDeclType);
 
@@ -382,15 +382,15 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramDeclGroup.Tail is ScriptGroup paramDeclTailGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             if (!(paramDeclTailGroup.Head is ScriptSymbol paramDeclName))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramName = paramDeclName.Value;
 
                             if (!(paramDeclTailGroup.Tail is ScriptInvalid))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Add an entry to the script parameters list
@@ -406,7 +406,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new ScriptCompilerException(0, $"Malformed declaration.");
+                    throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             }
 
             //
@@ -448,7 +448,7 @@ namespace TagTool.Scripting.Compiler
             }
 
             if (exists)
-                throw new ScriptCompilerException(0, $"Script '{scriptName}' is already defined.");
+                throw new ScriptCompilerException(group.Line, $"Script '{scriptName}' is already defined.");
 
             Scripts.Add(script);
         }
@@ -521,7 +521,7 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(declGroup.Tail is ScriptGroup declTailGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             var scriptReturnType = ParseHsType(declTailGroup.Head);
 
@@ -538,9 +538,9 @@ namespace TagTool.Scripting.Compiler
 
             ScriptGroup declTailTailGroup;
             if (!skipReturnType && !(declTailGroup.Tail is ScriptGroup))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else if (skipReturnType && !(declTailGroup.Head is ScriptSymbol))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             else
             {
                 if (!skipReturnType)
@@ -567,7 +567,7 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Head is ScriptSymbol declGroupName))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         scriptName = declGroupName.Value;
 
@@ -576,10 +576,10 @@ namespace TagTool.Scripting.Compiler
                         //
 
                         if (!(declNameGroup.Tail is ScriptGroup tailGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         if (!(tailGroup is ScriptGroup declParamGroup))
-                            throw new ScriptCompilerException(0, $"Malformed declaration.");
+                            throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                         for (IScriptSyntax param = declParamGroup;
                             param is ScriptGroup paramGroup;
@@ -590,14 +590,14 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramGroup.Head is ScriptGroup paramDeclGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Get the parameter type
                             //
 
                             if (!(paramDeclGroup.Head is ScriptSymbol paramDeclType))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramType = ParseHsType(paramDeclType);
 
@@ -606,15 +606,15 @@ namespace TagTool.Scripting.Compiler
                             //
 
                             if (!(paramDeclGroup.Tail is ScriptGroup paramDeclTailGroup))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             if (!(paramDeclTailGroup.Head is ScriptSymbol paramDeclName))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             var paramName = paramDeclName.Value;
 
                             if (!(paramDeclTailGroup.Tail is ScriptInvalid))
-                                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
                             //
                             // Add an entry to the script parameters list
@@ -630,7 +630,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new ScriptCompilerException(0, $"Malformed declaration.");
+                    throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
             }
 
             HsScript script = null;
@@ -656,7 +656,7 @@ namespace TagTool.Scripting.Compiler
             }
 
             if (script == null)
-                throw new ScriptCompilerException(0, $"Script '{scriptName}' is not defined.");
+                throw new ScriptCompilerException(group.Line, $"Script '{scriptName}' is not defined.");
 
             CurrentScript = script;
 
@@ -690,6 +690,9 @@ namespace TagTool.Scripting.Compiler
                         // unit -> object_list), emit the node with the TARGET type so the
                         // engine interprets the runtime handle in the correct type context.
                         // Otherwise keep the parameter's natural declared type.
+                        if (type == HsType.Unit && !IsImplicitlyCastable(parameter.Type, HsType.Unit))
+                            Log.Warning($"Line {symbol.Line}: '{symbol.Value}' has type '{parameter.Type}' which cannot be implicitly cast to 'unit'. Use the (unit) cast function instead.");
+
                         var emitType = IsImplicitlyCastable(parameter.Type, type) ? type : parameter.Type;
                         return CompileParameterReference(symbol, parameter, emitType);
                     }
@@ -704,6 +707,9 @@ namespace TagTool.Scripting.Compiler
                     if (global.Name != symbol.Value)
                         continue;
 
+                    if (type == HsType.Unit && !IsImplicitlyCastable(global.Type, HsType.Unit))
+                        Log.Warning($"Line {symbol.Line}: '{symbol.Value}' has type '{global.Type}' which cannot be implicitly cast to 'unit'. Use the (unit) cast function instead.");
+
                     var emitType = IsImplicitlyCastable(global.Type, type) ? type : global.Type;
                     return CompileGlobalReference(symbol, global, emitType);
                 }
@@ -713,8 +719,8 @@ namespace TagTool.Scripting.Compiler
                 //
 
                 foreach (var global in Cache.ScriptDefinitions.Globals)
-                    if (global.Value == symbol.Value)
-                        return CompileGlobalReference(symbol, type, global.Value, (ushort)(global.Key | 0x8000));
+                    if (global.Value.Name == symbol.Value)
+                        return CompileGlobalReference(symbol, global.Value.Type, global.Value.Name, (ushort)(global.Key | 0x8000));
             }
 
             switch (type)
@@ -829,9 +835,9 @@ namespace TagTool.Scripting.Compiler
 
                 case HsType.Ai:
                     if (node is ScriptSymbol aiSymbol && aiSymbol.Value == "none")
-                        return CompileAiExpression(new ScriptString { Value = "none" });
+                        return CompileAiExpression(new ScriptString { Value = "none" }, type);
                     else if (node is ScriptString aiString)
-                        return CompileAiExpression(aiString);
+                        return CompileAiExpression(aiString, type);
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiCommandList:
@@ -1240,7 +1246,7 @@ namespace TagTool.Scripting.Compiler
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
 
-            throw new ScriptCompilerException(0, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
+            throw new ScriptCompilerException(node.Line, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
         }
 
         private DatumHandle AllocateExpression(HsType valueType, HsSyntaxNodeFlags expressionType, ushort? opcode = null, short? line = null)
@@ -1351,20 +1357,20 @@ namespace TagTool.Scripting.Compiler
                 case HsType.Short:
                     return sourceType == HsType.Long || sourceType == HsType.Real;
 
-                // object accepts any object subtype or any object-name type
+                // object accepts any object subtype, any object-name type, or an AI reference
                 case HsType.Object:
-                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType);
+                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType) || sourceType == HsType.Ai;
 
-                // unit accepts vehicle (a vehicle IS a unit at the HaloScript level)
-                // also accepts unit_name / vehicle_name references
+                // unit accepts vehicle, unit_name, vehicle_name, or an AI reference
                 case HsType.Unit:
                     return sourceType == HsType.Vehicle
                         || sourceType == HsType.UnitName
-                        || sourceType == HsType.VehicleName;
+                        || sourceType == HsType.VehicleName
+                        || sourceType == HsType.Ai;
 
                 // specific subtypes accept their matching _name counterpart
                 case HsType.Vehicle:
-                    return sourceType == HsType.Object || sourceType == HsType.VehicleName;
+                    return sourceType == HsType.Object || sourceType == HsType.VehicleName || sourceType == HsType.Ai;
 
                 case HsType.Weapon:
                     return sourceType == HsType.Object || sourceType == HsType.WeaponName;
@@ -1378,9 +1384,9 @@ namespace TagTool.Scripting.Compiler
                 case HsType.EffectScenery:
                     return sourceType == HsType.Object || sourceType == HsType.EffectSceneryName;
 
-                // object_list accepts a single object/object_name; engine wraps it into a list
+                // object_list accepts a single object/object_name or an AI reference
                 case HsType.ObjectList:
-                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType);
+                    return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType) || sourceType == HsType.Ai;
 
                 default:
                     return false;
@@ -1395,10 +1401,10 @@ namespace TagTool.Scripting.Compiler
         private DatumHandle CompileGroupExpression(HsType type, ScriptGroup group)
         {
             if (!(group.Head is ScriptSymbol functionNameSymbol))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             if (!(group.Tail is ScriptGroup) && !(group.Tail is ScriptInvalid))
-                throw new ScriptCompilerException(0, $"Malformed declaration.");
+                throw new ScriptCompilerException(group.Line, $"Malformed declaration.");
 
             //
             // Handle special builtin functions
@@ -1615,6 +1621,7 @@ namespace TagTool.Scripting.Compiler
                         if (!(setGroup.Tail is ScriptGroup setValueGroup) || !(setValueGroup.Tail is ScriptInvalid))
                             throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
+                        // --- Check user-defined (script-local) globals first ---
                         foreach (var global in Globals)
                         {
                             if (global.Name != globalName.Value)
@@ -1639,6 +1646,37 @@ namespace TagTool.Scripting.Compiler
 
                             var globalExpr = ScriptExpressions[globalHandle.Index];
                             globalExpr.NextExpressionHandle = CompileExpression(global.Type, setValueGroup.Head);
+
+                            return setHandle;
+                        }
+
+                        // --- Check engine (cache) globals ---
+                        foreach (var cacheGlobal in Cache.ScriptDefinitions.Globals)
+                        {
+                            if (cacheGlobal.Value.Name != globalName.Value)
+                                continue;
+
+                            var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
+
+                            var setHandle = AllocateExpression(HsType.Void, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                            var setExpr = ScriptExpressions[setHandle.Index];
+
+                            var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
+                            var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                            functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                            Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), setExpr.Data, 4);
+                            Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                            // Engine globals use (opcode | 0x8000) as their index, and their
+                            // type comes from the definition table entry's type field.
+                            var globalHandle = CompileGlobalReference(globalName, cacheGlobal.Value.Type, cacheGlobal.Value.Name, (ushort)(cacheGlobal.Key | 0x8000));
+                            // Bungie uses opcode 65535 for the set-target global node
+                            ScriptExpressions[globalHandle.Index].Opcode = ushort.MaxValue;
+                            functionNameExpr.NextExpressionHandle = globalHandle;
+
+                            var globalExpr = ScriptExpressions[globalHandle.Index];
+                            globalExpr.NextExpressionHandle = CompileExpression(cacheGlobal.Value.Type, setValueGroup.Head);
 
                             return setHandle;
                         }
@@ -2466,7 +2504,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileCutsceneRecordingExpression(ScriptString cutsceneRecordingString) =>
-            throw new ScriptCompilerException(0, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(cutsceneRecordingString.Line, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
 
         private DatumHandle CompileDeviceGroupExpression(ScriptString deviceGroupString)
         {
@@ -2493,45 +2531,18 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private bool TryGetAiEncodedValue(string value, out int encodedValue)
+        private DatumHandle CompileAiExpression(ScriptString aiString, HsType emitType = HsType.Ai)
         {
-            encodedValue = 0;
-            if (string.IsNullOrEmpty(value) || value == "none")
-                return false;
-            var tokens = value.Split('/');
-            if (tokens.Length == 1)
-            {
-                // Squad
-                var si = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
-                if (si != -1) { encodedValue = (1 << 29) | (si & 0xFFFF); return true; }
-                // Squad group
-                var sgi = Definition.SquadGroups.FindIndex(sg => sg.Name == tokens[0]);
-                if (sgi != -1) { encodedValue = (2 << 29) | (sgi & 0xFFFF); return true; }
-                // Note: objectives are not included - they are AI logic tasks, not physical objects
-            }
-            else if (tokens.Length == 2)
-            {
-                var si = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
-                if (si != -1)
-                {
-                    var squad = Definition.Squads[si];
-                    // Spawn point
-                    var spi = squad.SpawnPoints.FindIndex(sp => tokens[1] == Cache.StringTable.GetString(sp.Name));
-                    if (spi != -1) { encodedValue = (4 << 29) | ((si & 0x1FFF) << 16) | (spi & 0xFF); return true; }
-                    // Spawn formation
-                    var sfi = squad.SpawnFormations.FindIndex(sf => tokens[1] == Cache.StringTable.GetString(sf.Name));
-                    if (sfi != -1) { encodedValue = (5 << 29) | ((si & 0x1FFF) << 16) | (sfi & 0xFF); return true; }
-                }
-            }
-            return false;
-        }
-
-        private DatumHandle CompileAiExpression(ScriptString aiString)
-        {
-            var handle = AllocateExpression(HsType.Ai, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiString.Line);
+            // The expression ValueType reflects the slot context (e.g. Object, Unit) so the
+            // engine places the value correctly, but the opcode must always be HsType.Ai (0x13)
+            // so the engine knows to interpret the encoded value as an AI reference.
+            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiString.Line);
 
             if (handle != DatumHandle.None)
             {
+                var expr = ScriptExpressions[handle.Index];
+                expr.Opcode = GetHsTypeAsInteger(HsType.Ai);
+
                 var tokens = aiString.Value.Split('/');
                 var value = 0;
 
@@ -2554,9 +2565,6 @@ namespace TagTool.Scripting.Compiler
                             if (squadIndex != -1)
                             {
                                 value = (1 << 29) | (squadIndex & 0xFFFF);
-                                var expr = ScriptExpressions[handle.Index];
-                                expr.StringAddress = CompileStringAddress(aiString.Value);
-                                Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                 break;
                             }
 
@@ -2609,9 +2617,6 @@ namespace TagTool.Scripting.Compiler
                                 if (spawnPointIndex != -1)
                                 {
                                     value = (4 << 29) | ((squadIndex & 0x1FFF) << 16) | (spawnPointIndex & 0xFF);
-                                    var expr = ScriptExpressions[handle.Index];
-                                    expr.StringAddress = CompileStringAddress(aiString.Value);
-                                    Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
                                     break;
                                 }
 
@@ -2653,13 +2658,16 @@ namespace TagTool.Scripting.Compiler
                     default:
                         throw new ScriptCompilerException(aiString.Line, $"No AI reference named '{aiString.Value}' found in the scenario. Expected format: 'squad', 'squad/group', or 'squad/group/actor'.");
                 }
+
+                expr.StringAddress = CompileStringAddress(aiString.Value);
+                Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
             }
 
             return handle;
         }
 
         private DatumHandle CompileAiCommandListExpression(ScriptString aiCommandListString) =>
-            throw new ScriptCompilerException(0, $"The type 'AiCommandList' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(aiCommandListString.Line, $"The type 'AiCommandList' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiCommandScriptExpression(ScriptSymbol aiCommandScriptSymbol)
         {
@@ -2673,7 +2681,7 @@ namespace TagTool.Scripting.Compiler
             {
                 var scriptIndex = Scripts.FindIndex(s =>
                     s.ScriptName == aiCommandScriptSymbol.Value &&
-                    s.Type == HsScriptType.CommandScript);
+                    s.Type == HsScriptType.Command_Script);
 
                 if (scriptIndex == -1)
                     throw new ScriptCompilerException(aiCommandScriptSymbol.Line, $"No command_script named '{aiCommandScriptSymbol.Value}' is defined.");
@@ -2687,10 +2695,10 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAiBehaviorExpression(ScriptString aiBehaviorString) =>
-            throw new ScriptCompilerException(0, $"The type 'AiBehavior' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(aiBehaviorString.Line, $"The type 'AiBehavior' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiOrdersExpression(ScriptString aiOrdersString) =>
-            throw new ScriptCompilerException(0, $"The type 'AiOrders' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(aiOrdersString.Line, $"The type 'AiOrders' is not yet supported by the compiler.");
 
         private DatumHandle CompileAiLineExpression(ScriptString aiLineString)
         {
@@ -2741,7 +2749,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileConversationExpression(ScriptString conversationString) =>
-            throw new ScriptCompilerException(0, $"The type 'Conversation' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(conversationString.Line, $"The type 'Conversation' is not yet supported by the compiler.");
 
         private DatumHandle CompileZoneSetExpression(ScriptString zoneSetString)
         {
@@ -2862,17 +2870,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectListString.Value);
 
                 if (objectListString.Value != "none" && objectIndex == -1)
-                {
-                    if (TryGetAiEncodedValue(objectListString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(objectListString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(objectListString.Line, $"No object name or AI reference named '{objectListString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(objectListString, HsType.ObjectList);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectListString.Value);
@@ -3111,7 +3109,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileLightmapDefinitionExpression(ScriptString lightmapDefinitionString) =>
-            throw new ScriptCompilerException(0, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(lightmapDefinitionString.Line, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
 
         private DatumHandle CompileCinematicDefinitionExpression(ScriptString cinematicDefinitionString)
         {
@@ -3311,7 +3309,7 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompilePlayerColorExpression(ScriptSymbol playerColorSymbol) =>
-            throw new ScriptCompilerException(0, $"The type 'PlayerColor' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(playerColorSymbol.Line, $"The type 'PlayerColor' is not yet supported by the compiler.");
 
         private DatumHandle CompilePlayerCharacterTypeExpression(ScriptSymbol playerCharacterTypeSymbol)
         {
@@ -3524,19 +3522,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == objectString.Value);
 
                 if (objectString.Value != "none" && objectIndex == -1)
-                {
-                    // Try resolving as an AI reference (squad or squad/spawnpoint).
-                    // The engine accepts the AI-encoded value for object-typed parameters.
-                    if (TryGetAiEncodedValue(objectString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(objectString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(objectString.Line, $"No object or AI reference named '{objectString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(objectString, HsType.Object);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectString.Value);
@@ -3557,17 +3543,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == unitString.Value);
 
                 if (unitString.Value != "none" && unitIndex == -1)
-                {
-                    if (TryGetAiEncodedValue(unitString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(unitString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(unitString.Line, $"No unit or AI reference named '{unitString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(unitString, HsType.Unit);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(unitString.Value);
@@ -3589,17 +3565,7 @@ namespace TagTool.Scripting.Compiler
                     Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
 
                 if (vehicleString.Value != "none" && vehicleIndex == -1)
-                {
-                    if (TryGetAiEncodedValue(vehicleString.Value, out int aiEncoded))
-                    {
-                        var expr2 = ScriptExpressions[handle.Index];
-                        expr2.Opcode = GetHsTypeAsInteger(HsType.Ai);
-                        expr2.StringAddress = CompileStringAddress(vehicleString.Value);
-                        Array.Copy(BitConverter.GetBytes(aiEncoded), expr2.Data, 4);
-                        return handle;
-                    }
-                    throw new ScriptCompilerException(vehicleString.Line, $"No vehicle or AI reference named '{vehicleString.Value}' found in the scenario.");
-                }
+                    return CompileAiExpression(vehicleString, HsType.Vehicle);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(vehicleString.Value);
@@ -3872,13 +3838,13 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileAnimationBudgetReferenceExpression(ScriptString animationBudgetReferenceString) =>
-            throw new ScriptCompilerException(0, $"The type 'AnimationBudgetReference' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(animationBudgetReferenceString.Line, $"The type 'AnimationBudgetReference' is not yet supported by the compiler.");
 
         private DatumHandle CompileLoopingSoundBudgetReferenceExpression(ScriptString loopingSoundBudgetReferenceString) =>
-            throw new ScriptCompilerException(0, $"The type 'LoopingSoundBudgetReference' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(loopingSoundBudgetReferenceString.Line, $"The type 'LoopingSoundBudgetReference' is not yet supported by the compiler.");
 
         private DatumHandle CompileSoundBudgetReferenceExpression(ScriptString soundBudgetReferenceString) =>
-            throw new ScriptCompilerException(0, $"The type 'SoundBudgetReference' is not yet supported by the compiler.");
+            throw new ScriptCompilerException(soundBudgetReferenceString.Line, $"The type 'SoundBudgetReference' is not yet supported by the compiler.");
 
         private void WriteTagToSourceFileReferences(ScriptString tagString)
         {

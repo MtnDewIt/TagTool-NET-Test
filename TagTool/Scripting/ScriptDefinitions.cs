@@ -9,7 +9,7 @@ namespace TagTool.Scripting
     public interface IScriptDefinitions
     {
         IReadOnlyDictionary<int, string> ValueTypes { get; }
-        IReadOnlyDictionary<int, string> Globals { get; }
+        IReadOnlyDictionary<int, GlobalInfo> Globals { get; }
         IReadOnlyDictionary<int, ScriptInfo> Scripts { get; }
     }
 
