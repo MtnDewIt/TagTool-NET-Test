@@ -475,7 +475,8 @@ namespace TagTool.Scripting.Compiler
                 current = currentGroup.Tail)
             {
                 bool isLast = !(currentGroup.Tail is ScriptGroup);
-                var currentHandle = CompileExpression(isLast ? returnType : HsType.Unparsed, currentGroup.Head);
+                var stmtType = isLast ? returnType : (returnType == HsType.Void ? HsType.Void : HsType.Unparsed);
+                var currentHandle = CompileExpression(stmtType, currentGroup.Head);
 
                 if (firstHandle == DatumHandle.None)
                     firstHandle = currentHandle;
@@ -1532,7 +1533,8 @@ namespace TagTool.Scripting.Compiler
                             // type is correctly promoted (e.g. Short context -> Short result
                             // for arithmetic). All earlier statements are Unparsed.
                             bool isLast = !(currentGroup.Tail is ScriptGroup);
-                            var currentHandle = CompileExpression(isLast ? type : HsType.Unparsed, currentGroup.Head);
+                            var stmtType = isLast ? type : (type == HsType.Void ? HsType.Void : HsType.Unparsed);
+                            var currentHandle = CompileExpression(stmtType, currentGroup.Head);
 
                             if (firstHandle == DatumHandle.None)
                                 firstHandle = currentHandle;
@@ -2007,9 +2009,11 @@ namespace TagTool.Scripting.Compiler
                     // Emit the Group node with the calling context type when a valid implicit cast
                     // exists from the function's natural return type (e.g. player_get returns Unit,
                     // but the caller expects Object or ObjectList — both are valid downcasts).
-                    var builtinEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
-                        ? type
-                        : entry.Value.Type;
+                    var builtinEmitType = (type == HsType.Void && entry.Value.Type != HsType.Void)
+                        ? HsType.Void
+                        : (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
+                            ? type
+                            : entry.Value.Type;
                     var handle = AllocateExpression(builtinEmitType, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
                     var expr = ScriptExpressions[handle.Index];
 
@@ -2052,9 +2056,11 @@ namespace TagTool.Scripting.Compiler
 
                 // Promote the return type when the calling context requires it
                 // (e.g. Unit returned where Object is expected). Matches bungie behavior.
-                var scriptEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
-                    ? type
-                    : script.ReturnType;
+                var scriptEmitType = (type == HsType.Void && script.ReturnType != HsType.Void)
+                    ? HsType.Void
+                    : (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
+                        ? type
+                        : script.ReturnType;
                 var handle = AllocateExpression(
                     scriptEmitType,
                     HsSyntaxNodeFlags.ScriptReference,
