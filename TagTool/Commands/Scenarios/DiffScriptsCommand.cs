@@ -96,6 +96,9 @@ namespace TagTool.Commands.Scenarios
             var otherDecomp = DecompileToScriptMap(Cache, other);
 
             // --- Diff each pair ---
+            int scriptsChecked = 0;
+            int scriptsWithDiffs = 0;
+
             foreach (var (thisIdx, otherIdx) in pairs)
             {
                 var thisScript  = Definition.Scripts[thisIdx];
@@ -106,6 +109,8 @@ namespace TagTool.Commands.Scenarios
                     thisDecomp.TryGetValue(thisScript.ScriptName, out var condCheck) &&
                     condCheck.Contains("(cond"))
                     continue;
+
+                scriptsChecked++;
 
                 // Collect expression ranges and diff first
                 var thisExprs  = CollectScriptExpressions(Definition, thisIdx);
@@ -183,12 +188,19 @@ namespace TagTool.Commands.Scenarios
                 foreach (var line in diffLines)
                     line();
 
+                if (anyDiff)
+                    scriptsWithDiffs++;
+
                 if (!anyDiff)
                 {
                     WriteColored("  (no differences)", ConsoleColor.Green);
                     Console.WriteLine();
                 }
             }
+
+            Console.WriteLine();
+            WriteColored($"=== Summary: {scriptsWithDiffs} / {scriptsChecked} scripts have differences ===", ConsoleColor.Cyan);
+            Console.WriteLine();
 
             return true;
         }
