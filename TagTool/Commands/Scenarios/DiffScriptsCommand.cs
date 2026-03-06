@@ -16,22 +16,30 @@ namespace TagTool.Commands.Scenarios
         private Scenario Definition { get; }
         private bool OmitData { get; set; }
         private bool OnlyDiffs { get; set; }
+        private bool IgnoreCond { get; set; }
+        private bool IgnoreAddresses { get; set; }
 
         public DiffScriptsCommand(GameCache cache, Scenario definition) :
             base(true,
                 "DiffScripts",
                 "Diff script expression blocks between this scenario and another.",
 
-                "DiffScripts <other_tag> [script_name|script_index|start_index-end_index] [omit_data] [only_diffs]",
+                "DiffScripts <other_tag> [script_name|script_index|start_index-end_index] [omit_data] [only_diffs] [ignore_cond] [ignore_addresses]",
 
                 "Compares script expression blocks between the current scenario and another.\n" +
                 "Prints a decompiled representation of each script and highlights differences in:\n" +
                 "  Opcode, ValueType, Flags, Data (skipped for Real due to precision).\n\n" +
                 "Script selection (optional):\n" +
-                "  <name>          - single script by name\n" +
-                "  <index>         - single script by index\n" +
-                "  <start>-<end>   - inclusive range of script indexes\n" +
-                "  (omit)          - all scripts (matched by name)")
+                "  <name>           - single script by name" +
+                "  <index>          - single script by index\n" +
+                "  <start>-<end>    - inclusive range of script indexes\n" +
+                "  (omit)           - all scripts, matched by name\n\n" +
+                "Flags (optional, any order):\n" +
+                "  omit_data        - skip Data field comparison entirely\n" +
+                "  only_diffs       - only print scripts that have at least one difference\n" +
+                "  ignore_cond      - skip any script whose decompiled source contains a cond expression\n" +
+                "  ignore_addresses - skip Data comparison on Group and ScriptReference nodes,\n" +
+                "                     whose Data field is always a datum handle that differs between builds")
         {
             Cache = cache;
             Definition = definition;
@@ -59,8 +67,10 @@ namespace TagTool.Commands.Scenarios
             {
                 switch (args[i])
                 {
-                    case "omit_data":   OmitData = true;   break;
-                    case "only_diffs":  OnlyDiffs = true;  break;
+                    case "omit_data":        OmitData = true;         break;
+                    case "only_diffs":       OnlyDiffs = true;        break;
+                    case "ignore_cond":      IgnoreCond = true;       break;
+                    case "ignore_addresses": IgnoreAddresses = true;  break;
                     default:
                         if (selector != null)
                             return new TagToolError(CommandError.ArgInvalid, $"Unexpected argument '{args[i]}'.");
@@ -90,6 +100,12 @@ namespace TagTool.Commands.Scenarios
             {
                 var thisScript  = Definition.Scripts[thisIdx];
                 var otherScript = other.Scripts[otherIdx];
+
+                // Skip scripts that contain cond if ignore_cond is set
+                if (IgnoreCond &&
+                    thisDecomp.TryGetValue(thisScript.ScriptName, out var condCheck) &&
+                    condCheck.Contains("(cond"))
+                    continue;
 
                 // Collect expression ranges and diff first
                 var thisExprs  = CollectScriptExpressions(Definition, thisIdx);
@@ -300,8 +316,15 @@ namespace TagTool.Commands.Scenarios
             if (a.ValueType != b.ValueType) diffs.Add("ValueType");
             if (a.Flags     != b.Flags)     diffs.Add("Flags");
 
-            // Skip data diff when omit_data is set, or for Real to avoid float precision noise
-            if (!OmitData && a.ValueType != HsType.Real && b.ValueType != HsType.Real)
+            // Skip data diff when omit_data is set, or for Real to avoid float precision noise,
+            // or for Group/ScriptReference nodes whose Data is always a datum handle when ignore_addresses is set
+            bool dataIsAddress = IgnoreAddresses &&
+                (a.Flags == HsSyntaxNodeFlags.Group || a.Flags == HsSyntaxNodeFlags.ScriptReference ||
+                 b.Flags == HsSyntaxNodeFlags.Group || b.Flags == HsSyntaxNodeFlags.ScriptReference ||
+                 a.ValueType == HsType.String || b.ValueType == HsType.String);
+
+            if (!OmitData && !dataIsAddress
+                && a.ValueType != HsType.Real && b.ValueType != HsType.Real)
                 if (!a.Data.SequenceEqual(b.Data))
                     diffs.Add("Data");
 
