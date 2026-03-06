@@ -21,14 +21,16 @@ namespace TagTool.Commands.Scenarios
                 "CompileScripts",
                 "Compile scripts from a file. (still may have a few issues)",
 
-                "CompileScripts <input_file> [append] [adjust_indexes]",
+                "CompileScripts <input_file> [append] [adjust_indexes] [emit_padding]",
 
                 "Compiles HaloScript from a file and writes it to the scenario.\n" +
                 "Use append to add to the existing scripts instead of replacing them.\n" +
                 "When appending, the new file can freely call any script or global\n" +
                 "already present in the scenario without re-declaring them.\n" +
                 "Use adjust_indexes to fix up script indexes in squad and objective\n" +
-                "blocks after compilation (use when scripts are added or removed).")
+                "blocks after compilation (use when scripts are added or removed).\n" +
+                "Use emit_padding to insert 5 Bungie-style 0xBA padding blocks after\n" +
+                "each compiled script and global, matching original tag layout.")
         {
             Cache = cache;
             Definition = definition;
@@ -41,6 +43,7 @@ namespace TagTool.Commands.Scenarios
 
             bool append = false;
             bool adjustIndexes = false;
+            bool emitPadding = false;
 
             string filePath = args[0];
 
@@ -50,6 +53,7 @@ namespace TagTool.Commands.Scenarios
                 {
                     case "append":         append = true;        break;
                     case "adjust_indexes": adjustIndexes = true; break;
+                    case "emit_padding":   emitPadding = true;   break;
                     default:
                         return new TagToolError(CommandError.ArgInvalid, $"Unknown flag '{args[i]}'.");
                 }
@@ -69,9 +73,9 @@ namespace TagTool.Commands.Scenarios
             try
             {
                 if (append)
-                    scriptCompiler.AppendCompileFile(srcFile);
+                    scriptCompiler.AppendCompileFile(srcFile, emitPadding);
                 else
-                    scriptCompiler.CompileFile(srcFile);
+                    scriptCompiler.CompileFile(srcFile, emitPadding);
             }
             catch (ScriptCompilerException e)
             {
