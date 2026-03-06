@@ -2834,7 +2834,7 @@ namespace TagTool.Scripting.Compiler
                     if (pointIndex == -1)
                         throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
                     expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
-                    Array.Copy(BitConverter.GetBytes((int)((ushort)pointIndex | (ushort)(pointSetIndex << 16))), expr.Data, 4);
+                    Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | pointIndex), expr.Data, 4);
                 }
             }
 

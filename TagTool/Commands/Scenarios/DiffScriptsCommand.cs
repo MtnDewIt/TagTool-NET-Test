@@ -61,6 +61,8 @@ namespace TagTool.Commands.Scenarios
             // Parse remaining args: optional flags and optional script selector
             OmitData = false;
             OnlyDiffs = false;
+            IgnoreCond = false;
+            IgnoreAddresses = false;
             string selector = null;
 
             for (int i = 1; i < args.Count; i++)
