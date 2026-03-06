@@ -1874,7 +1874,7 @@ namespace TagTool.Scripting.Compiler
                     {
                         var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
-                        var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                        var handle = AllocateExpression(type == HsType.Boolean ? HsType.Boolean : HsType.Void, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
 
                         var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
@@ -1900,7 +1900,7 @@ namespace TagTool.Scripting.Compiler
                                     throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                                 var tickExpr = ScriptExpressions[booleanExpr.NextExpressionHandle.Index];
-                                tickExpr.NextExpressionHandle = CompileExpression(HsType.Short, tailTailTailGroup.Head);
+                                tickExpr.NextExpressionHandle = CompileExpression(HsType.Long, tailTailTailGroup.Head);
                             }
                             else if (!(tailTailGroup.Tail is ScriptInvalid))
                             {
