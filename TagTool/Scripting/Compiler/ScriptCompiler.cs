@@ -475,7 +475,7 @@ namespace TagTool.Scripting.Compiler
                 current = currentGroup.Tail)
             {
                 bool isLast = !(currentGroup.Tail is ScriptGroup);
-                var stmtType = isLast ? returnType : (returnType == HsType.Void ? HsType.Void : HsType.Unparsed);
+                var stmtType = isLast ? returnType : HsType.Void;
                 var currentHandle = CompileExpression(stmtType, currentGroup.Head);
 
                 if (firstHandle == DatumHandle.None)
@@ -1534,7 +1534,7 @@ namespace TagTool.Scripting.Compiler
                             // type is correctly promoted (e.g. Short context -> Short result
                             // for arithmetic). All earlier statements are Unparsed.
                             bool isLast = !(currentGroup.Tail is ScriptGroup);
-                            var stmtType = isLast ? type : (type == HsType.Void ? HsType.Void : HsType.Unparsed);
+                            var stmtType = isLast ? type : HsType.Void;
                             var currentHandle = CompileExpression(stmtType, currentGroup.Head);
 
                             if (firstHandle == DatumHandle.None)
