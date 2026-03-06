@@ -717,7 +717,8 @@ namespace TagTool.Scripting.Compiler
                         Log.Warning($"Line {symbol.Line}: '{symbol.Value}' has type '{global.Type}' which cannot be implicitly cast to 'unit'. Use the (unit) cast function instead.");
 
                     var emitType = IsImplicitlyCastable(global.Type, type) ? type : global.Type;
-                    return CompileGlobalReference(symbol, global, emitType);
+                    bool explicitType = (emitType == type && type != HsType.Unparsed);
+                    return CompileGlobalReference(symbol, global, emitType, explicitType);
                 }
 
                 //
@@ -2149,8 +2150,15 @@ namespace TagTool.Scripting.Compiler
             => CompileGlobalReference(symbol, global, global.Type);
 
         private DatumHandle CompileGlobalReference(ScriptSymbol symbol, HsGlobal global, HsType emitType)
+            => CompileGlobalReference(symbol, global, emitType, false);
+
+        private DatumHandle CompileGlobalReference(ScriptSymbol symbol, HsGlobal global, HsType emitType, bool explicitType)
         {
-            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.GlobalsReference, line: (short)symbol.Line);
+            // Opcode is set to the type integer when the calling context explicitly requests a
+            // fixed type (e.g. if->boolean). When the context is flexible and the global resolves
+            // to its natural type (e.g. <= numeric params compiled as Unparsed), opcode stays 0.
+            ushort? opcode = explicitType ? GetHsTypeAsInteger(emitType) : (ushort?)0;
+            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.GlobalsReference, opcode, line: (short)symbol.Line);
 
             var expr = ScriptExpressions[handle.Index];
             expr.StringAddress = CompileStringAddress(global.Name);
@@ -2295,7 +2303,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var noneExpr = ScriptExpressions[handle.Index];
                     noneExpr.StringAddress = CompileStringAddress(unitSeatMappingString.Value);
-                    Array.Copy(BitConverter.GetBytes(0), noneExpr.Data, 4);
+                    Array.Copy(BitConverter.GetBytes(-1), noneExpr.Data, 4);
                     return handle;
                 }
 
@@ -3527,7 +3535,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectString.Value);
-                Array.Copy(BitConverter.GetBytes(objectIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)objectIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3548,7 +3556,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(unitString.Value);
-                Array.Copy(BitConverter.GetBytes(unitIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)unitIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3590,7 +3598,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(weaponString.Value);
-                Array.Copy(BitConverter.GetBytes(weaponIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)weaponIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3611,7 +3619,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(deviceString.Value);
-                Array.Copy(BitConverter.GetBytes(deviceIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)deviceIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3632,7 +3640,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(sceneryString.Value);
-                Array.Copy(BitConverter.GetBytes(sceneryIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)sceneryIndex), expr.Data, 2);
             }
 
             return handle;
