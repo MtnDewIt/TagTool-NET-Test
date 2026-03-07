@@ -367,6 +367,36 @@ namespace TagTool.Scripting
                     }
                     break;
 
+                case "PrimarySkull":
+                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
+                    {
+                        case 0: result.Name = "Iron"; break;
+                        case 1: result.Name = "BlackEye"; break;
+                        case 2: result.Name = "ToughLuck"; break;
+                        case 3: result.Name = "Catch"; break;
+                        case 4: result.Name = "Fog"; break;
+                        case 5: result.Name = "Famine"; break;
+                        case 6: result.Name = "Thunderstorm"; break;
+                        case 7: result.Name = "Tilt"; break;
+                        case 8: result.Name = "Mythic"; break;
+                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
+                    }
+                    break;
+
+                case "SecondarySkull":
+                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
+                    {
+                        case 0: result.Name = "Assassin"; break;
+                        case 1: result.Name = "Blind"; break;
+                        case 2: result.Name = "Superman"; break;
+                        case 3: result.Name = "BirthdayParty"; break;
+                        case 4: result.Name = "Daddy"; break;
+                        case 5: result.Name = "ThirdPerson"; break;
+                        case 6: result.Name = "DirectorsCut"; break;
+                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
+                    }
+                    break;
+
                 case "CinematicLightprobe":
                     // Stored as a symbol reference (no quotes)
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);

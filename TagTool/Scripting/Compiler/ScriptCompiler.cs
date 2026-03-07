@@ -475,7 +475,8 @@ namespace TagTool.Scripting.Compiler
                 current = currentGroup.Tail)
             {
                 bool isLast = !(currentGroup.Tail is ScriptGroup);
-                var currentHandle = CompileExpression(isLast ? returnType : HsType.Unparsed, currentGroup.Head);
+                var stmtType = isLast ? returnType : HsType.Void;
+                var currentHandle = CompileExpression(stmtType, currentGroup.Head);
 
                 if (firstHandle == DatumHandle.None)
                     firstHandle = currentHandle;
@@ -716,7 +717,8 @@ namespace TagTool.Scripting.Compiler
                         Log.Warning($"Line {symbol.Line}: '{symbol.Value}' has type '{global.Type}' which cannot be implicitly cast to 'unit'. Use the (unit) cast function instead.");
 
                     var emitType = IsImplicitlyCastable(global.Type, type) ? type : global.Type;
-                    return CompileGlobalReference(symbol, global, emitType);
+                    bool explicitType = (emitType == type && type != HsType.Unparsed);
+                    return CompileGlobalReference(symbol, global, emitType, explicitType);
                 }
 
                 //
@@ -725,7 +727,10 @@ namespace TagTool.Scripting.Compiler
 
                 foreach (var global in Cache.ScriptDefinitions.Globals)
                     if (global.Value.Name == symbol.Value)
-                        return CompileGlobalReference(symbol, global.Value.Type, global.Value.Name, (ushort)(global.Key | 0x8000));
+                    {
+                        var emitType = IsImplicitlyCastable(global.Value.Type, type) ? type : global.Value.Type;
+                        return CompileGlobalReference(symbol, emitType, global.Value.Name, (ushort)(global.Key | 0x8000));
+                    }
             }
 
             switch (type)
@@ -1385,7 +1390,7 @@ namespace TagTool.Scripting.Compiler
                 case HsType.Object:
                     return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType) || sourceType == HsType.Ai;
 
-                // unit accepts vehicle, unit_name, vehicle_name, or an AI reference
+                // unit accepts, unit_name, vehicle, vehicle_name, or an AI reference
                 case HsType.Unit:
                     return sourceType == HsType.Vehicle
                         || sourceType == HsType.UnitName
@@ -1532,7 +1537,8 @@ namespace TagTool.Scripting.Compiler
                             // type is correctly promoted (e.g. Short context -> Short result
                             // for arithmetic). All earlier statements are Unparsed.
                             bool isLast = !(currentGroup.Tail is ScriptGroup);
-                            var currentHandle = CompileExpression(isLast ? type : HsType.Unparsed, currentGroup.Head);
+                            var stmtType = isLast ? type : HsType.Void;
+                            var currentHandle = CompileExpression(stmtType, currentGroup.Head);
 
                             if (firstHandle == DatumHandle.None)
                                 firstHandle = currentHandle;
@@ -1874,7 +1880,7 @@ namespace TagTool.Scripting.Compiler
                     {
                         var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
 
-                        var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                        var handle = AllocateExpression(type == HsType.Boolean ? HsType.Boolean : HsType.Void, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
                         var expr = ScriptExpressions[handle.Index];
 
                         var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
@@ -1900,7 +1906,7 @@ namespace TagTool.Scripting.Compiler
                                     throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
 
                                 var tickExpr = ScriptExpressions[booleanExpr.NextExpressionHandle.Index];
-                                tickExpr.NextExpressionHandle = CompileExpression(HsType.Short, tailTailTailGroup.Head);
+                                tickExpr.NextExpressionHandle = CompileExpression(HsType.Long, tailTailTailGroup.Head);
                             }
                             else if (!(tailTailGroup.Tail is ScriptInvalid))
                             {
@@ -2007,9 +2013,11 @@ namespace TagTool.Scripting.Compiler
                     // Emit the Group node with the calling context type when a valid implicit cast
                     // exists from the function's natural return type (e.g. player_get returns Unit,
                     // but the caller expects Object or ObjectList — both are valid downcasts).
-                    var builtinEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
-                        ? type
-                        : entry.Value.Type;
+                    var builtinEmitType = (type == HsType.Void && entry.Value.Type != HsType.Void)
+                        ? HsType.Void
+                        : (type != HsType.Unparsed && IsImplicitlyCastable(entry.Value.Type, type))
+                            ? type
+                            : entry.Value.Type;
                     var handle = AllocateExpression(builtinEmitType, HsSyntaxNodeFlags.Group, (ushort)entry.Key, (short)functionNameSymbol.Line);
                     var expr = ScriptExpressions[handle.Index];
 
@@ -2052,9 +2060,11 @@ namespace TagTool.Scripting.Compiler
 
                 // Promote the return type when the calling context requires it
                 // (e.g. Unit returned where Object is expected). Matches bungie behavior.
-                var scriptEmitType = (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
-                    ? type
-                    : script.ReturnType;
+                var scriptEmitType = (type == HsType.Void && script.ReturnType != HsType.Void)
+                    ? HsType.Void
+                    : (type != HsType.Unparsed && IsImplicitlyCastable(script.ReturnType, type))
+                        ? type
+                        : script.ReturnType;
                 var handle = AllocateExpression(
                     scriptEmitType,
                     HsSyntaxNodeFlags.ScriptReference,
@@ -2143,8 +2153,15 @@ namespace TagTool.Scripting.Compiler
             => CompileGlobalReference(symbol, global, global.Type);
 
         private DatumHandle CompileGlobalReference(ScriptSymbol symbol, HsGlobal global, HsType emitType)
+            => CompileGlobalReference(symbol, global, emitType, false);
+
+        private DatumHandle CompileGlobalReference(ScriptSymbol symbol, HsGlobal global, HsType emitType, bool explicitType)
         {
-            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.GlobalsReference, line: (short)symbol.Line);
+            // Opcode is set to the type integer when the calling context explicitly requests a
+            // fixed type (e.g. if->boolean). When the context is flexible and the global resolves
+            // to its natural type (e.g. <= numeric params compiled as Unparsed), opcode stays 0.
+            ushort? opcode = explicitType ? GetHsTypeAsInteger(emitType) : (ushort?)0;
+            var handle = AllocateExpression(emitType, HsSyntaxNodeFlags.GlobalsReference, opcode, line: (short)symbol.Line);
 
             var expr = ScriptExpressions[handle.Index];
             expr.StringAddress = CompileStringAddress(global.Name);
@@ -2289,7 +2306,7 @@ namespace TagTool.Scripting.Compiler
                 {
                     var noneExpr = ScriptExpressions[handle.Index];
                     noneExpr.StringAddress = CompileStringAddress(unitSeatMappingString.Value);
-                    Array.Copy(BitConverter.GetBytes(0), noneExpr.Data, 4);
+                    Array.Copy(BitConverter.GetBytes(-1), noneExpr.Data, 4);
                     return handle;
                 }
 
@@ -2820,7 +2837,7 @@ namespace TagTool.Scripting.Compiler
                     if (pointIndex == -1)
                         throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
                     expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
-                    Array.Copy(BitConverter.GetBytes((int)((ushort)pointIndex | (ushort)(pointSetIndex << 16))), expr.Data, 4);
+                    Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | pointIndex), expr.Data, 4);
                 }
             }
 
@@ -3521,7 +3538,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectString.Value);
-                Array.Copy(BitConverter.GetBytes(objectIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)objectIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3542,7 +3559,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(unitString.Value);
-                Array.Copy(BitConverter.GetBytes(unitIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)unitIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3584,7 +3601,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(weaponString.Value);
-                Array.Copy(BitConverter.GetBytes(weaponIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)weaponIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3605,7 +3622,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(deviceString.Value);
-                Array.Copy(BitConverter.GetBytes(deviceIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)deviceIndex), expr.Data, 2);
             }
 
             return handle;
@@ -3626,7 +3643,7 @@ namespace TagTool.Scripting.Compiler
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(sceneryString.Value);
-                Array.Copy(BitConverter.GetBytes(sceneryIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes((short)sceneryIndex), expr.Data, 2);
             }
 
             return handle;
