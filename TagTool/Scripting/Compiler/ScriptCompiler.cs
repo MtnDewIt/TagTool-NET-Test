@@ -727,7 +727,10 @@ namespace TagTool.Scripting.Compiler
 
                 foreach (var global in Cache.ScriptDefinitions.Globals)
                     if (global.Value.Name == symbol.Value)
-                        return CompileGlobalReference(symbol, global.Value.Type, global.Value.Name, (ushort)(global.Key | 0x8000));
+                    {
+                        var emitType = IsImplicitlyCastable(global.Value.Type, type) ? type : global.Value.Type;
+                        return CompileGlobalReference(symbol, emitType, global.Value.Name, (ushort)(global.Key | 0x8000));
+                    }
             }
 
             switch (type)
@@ -1387,7 +1390,7 @@ namespace TagTool.Scripting.Compiler
                 case HsType.Object:
                     return IsObjectSubtype(sourceType) || IsObjectNameType(sourceType) || sourceType == HsType.Ai;
 
-                // unit accepts vehicle, unit_name, vehicle_name, or an AI reference
+                // unit accepts, unit_name, vehicle, vehicle_name, or an AI reference
                 case HsType.Unit:
                     return sourceType == HsType.Vehicle
                         || sourceType == HsType.UnitName
