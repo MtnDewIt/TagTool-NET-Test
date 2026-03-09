@@ -115,12 +115,12 @@ namespace TagTool.Commands.Scenarios
             (4, "vehicle_test_seat",
                 "vehicle_test_seat_legacy"),
 
-            // h3/osdt -> ms23 change
+            // h3/osdt -> ms23 change (match porting code for now)
             (0, "player_action_test_cinematic_skip",
-                "player_action_test_accept"),
+                "player_action_test_jump"),
 
             (0, "player_action_test_start",
-                "player_action_test_accept"),
+                "player_action_test_jump"),
 
         ];
 

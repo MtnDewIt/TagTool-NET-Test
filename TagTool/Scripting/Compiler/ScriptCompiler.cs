@@ -2333,6 +2333,10 @@ namespace TagTool.Scripting.Compiler
                         for (int seatIndex = 0; seatIndex < unitDefinition.Seats.Count; seatIndex++)
                         {
                             var seatName = Cache.StringTable.GetString(unitDefinition.Seats[seatIndex].Label);
+                            if (!seatName.Contains(unitSeatMappingString.Value))
+                                seatName = Cache.StringTable.GetString(unitDefinition.Seats[seatIndex].MarkerName);
+                            if (!seatName.Contains(unitSeatMappingString.Value))
+                                continue;
 
                             if (!seatName.Contains(unitSeatMappingString.Value))
                                 continue;
@@ -2828,16 +2832,29 @@ namespace TagTool.Scripting.Compiler
                 else
                 {
                     var tokens = pointReferenceString.Value.Split('/');
-                    if (tokens.Length != 2)
-                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
-                    var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
-                    if (pointSetIndex == -1)
-                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
-                    var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
-                    if (pointIndex == -1)
-                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
-                    expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
-                    Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | pointIndex), expr.Data, 4);
+                    if (tokens.Length == 1)
+                    {
+                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
+                        if (pointSetIndex == -1)
+                            throw new ScriptCompilerException(pointReferenceString.Line, $"No point set named '{pointReferenceString.Value}' found.");
+                        expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
+                        Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | 0xFFFF), expr.Data, 4);
+                    }
+                    else if (tokens.Length == 2)
+                    {
+                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
+                        if (pointSetIndex == -1)
+                            throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
+                        var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
+                        if (pointIndex == -1)
+                            throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
+                        expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
+                        Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | pointIndex), expr.Data, 4);
+                    }
+                    else
+                    {
+                        throw new ScriptCompilerException(pointReferenceString.Line, $"Invalid point reference '{pointReferenceString.Value}'. Expected format: 'point_set' or 'point_set/point_name'.");
+                    }
                 }
             }
 
