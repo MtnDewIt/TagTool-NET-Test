@@ -253,18 +253,19 @@ namespace TagTool.Tags.Definitions
                 [Flags]
                 public enum ParticleSystemFlags : ushort
                 {
+                    None = 0,
                     ParticlesFreezeWhenOffscreen = 1 << 0,
                     ParticlesContinueAsUsualWhenOffscreen = 1 << 1,
                     LodAlways10 = 1 << 2,
                     LodSameInSplitscreen = 1 << 3,
-                    DisabledIn3And4waySplitscreen = 1 << 4,
+                    DisabledIn3And4WaySplitscreen = 1 << 4,
                     DisabledForDebugging = 1 << 5,
                     InheritEffectVelocity = 1 << 6,
                     DontRenderSystem = 1 << 7,
                     RenderWhenZoomed = 1 << 8,
                     ForceCpuUpdating = 1 << 9,
                     ForceGpuUpdating = 1 << 10,
-                    OverrideNearFade = 1 << 11,
+                    OverrideNearFadeUseWithCaution = 1 << 11,
                     ParticlesDieWhenEffectEnds = 1 << 12,
                     GpuOcclusionWeatherOnly = 1 << 13,
                     TurnOffNearFadeOnEnhancedGraphics = 1 << 14,
@@ -274,6 +275,7 @@ namespace TagTool.Tags.Definitions
                 [Flags]
                 public enum ParticleSystemFlagsReach : uint
                 {
+                    None = 0,
                     ParticlesFreezeWhenOffscreen = 1 << 0,
                     ParticlesContinueAsUsualWhenOffscreen = 1 << 1,
                     LodAlways10 = 1 << 2,
@@ -290,7 +292,8 @@ namespace TagTool.Tags.Definitions
                     UseSynchronizedRandomSeed = 1 << 13, // synchronized across particle systems
                     UseWorldOrientation = 1 << 14, // particle system uses local-space position but up is always 'global up'
                     RenderInSpawnOrder = 1 << 15, // first particle spawned renders first (at the back), last particle spawned renders last (front)
-                    DynamicParticleResolution = 1 << 16 // use distance and multiplier (below) to tune high- or low-res rendering
+                    DynamicParticleResolution = 1 << 16, // use distance and multiplier (below) to tune high- or low-res rendering
+                    Bit17 = 1 << 17 // Why
                 }
 
                 [TagStructure(Size = 0x2F0, MaxVersion = CacheVersion.Halo3Retail)]
