@@ -1,22 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using TagTool.Bitmaps;
-using TagTool.Tags.Definitions;
-using TagTool.Cache;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using TagTool.Bitmaps;
-using TagTool.Tags.Definitions;
-using TagTool.Cache;
-using TagTool.Common;
-using TagTool.Commands.Common;
-using TagTool.Tags;
-using TagTool.Bitmaps.DDS;
-using TagTool.IO;
 using System.Linq;
-using TagTool.Bitmaps.Utils;
+using TagTool.Bitmaps;
+using TagTool.Bitmaps.DDS;
+using TagTool.Cache;
+using TagTool.Commands.Common;
+using TagTool.Common;
+using TagTool.IO;
+using TagTool.Tags;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Tags
 {

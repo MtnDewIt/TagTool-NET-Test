@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TagTool.Cache;
 using TagTool.Commands.Common;
-using System.Collections.Generic;
 using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Scenarios

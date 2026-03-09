@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TagTool.Cache;
 using TagTool.Commands.Common;
 using TagTool.Common.Logging;
@@ -1020,14 +1021,18 @@ namespace TagTool.Commands.Shaders
                     options.Add(0);
                 var aOptions = options.ToArray();
 
+                var rmt2 = cache.Deserialize<RenderMethodTemplate>(stream, tag);
+
                 STemplateRecompileInfo info = new STemplateRecompileInfo
                 {
                     Name = $"shaders\\{shaderType}_templates\\_{string.Join("_", aOptions)}",
                     ShaderType = shaderType,
                     Options = aOptions,
                     Tag = tag,
-                    Dependants = GetDependantsAsync(cache, stream, shaderType, aOptions),
-                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(cache, stream, rmdf, aOptions)
+                    Dependants = GetDependantsAsync(cache, stream, tag.Name),
+                    AllRmopParameters = ShaderGeneratorNew.GatherParameters(cache, stream, rmdf, aOptions),
+                    PixelShaderName = rmt2.PixelShader != null ? rmt2.PixelShader.Name : tag.Name,
+                    VertexShaderName = rmt2.VertexShader != null ? rmt2.VertexShader.Name : tag.Name,
                 };
 
                 recompileInfo.Add(info);
@@ -1075,9 +1080,13 @@ namespace TagTool.Commands.Shaders
                 cache.Serialize(stream, task.Result.Template.VertexShader, task.Result.VertexShader);
                 cache.Serialize(stream, task.Result.Tag, task.Result.Template);
 
+                task.Result.Template.PixelShader.Name = task.Result.Name;
+                task.Result.Template.VertexShader.Name = task.Result.Name;
+                task.Result.Tag.Name = task.Result.Name;
+
                 (cache as GameCacheHaloOnlineBase).SaveTagNames();
 
-                ReserializeDependantsAsync(cache, stream, task.Result.Template, task.Result.Dependants);
+                ReserializeDependantsAsync(cache, stream, task.Result.Template, task.Result.Dependants, task.Result.AllRmopParameters, task.Result.Options);
             }
 
             Console.Write($"\rSuccessfully recompiled {tasks.Count} {shaderType} templates. Serializing... Done");
@@ -1092,18 +1101,18 @@ namespace TagTool.Commands.Shaders
                 if (rmt2.PixelShader.Name == null || rmt2.PixelShader.Name == "")
                     Log.Warning($"pixel_shader {rmt2.PixelShader.Index:X16} has no name");
 
-                for (int i = 0; i < pixl.EntryPointShaders.Count; i++)
+                for (int i = 0; i < pixl.EntryPoints.Count; i++)
                 {
                     bool entryNeeded = rmdf.EntryPoints.Any(x => (int)x.EntryPoint == i) &&
                         (glps.EntryPoints[i].DefaultCompiledShaderIndex == -1 && glps.EntryPoints[i].CategoryDependency.Count == 0);
 
-                    if (pixl.EntryPointShaders[i].Count > 0 && !entryNeeded)
+                    if (pixl.EntryPoints[i].Count > 0 && !entryNeeded)
                         Log.Warning($"{rmt2.PixelShader.Name} has unneeded entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
-                    if (pixl.EntryPointShaders[i].Count == 0 && entryNeeded)
+                    if (pixl.EntryPoints[i].Count == 0 && entryNeeded)
                         Log.Warning($"{rmt2.PixelShader.Name} missing entry point shader {(TagTool.Shaders.EntryPoint)i}");
 
-                    if (pixl.EntryPointShaders[i].Count > 0 && pixl.EntryPointShaders[i].Offset >= pixl.Shaders.Count)
+                    if (pixl.EntryPoints[i].Count > 0 && pixl.EntryPoints[i].StartIndex >= pixl.CompiledShaders.Count)
                         Log.Warning($"{rmt2.PixelShader.Name} has invalid compiled shader indices {i}");
                 }
             }
