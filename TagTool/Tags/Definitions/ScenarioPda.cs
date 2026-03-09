@@ -5,20 +5,20 @@ using TagTool.Common;
 namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "scenario_pda", Tag = "spda", Size = 0xC, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
-    public class ScenarioPda
+    public class ScenarioPDA
     {
-        public List<PdaDefinition> PdaDefinitions;
+        public List<PDADefinition> PDADefinitions;
     }
 
     [TagStructure(Size = 0xC0)]
-    public class PdaDefinition
+    public class PDADefinition
     {
         public StringId Name;
-        public List<PdaRenderModel> RenderModels;
-        public List<PdaRenderModelColor> PdaRenderModelColors;
-        public CachedTag PdaValidMovementMap;
-        public CachedTag PdaHeightMap;
-        public Bounds<float> PdaHeight;
+        public List<PDARenderModel> RenderModels;
+        public List<PDARenderModelColor> PDARenderModelColors;
+        public CachedTag PDAValidMovementMap;
+        public CachedTag PDAHeightMap;
+        public Bounds<float> PDAHeight;
         public float FalloffRadius;
         public RealPoint2d InitialPosition;
         public RealPoint3d MinimumWorldPosition;
@@ -38,7 +38,7 @@ namespace TagTool.Tags.Definitions
     }
 
     [TagStructure(Size = 0x1C)]
-    public class PdaRenderModel
+    public class PDARenderModel
     {
         public CachedTag RenderModel;
         public short ModelColorIndex;
@@ -50,7 +50,7 @@ namespace TagTool.Tags.Definitions
     }
 
     [TagStructure(Size = 0x10)]
-    public class PdaRenderModelColor
+    public class PDARenderModelColor
     {
         public RealRgbColor Color;
         public float Intensity;
