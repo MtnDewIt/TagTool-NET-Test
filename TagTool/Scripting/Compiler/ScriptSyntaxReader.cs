@@ -148,8 +148,9 @@ namespace TagTool.Scripting.Compiler
                 if (c == '"')
                     break;
 
-                if (c == '\n')
-                    Line++;
+                if (c == '\r' || c == '\n')
+                    throw new ScriptCompilerException(stringStartLine,
+                        "Unterminated string - reached end of line without a closing '\"'.");
 
                 result += c;
             }
@@ -234,9 +235,38 @@ namespace TagTool.Scripting.Compiler
                     return ReadUnquote();
 
                 case ";":
-                    for (char c; (Reader.BaseStream.Position < Reader.BaseStream.Length) && ((c = Reader.ReadChar()) != '\r' && c != '\n');)
+                    if (Reader.BaseStream.Position < Reader.BaseStream.Length)
                     {
-                        // consume until end of line
+                        // Peek at next char - if '*' this is a block comment ;* ... *;
+                        char next = Reader.ReadChar();
+                        if (next == '*')
+                        {
+                            int blockCommentLine = Line;
+                            // Consume until closing *;
+                            while (true)
+                            {
+                                if (Reader.BaseStream.Position >= Reader.BaseStream.Length)
+                                    throw new ScriptCompilerException(blockCommentLine,
+                                        "Unterminated block comment - the ';*' opened here was never closed.");
+
+                                char c = Reader.ReadChar();
+                                if (c == '\n') Line++;
+                                if (c == '*' && Reader.BaseStream.Position < Reader.BaseStream.Length)
+                                {
+                                    char c2 = Reader.ReadChar();
+                                    if (c2 == ';') break;
+                                    if (c2 == '\n') Line++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Regular line comment - consume until end of line
+                            if (next != '\r' && next != '\n')
+                                for (char c; (Reader.BaseStream.Position < Reader.BaseStream.Length) && ((c = Reader.ReadChar()) != '\r' && c != '\n');) { }
+                            else if (next == '\n')
+                                Line++;
+                        }
                     }
                     goto begin;
 
