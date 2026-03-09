@@ -98,7 +98,7 @@ namespace TagTool.Scripting.Compiler
                 // Ensure the file ends with a newline so the parser always
                 // sees a clean terminator after the last closing parenthesis.
                 var fileBytes = new byte[fileStream.Length];
-                fileStream.Read(fileBytes, 0, fileBytes.Length);
+                fileStream.ReadExactly(fileBytes);
 
                 var paddedStream = new MemoryStream();
                 paddedStream.Write(fileBytes, 0, fileBytes.Length);

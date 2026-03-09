@@ -453,6 +453,15 @@ namespace TagTool.Porting.Gen3
                     resultTag = GetFallbackTag(blamTag);
                     return false;
 
+                case "cmps":
+                case "cmpu":
+                case "fwtg":
+                case "rsod":
+                case "sdzg":
+                case "spda":
+                case "wave":
+                    return false;
+
                 // these tags will be generated in the template generation code
                 case "rmt2":
                 case "rmdf":

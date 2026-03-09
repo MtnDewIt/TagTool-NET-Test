@@ -1,82 +1,74 @@
-﻿using System;
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "wave_template", Tag = "wave", Size = 0xC, MaxVersion = CacheVersion.HaloReach11883)]
+    [TagStructure(Name = "wave_template", Tag = "wave", Size = 0xC, Platform = CachePlatform.MCC, MinVersion = CacheVersion.Halo3ODST)]
+    [TagStructure(Name = "wave_template", Tag = "wave", Size = 0xC, Platform = CachePlatform.Original, MinVersion = CacheVersion.HaloReach)]
     public class WaveTemplate : TagStructure
     {
         public List<SquadSpecification> SquadSpecifications;
-
-        [TagStructure(Size = 0x28, Version = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
-        public class SquadSpecification : TagStructure 
+        
+        [TagStructure(Size = 0x28, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x24, MinVersion = CacheVersion.HaloReach)]
+        public class SquadSpecification : TagStructure
         {
+            [TagField(ValidTags = new [] { "sqtm" })]
             public CachedTag SquadTemplate;
-            public WaveDifficultyFlags DifficultyFlags;
 
-            [TagField(Flags = TagFieldFlags.Padding, Length = 0x2)]
+            public GameDifficultyFlags DifficultyFlags;
+            [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
             public byte[] Padding;
 
             public Bounds<short> RoundRange;
             public Bounds<short> SetRange;
+            // The relative weight given to this squad spawning
             public short Weight;
-            public byte MinimumSpawn;
-            public byte MaximumSpawn;
-            public WavePlacementValue PlacementFilter;
-            public WaveFlags Flags;
-            public WaveTeamValue Team;
-        }
 
-        [Flags]
-        public enum WaveDifficultyFlags : short 
-        {
-            None = 0,
-            Easy = 1 << 0,
-            Normal = 1 << 1,
-            Heroic = 1 << 2,
-            Legendary = 1 << 3,
-        }
+            // Spawn AT LEAST or NO MORE than this number of squads. Value of 0 means "no minimum" or "no maximum"
+            public Bounds<sbyte> SpawnCount;
 
-        public enum WavePlacementValue : int 
-        {
-            None = 0,
-            HeavyInfantry,
-            BossInfantry,
-            LightVehicle,
-            HeavyVehicle,
-            FlyingInfantry,
-            FlyingVehicle,
-            Bonus,
-            NoVaultAnim,
-        }
+            // Filter where this squad specification can spawn by matching this value with the values in squad definitions in the
+            // scenario
+            public WavePlacementFilterEnum PlacementFilter;
 
-        [Flags]
-        public enum WaveFlags : short 
-        {
-            None = 0,
-            IncompatibleWithDropships = 1 << 0,
-        }
+            [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC, Flags = TagFieldFlags.Padding, Length = 0x2)]
+            public byte[] Pad0;
+            [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            public DefaultTeamValue Team;
 
-        public enum WaveTeamValue : short 
-        {
-            Default = 0,
-            Player,
-            Human,
-            Covenant,
-            Flood,
-            Sentinel,
-            Heretic,
-            Prophet,
-            Guilty,
-            Unused9,
-            Unused10,
-            Unused11,
-            Unused12,
-            Unused13,
-            Unused14,
-            Unused15,
+            public enum WavePlacementFilterEnum : uint
+            {
+                None,
+                HeavyInfantry,
+                BossInfantry,
+                LightVehicle,
+                HeavyVehicle,
+                FlyingInfantry,
+                FlyingVehicle,
+                Bonus
+            }
+
+            public enum DefaultTeamValue : ushort
+            {
+                Default,
+                Player,
+                Human,
+                Covenant,
+                Flood,
+                Sentinel,
+                Heretic,
+                Prophet,
+                Guilty,
+                Unused9,
+                Unused10,
+                Unused11,
+                Unused12,
+                Unused13,
+                Unused14,
+                Unused15
+            }
         }
     }
 }

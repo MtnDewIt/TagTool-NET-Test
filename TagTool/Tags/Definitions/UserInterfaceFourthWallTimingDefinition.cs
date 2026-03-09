@@ -1,33 +1,26 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
 {
-    [TagStructure(Name = "user_interface_fourth_wall_timing_definition", Tag = "fwtg", Size = 0x18, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-    public class UserInterfaceFourthWallTimingDefinition : TagStructure
+    [TagStructure(Name = "user_interface_fourth_wall_timing_definition", Tag = "fwtg", Size = 0x18, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST)]
+    public class UserInterfaceFourthWallTimingDefinition
     {
-        public List<DisplayGroupItem> DisplayGroups;
-        public List<TextItem> Text;
+        public List<FourthWallTiming> DisplayGroups;
+        public List<FourthWallTiming> Text;
 
-        [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public class DisplayGroupItem : TagStructure 
+        [TagStructure(Size = 0x10)]
+        public class FourthWallTiming
         {
             public StringId DisplayGroup;
-            public List<Timings> LocalizedTimings;
+            public List<LocalizedTiming> LocalizedTimings;
         }
 
-        [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public class TextItem : TagStructure 
+        [TagStructure(Size = 0x8)]
+        public class LocalizedTiming
         {
-            public StringId Text;
-            public List<Timings> LocalizedTimings;
-        }
-
-        [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.HaloOnline700123)]
-        public class Timings : TagStructure
-        {
-            public GameLanguage Langauge;
+            public GameLanguage Language;
             public float StartTime;
         }
     }
