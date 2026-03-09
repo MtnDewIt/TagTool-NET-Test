@@ -143,11 +143,7 @@ namespace TagTool.Commands.Scenarios
 
             merged.StructureBspPvs = MergeBspPvsList(sources, combinedBspMask);
 
-            // Portal device mappings are geometry-specific; use the first valid source
-            var firstWithPortals = sources.FirstOrDefault(
-                s => s.PortaldeviceMapping != null && s.PortaldeviceMapping.Count > 0);
-            merged.PortaldeviceMapping = firstWithPortals?.PortaldeviceMapping
-                                         ?? new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock>();
+            merged.PortaldeviceMapping = MergePortalDeviceMappings(sources);
 
             return merged;
         }
@@ -159,6 +155,50 @@ namespace TagTool.Commands.Scenarios
                 if (src.BspChecksums != null && src.BspChecksums.Count > 0)
                     return src.BspChecksums;
             return new List<Scenario.ZoneSetPvsBlock.BspChecksum>();
+        }
+
+        // PortaldeviceMapping is indexed by raw structure_bsp_index, not mask slot.
+        // game_get_machine_door_portal_reference reads PortaldeviceMapping[structure_bsp_index]
+        // directly, so the list must have one entry per BSP in order with empty placeholders
+        // for any BSP that has no device portals.
+        private List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock> MergePortalDeviceMappings(
+            IReadOnlyList<Scenario.ZoneSetPvsBlock> sources)
+        {
+            int maxBspIndex = -1;
+            foreach (var src in sources)
+            {
+                if (src.PortaldeviceMapping == null) continue;
+                int last = src.PortaldeviceMapping.Count - 1;
+                if (last > maxBspIndex) maxBspIndex = last;
+            }
+
+            if (maxBspIndex < 0)
+                return new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock>();
+
+            var result = new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock>(maxBspIndex + 1);
+
+            for (int bspIdx = 0; bspIdx <= maxBspIndex; bspIdx++)
+            {
+                Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock entry = null;
+                foreach (var src in sources)
+                {
+                    if (src.PortaldeviceMapping == null || bspIdx >= src.PortaldeviceMapping.Count) continue;
+                    var candidate = src.PortaldeviceMapping[bspIdx];
+                    if (candidate == null) continue;
+                    int candidatePortalCount = candidate.GamePortalToPortalMap?.Count ?? 0;
+                    int entryPortalCount = entry?.GamePortalToPortalMap?.Count ?? 0;
+                    if (candidatePortalCount > entryPortalCount)
+                        entry = candidate;
+                }
+
+                result.Add(entry ?? new Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock
+                {
+                    DevicePortalAssociations = new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock.DevicePortalAssociation>(),
+                    GamePortalToPortalMap = new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock.GamePortalToPortalMapping>()
+                });
+            }
+
+            return result;
         }
 
         // The runtime indexes StructureBspPvs by popcount(Bsps & ((1 << bspIdx) - 1)),
@@ -622,27 +662,39 @@ namespace TagTool.Commands.Scenarios
         private List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>
             MergePortalToDoorMappings(IReadOnlyList<Scenario.ZoneSetAudibilityBlock> sources)
         {
-            var result     = new List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>();
-            int baseOffset = 0;
+            // Indexed by BSP index directly — one entry per BSP, same as PortaldeviceMapping.
+            // audibility_door_occluder_to_game_portal_index iterates this array and uses the
+            // loop counter as structure_bsp_index, so order and count must match BSP indices.
+            int maxBspIndex = sources
+                .Where(s => s.GamePortalToDoorOccluderMappings != null)
+                .Select(s => s.GamePortalToDoorOccluderMappings.Count - 1)
+                .DefaultIfEmpty(-1).Max();
 
-            foreach (var src in sources)
+            if (maxBspIndex < 0)
+                return new List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>();
+
+            var result = new List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>(maxBspIndex + 1);
+
+            for (int bspIdx = 0; bspIdx <= maxBspIndex; bspIdx++)
             {
-                if (src.GamePortalToDoorOccluderMappings == null) continue;
-
-                int srcOccluderCount = src.GamePortalToDoorOccluderMappings.Count == 0 ? 0 :
-                    src.GamePortalToDoorOccluderMappings.Max(
-                        m => m.FirstDoorOccluderIndex + m.DoorOccluderCount);
-
-                foreach (var mapping in src.GamePortalToDoorOccluderMappings)
+                Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping entry = null;
+                foreach (var src in sources)
                 {
-                    result.Add(new Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping
+                    if (src.GamePortalToDoorOccluderMappings == null ||
+                        bspIdx >= src.GamePortalToDoorOccluderMappings.Count) continue;
+                    var candidate = src.GamePortalToDoorOccluderMappings[bspIdx];
+                    if (candidate.DoorOccluderCount > 0)
                     {
-                        FirstDoorOccluderIndex = mapping.FirstDoorOccluderIndex + baseOffset,
-                        DoorOccluderCount      = mapping.DoorOccluderCount
-                    });
+                        entry = candidate;
+                        break;
+                    }
                 }
 
-                baseOffset += srcOccluderCount;
+                result.Add(entry ?? new Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping
+                {
+                    FirstDoorOccluderIndex = 0,
+                    DoorOccluderCount = 0
+                });
             }
 
             return result;
