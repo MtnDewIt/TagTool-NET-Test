@@ -20,6 +20,7 @@ using TagTool.Commands.Scenarios;
 using TagTool.Cache.Monolithic;
 using TagTool.Commands.Mod;
 using TagTool.Scripting.CSharp;
+using TagTool.Commands.WeDontTalkAboutIt;
 
 namespace TagTool.Commands.Tags
 {
@@ -80,6 +81,7 @@ namespace TagTool.Commands.Tags
             context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheHaloOnline));
 
             context.AddCommand(new DebugTestCommand(cache, cache as GameCacheHaloOnline, contextStack));
+            context.AddCommand(new DecompressCommand());
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
