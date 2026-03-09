@@ -446,6 +446,18 @@ namespace TagTool.Scripting
                     }
                     break;
 
+                case "ModelState":
+                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
+                    {
+                        case 0: result.Name = "Standard"; break;
+                        case 1: result.Name = "MinorDamage"; break;
+                        case 2: result.Name = "MediumDamage"; break;
+                        case 3: result.Name = "MajorDamage"; break;
+                        case 4: result.Name = "Destroyed"; break;
+                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
+                    }
+                    break;
+
                 // Script name reference - compiler takes ScriptSymbol, no quotes
                 case "AiCommandScript":
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
