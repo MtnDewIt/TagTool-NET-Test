@@ -9,8 +9,6 @@ using TagTool.Cache.MCC.Headers;
 using TagTool.Commands.Common;
 using TagTool.IO;
 using TagTool.Serialization;
-using TagTool.Tags;
-using static TagTool.Cache.SharedResourceUsage;
 
 namespace TagTool.Commands.WeDontTalkAboutIt
 {
@@ -65,63 +63,22 @@ namespace TagTool.Commands.WeDontTalkAboutIt
 
                     serializer.Serialize(writerContext, header);
 
-                    int[] updatedSectionOffsets = new int[4];
+                    int[] updatedSectionOffsets = new int[(int)CacheFileSectionType.Count];
 
-                    for (int section_index = 0; section_index < (int)CacheFileSectionType.Count; section_index++) 
-                    {
-                        uint offset = header.CompressedSectionOffset[section_index].Value;
-                        uint compressedSize = header.CompressedSectionSize[section_index].Value;
-                        CompressedSectionCodec codec = header.CompressedSectionCodec[section_index].Codec;
-                        int decompressedSize = header.SectionTable.OriginalSectionBounds[section_index].Size;
-                        int decompressedOffset = header.SectionTable.OriginalSectionBounds[section_index].Offset;
-                        int sectionOffset = header.SectionTable.SectionOffsets[section_index];
-
-                        int finalOffset = decompressedOffset + sectionOffset;
-
-                        int padding = ((int)writer.BaseStream.Position + SEGMENT_ALIGNMENT - 1) & ~(SEGMENT_ALIGNMENT - 1);
-
-                        writer.Seek(padding, SeekOrigin.Begin);
-
-                        updatedSectionOffsets[section_index] = padding - decompressedOffset;
-
-                        if (codec == CompressedSectionCodec.None)
-                        {
-                            reader.SeekTo(offset);
-                            writer.Write(reader.ReadBytes(decompressedSize));
-                        }
-                        else if (codec == CompressedSectionCodec.LZMALib)
-                        {
-                            Decoder lzmaDecoder = new Decoder();
-                            reader.SeekTo(offset + 1);
-
-                            int lzmaHeader = UnpackHeader(reader.ReadByte());
-
-                            byte[] lzmaHeaderData = BitConverter.GetBytes(lzmaHeader);
-
-                            using (MemoryStream compressedStream = new MemoryStream()) 
-                            {
-                                compressedStream.Write(new byte[1] { 0x5D }, 0, 1);
-                                compressedStream.Write(lzmaHeaderData);
-                                compressedStream.Write(reader.ReadBytes((int)(compressedSize - 2)), 0, (int)(compressedSize - 2));
-                                compressedStream.Seek(0, SeekOrigin.Begin);
-
-                                byte[] props = new byte[5];
-                                compressedStream.Read(props, 0, 5);
-
-                                lzmaDecoder.SetDecoderProperties(props);
-
-                                lzmaDecoder.Code(compressedStream, memoryStream, compressedSize, decompressedSize, null);
-                            }
-                        }
-                        else
-                        {
-                            throw new ArgumentException($"Unsupported Compressed Secion Codec {codec}");
-                        }
-                    }
+                    DecompressSection((int)CacheFileSectionType.DebugSection, header, reader, writer, memoryStream, updatedSectionOffsets);
+                    DecompressSection((int)CacheFileSectionType.ResourceSection, header, reader, writer, memoryStream, updatedSectionOffsets);
+                    DecompressSection((int)CacheFileSectionType.TagSection, header, reader, writer, memoryStream, updatedSectionOffsets);
+                    DecompressSection((int)CacheFileSectionType.LanguagePackSection, header, reader, writer, memoryStream, updatedSectionOffsets);
 
                     writer.Seek(0, SeekOrigin.Begin);
 
-                    // #INSERT MODIFICATIONS HERE
+                    Console.WriteLine();
+                    for (int sectionIndex = 0; sectionIndex < (int)CacheFileSectionType.Count; sectionIndex++) 
+                    {
+                        Console.WriteLine($"[Updated Cache File Header] {(CacheFileSectionType)sectionIndex}: SectionTable - Offset: {updatedSectionOffsets[sectionIndex]}");
+                    }
+
+                    UpdateHeader(ref header, updatedSectionOffsets);
 
                     serializer.Serialize(writerContext, header);
                 }
@@ -272,12 +229,79 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
         }
 
+        private static void DecompressSection(int sectionIndex, CacheFileHeaderHalo3MCCXbox header, EndianReader reader, EndianWriter writer, MemoryStream memoryStream, int[] updatedSectionOffsets) 
+        {                                                                         
+            uint offset = header.CompressedSectionOffset[sectionIndex].Value;
+            uint compressedSize = header.CompressedSectionSize[sectionIndex].Value;
+            CompressedSectionCodec codec = header.CompressedSectionCodec[sectionIndex].Codec;
+            int decompressedSize = header.SectionTable.OriginalSectionBounds[sectionIndex].Size;
+            int decompressedOffset = header.SectionTable.OriginalSectionBounds[sectionIndex].Offset;
+            int sectionOffset = header.SectionTable.SectionOffsets[sectionIndex];
+
+            int finalOffset = decompressedOffset + sectionOffset;
+
+            int padding = ((int)writer.BaseStream.Position + SEGMENT_ALIGNMENT - 1) & ~(SEGMENT_ALIGNMENT - 1);
+
+            writer.Seek(padding, SeekOrigin.Begin);
+
+            updatedSectionOffsets[sectionIndex] = padding - decompressedOffset;
+
+            if (codec == CompressedSectionCodec.None)
+            {
+                reader.SeekTo(offset);
+                writer.Write(reader.ReadBytes(decompressedSize));
+            }
+            else if (codec == CompressedSectionCodec.LZMALib)
+            {
+                Decoder lzmaDecoder = new Decoder();
+                reader.SeekTo(offset + 1);
+
+                int lzmaHeader = UnpackHeader(reader.ReadByte());
+
+                byte[] lzmaHeaderData = BitConverter.GetBytes(lzmaHeader);
+
+                using (MemoryStream compressedStream = new MemoryStream())
+                {
+                    compressedStream.Write(new byte[1] { 0x5D }, 0, 1);
+                    compressedStream.Write(lzmaHeaderData);
+                    compressedStream.Write(reader.ReadBytes((int)(compressedSize - 2)), 0, (int)(compressedSize - 2));
+                    compressedStream.Seek(0, SeekOrigin.Begin);
+
+                    byte[] props = new byte[5];
+                    compressedStream.Read(props, 0, 5);
+
+                    lzmaDecoder.SetDecoderProperties(props);
+
+                    lzmaDecoder.Code(compressedStream, memoryStream, compressedSize, decompressedSize, null);
+                }
+            }
+            else
+            {
+                throw new ArgumentException($"Unsupported Compressed Secion Codec {codec}");
+            }
+        }
+
         private static int UnpackHeader(byte value) 
         {
             int shift = ((value >> 1) & 0x1F) + 10;
             int baseValue = (value & 1 << 1) + 1;
 
             return baseValue << shift;
+        }
+
+        private static void UpdateHeader(ref CacheFileHeaderHalo3MCCXbox header, int[] updatedSectionOffsets) 
+        {
+            // Assumes we're decompressing each section
+            header.CompressedSectionSize[(int)CacheFileSectionType.DebugSection].Value = 0;
+            header.CompressedSectionSize[(int)CacheFileSectionType.ResourceSection].Value = 0;
+            header.CompressedSectionSize[(int)CacheFileSectionType.TagSection].Value = 0;
+            header.CompressedSectionSize[(int)CacheFileSectionType.LanguagePackSection].Value = 0;
+
+            // Assumes we're decompressing each section
+            header.CompressedSectionCodec[(int)CacheFileSectionType.DebugSection].Codec = CompressedSectionCodec.None;
+            header.CompressedSectionCodec[(int)CacheFileSectionType.ResourceSection].Codec = CompressedSectionCodec.None;
+            header.CompressedSectionCodec[(int)CacheFileSectionType.TagSection].Codec = CompressedSectionCodec.None;
+            header.CompressedSectionCodec[(int)CacheFileSectionType.LanguagePackSection].Codec = CompressedSectionCodec.None;
         }
     }
 }
