@@ -38,7 +38,7 @@ namespace TagTool.Commands.Scenarios
             string inputPath = args[0];
             string outputPath = args[1];
 
-            int flags = ~0; // all flags set by default
+            int flags = 0; // no flags enabled by default
             if (args.Count == 3)
             {
                 if (!int.TryParse(args[2], out flags))
