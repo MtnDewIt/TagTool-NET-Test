@@ -196,7 +196,7 @@ namespace TagTool.Cache
             if (LocaleTables != null)
                 return;
 
-            if (TagCacheGen3.Instances.Count == 0 || sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+            if (TagCacheGen3.Instances.Count == 0 || sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LanguagePackSection].Size == 0)
                 return;
 
             //Allow caches to open even if Globals cannot deserialize

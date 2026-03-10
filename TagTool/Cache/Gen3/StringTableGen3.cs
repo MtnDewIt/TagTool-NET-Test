@@ -97,15 +97,15 @@ namespace TagTool.Cache.Gen3
             }
 
             // means no strings
-            if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.StringSection].Size == 0)
+            if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.DebugSection].Size == 0)
                 return;
 
             uint stringIdTableOffset;
             uint stringIdDataOffset;
             if (baseMapFile.Version > CacheVersion.Halo3Epsilon)
             {
-                stringIdTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
-                stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
+                stringIdTableOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, indexOffset);
+                stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, dataOffset);
             }
             else
             {

@@ -109,8 +109,8 @@ namespace TagTool.Cache.Gen3
                 if (sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.TagSection].Size == 0)
                     return;
 
-                debugTagNameIndexOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
-                debugTagNameDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
+                debugTagNameIndexOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, indexOffset);
+                debugTagNameDataOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, dataOffset);
 
                 tagDataSectionOffset = expectedBaseAddress - sectionOffset;
             }

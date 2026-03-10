@@ -60,5 +60,14 @@ namespace TagTool.Cache
         {
             return $"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
         }
+
+        public override string ToString() 
+        {
+            string date = $"{GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+
+            string output = (Low != 0 && High != 0) ? date : "None";
+
+            return $"{output} - (Low: {Low} High: {High})";
+        }
     }
 }

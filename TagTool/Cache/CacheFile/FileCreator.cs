@@ -50,5 +50,7 @@ namespace TagTool.Cache
 
             return authorBytes;
         }
+
+        public override string ToString() => GetCreator(Data);
     }
 }
