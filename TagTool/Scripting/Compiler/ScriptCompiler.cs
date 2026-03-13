@@ -1256,7 +1256,7 @@ namespace TagTool.Scripting.Compiler
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
 
-            throw new ScriptCompilerException(node.Line, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
+            throw new ScriptCompilerException(node.Line, $"Cannot compile expression '{node}' as type '{type}'. Check that the return type matches the script declaration.");
         }
 
         private void EmitScriptPaddingBlocks(int count = 5)
