@@ -16,12 +16,13 @@ namespace TagTool.Commands.Scenarios
             base(true,
 
                 "MergePvs",
-                "Merges all zone set PVS and audibility data into a single zone set, removing all others.",
+                "Merges zone set PVS and audibility data into a single zone set, removing all others.",
 
-                "MergePvs",
+                "MergePvs [bsp0 bsp1 ...]",
 
-                "Merges PVS visibility bit vectors and audibility room/door data from all zone\n" +
-                "sets into a single replacement entry using bitwise OR and range union.\n" +
+                "Merges PVS and audibility data into a single zone set.\n" +
+                "Optionally specify BSP indices to include (e.g. 'MergePvs 0 1 2 3').\n" +
+                "If no indices given, all BSPs from all zone sets are merged." +
                 "All other zone sets, PVS entries, audibility entries, and BSP atlas blocks\n" +
                 "are removed since multiplayer only uses one active zone set.")
         {
@@ -31,8 +32,19 @@ namespace TagTool.Commands.Scenarios
 
         public override object Execute(List<string> args)
         {
-            if (args.Count != 0)
-                return new TagToolError(CommandError.ArgCount);
+            // Parse optional BSP index filter
+            int? bspMaskFilter = null;
+            if (args.Count > 0)
+            {
+                int filterMask = 0;
+                foreach (var arg in args)
+                {
+                    if (!int.TryParse(arg, out int bspIdx) || bspIdx < 0 || bspIdx >= Definition.StructureBsps.Count)
+                        return new TagToolError(CommandError.ArgInvalid, $"Invalid BSP index: {arg} (map has {Definition.StructureBsps.Count} BSPs)");
+                    filterMask |= (1 << bspIdx);
+                }
+                bspMaskFilter = filterMask;
+            }
 
             if (Definition.ZoneSetPvs == null || Definition.ZoneSetPvs.Count == 0)
                 return new TagToolError(CommandError.CustomError, "Scenario has no ZoneSetPvs entries.");
@@ -48,6 +60,10 @@ namespace TagTool.Commands.Scenarios
 
             foreach (var zs in Definition.ZoneSets)
             {
+                Console.WriteLine($"Zone set '{zs.Name}': Bsps=0x{(int)zs.Bsps:X}, PvsIndex={zs.PvsIndex}");
+                if (bspMaskFilter.HasValue && ((int)zs.Bsps & bspMaskFilter.Value) == 0)
+                    continue;
+
                 if (zs.PvsIndex >= 0 && zs.PvsIndex < Definition.ZoneSetPvs.Count)
                 {
                     var pvs = Definition.ZoneSetPvs[zs.PvsIndex];
@@ -74,7 +90,7 @@ namespace TagTool.Commands.Scenarios
             // ----------------------------------------------------------------
             // 2. Build merged data
             // ----------------------------------------------------------------
-            var mergedPvs = BuildMergedPvs(pvsBlocks);
+            var mergedPvs = BuildMergedPvs(pvsBlocks, bspMaskFilter);
 
             Scenario.ZoneSetAudibilityBlock mergedAud = null;
             if (audibilityBlocks.Count > 0)
@@ -123,7 +139,7 @@ namespace TagTool.Commands.Scenarios
         // PVS merge
         // ====================================================================
 
-        private Scenario.ZoneSetPvsBlock BuildMergedPvs(IReadOnlyList<Scenario.ZoneSetPvsBlock> sources)
+        private Scenario.ZoneSetPvsBlock BuildMergedPvs(IReadOnlyList<Scenario.ZoneSetPvsBlock> sources, int? bspMaskFilter)
         {
             var merged = new Scenario.ZoneSetPvsBlock();
 
@@ -131,6 +147,10 @@ namespace TagTool.Commands.Scenarios
             int combinedBspMask = 0;
             foreach (var src in sources)
                 combinedBspMask |= (int)src.StructureBspMask;
+
+            if (bspMaskFilter.HasValue)
+                combinedBspMask &= bspMaskFilter.Value;
+
             merged.StructureBspMask = (Scenario.BspFlags)combinedBspMask;
 
             merged.Version = sources.Max(s => s.Version);
