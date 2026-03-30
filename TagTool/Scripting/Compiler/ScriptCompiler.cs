@@ -3048,14 +3048,24 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                if (!Cache.TagCache.TryGetTag(objectDefinitionString.Value, out var instance) || !instance.IsInGroup("obje"))
-                    throw new ScriptCompilerException(objectDefinitionString.Line, $"Value not found or invalid: '{(objectDefinitionString.Value)}'.");
+                // Specifically because of object_list_children which will return all objects when passed none (-1)
+                if (objectDefinitionString.Value == "none")
+                {
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
+                }
+                else
+                {
+                    if (!Cache.TagCache.TryGetTag(objectDefinitionString.Value, out var instance) || !instance.IsInGroup("obje"))
+                        throw new ScriptCompilerException(objectDefinitionString.Line, $"Value not found or invalid: '{(objectDefinitionString.Value)}'.");
 
-                WriteTagToSourceFileReferences(new ScriptString { Value = objectDefinitionString.Value + "." + instance.Group.ToString() });
+                    WriteTagToSourceFileReferences(new ScriptString { Value = objectDefinitionString.Value + "." + instance.Group.ToString() });
 
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectDefinitionString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = CompileStringAddress(objectDefinitionString.Value);
+                    Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
+                }
             }
 
             return handle;
