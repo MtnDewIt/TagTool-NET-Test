@@ -761,6 +761,7 @@ namespace TagTool.Commands.Shaders
         private string DisassemblePCShader(object definition, int shaderIndex, string filename)
         {
             string disassembly = null;
+            byte[] shader = [];
 
             if (definition.GetType() == typeof(PixelShader) || definition.GetType() == typeof(GlobalPixelShader))
             {
@@ -783,9 +784,10 @@ namespace TagTool.Commands.Shaders
                         return null;
                 }
 
-                var pc_shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
-                disassembly = D3DCompiler.Disassemble(pc_shader);
-                if (pc_shader == null)
+                shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
+                disassembly = D3DCompiler.Disassemble(shader);
+
+                if (shader == null)
                     disassembly = null;
             }
 
@@ -810,15 +812,21 @@ namespace TagTool.Commands.Shaders
                         return null;
                 }
 
-                var pc_shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
-                disassembly = D3DCompiler.Disassemble(pc_shader);
-                if (pc_shader == null)
+                shader = shader_block.CompiledShaderSplut.DX9CompiledShader;
+                disassembly = D3DCompiler.Disassemble(shader);
+
+                if (shader == null)
                     disassembly = null;
             }
 
             using (var writer = File.CreateText(filename))
             {
                 writer.WriteLine(disassembly);
+            }
+
+            using (var writer = File.Create($"{filename}.fxc"))
+            {
+                writer.Write(shader);
             }
 
             return disassembly;

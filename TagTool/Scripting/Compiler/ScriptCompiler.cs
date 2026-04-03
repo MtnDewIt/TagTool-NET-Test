@@ -1256,7 +1256,7 @@ namespace TagTool.Scripting.Compiler
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
             }
 
-            throw new ScriptCompilerException(node.Line, $"Unsupported value type '{type}'. This type is not yet supported by the compiler.");
+            throw new ScriptCompilerException(node.Line, $"Cannot compile expression '{node}' as type '{type}'. Check that the return type matches the script declaration.");
         }
 
         private void EmitScriptPaddingBlocks(int count = 5)
@@ -2333,6 +2333,10 @@ namespace TagTool.Scripting.Compiler
                         for (int seatIndex = 0; seatIndex < unitDefinition.Seats.Count; seatIndex++)
                         {
                             var seatName = Cache.StringTable.GetString(unitDefinition.Seats[seatIndex].Label);
+                            if (!seatName.Contains(unitSeatMappingString.Value))
+                                seatName = Cache.StringTable.GetString(unitDefinition.Seats[seatIndex].MarkerName);
+                            if (!seatName.Contains(unitSeatMappingString.Value))
+                                continue;
 
                             if (!seatName.Contains(unitSeatMappingString.Value))
                                 continue;
@@ -2828,16 +2832,29 @@ namespace TagTool.Scripting.Compiler
                 else
                 {
                     var tokens = pointReferenceString.Value.Split('/');
-                    if (tokens.Length != 2)
-                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
-                    var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
-                    if (pointSetIndex == -1)
-                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
-                    var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
-                    if (pointIndex == -1)
-                        throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
-                    expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
-                    Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | pointIndex), expr.Data, 4);
+                    if (tokens.Length == 1)
+                    {
+                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
+                        if (pointSetIndex == -1)
+                            throw new ScriptCompilerException(pointReferenceString.Line, $"No point set named '{pointReferenceString.Value}' found.");
+                        expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
+                        Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | 0xFFFF), expr.Data, 4);
+                    }
+                    else if (tokens.Length == 2)
+                    {
+                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
+                        if (pointSetIndex == -1)
+                            throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
+                        var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
+                        if (pointIndex == -1)
+                            throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
+                        expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
+                        Array.Copy(BitConverter.GetBytes((pointSetIndex << 16) | pointIndex), expr.Data, 4);
+                    }
+                    else
+                    {
+                        throw new ScriptCompilerException(pointReferenceString.Line, $"Invalid point reference '{pointReferenceString.Value}'. Expected format: 'point_set' or 'point_set/point_name'.");
+                    }
                 }
             }
 
@@ -3031,14 +3048,24 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                if (!Cache.TagCache.TryGetTag(objectDefinitionString.Value, out var instance) || !instance.IsInGroup("obje"))
-                    throw new ScriptCompilerException(objectDefinitionString.Line, $"Value not found or invalid: '{(objectDefinitionString.Value)}'.");
+                // Specifically because of object_list_children which will return all objects when passed none (-1)
+                if (objectDefinitionString.Value == "none")
+                {
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = 0;
+                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
+                }
+                else
+                {
+                    if (!Cache.TagCache.TryGetTag(objectDefinitionString.Value, out var instance) || !instance.IsInGroup("obje"))
+                        throw new ScriptCompilerException(objectDefinitionString.Line, $"Value not found or invalid: '{(objectDefinitionString.Value)}'.");
 
-                WriteTagToSourceFileReferences(new ScriptString { Value = objectDefinitionString.Value + "." + instance.Group.ToString() });
+                    WriteTagToSourceFileReferences(new ScriptString { Value = objectDefinitionString.Value + "." + instance.Group.ToString() });
 
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectDefinitionString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
+                    var expr = ScriptExpressions[handle.Index];
+                    expr.StringAddress = CompileStringAddress(objectDefinitionString.Value);
+                    Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
+                }
             }
 
             return handle;

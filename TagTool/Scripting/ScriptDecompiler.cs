@@ -336,6 +336,7 @@ namespace TagTool.Scripting
                 case "Long":
                     result.Name = BitConverter.ToInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0).ToString();
                     break;
+
                 case "String":
                     var strVal = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     result.Name = strVal == "none" ? "none" : $"\"{strVal}\"";
@@ -359,11 +360,11 @@ namespace TagTool.Scripting
                 case "GameDifficulty":
                     switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
                     {
-                        case 0: result.Name = "easy"; break;
-                        case 1: result.Name = "normal"; break;
-                        case 2: result.Name = "heroic"; break;
-                        case 3: result.Name = "legendary"; break;
-                        default: throw new NotImplementedException();
+                        case 0: result.Name = "Easy"; break;
+                        case 1: result.Name = "Normal"; break;
+                        case 2: result.Name = "Heroic"; break;
+                        case 3: result.Name = "Legendary"; break;
+                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
                     }
                     break;
 
@@ -397,25 +398,77 @@ namespace TagTool.Scripting
                     }
                     break;
 
+                // Compiler takes ScriptSymbol - no quotes
                 case "CinematicLightprobe":
-                    // Stored as a symbol reference (no quotes)
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
+                // Compiler takes ScriptSymbol - no quotes
                 case "CutsceneTitle":
-                    // Compiler takes ScriptSymbol - no quotes
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
                 case "Team":
+                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
+                    {
+                        case 0: result.Name = "Default"; break;
+                        case 1: result.Name = "Player"; break;
+                        case 2: result.Name = "Human"; break;
+                        case 3: result.Name = "Covenant"; break;
+                        case 4: result.Name = "Flood"; break;
+                        case 5: result.Name = "Sentinel"; break;
+                        case 6: result.Name = "Heretic"; break;
+                        case 7: result.Name = "Prophet"; break;
+                        case 8: result.Name = "Guilty"; break;
+                        case 9: result.Name = "Unused9"; break;
+                        case 10: result.Name = "Unused10"; break;
+                        case 11: result.Name = "Unused11"; break;
+                        case 12: result.Name = "Unused12"; break;
+                        case 13: result.Name = "Unused13"; break;
+                        case 14: result.Name = "Unused14"; break;
+                        case 15: result.Name = "Unused15"; break;
+                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
+                    }
+                    break;
+
                 case "MpTeam":
-                    // Enum values - compiler takes ScriptSymbol, no quotes
+                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
+                    {
+                        case 0: result.Name = "Mp_Team_Red"; break;
+                        case 1: result.Name = "Mp_Team_Blue"; break;
+                        case 2: result.Name = "Mp_Team_Green"; break;
+                        case 3: result.Name = "Mp_Team_Yellow"; break;
+                        case 4: result.Name = "Mp_Team_Purple"; break;
+                        case 5: result.Name = "Mp_Team_Orange"; break;
+                        case 6: result.Name = "Mp_Team_Brown"; break;
+                        case 7: result.Name = "Mp_Team_Grey"; break;
+                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
+                    }
+                    break;
+
+                case "ModelState":
+                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
+                    {
+                        case 0: result.Name = "Standard"; break;
+                        case 1: result.Name = "MinorDamage"; break;
+                        case 2: result.Name = "MediumDamage"; break;
+                        case 3: result.Name = "MajorDamage"; break;
+                        case 4: result.Name = "Destroyed"; break;
+                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
+                    }
+                    break;
+
+                // Script name reference - compiler takes ScriptSymbol, no quotes
+                case "AiCommandScript":
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
-                case "AiCommandScript":
-                    // Script name reference - compiler takes ScriptSymbol, no quotes
-                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                // These must have their tag extension because the tag type can vary
+                case "ObjectDefinition":
+                case "AnyTag":
+                case "AnyTagNotResolving":
+                    var anyTagRefStr = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    result.Name = (anyTagRefStr == "none" || anyTagRefStr == "") ? "none" : $"\"{anyTagRefStr}\"";
                     break;
 
                 // Tag reference and named-object types - compiler takes ScriptString, quoted
@@ -435,7 +488,6 @@ namespace TagTool.Scripting
                 case "Object":
                 case "ObjectName":
                 case "ObjectList":
-                case "ObjectDefinition":
                 case "AnimationGraph":
                 case "Effect":
                 case "Sound":
@@ -445,8 +497,6 @@ namespace TagTool.Scripting
                 case "Shader":
                 case "RenderModel":
                 case "Style":
-                case "AnyTag":
-                case "AnyTagNotResolving":
                 case "CutsceneCameraPoint":
                 case "CutsceneFlag":
                 case "CutsceneRecording":
@@ -471,6 +521,13 @@ namespace TagTool.Scripting
                 case "BinkDefinition":
                 case "CuiScreenDefinition":
                     var tagRefStr = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    if (tagRefStr != "none" && tagRefStr != "")
+                    {
+                        // All other tag ref types are tag type specific so we strip the extension
+                        var dotIdx = tagRefStr.LastIndexOf('.');
+                        if (dotIdx >= 0)
+                            tagRefStr = tagRefStr.Substring(0, dotIdx);
+                    }
                     result.Name = (tagRefStr == "none" || tagRefStr == "") ? "none" : $"\"{tagRefStr}\"";
                     break;
 

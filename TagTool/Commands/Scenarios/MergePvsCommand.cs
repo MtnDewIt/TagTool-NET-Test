@@ -16,12 +16,13 @@ namespace TagTool.Commands.Scenarios
             base(true,
 
                 "MergePvs",
-                "Merges all zone set PVS and audibility data into a single zone set, removing all others.",
+                "Merges zone set PVS and audibility data into a single zone set, removing all others.",
 
-                "MergePvs",
+                "MergePvs [bsp0 bsp1 ...]",
 
-                "Merges PVS visibility bit vectors and audibility room/door data from all zone\n" +
-                "sets into a single replacement entry using bitwise OR and range union.\n" +
+                "Merges PVS and audibility data into a single zone set.\n" +
+                "Optionally specify BSP indices to include (e.g. 'MergePvs 0 1 2 3').\n" +
+                "If no indices given, all BSPs from all zone sets are merged." +
                 "All other zone sets, PVS entries, audibility entries, and BSP atlas blocks\n" +
                 "are removed since multiplayer only uses one active zone set.")
         {
@@ -31,8 +32,19 @@ namespace TagTool.Commands.Scenarios
 
         public override object Execute(List<string> args)
         {
-            if (args.Count != 0)
-                return new TagToolError(CommandError.ArgCount);
+            // Parse optional BSP index filter
+            int? bspMaskFilter = null;
+            if (args.Count > 0)
+            {
+                int filterMask = 0;
+                foreach (var arg in args)
+                {
+                    if (!int.TryParse(arg, out int bspIdx) || bspIdx < 0 || bspIdx >= Definition.StructureBsps.Count)
+                        return new TagToolError(CommandError.ArgInvalid, $"Invalid BSP index: {arg} (map has {Definition.StructureBsps.Count} BSPs)");
+                    filterMask |= (1 << bspIdx);
+                }
+                bspMaskFilter = filterMask;
+            }
 
             if (Definition.ZoneSetPvs == null || Definition.ZoneSetPvs.Count == 0)
                 return new TagToolError(CommandError.CustomError, "Scenario has no ZoneSetPvs entries.");
@@ -48,6 +60,10 @@ namespace TagTool.Commands.Scenarios
 
             foreach (var zs in Definition.ZoneSets)
             {
+                Console.WriteLine($"Zone set '{zs.Name}': Bsps=0x{(int)zs.Bsps:X}, PvsIndex={zs.PvsIndex}");
+                if (bspMaskFilter.HasValue && ((int)zs.Bsps & bspMaskFilter.Value) == 0)
+                    continue;
+
                 if (zs.PvsIndex >= 0 && zs.PvsIndex < Definition.ZoneSetPvs.Count)
                 {
                     var pvs = Definition.ZoneSetPvs[zs.PvsIndex];
@@ -74,7 +90,7 @@ namespace TagTool.Commands.Scenarios
             // ----------------------------------------------------------------
             // 2. Build merged data
             // ----------------------------------------------------------------
-            var mergedPvs = BuildMergedPvs(pvsBlocks);
+            var mergedPvs = BuildMergedPvs(pvsBlocks, bspMaskFilter);
 
             Scenario.ZoneSetAudibilityBlock mergedAud = null;
             if (audibilityBlocks.Count > 0)
@@ -123,7 +139,7 @@ namespace TagTool.Commands.Scenarios
         // PVS merge
         // ====================================================================
 
-        private Scenario.ZoneSetPvsBlock BuildMergedPvs(IReadOnlyList<Scenario.ZoneSetPvsBlock> sources)
+        private Scenario.ZoneSetPvsBlock BuildMergedPvs(IReadOnlyList<Scenario.ZoneSetPvsBlock> sources, int? bspMaskFilter)
         {
             var merged = new Scenario.ZoneSetPvsBlock();
 
@@ -131,6 +147,10 @@ namespace TagTool.Commands.Scenarios
             int combinedBspMask = 0;
             foreach (var src in sources)
                 combinedBspMask |= (int)src.StructureBspMask;
+
+            if (bspMaskFilter.HasValue)
+                combinedBspMask &= bspMaskFilter.Value;
+
             merged.StructureBspMask = (Scenario.BspFlags)combinedBspMask;
 
             merged.Version = sources.Max(s => s.Version);
@@ -142,11 +162,7 @@ namespace TagTool.Commands.Scenarios
 
             merged.StructureBspPvs = MergeBspPvsList(sources, combinedBspMask);
 
-            // Portal device mappings are geometry-specific; use the first valid source
-            var firstWithPortals = sources.FirstOrDefault(
-                s => s.PortaldeviceMapping != null && s.PortaldeviceMapping.Count > 0);
-            merged.PortaldeviceMapping = firstWithPortals?.PortaldeviceMapping
-                                         ?? new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock>();
+            merged.PortaldeviceMapping = MergePortalDeviceMappings(sources);
 
             return merged;
         }
@@ -158,6 +174,50 @@ namespace TagTool.Commands.Scenarios
                 if (src.BspChecksums != null && src.BspChecksums.Count > 0)
                     return src.BspChecksums;
             return new List<Scenario.ZoneSetPvsBlock.BspChecksum>();
+        }
+
+        // PortaldeviceMapping is indexed by raw structure_bsp_index, not mask slot.
+        // game_get_machine_door_portal_reference reads PortaldeviceMapping[structure_bsp_index]
+        // directly, so the list must have one entry per BSP in order with empty placeholders
+        // for any BSP that has no device portals.
+        private List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock> MergePortalDeviceMappings(
+            IReadOnlyList<Scenario.ZoneSetPvsBlock> sources)
+        {
+            int maxBspIndex = -1;
+            foreach (var src in sources)
+            {
+                if (src.PortaldeviceMapping == null) continue;
+                int last = src.PortaldeviceMapping.Count - 1;
+                if (last > maxBspIndex) maxBspIndex = last;
+            }
+
+            if (maxBspIndex < 0)
+                return new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock>();
+
+            var result = new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock>(maxBspIndex + 1);
+
+            for (int bspIdx = 0; bspIdx <= maxBspIndex; bspIdx++)
+            {
+                Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock entry = null;
+                foreach (var src in sources)
+                {
+                    if (src.PortaldeviceMapping == null || bspIdx >= src.PortaldeviceMapping.Count) continue;
+                    var candidate = src.PortaldeviceMapping[bspIdx];
+                    if (candidate == null) continue;
+                    int candidatePortalCount = candidate.GamePortalToPortalMap?.Count ?? 0;
+                    int entryPortalCount = entry?.GamePortalToPortalMap?.Count ?? 0;
+                    if (candidatePortalCount > entryPortalCount)
+                        entry = candidate;
+                }
+
+                result.Add(entry ?? new Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock
+                {
+                    DevicePortalAssociations = new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock.DevicePortalAssociation>(),
+                    GamePortalToPortalMap = new List<Scenario.ZoneSetPvsBlock.PortalDeviceMappingBlock.GamePortalToPortalMapping>()
+                });
+            }
+
+            return result;
         }
 
         // The runtime indexes StructureBspPvs by popcount(Bsps & ((1 << bspIdx) - 1)),
@@ -621,27 +681,39 @@ namespace TagTool.Commands.Scenarios
         private List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>
             MergePortalToDoorMappings(IReadOnlyList<Scenario.ZoneSetAudibilityBlock> sources)
         {
-            var result     = new List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>();
-            int baseOffset = 0;
+            // Indexed by BSP index directly — one entry per BSP, same as PortaldeviceMapping.
+            // audibility_door_occluder_to_game_portal_index iterates this array and uses the
+            // loop counter as structure_bsp_index, so order and count must match BSP indices.
+            int maxBspIndex = sources
+                .Where(s => s.GamePortalToDoorOccluderMappings != null)
+                .Select(s => s.GamePortalToDoorOccluderMappings.Count - 1)
+                .DefaultIfEmpty(-1).Max();
 
-            foreach (var src in sources)
+            if (maxBspIndex < 0)
+                return new List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>();
+
+            var result = new List<Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping>(maxBspIndex + 1);
+
+            for (int bspIdx = 0; bspIdx <= maxBspIndex; bspIdx++)
             {
-                if (src.GamePortalToDoorOccluderMappings == null) continue;
-
-                int srcOccluderCount = src.GamePortalToDoorOccluderMappings.Count == 0 ? 0 :
-                    src.GamePortalToDoorOccluderMappings.Max(
-                        m => m.FirstDoorOccluderIndex + m.DoorOccluderCount);
-
-                foreach (var mapping in src.GamePortalToDoorOccluderMappings)
+                Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping entry = null;
+                foreach (var src in sources)
                 {
-                    result.Add(new Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping
+                    if (src.GamePortalToDoorOccluderMappings == null ||
+                        bspIdx >= src.GamePortalToDoorOccluderMappings.Count) continue;
+                    var candidate = src.GamePortalToDoorOccluderMappings[bspIdx];
+                    if (candidate.DoorOccluderCount > 0)
                     {
-                        FirstDoorOccluderIndex = mapping.FirstDoorOccluderIndex + baseOffset,
-                        DoorOccluderCount      = mapping.DoorOccluderCount
-                    });
+                        entry = candidate;
+                        break;
+                    }
                 }
 
-                baseOffset += srcOccluderCount;
+                result.Add(entry ?? new Scenario.ZoneSetAudibilityBlock.GamePortalToDoorOccluderMapping
+                {
+                    FirstDoorOccluderIndex = 0,
+                    DoorOccluderCount = 0
+                });
             }
 
             return result;
