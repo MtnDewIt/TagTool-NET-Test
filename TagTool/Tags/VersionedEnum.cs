@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using TagTool.Cache;
 using TagTool.Common;
@@ -61,6 +63,72 @@ namespace TagTool.Tags
             }
 
             throw new ArgumentOutOfRangeException(nameof(enumValue));
+        }
+
+        public static bool TryParse(TagEnumInfo info, string value, out object result)
+        {
+            result = null;
+
+            if (string.IsNullOrWhiteSpace(value) || !info.IsVersioned)
+                return false;
+
+            NumberStyles style = NumberStyles.Integer;
+            string integerString = value;
+            if (value.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            {
+                integerString = value[2..];
+                style = NumberStyles.HexNumber;
+            }
+
+            var enumerable = TagEnum.GetMemberEnumerable(info);
+            var members = enumerable.VersionedMembers;
+
+            if (info.IsFlags)
+                throw new InvalidOperationException("Versioned flags should be standard enums wrapped as BitFlags<TEnum>");
+            else
+            {
+                if (value.Split(',').Length > 1)
+                    return false;
+
+                if (int.TryParse(integerString, style, null, out int intValue))
+                {
+                    if (enumerable.Constants.Contains(intValue))
+                        result = Enum.ToObject(info.Type, intValue);
+
+                    else if (intValue >= 0 && intValue < members.Count)
+                        result = members[intValue].Value;
+                }
+                else if (Enum.TryParse(info.Type, value, true, out object enumValue)
+                    && VersionHasMember(info, enumValue))
+                {
+                    result = enumValue;
+                }
+
+                if (result is not null)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool VersionHasMember(TagEnumInfo info, object enumValue)
+        {
+            var enumerable = TagEnum.GetMemberEnumerable(info);
+            var memberInfo = enumerable.VersionedMembers.FirstOrDefault(m => m.Value.Equals(enumValue));
+
+            if (memberInfo is not null || MemberIsConstant(info, enumValue))
+                return true;
+
+            return false;
+        }
+
+        public static bool MemberIsConstant(TagEnumInfo info, object enumValue)
+        {
+            var enumerable = TagEnum.GetMemberEnumerable(info);
+            if (enumerable.Constants.Contains((int)enumValue))
+                return true;
+
+            return false;
         }
 
         public static ulong ImportFlags(TagEnumInfo info, ulong value)

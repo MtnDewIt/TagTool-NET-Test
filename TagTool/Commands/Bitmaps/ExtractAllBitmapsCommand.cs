@@ -62,15 +62,17 @@ namespace TagTool.Commands.Bitmaps
                         
                         if (bitmap != null)
                         {
+                            string tagName = tag.Name != null ? tag.Name.ToString() : tag.Index.ToString("X2");
+
                             if (bitmap.Images.Count > 1)
                             {
-                                ddsOutDir = Path.Combine(outDir, tag.Name.ToString());
+                                ddsOutDir = Path.Combine(outDir, tagName);
                                 Directory.CreateDirectory(ddsOutDir);
                             }
 
                             for (var i = 0; i < bitmap.Images.Count; i++)
                             {
-                                var outPath = Path.Combine(ddsOutDir, ((bitmap.Images.Count > 1) ? i.ToString() : tag.Name.ToString()) + ".dds");
+                                var outPath = Path.Combine(ddsOutDir, ((bitmap.Images.Count > 1) ? i.ToString() : tagName) + ".dds");
                                 string directoryToCreate = Path.GetDirectoryName(outPath);
                                 Directory.CreateDirectory(directoryToCreate);
                                 var ddsFile = BitmapExtractor.ExtractBitmap(Cache, bitmap, i, tag.Name);

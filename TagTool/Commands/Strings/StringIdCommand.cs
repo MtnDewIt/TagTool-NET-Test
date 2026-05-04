@@ -161,7 +161,7 @@ namespace TagTool.Commands.Strings
 
             if (strings.Count == 0)
             {
-                Log.Error("No strings found!");
+                Console.WriteLine("No strings found.");
                 return true;
             }
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using TagTool.Cache;
+using TagTool.Tags;
 
 namespace TagTool.Common
 {
@@ -53,7 +54,7 @@ namespace TagTool.Common
         public override readonly string ToString()
         {
             if (_storage == 0)
-                return string.Empty;
+                return "0";
 
             var builder = new StringBuilder();
 
@@ -63,7 +64,7 @@ namespace TagTool.Common
                 int bit = System.Numerics.BitOperations.TrailingZeroCount(value);
 
                 if (builder.Length > 0)
-                    builder.Append(", ");
+                    builder.Append(",");
 
                 builder.Append(EnumNames[bit]);
 
@@ -115,17 +116,31 @@ namespace TagTool.Common
             }
 
             string arg = args[0];
+            TagEnumInfo enumInfo = TagEnum.GetInfo(typeof(TEnum), cache.Version, cache.Platform);
+
+            if (ulong.TryParse(arg, out ulong parsedMask))
+            {
+                result = new BitFlags<TEnum>(VersionedEnum.ImportFlags(enumInfo, parsedMask));
+                return true;
+            }
 
             var flags = new BitFlags<TEnum>(_storage);
             foreach (string name in arg.Split(','))
             {
-                if (!Enum.TryParse(name, ignoreCase: true, out TEnum value) || !Enum.IsDefined(value))
+                if (VersionedEnum.TryParse(enumInfo, name, out object enumValue))
+                {
+                    flags.Set((TEnum)enumValue, true);
+                }
+                else if (arg.Equals("none", StringComparison.OrdinalIgnoreCase))
+                {
+                    result = new BitFlags<TEnum>(0);
+                    return true;
+                }
+                else
                 {
                     error = $"'{name}' is not a valid member of enum '{typeof(TEnum).Name}'";
                     return false;
                 }
-
-                flags.Set(value, true);
             }
 
             result = flags;

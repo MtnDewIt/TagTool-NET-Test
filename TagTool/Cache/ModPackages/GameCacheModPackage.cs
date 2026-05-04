@@ -72,7 +72,8 @@ namespace TagTool.Cache
 
         public override void Serialize(Stream stream, CachedTag instance, object definition)
         {
-            Serializer.Serialize(CreateTagSerializationContext(stream, instance), definition);
+            var modCachedTag = TagCache.GetTag(instance.Index) as CachedTagHaloOnline;
+            Serializer.Serialize(CreateTagSerializationContext(stream, modCachedTag), definition);
         }
 
         private ISerializationContext CreateTagSerializationContext(Stream stream, CachedTag instance)

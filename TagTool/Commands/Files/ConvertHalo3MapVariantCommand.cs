@@ -206,7 +206,7 @@ namespace TagTool.Commands.Files
                             }
                         }
 
-                        var newObjectIndexes = new short[16];
+                        var newObjectIndexes = new short[15];
 
                         for (int i = 0; i < blf.MapVariant.MapVariant.ObjectTypeStartIndex.Length; i++)
                         {

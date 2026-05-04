@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TagTool.Cache;
 using TagTool.Common;
@@ -33,8 +34,8 @@ namespace TagTool.Tags.Definitions
             // scenario
             public WavePlacementFilterEnum PlacementFilter;
 
-            [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC, Flags = TagFieldFlags.Padding, Length = 0x2)]
-            public byte[] Pad0;
+            [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
+            public SpawnFlagsValue SpawnFlags;
             [TagField(MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             public DefaultTeamValue Team;
 
@@ -68,6 +69,13 @@ namespace TagTool.Tags.Definitions
                 Unused13,
                 Unused14,
                 Unused15
+            }
+
+            [Flags]
+            public enum SpawnFlagsValue : ushort
+            {
+                None = 0,
+                IncompatibleWithDropships = 1 << 0,
             }
         }
     }

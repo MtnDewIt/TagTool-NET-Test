@@ -102,7 +102,7 @@ namespace TagTool.Commands.Scenarios
         private bool AskForParameterInput(GeneratorParameters parameters)
         {
             if (!RequestBoundedInput("Enter desired scenario tagname (e.g. levels\\eldewrito\\canvas\\canvas):",
-                out parameters.ScenarioPath))
+                out parameters.ScenarioPath, forceLowercase: true))
                 return false;
 
             var fullName = $"{parameters.ScenarioPath}.scnr";
@@ -118,15 +118,15 @@ namespace TagTool.Commands.Scenarios
             }
 
             if (!RequestBoundedInput("Enter the map display name (<16 characters):",
-                out parameters.MapName, 15))
+                out parameters.MapName, 15, forceLowercase: false))
                 return false;
 
             if (!RequestBoundedInput("Enter the map description: (<128 characters)",
-                out parameters.MapDescription, 127))
+                out parameters.MapDescription, 127, forceLowercase: false))
                 return false;
 
             if (!RequestBoundedInput("Enter the map author (<16 characters):",
-                out parameters.MapDescription, 15))
+                out parameters.MapAuthor, 15, forceLowercase: false))
                 return false;
 
             if (!RequestBoundedInput("Enter a mapID (integer) between 7000 and 65535:",
@@ -151,10 +151,12 @@ namespace TagTool.Commands.Scenarios
             return true;
         }
 
-        private bool RequestBoundedInput(string prompt, out string value, int upperBound = 0, int lowerBound = 0)
+        private bool RequestBoundedInput(string prompt, out string value, int upperBound = 0, int lowerBound = 0, bool forceLowercase = true)
         {
             Console.WriteLine(prompt);
-            string input = CommandRunner.ApplyUserVars(@Console.ReadLine().ToLower(), IgnoreArgumentVariables);
+            string input = CommandRunner.ApplyUserVars(
+                forceLowercase ? @Console.ReadLine().ToLower() : @Console.ReadLine(),
+                IgnoreArgumentVariables);
 
             if (InputIsValid(input, upperBound, lowerBound))
             {
