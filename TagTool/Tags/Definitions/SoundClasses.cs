@@ -51,7 +51,7 @@ namespace TagTool.Tags.Definitions
             //
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public Bounds<float> DefaultDistanceBounds;
+            public Bounds<float> AttackBounds;
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
             public Bounds<float> DistanceBounds;
             [TagField(MinVersion = CacheVersion.HaloReach)]
@@ -71,7 +71,7 @@ namespace TagTool.Tags.Definitions
 
             public SoundClassDucking CutsceneDucking;
             public SoundClassDucking ScriptedDialogDucking;
-            public SoundClassDucking CortanaEffectDucking;
+            public SoundClassDucking CortanaChannelDucking;
 
             //
             // ODST unique part
@@ -83,7 +83,7 @@ namespace TagTool.Tags.Definitions
             public SoundClassDucking PdaDucking;
 
             [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
-            public float UnknownCortanaEffect;
+            public float CortanaChannelOcclusionFactor;
 
             [TagField(MinVersion = CacheVersion.HaloReach)]
             public SoundClassDucking BetweenRoundsDucking;

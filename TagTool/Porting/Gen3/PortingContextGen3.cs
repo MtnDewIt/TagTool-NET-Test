@@ -346,7 +346,7 @@ namespace TagTool.Porting.Gen3
                     return ConvertScenarioObjectMultiplayer(cacheStream, blamCacheStream, definition, blamTagName, scnrObj);
 
                 case SoundClass soundClass:
-                    return soundClass.ConvertSoundClass(BlamCache.Version);
+                    return ConvertSoundClass(soundClass);
 
                 case GuiTextWidgetDefinition guiTextWidget:
                     guiTextWidget = ConvertStructure(cacheStream, blamCacheStream, guiTextWidget, definition, blamTagName);

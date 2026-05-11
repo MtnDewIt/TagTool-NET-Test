@@ -79,6 +79,22 @@ namespace TagTool.Common
         public static BitFlags<TEnum> operator ^(BitFlags<TEnum> lhs, BitFlags<TEnum> rhs) => new(lhs._storage ^ rhs._storage);
         public static BitFlags<TEnum> operator ~(BitFlags<TEnum> flags) => new(~flags._storage);
 
+        public static BitFlags<TEnum> operator |(BitFlags<TEnum> lhs, TEnum rhs) => new(lhs._storage | OperandMaskFromValue(rhs));
+        public static BitFlags<TEnum> operator &(BitFlags<TEnum> lhs, TEnum rhs) => new(lhs._storage & OperandMaskFromValue(rhs));
+        public static BitFlags<TEnum> operator ^(BitFlags<TEnum> lhs, TEnum rhs) => new(lhs._storage ^ OperandMaskFromValue(rhs));
+
+        public static ulong OperandMaskFromValue(TEnum value)
+        {
+            ulong offsetBits = (ulong)Convert.ToInt64(value);
+            ulong flipped = ~offsetBits;
+
+            // if negation is a valid position, intent is to clear the bit
+            if (flipped >= 0 && flipped < 64)
+                return ~(1UL << (int)flipped);
+            else
+                return CreateMask(GetBitIndex(value));
+        }
+
         public override readonly bool Equals(object obj) => obj is BitFlags<TEnum> other && _storage == other._storage;
         public readonly bool Equals(BitFlags<TEnum> other) => _storage == other._storage;
         public override readonly int GetHashCode() => _storage.GetHashCode();
@@ -145,6 +161,13 @@ namespace TagTool.Common
 
             result = flags;
             return true;
+        }
+
+        public readonly BitFlags<TEnum> ConvertBitwise(GameCache cache) => ConvertBitwise(cache.Version, cache.Platform);
+        public readonly BitFlags<TEnum> ConvertBitwise(CacheVersion version = CacheVersion.HaloOnlineED, CachePlatform platform = CachePlatform.Original)
+        {
+            TagEnumInfo enumInfo = TagEnum.GetInfo(typeof(TEnum), version, platform);
+            return new BitFlags<TEnum>(GetUnsafe() & enumInfo.MemberMask);
         }
     }
 

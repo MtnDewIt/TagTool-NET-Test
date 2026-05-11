@@ -91,7 +91,7 @@ namespace TagTool.Porting.Gen3
 
                 for (int permutationIndex = 0; permutationIndex < permutationCount; permutationIndex++)
                 {
-                    Permutation blamPermutation = BlamSoundGestalt.GetPermutation(pitchRange, permutationIndex, BlamCache.Platform);
+                    Permutation blamPermutation = BlamSoundGestalt.GetPermutation(blamPitchRange, permutationIndex, BlamCache.Platform);
 
                     // Convert the audio
                     BlamSound convertedAudio = ConvertAudio(sound, blamTagName, targetFormat, pitchRangeIndex, permutationIndex, blamPermutation);
@@ -101,14 +101,15 @@ namespace TagTool.Porting.Gen3
                     var permutation = new Permutation();
                     result.PostConversionOperations.Add(() => permutation.ImportName = ConvertStringId(BlamSoundGestalt.ImportNames[blamPermutation.ImportNameIndex].Name));
                     permutation.SampleCount = convertedAudio.SampleCount;
-                    permutation.SkipFraction = blamPermutation.EncodedSkipFraction / 32767.0f;
+                    permutation.SkipFraction = (blamPermutation.EncodedSkipFraction / 32767.0f) * 0.5f;
                     permutation.Gain = (float)blamPermutation.EncodedGain;
                     permutation.RawInfoIndex = blamPermutation.RawInfoIndex;
 
                     // Create the chunk (MS23 uses only a single chunk)
                     var firstBlamChunk = BlamSoundGestalt.GetPermutationChunk(blamPermutation, 0);
-                    var lastBlamChunk = BlamSoundGestalt.GetPermutationChunk(blamPermutation, permutationCount - 1);
-                    var newChunk = new PermutationChunk(currentSoundDataOffset, convertedAudio.Data.Length, firstBlamChunk.LastSample, lastBlamChunk.LastSample);
+                    var lastBlamChunk = BlamSoundGestalt.GetPermutationChunk(blamPermutation, blamPermutation.PermutationChunkCount - 1);
+                    var newChunk = new PermutationChunk(currentSoundDataOffset, convertedAudio.Data.Length, firstBlamChunk.FirstSample, lastBlamChunk.LastSample);
+                    permutation.FirstSample = firstBlamChunk.FirstSample;
                     permutation.PermutationChunks = [newChunk];
                     pitchRange.Permutations.Add(permutation);
 
@@ -131,10 +132,8 @@ namespace TagTool.Porting.Gen3
             PlaybackParameter playback = BlamSoundGestalt.PlaybackParameters[sound.SoundReference.PlaybackParameterIndex];
             Scale scale = BlamSoundGestalt.Scales[sound.SoundReference.ScaleIndex];
             Promotion promotion = sound.SoundReference.PromotionIndex != -1 ? BlamSoundGestalt.Promotions[sound.SoundReference.PromotionIndex] : null;
-    
-            if (BlamCache.Version >= CacheVersion.HaloReach)
-                sound.Flags = sound.FlagsReach.ConvertLexical<Sound.FlagsValue>();
 
+            sound.Flags = ConvertSoundFlags(sound.Flags);
             sound.SampleRate = platformCodec.SampleRate;
             sound.Playback = ConvertPlayback(playback);
             sound.Scale = scale;
@@ -332,14 +331,7 @@ namespace TagTool.Porting.Gen3
         private SoundLooping ConvertSoundLooping(SoundLooping soundLooping)
         {
             soundLooping.Unused = null;
-
-            soundLooping.SoundClass = ((int)soundLooping.SoundClass < 50) ? soundLooping.SoundClass : (soundLooping.SoundClass + 1);
-
-            if (soundLooping.SoundClass == SoundLooping.SoundClassValue.FirstPersonInside)
-                soundLooping.SoundClass = SoundLooping.SoundClassValue.InsideSurroundTail;
-
-            if (soundLooping.SoundClass == SoundLooping.SoundClassValue.FirstPersonOutside)
-                soundLooping.SoundClass = SoundLooping.SoundClassValue.OutsideSurroundTail;
+            soundLooping.SoundClass = ConvertSoundClass(soundLooping.SoundClass);
 
 			if (BlamCache.Version == CacheVersion.Halo3Retail)
 			{
@@ -489,6 +481,14 @@ namespace TagTool.Porting.Gen3
             sncl.Classes[52].ClassFlags |= SoundClasses.Class.ExternalFlagBits.ClassPlaysOnMainmenu; // UI
 
             return sncl;
+        }
+        private BitFlags<SoundFlags> ConvertSoundFlags(BitFlags<SoundFlags> flags)
+        {
+            return flags.ConvertBitwise(CacheContext);
+        }
+
+        public SoundClass ConvertSoundClass(SoundClass soundClass){
+            return soundClass.Convert();
         }
 
         private bool CheckSoundBank(Sound sound)

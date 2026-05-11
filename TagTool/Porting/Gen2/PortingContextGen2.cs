@@ -232,7 +232,7 @@ namespace TagTool.Porting.Gen2
             switch (data)
             {
                 case SoundClass soundClass:
-                    return soundClass.ConvertSoundClass(BlamCache.Version);
+                    return ConvertSoundClass(soundClass);
                 default:
                     return base.ConvertData(cacheStream, blamCacheStream, data, definition, blamTagName);
             }
