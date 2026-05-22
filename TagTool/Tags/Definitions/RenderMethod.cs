@@ -132,12 +132,8 @@ namespace TagTool.Tags.Definitions
             [TagField(Length = 0x1C, MinVersion = CacheVersion.HaloReach)]
             public short[] QueryablePropertiesReach;
 
-            [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.Halo3ODST)]
-            public short AssetDatumSalt;
-            [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.Halo3ODST)]
-            public short AssetDatumIndex;
-            [TagField(Length = 0x4, Flags = Padding, Platform = CachePlatform.MCC, MinVersion = CacheVersion.Halo3ODST)]
-            public byte[] PaddingMCC;
+            [TagField(Platform = CachePlatform.MCC, MinVersion = CacheVersion.Halo3Retail)]
+            public TagResourceReference ConstantBufferResource;
 
             public enum BlendModeValue : uint
             {

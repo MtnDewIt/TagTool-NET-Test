@@ -13,7 +13,7 @@ namespace TagTool.Tags.Definitions
     }
 
     [TagStructure(Size = 0x80)]
-    public class RenderSkinsObject
+    public class RenderSkinsObject : TagStructure
     {
         [TagField(Flags = Label, Length = 32)]
         public string Name;
@@ -32,14 +32,14 @@ namespace TagTool.Tags.Definitions
     }
 
     [TagStructure(Size = 0x10)]
-    public class LayerBitmap
+    public class LayerBitmap : TagStructure
     {
         [TagField(ValidTags = ["bitm"])]
         public CachedTag Bitmap;
     }
 
     [TagStructure(Size = 0x20)]
-    public class ReplaceMaterial
+    public class ReplaceMaterial : TagStructure
     {
         [TagField(ValidTags = ["rm  "])]
         public CachedTag BaseMaterial;
@@ -48,7 +48,7 @@ namespace TagTool.Tags.Definitions
     }
 
     [TagStructure(Size = 0x20)]
-    public class ReplaceBitmap
+    public class ReplaceBitmap : TagStructure
     {
         [TagField(ValidTags = ["bitm"])]
         public CachedTag BaseBitmap;
@@ -57,14 +57,14 @@ namespace TagTool.Tags.Definitions
     }
 
     [TagStructure(Size = 0x10)]
-    public class ReplaceParametersMaterialIndex
+    public class ReplaceParametersMaterialIndex : TagStructure
     {
         [TagField(ValidTags = ["rm  "])]
         public CachedTag Material;
     }
 
     [TagStructure(Size = 0x10)]
-    public class ReplaceParam
+    public class ReplaceParam : TagStructure
     {
         public ParamType Type;
         public EntryPointValue EntryPoint;
@@ -106,7 +106,7 @@ namespace TagTool.Tags.Definitions
         }
 
         [TagStructure(Size = 0x10)]
-        public class ValueBlock
+        public class ValueBlock : TagStructure
         {
             public RealVector4d Vector;
         }
