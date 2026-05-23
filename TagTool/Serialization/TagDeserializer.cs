@@ -35,8 +35,8 @@ namespace TagTool.Serialization
         {
             Version = version;
             CachePlatform = cachePlatform;
-            TagBlockSize = CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0x8 : 0xC;
-            TagDataSize = CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) ? 0x8 : 0x14;
+            TagBlockSize = CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) && Version != CacheVersion.Halo2Alpha ? 0x8 : 0xC;
+            TagDataSize = CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) && Version != CacheVersion.Halo2Alpha ? 0x8 : 0x14;
             StructCache = TagStructure.GetVersonedCache(version, cachePlatform);
             EnumCache = TagEnum.GetVersonedCache(version, cachePlatform);
         }
@@ -680,11 +680,16 @@ namespace TagTool.Serialization
             {
                 group = reader.ReadTag();
 
-                if (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version))
+                if (!CacheVersionDetection.IsInGen(CacheGeneration.Second, Version) || Version == CacheVersion.Halo2Alpha)
                     reader.BaseStream.Position += 0x8;
             }
 
-            var result = context.GetTagByIndex(reader.ReadInt32());
+            CachedTag result = context.GetTagByIndex(reader.ReadInt32());
+
+            if (group == Tag.Null || group.Value == 0) 
+            {
+                result = null;
+            }
 #if DEBUG
             CheckTagReference(valueInfo, result);
 #endif

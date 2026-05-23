@@ -133,6 +133,11 @@ namespace TagTool.Commands.Tags
             foreach (CachedTag tag in (options.Is != "duplicate") ?
                 Cache.TagCache.TagTable : Cache.TagCache.NonNull().GroupBy(tag => $"{tag.Name}.{tag.Group}").Where(g => g.Skip(1).Any()).SelectMany(g => g))
             {
+                if (tag == null) 
+                {
+                    continue;
+                }
+
                 var data = (
                     Index: tag?.Index ?? index++,
                     Offset: tag?.DefinitionOffset.ToString("X8"),
