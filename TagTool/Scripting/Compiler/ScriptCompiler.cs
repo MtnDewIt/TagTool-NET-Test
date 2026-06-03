@@ -1048,16 +1048,16 @@ namespace TagTool.Scripting.Compiler
 
                 case HsType.AnyTag:
                     if (node is ScriptSymbol anyTagSymbol && anyTagSymbol.Value == "none")
-                        return CompileAnyTagExpression(new ScriptString { Value = "none" });
+                        return CompileUntypedTagExpression(HsType.AnyTag, new ScriptString { Value = "none" });
                     else if (node is ScriptString anyTagString)
-                        return CompileAnyTagExpression(anyTagString);
+                        return CompileUntypedTagExpression(HsType.AnyTag, anyTagString);
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnyTagNotResolving:
                     if (node is ScriptSymbol anyTagNotResolvingSymbol && anyTagNotResolvingSymbol.Value == "none")
-                        return CompileAnyTagNotResolvingExpression(new ScriptString { Value = "none" });
+                        return CompileUntypedTagExpression(HsType.AnyTagNotResolving, new ScriptString { Value = "none" });
                     else if (node is ScriptString anyTagNotResolvingString)
-                        return CompileAnyTagNotResolvingExpression(anyTagNotResolvingString);
+                        return CompileUntypedTagExpression(HsType.AnyTagNotResolving, anyTagNotResolvingString);
                     else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.GameDifficulty:
@@ -2195,6 +2195,64 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
+        private DatumHandle CompileEnumExpression<TEnum>(HsType type, ScriptSymbol symbol) where TEnum : struct, Enum
+        {
+            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)symbol.Line);
+            if (handle != DatumHandle.None)
+            {
+                if (!Enum.TryParse<TEnum>(symbol.Value, true, out var value))
+                    throw new ScriptCompilerException(symbol.Line, $"Unknown {typeof(TEnum).Name} value: '{symbol.Value}'. Check the valid values for this type.");
+                var expr = ScriptExpressions[handle.Index];
+                expr.StringAddress = CompileStringAddress(symbol.Value);
+                Array.Copy(BitConverter.GetBytes(Convert.ToInt16(value)), expr.Data, 2);
+            }
+            return handle;
+        }
+
+        private DatumHandle CompileTagExpression<TTag>(HsType type, ScriptString tagString) where TTag : TagStructure
+        {
+            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)tagString.Line);
+            if (handle != DatumHandle.None)
+            {
+                if (!Cache.TagCache.TryGetTag<TTag>(tagString.Value, out var instance))
+                    throw new ScriptCompilerException(tagString.Line, $"Could not find {typeof(TTag).Name} tag: '{tagString.Value}'.");
+                WriteTagToSourceFileReferences(new ScriptString { Value = tagString.Value + "." + instance.Group.ToString() });
+                var expr = ScriptExpressions[handle.Index];
+                expr.StringAddress = CompileStringAddress(tagString.Value);
+                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
+            }
+            return handle;
+        }
+
+        private DatumHandle CompileScenarioIndexExpression(HsType type, ScriptString str, Func<string, int> findIndex, int dataSize)
+        {
+            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)str.Line);
+            if (handle != DatumHandle.None)
+            {
+                var expr = ScriptExpressions[handle.Index];
+                if (str.Value == "none")
+                {
+                    expr.StringAddress = 0;
+                    if (dataSize == 2)
+                        Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
+                    else
+                        Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
+                }
+                else
+                {
+                    var index = findIndex(str.Value);
+                    if (index == -1)
+                        throw new ScriptCompilerException(str.Line, $"Value not found or invalid: '{str.Value}'.");
+                    expr.StringAddress = CompileStringAddress(str.Value);
+                    if (dataSize == 2)
+                        Array.Copy(BitConverter.GetBytes((short)index), expr.Data, 2);
+                    else
+                        Array.Copy(BitConverter.GetBytes(index), expr.Data, 4);
+                }
+            }
+            return handle;
+        }
+
         private DatumHandle CompileBooleanExpression(ScriptBoolean boolValue)
         {
             var handle = AllocateExpression(HsType.Boolean, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)boolValue.Line);
@@ -2417,82 +2475,16 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileTriggerVolumeExpression(ScriptString triggerVolumeString)
-        {
-            var handle = AllocateExpression(HsType.TriggerVolume, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)triggerVolumeString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-
-                if (triggerVolumeString.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
-                }
-                else
-                {
-                    var triggerVolumeIndex = Definition.TriggerVolumes.FindIndex(tv => triggerVolumeString.Value == Cache.StringTable.GetString(tv.Name));
-
-                    if (triggerVolumeIndex == -1)
-                        throw new ScriptCompilerException(triggerVolumeString.Line, $"No trigger volume named '{triggerVolumeString.Value}' found in the scenario.");
-
-                    expr.StringAddress = CompileStringAddress(triggerVolumeString.Value);
-                    Array.Copy(BitConverter.GetBytes((short)triggerVolumeIndex), expr.Data, 2);
-                }
-            }
-
-            return handle;
-        }
+            => CompileScenarioIndexExpression(HsType.TriggerVolume, triggerVolumeString,
+                name => Definition.TriggerVolumes.FindIndex(tv => name == Cache.StringTable.GetString(tv.Name)), 2);
 
         private DatumHandle CompileCutsceneFlagExpression(ScriptString cutsceneFlagString)
-        {
-            var handle = AllocateExpression(HsType.CutsceneFlag, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)cutsceneFlagString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-                if (cutsceneFlagString.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
-                }
-                else
-                {
-                    var cutsceneFlagIndex = Definition.CutsceneFlags.FindIndex(cf => cutsceneFlagString.Value == Cache.StringTable.GetString(cf.Name));
-                    if (cutsceneFlagIndex == -1)
-                        throw new ScriptCompilerException(cutsceneFlagString.Line, $"No cutscene flag named '{cutsceneFlagString.Value}' found in the scenario.");
-                    expr.StringAddress = CompileStringAddress(cutsceneFlagString.Value);
-                    Array.Copy(BitConverter.GetBytes((short)cutsceneFlagIndex), expr.Data, 2);
-                }
-            }
-
-            return handle;
-        }
+            => CompileScenarioIndexExpression(HsType.CutsceneFlag, cutsceneFlagString,
+                name => Definition.CutsceneFlags.FindIndex(cf => name == Cache.StringTable.GetString(cf.Name)), 2);
 
         private DatumHandle CompileCutsceneCameraPointExpression(ScriptString cutsceneCameraPointString)
-        {
-            var handle = AllocateExpression(HsType.CutsceneCameraPoint, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)cutsceneCameraPointString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-                if (cutsceneCameraPointString.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
-                }
-                else
-                {
-                    var cutsceneCameraPointIndex = Definition.CutsceneCameraPoints.FindIndex(ccp => cutsceneCameraPointString.Value == ccp.Name);
-                    if (cutsceneCameraPointIndex == -1)
-                        throw new ScriptCompilerException(cutsceneCameraPointString.Line, $"No cutscene camera point named '{cutsceneCameraPointString.Value}' found in the scenario.");
-                    expr.StringAddress = CompileStringAddress(cutsceneCameraPointString.Value);
-                    Array.Copy(BitConverter.GetBytes((short)cutsceneCameraPointIndex), expr.Data, 2);
-                }
-            }
-
-            return handle;
-        }
+            => CompileScenarioIndexExpression(HsType.CutsceneCameraPoint, cutsceneCameraPointString,
+                name => Definition.CutsceneCameraPoints.FindIndex(ccp => name == ccp.Name), 2);
 
         private DatumHandle CompileCutsceneTitleExpression(ScriptSymbol cutsceneTitleSymbol)
         {
@@ -2523,29 +2515,8 @@ namespace TagTool.Scripting.Compiler
             throw new ScriptCompilerException(cutsceneRecordingString.Line, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
 
         private DatumHandle CompileDeviceGroupExpression(ScriptString deviceGroupString)
-        {
-            var handle = AllocateExpression(HsType.DeviceGroup, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)deviceGroupString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-                if (deviceGroupString.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
-                }
-                else
-                {
-                    var deviceGroupIndex = Definition.DeviceGroups.FindIndex(dg => dg.Name == deviceGroupString.Value);
-                    if (deviceGroupIndex == -1)
-                        throw new ScriptCompilerException(deviceGroupString.Line, $"No device group named '{deviceGroupString.Value}' found in the scenario.");
-                    expr.StringAddress = CompileStringAddress(deviceGroupString.Value);
-                    Array.Copy(BitConverter.GetBytes(deviceGroupIndex), expr.Data, 4);
-                }
-            }
-
-            return handle;
-        }
+            => CompileScenarioIndexExpression(HsType.DeviceGroup, deviceGroupString,
+                name => Definition.DeviceGroups.FindIndex(dg => dg.Name == name), 4);
 
         private DatumHandle CompileAiExpression(ScriptString aiString, HsType emitType = HsType.Ai)
         {
@@ -2768,54 +2739,12 @@ namespace TagTool.Scripting.Compiler
             throw new ScriptCompilerException(conversationString.Line, $"The type 'Conversation' is not yet supported by the compiler.");
 
         private DatumHandle CompileZoneSetExpression(ScriptString zoneSetString)
-        {
-            var handle = AllocateExpression(HsType.ZoneSet, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)zoneSetString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-                if (zoneSetString.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
-                }
-                else
-                {
-                    var zoneSetIndex = Definition.ZoneSets.FindIndex(zs => zoneSetString.Value == Cache.StringTable.GetString(zs.Name));
-                    if (zoneSetIndex == -1)
-                        throw new ScriptCompilerException(zoneSetString.Line, $"No zone set named '{zoneSetString.Value}' found in the scenario.");
-                    expr.StringAddress = CompileStringAddress(zoneSetString.Value);
-                    Array.Copy(BitConverter.GetBytes((short)zoneSetIndex), expr.Data, 2);
-                }
-            }
-
-            return handle;
-        }
+            => CompileScenarioIndexExpression(HsType.ZoneSet, zoneSetString,
+                name => Definition.ZoneSets.FindIndex(zs => name == Cache.StringTable.GetString(zs.Name)), 2);
 
         private DatumHandle CompileDesignerZoneExpression(ScriptString designerZoneString)
-        {
-            var handle = AllocateExpression(HsType.ZoneSet, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)designerZoneString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-                if (designerZoneString.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
-                }
-                else
-                {
-                    var designerZoneIndex = Definition.DesignerZoneSets.FindIndex(dz => designerZoneString.Value == Cache.StringTable.GetString(dz.Name));
-                    if (designerZoneIndex == -1)
-                        throw new ScriptCompilerException(designerZoneString.Line, $"No designer zone named '{designerZoneString.Value}' found in the scenario.");
-                    expr.StringAddress = CompileStringAddress(designerZoneString.Value);
-                    Array.Copy(BitConverter.GetBytes((short)designerZoneIndex), expr.Data, 2);
-                }
-            }
-
-            return handle;
-        }
+            => CompileScenarioIndexExpression(HsType.ZoneSet, designerZoneString,
+                name => Definition.DesignerZoneSets.FindIndex(dz => name == Cache.StringTable.GetString(dz.Name)), 2);
 
         private DatumHandle CompilePointReferenceExpression(ScriptString pointReferenceString)
         {
@@ -2929,118 +2858,22 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileSoundExpression(ScriptString soundString)
-        {
-            var handle = AllocateExpression(HsType.Sound, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)soundString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<Sound>(soundString.Value, out var instance))
-                    throw new ScriptCompilerException(soundString.Line, $"Could not find Sound tag: '{(soundString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = soundString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(soundString.Value);
-                Array.Copy(BitConverter.GetBytes(instance?.Index ?? -1), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<Sound>(HsType.Sound, soundString);
 
         private DatumHandle CompileEffectExpression(ScriptString effectString)
-        {
-            var handle = AllocateExpression(HsType.Effect, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)effectString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<Effect>(effectString.Value, out var instance))
-                    throw new ScriptCompilerException(effectString.Line, $"Could not find Effect tag: '{(effectString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = effectString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(effectString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<Effect>(HsType.Effect, effectString);
 
         private DatumHandle CompileDamageExpression(ScriptString damageString)
-        {
-            var handle = AllocateExpression(HsType.Damage, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)damageString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<DamageEffect>(damageString.Value, out var instance))
-                    throw new ScriptCompilerException(damageString.Line, $"Could not find DamageEffect tag: '{(damageString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = damageString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(damageString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<DamageEffect>(HsType.Damage, damageString);
 
         private DatumHandle CompileLoopingSoundExpression(ScriptString loopingSoundString)
-        {
-            var handle = AllocateExpression(HsType.LoopingSound, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)loopingSoundString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<SoundLooping>(loopingSoundString.Value, out var instance))
-                    throw new ScriptCompilerException(loopingSoundString.Line, $"Could not find SoundLooping tag: '{(loopingSoundString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = loopingSoundString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(loopingSoundString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<SoundLooping>(HsType.LoopingSound, loopingSoundString);
 
         private DatumHandle CompileAnimationGraphExpression(ScriptString animationGraphString)
-        {
-            var handle = AllocateExpression(HsType.AnimationGraph, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)animationGraphString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<ModelAnimationGraph>(animationGraphString.Value, out var instance))
-                    throw new ScriptCompilerException(animationGraphString.Line, $"Could not find ModelAnimationGraph tag: '{(animationGraphString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = animationGraphString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(animationGraphString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<ModelAnimationGraph>(HsType.AnimationGraph, animationGraphString);
 
         private DatumHandle CompileDamageEffectExpression(ScriptString damageEffectString)
-        {
-            var handle = AllocateExpression(HsType.DamageEffect, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)damageEffectString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<DamageEffect>(damageEffectString.Value, out var instance))
-                    throw new ScriptCompilerException(damageEffectString.Line, $"Could not find DamageEffect tag: '{(damageEffectString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = damageEffectString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(damageEffectString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<DamageEffect>(HsType.DamageEffect, damageEffectString);
 
         private DatumHandle CompileObjectDefinitionExpression(ScriptString objectDefinitionString)
         {
@@ -3072,483 +2905,122 @@ namespace TagTool.Scripting.Compiler
         }
 
         private DatumHandle CompileBitmapExpression(ScriptString bitmapString)
-        {
-            var handle = AllocateExpression(HsType.Bitmap, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)bitmapString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<Bitmap>(bitmapString.Value, out var instance))
-                    throw new ScriptCompilerException(bitmapString.Line, $"Could not find Bitmap tag: '{(bitmapString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = bitmapString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(bitmapString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<Bitmap>(HsType.Bitmap, bitmapString);
 
         private DatumHandle CompileShaderExpression(ScriptString shaderString)
-        {
-            var handle = AllocateExpression(HsType.Shader, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)shaderString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<RenderMethod>(shaderString.Value, out var instance))
-                    throw new ScriptCompilerException(shaderString.Line, $"Could not find RenderMethod tag: '{(shaderString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = shaderString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(shaderString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<RenderMethod>(HsType.Shader, shaderString);
 
         private DatumHandle CompileRenderModelExpression(ScriptString renderModelString)
-        {
-            var handle = AllocateExpression(HsType.RenderModel, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)renderModelString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<RenderModel>(renderModelString.Value, out var instance))
-                    throw new ScriptCompilerException(renderModelString.Line, $"Could not find RenderModel tag: '{(renderModelString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = renderModelString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(renderModelString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<RenderModel>(HsType.RenderModel, renderModelString);
 
         private DatumHandle CompileStructureDefinitionExpression(ScriptString structureDefinitionString)
-        {
-            var handle = AllocateExpression(HsType.StructureDefinition, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)structureDefinitionString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<ScenarioStructureBsp>(structureDefinitionString.Value, out var instance))
-                    throw new ScriptCompilerException(structureDefinitionString.Line, $"Could not find ScenarioStructureBsp tag: '{(structureDefinitionString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = structureDefinitionString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(structureDefinitionString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<ScenarioStructureBsp>(HsType.StructureDefinition, structureDefinitionString);
 
         private DatumHandle CompileLightmapDefinitionExpression(ScriptString lightmapDefinitionString) =>
             throw new ScriptCompilerException(lightmapDefinitionString.Line, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
 
         private DatumHandle CompileCinematicDefinitionExpression(ScriptString cinematicDefinitionString)
-        {
-            var handle = AllocateExpression(HsType.CinematicDefinition, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)cinematicDefinitionString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<Cinematic>(cinematicDefinitionString.Value, out var instance))
-                    throw new ScriptCompilerException(cinematicDefinitionString.Line, $"Could not find Cinematic tag: '{(cinematicDefinitionString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = cinematicDefinitionString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(cinematicDefinitionString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<Cinematic>(HsType.CinematicDefinition, cinematicDefinitionString);
 
         private DatumHandle CompileCinematicSceneDefinitionExpression(ScriptString cinematicSceneDefinitionString)
-        {
-            var handle = AllocateExpression(HsType.CinematicSceneDefinition, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)cinematicSceneDefinitionString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag<CinematicScene>(cinematicSceneDefinitionString.Value, out var instance))
-                    throw new ScriptCompilerException(cinematicSceneDefinitionString.Line, $"Could not find CinematicScene tag: '{(cinematicSceneDefinitionString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = cinematicSceneDefinitionString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(cinematicSceneDefinitionString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
-            return handle;
-        }
+            => CompileTagExpression<CinematicScene>(HsType.CinematicSceneDefinition, cinematicSceneDefinitionString);
 
         private DatumHandle CompileBinkDefinitionExpression(ScriptString binkDefinitionString)
-        {
-            var handle = AllocateExpression(HsType.BinkDefinition, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)binkDefinitionString.Line);
+            => CompileTagExpression<Bink>(HsType.BinkDefinition, binkDefinitionString);
 
+        private DatumHandle CompileUntypedTagExpression(HsType type, ScriptString tagString)
+        {
+            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)tagString.Line);
             if (handle != DatumHandle.None)
             {
-                if (!Cache.TagCache.TryGetTag<Bink>(binkDefinitionString.Value, out var instance))
-                    throw new ScriptCompilerException(binkDefinitionString.Line, $"Could not find Bink tag: '{(binkDefinitionString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = binkDefinitionString.Value + "." + instance.Group.ToString() });
-
+                if (!Cache.TagCache.TryGetTag(tagString.Value, out var instance))
+                    throw new ScriptCompilerException(tagString.Line, $"Value not found or invalid: '{tagString.Value}'.");
+                WriteTagToSourceFileReferences(new ScriptString { Value = tagString.Value + "." + instance.Group.ToString() });
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(binkDefinitionString.Value);
+                expr.StringAddress = CompileStringAddress(tagString.Value);
                 Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
             }
-
             return handle;
         }
 
-        private DatumHandle CompileAnyTagExpression(ScriptString anyTagString)
+        private DatumHandle CompileSkullExpression<TEnum>(HsType type, ScriptSymbol symbol, string label) where TEnum : struct, Enum
         {
-            var handle = AllocateExpression(HsType.AnyTag, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)anyTagString.Line);
-
+            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)symbol.Line);
             if (handle != DatumHandle.None)
             {
-                if (!Cache.TagCache.TryGetTag(anyTagString.Value, out var instance))
-                    throw new ScriptCompilerException(anyTagString.Line, $"Value not found or invalid: '{(anyTagString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = anyTagString.Value + "." + instance.Group.ToString() });
-
+                short skullIndex;
+                if (short.TryParse(symbol.Value, out var rawIndex))
+                {
+                    var maxIndex = (short)(Enum.GetValues(typeof(TEnum)).Length - 1);
+                    if (rawIndex < 0 || rawIndex > maxIndex)
+                        throw new ScriptCompilerException(symbol.Line, $"{label} skull index {rawIndex} is out of range (0-{maxIndex}).");
+                    skullIndex = rawIndex;
+                }
+                else if (Enum.TryParse<TEnum>(symbol.Value, true, out var skull))
+                {
+                    skullIndex = Convert.ToInt16(skull);
+                }
+                else
+                {
+                    throw new ScriptCompilerException(symbol.Line, $"Unknown {label.ToLower()} skull '{symbol.Value}'. Use the enum name or a numeric index.");
+                }
                 var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(anyTagString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
+                expr.StringAddress = CompileStringAddress(symbol.Value);
+                Array.Copy(BitConverter.GetBytes(skullIndex), expr.Data, 2);
             }
-
-            return handle;
-        }
-
-        private DatumHandle CompileAnyTagNotResolvingExpression(ScriptString anyTagNotResolvingString)
-        {
-            var handle = AllocateExpression(HsType.AnyTagNotResolving, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)anyTagNotResolvingString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Cache.TagCache.TryGetTag(anyTagNotResolvingString.Value, out var instance))
-                    throw new ScriptCompilerException(anyTagNotResolvingString.Line, $"Value not found or invalid: '{(anyTagNotResolvingString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = anyTagNotResolvingString.Value + "." + instance.Group.ToString() });
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(anyTagNotResolvingString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-            }
-
             return handle;
         }
 
         private DatumHandle CompileGameDifficultyExpression(ScriptSymbol gameDifficultySymbol)
-        {
-            var handle = AllocateExpression(HsType.GameDifficulty, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)gameDifficultySymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameDifficulty>(gameDifficultySymbol.Value, true, out var difficulty))
-                    throw new ScriptCompilerException(gameDifficultySymbol.Line, $"Unknown GameDifficulty value: '{(gameDifficultySymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(gameDifficultySymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)difficulty), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameDifficulty>(HsType.GameDifficulty, gameDifficultySymbol);
 
         private DatumHandle CompileTeamExpression(ScriptSymbol teamSymbol)
-        {
-            var handle = AllocateExpression(HsType.Team, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)teamSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameTeam>(teamSymbol.Value, true, out var team))
-                    throw new ScriptCompilerException(teamSymbol.Line, $"Unknown GameTeam value: '{(teamSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(teamSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)team), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameTeam>(HsType.Team, teamSymbol);
 
         private DatumHandle CompileMpTeamExpression(ScriptSymbol mpTeamSymbol)
-        {
-            var handle = AllocateExpression(HsType.MpTeam, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)mpTeamSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameMultiplayerTeam>(mpTeamSymbol.Value, true, out var mpTeam))
-                    throw new ScriptCompilerException(mpTeamSymbol.Line, $"Unknown GameMultiplayerTeam value: '{(mpTeamSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(mpTeamSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)mpTeam), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameMultiplayerTeam>(HsType.MpTeam, mpTeamSymbol);
 
         private DatumHandle CompileControllerExpression(ScriptSymbol controllerSymbol)
-        {
-            var handle = AllocateExpression(HsType.Controller, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)controllerSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameController>(controllerSymbol.Value, true, out var controller))
-                    throw new ScriptCompilerException(controllerSymbol.Line, $"Unknown GameController value: '{(controllerSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(controllerSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)controller), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameController>(HsType.Controller, controllerSymbol);
 
         private DatumHandle CompileButtonPresetExpression(ScriptSymbol buttonPresetSymbol)
-        {
-            var handle = AllocateExpression(HsType.ButtonPreset, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)buttonPresetSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameControllerButtonPreset>(buttonPresetSymbol.Value, true, out var buttonPreset))
-                    throw new ScriptCompilerException(buttonPresetSymbol.Line, $"Unknown GameControllerButtonPreset value: '{(buttonPresetSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(buttonPresetSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)buttonPreset), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameControllerButtonPreset>(HsType.ButtonPreset, buttonPresetSymbol);
 
         private DatumHandle CompileJoystickPresetExpression(ScriptSymbol joystickPresetSymbol)
-        {
-            var handle = AllocateExpression(HsType.JoystickPreset, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)joystickPresetSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameControllerJoystickPreset>(joystickPresetSymbol.Value, true, out var joystickPreset))
-                    throw new ScriptCompilerException(joystickPresetSymbol.Line, $"Unknown GameControllerJoystickPreset value: '{(joystickPresetSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(joystickPresetSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)joystickPreset), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameControllerJoystickPreset>(HsType.JoystickPreset, joystickPresetSymbol);
 
         private DatumHandle CompilePlayerColorExpression(ScriptSymbol playerColorSymbol) =>
             throw new ScriptCompilerException(playerColorSymbol.Line, $"The type 'PlayerColor' is not yet supported by the compiler.");
 
         private DatumHandle CompilePlayerCharacterTypeExpression(ScriptSymbol playerCharacterTypeSymbol)
-        {
-            var handle = AllocateExpression(HsType.PlayerCharacterType, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)playerCharacterTypeSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GamePlayerCharacterType>(playerCharacterTypeSymbol.Value, true, out var playerCharacterType))
-                    throw new ScriptCompilerException(playerCharacterTypeSymbol.Line, $"Unknown GamePlayerCharacterType value: '{(playerCharacterTypeSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(playerCharacterTypeSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)playerCharacterType), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GamePlayerCharacterType>(HsType.PlayerCharacterType, playerCharacterTypeSymbol);
 
         private DatumHandle CompileVoiceOutputSettingExpression(ScriptSymbol voiceOutputSettingSymbol)
-        {
-            var handle = AllocateExpression(HsType.VoiceOutputSetting, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)voiceOutputSettingSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameVoiceOutputSetting>(voiceOutputSettingSymbol.Value, true, out var voiceOutputSetting))
-                    throw new ScriptCompilerException(voiceOutputSettingSymbol.Line, $"Unknown GameVoiceOutputSetting value: '{(voiceOutputSettingSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(voiceOutputSettingSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)voiceOutputSetting), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameVoiceOutputSetting>(HsType.VoiceOutputSetting, voiceOutputSettingSymbol);
 
         private DatumHandle CompileVoiceMaskExpression(ScriptSymbol voiceMaskSymbol)
-        {
-            var handle = AllocateExpression(HsType.VoiceMask, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)voiceMaskSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameVoiceMask>(voiceMaskSymbol.Value, true, out var voiceMask))
-                    throw new ScriptCompilerException(voiceMaskSymbol.Line, $"Unknown GameVoiceMask value: '{(voiceMaskSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(voiceMaskSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)voiceMask), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameVoiceMask>(HsType.VoiceMask, voiceMaskSymbol);
 
         private DatumHandle CompileSubtitleSettingExpression(ScriptSymbol subtitleSettingSymbol)
-        {
-            var handle = AllocateExpression(HsType.SubtitleSetting, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)subtitleSettingSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameSubtitleSetting>(subtitleSettingSymbol.Value, true, out var subtitleSetting))
-                    throw new ScriptCompilerException(subtitleSettingSymbol.Line, $"Unknown GameSubtitleSetting value: '{(subtitleSettingSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(subtitleSettingSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)subtitleSetting), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameSubtitleSetting>(HsType.SubtitleSetting, subtitleSettingSymbol);
 
         private DatumHandle CompileActorTypeExpression(ScriptSymbol actorTypeSymbol)
-        {
-            var handle = AllocateExpression(HsType.ActorType, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)actorTypeSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<ActorTypeEnum>(actorTypeSymbol.Value, true, out var actorType))
-                    throw new ScriptCompilerException(actorTypeSymbol.Line, $"Unknown ActorTypeEnum value: '{(actorTypeSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(actorTypeSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)actorType), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<ActorTypeEnum>(HsType.ActorType, actorTypeSymbol);
 
         private DatumHandle CompileModelStateExpression(ScriptSymbol modelStateSymbol)
-        {
-            var handle = AllocateExpression(HsType.ModelState, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)modelStateSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameModelState>(modelStateSymbol.Value, true, out var modelState))
-                    throw new ScriptCompilerException(modelStateSymbol.Line, $"Unknown GameModelState value: '{(modelStateSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(modelStateSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)modelState), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameModelState>(HsType.ModelState, modelStateSymbol);
 
         private DatumHandle CompileEventExpression(ScriptSymbol eventSymbol)
-        {
-            var handle = AllocateExpression(HsType.Event, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)eventSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameEventType>(eventSymbol.Value, true, out var eventType))
-                    throw new ScriptCompilerException(eventSymbol.Line, $"Unknown GameEventType value: '{(eventSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(eventSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)eventType), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameEventType>(HsType.Event, eventSymbol);
 
         private DatumHandle CompileCharacterPhysicsExpression(ScriptSymbol characterPhysicsSymbol)
-        {
-            var handle = AllocateExpression(HsType.CharacterPhysics, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)characterPhysicsSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (!Enum.TryParse<GameCharacterPhysics>(characterPhysicsSymbol.Value, true, out var characterPhysics))
-                    throw new ScriptCompilerException(characterPhysicsSymbol.Line, $"Unknown GameCharacterPhysics value: '{(characterPhysicsSymbol.Value)}'. Check the valid values for this type.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(characterPhysicsSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)characterPhysics), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileEnumExpression<GameCharacterPhysics>(HsType.CharacterPhysics, characterPhysicsSymbol);
 
         private DatumHandle CompilePrimarySkullExpression(ScriptSymbol primarySkullSymbol)
-        {
-            var handle = AllocateExpression(HsType.PrimarySkull, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)primarySkullSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                short skullIndex;
-                // Accept either the enum name (e.g. "iron") or a raw integer index
-                if (short.TryParse(primarySkullSymbol.Value, out var rawIndex))
-                {
-                    var maxIndex = (short)(Enum.GetValues(typeof(GamePrimarySkull)).Length - 1);
-                    if (rawIndex < 0 || rawIndex > maxIndex)
-                        throw new ScriptCompilerException(primarySkullSymbol.Line, $"Primary skull index {rawIndex} is out of range (0-{maxIndex}).");
-                    skullIndex = rawIndex;
-                }
-                else if (Enum.TryParse<GamePrimarySkull>(primarySkullSymbol.Value, true, out var primarySkull))
-                {
-                    skullIndex = (short)primarySkull;
-                }
-                else
-                {
-                    throw new ScriptCompilerException(primarySkullSymbol.Line, $"Unknown primary skull '{primarySkullSymbol.Value}'. Use the enum name (e.g. iron) or a numeric index.");
-                }
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(primarySkullSymbol.Value);
-                Array.Copy(BitConverter.GetBytes(skullIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileSkullExpression<GamePrimarySkull>(HsType.PrimarySkull, primarySkullSymbol, "Primary");
 
         private DatumHandle CompileSecondarySkullExpression(ScriptSymbol secondarySkullSymbol)
-        {
-            var handle = AllocateExpression(HsType.SecondarySkull, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)secondarySkullSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                short skullIndex;
-                // Accept either the enum name (e.g. "birthdayparty") or a raw integer index
-                if (short.TryParse(secondarySkullSymbol.Value, out var rawIndex))
-                {
-                    var maxIndex = (short)(Enum.GetValues(typeof(GameSecondarySkull)).Length - 1);
-                    if (rawIndex < 0 || rawIndex > maxIndex)
-                        throw new ScriptCompilerException(secondarySkullSymbol.Line, $"Secondary skull index {rawIndex} is out of range (0-{maxIndex}).");
-                    skullIndex = rawIndex;
-                }
-                else if (Enum.TryParse<GameSecondarySkull>(secondarySkullSymbol.Value, true, out var secondarySkull))
-                {
-                    skullIndex = (short)secondarySkull;
-                }
-                else
-                {
-                    throw new ScriptCompilerException(secondarySkullSymbol.Line, $"Unknown secondary skull '{secondarySkullSymbol.Value}'. Use the enum name (e.g. catch) or a numeric index.");
-                }
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(secondarySkullSymbol.Value);
-                Array.Copy(BitConverter.GetBytes(skullIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
+            => CompileSkullExpression<GameSecondarySkull>(HsType.SecondarySkull, secondarySkullSymbol, "Secondary");
 
         private DatumHandle CompileObjectExpression(ScriptString objectString)
         {
