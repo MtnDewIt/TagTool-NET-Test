@@ -817,7 +817,8 @@ namespace TagTool.Scripting.Compiler
                     goto default;
 
                 case HsType.CutsceneTitle:
-                    if (nodeAsSym != null) return CompileCutsceneTitleExpression(nodeAsSym);
+                    if (nodeAsStr != null) return CompileScenarioIndexExpression(HsType.CutsceneTitle, nodeAsStr,
+                        name => Definition.CutsceneTitles.FindIndex(ct => string.Equals(name, Cache.StringTable.GetString(ct.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     goto default;
 
                 case HsType.CutsceneRecording:
@@ -871,7 +872,7 @@ namespace TagTool.Scripting.Compiler
                     goto default;
 
                 case HsType.Style:
-                    if (nodeAsStr != null) return CompileStyleExpression(nodeAsStr);
+                    if (nodeAsStr != null) return CompileTagExpression<Style>(HsType.Style, nodeAsStr);
                     goto default;
 
                 case HsType.ObjectList:
@@ -879,7 +880,8 @@ namespace TagTool.Scripting.Compiler
                     goto default;
 
                 case HsType.Folder:
-                    if (nodeAsStr != null) return CompileFolderExpression(nodeAsStr);
+                    if (nodeAsStr != null) return CompileScenarioIndexExpression(HsType.Folder, nodeAsStr,
+                        name => Definition.EditorFolders.FindIndex(ef => string.Equals(ef.Name, name, StringComparison.OrdinalIgnoreCase)), 4);
                     goto default;
 
                 case HsType.Sound:
@@ -907,7 +909,7 @@ namespace TagTool.Scripting.Compiler
                     goto default;
 
                 case HsType.ObjectDefinition:
-                    if (nodeAsStr != null) return CompileObjectDefinitionExpression(nodeAsStr);
+                    if (nodeAsStr != null) return CompileUntypedTagExpression(HsType.ObjectDefinition, nodeAsStr, "obje");
                     goto default;
 
                 case HsType.Bitmap:
@@ -1070,7 +1072,8 @@ namespace TagTool.Scripting.Compiler
                     goto default;
 
                 case HsType.CinematicLightprobe:
-                    if (nodeAsSym != null) return CompileCinematicLightprobeExpression(nodeAsSym);
+                    if (nodeAsStr != null) return CompileScenarioIndexExpression(HsType.CinematicLightprobe, nodeAsStr,
+                        name => Definition.CinematicLighting.FindIndex(cl => string.Equals(name, Cache.StringTable.GetString(cl.Name), StringComparison.OrdinalIgnoreCase)), 4);
                     goto default;
 
                 case HsType.AnimationBudgetReference:
@@ -2324,31 +2327,6 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileCutsceneTitleExpression(ScriptSymbol cutsceneTitleSymbol)
-        {
-            var handle = AllocateExpression(HsType.CutsceneTitle, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)cutsceneTitleSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-                if (cutsceneTitleSymbol.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes((short)-1), expr.Data, 2);
-                }
-                else
-                {
-                    var cutsceneTitleIndex = Definition.CutsceneTitles.FindIndex(ct => string.Equals(cutsceneTitleSymbol.Value, Cache.StringTable.GetString(ct.Name), StringComparison.OrdinalIgnoreCase));
-                    if (cutsceneTitleIndex == -1)
-                        throw new ScriptCompilerException(cutsceneTitleSymbol.Line, $"Value not found or invalid: '{(cutsceneTitleSymbol.Value)}'.");
-                    expr.StringAddress = CompileStringAddress(cutsceneTitleSymbol.Value);
-                    Array.Copy(BitConverter.GetBytes((short)cutsceneTitleIndex), expr.Data, 2);
-                }
-            }
-
-            return handle;
-        }
-
         private DatumHandle CompileAiExpression(ScriptString aiString, HsType emitType = HsType.Ai)
         {
             // The expression ValueType reflects the slot context (e.g. Object, Unit) so the
@@ -2601,33 +2579,6 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileStyleExpression(ScriptString styleString)
-        {
-            var handle = AllocateExpression(HsType.Style, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)styleString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                if (styleString.Value == "none")
-                {
-                    var expr = ScriptExpressions[handle.Index];
-                    expr.StringAddress = CompileStringAddress(styleString.Value);
-                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
-                    return handle;
-                }
-
-                if (!Cache.TagCache.TryGetTag<Style>(styleString.Value, out var instance))
-                    throw new ScriptCompilerException(styleString.Line, $"Could not find Style tag: '{(styleString.Value)}'.");
-
-                WriteTagToSourceFileReferences(new ScriptString { Value = styleString.Value + "." + instance.Group.ToString() });
-
-                var expr2 = ScriptExpressions[handle.Index];
-                expr2.StringAddress = CompileStringAddress(styleString.Value);
-                Array.Copy(BitConverter.GetBytes(instance.Index), expr2.Data, 4);
-            }
-
-            return handle;
-        }
-
         private DatumHandle CompileObjectListExpression(ScriptString objectListString)
         {
             ushort? objectOpcode = objectListString.Value == "none" ? null : GetHsTypeAsInteger(HsType.ObjectName);
@@ -2649,55 +2600,7 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileFolderExpression(ScriptString folderString)
-        {
-            var handle = AllocateExpression(HsType.Folder, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)folderString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var folderIndex = folderString.Value == "none" ? -1 : Definition.EditorFolders.FindIndex(ef => string.Equals(ef.Name, folderString.Value, StringComparison.OrdinalIgnoreCase));
-
-                if (folderString.Value != "none" && folderIndex == -1)
-                    throw new ScriptCompilerException(folderString.Line, $"Value not found or invalid: '{(folderString.Value)}'.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(folderString.Value);
-                Array.Copy(BitConverter.GetBytes(folderIndex), expr.Data, 4);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileObjectDefinitionExpression(ScriptString objectDefinitionString)
-        {
-            var handle = AllocateExpression(HsType.ObjectDefinition, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectDefinitionString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                // Specifically because of object_list_children which will return all objects when passed none (-1)
-                if (objectDefinitionString.Value == "none")
-                {
-                    var expr = ScriptExpressions[handle.Index];
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes(-1), expr.Data, 4);
-                }
-                else
-                {
-                    if (!Cache.TagCache.TryGetTag(objectDefinitionString.Value, out var instance) || !instance.IsInGroup("obje"))
-                        throw new ScriptCompilerException(objectDefinitionString.Line, $"Value not found or invalid: '{(objectDefinitionString.Value)}'.");
-
-                    WriteTagToSourceFileReferences(new ScriptString { Value = objectDefinitionString.Value + "." + instance.Group.ToString() });
-
-                    var expr = ScriptExpressions[handle.Index];
-                    expr.StringAddress = CompileStringAddress(objectDefinitionString.Value);
-                    Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
-                }
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileUntypedTagExpression(HsType type, ScriptString tagString)
+        private DatumHandle CompileUntypedTagExpression(HsType type, ScriptString tagString, string groupFilter = null)
         {
             var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)tagString.Line);
             if (handle != DatumHandle.None)
@@ -2711,6 +2614,8 @@ namespace TagTool.Scripting.Compiler
                 else
                 {
                     if (!Cache.TagCache.TryGetTag(tagString.Value, out var instance))
+                        throw new ScriptCompilerException(tagString.Line, $"Value not found or invalid: '{tagString.Value}'.");
+                    if (groupFilter != null && !instance.IsInGroup(groupFilter))
                         throw new ScriptCompilerException(tagString.Line, $"Value not found or invalid: '{tagString.Value}'.");
                     WriteTagToSourceFileReferences(new ScriptString { Value = tagString.Value + "." + instance.Group.ToString() });
                     expr.StringAddress = CompileStringAddress(tagString.Value);
@@ -2759,25 +2664,6 @@ namespace TagTool.Scripting.Compiler
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectNameString.Value);
                 Array.Copy(BitConverter.GetBytes((short)objectNameIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileCinematicLightprobeExpression(ScriptSymbol cinematicLightprobeSymbol)
-        {
-            var handle = AllocateExpression(HsType.CinematicLightprobe, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)cinematicLightprobeSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var cinematicLightprobeIndex = Definition.CinematicLighting.FindIndex(cl => string.Equals(cinematicLightprobeSymbol.Value, Cache.StringTable.GetString(cl.Name), StringComparison.OrdinalIgnoreCase));
-
-                if (cinematicLightprobeIndex == -1)
-                    throw new ScriptCompilerException(cinematicLightprobeSymbol.Line, $"Value not found or invalid: '{(cinematicLightprobeSymbol.Value)}'.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(cinematicLightprobeSymbol.Value);
-                Array.Copy(BitConverter.GetBytes(cinematicLightprobeIndex), expr.Data, 4);
             }
 
             return handle;
