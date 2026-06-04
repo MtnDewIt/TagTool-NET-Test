@@ -855,11 +855,7 @@ namespace TagTool.Scripting.Compiler
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiCommandList:
-                    if (node is ScriptSymbol aiCommandListNoneSymbol && aiCommandListNoneSymbol.Value == "none")
-                        return CompileAiCommandListExpression(new ScriptString { Value = "none" });
-                    else if (node is ScriptString aiCommandListString)
-                        return CompileAiCommandListExpression(aiCommandListString);
-                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'AiCommandList' is not yet supported by the compiler.");
 
                 case HsType.AiCommandScript:
                     if (node is ScriptSymbol aiCommandScriptSymbol)
@@ -1226,37 +1222,37 @@ namespace TagTool.Scripting.Compiler
 
                 case HsType.ObjectName:
                     if (node is ScriptString objectNameString)
-                        return CompileObjectNameExpression(objectNameString);
+                        return CompileObjectNameExpression(objectNameString, HsType.ObjectName);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.UnitName:
                     if (node is ScriptString unitNameString)
-                        return CompileUnitNameExpression(unitNameString);
+                        return CompileObjectNameExpression(unitNameString, HsType.UnitName, GameObjectTypeHaloOnline.Biped, GameObjectTypeHaloOnline.Giant, GameObjectTypeHaloOnline.Vehicle);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.VehicleName:
                     if (node is ScriptString vehicleNameString)
-                        return CompileVehicleNameExpression(vehicleNameString);
+                        return CompileObjectNameExpression(vehicleNameString, HsType.VehicleName, GameObjectTypeHaloOnline.Vehicle);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.WeaponName:
                     if (node is ScriptString weaponNameString)
-                        return CompileWeaponNameExpression(weaponNameString);
+                        return CompileObjectNameExpression(weaponNameString, HsType.WeaponName, GameObjectTypeHaloOnline.Weapon);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DeviceName:
                     if (node is ScriptString deviceNameString)
-                        return CompileDeviceNameExpression(deviceNameString);
+                        return CompileObjectNameExpression(deviceNameString, HsType.DeviceName, GameObjectTypeHaloOnline.AlternateRealityDevice, GameObjectTypeHaloOnline.Control, GameObjectTypeHaloOnline.Machine);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SceneryName:
                     if (node is ScriptString sceneryNameString)
-                        return CompileSceneryNameExpression(sceneryNameString);
+                        return CompileObjectNameExpression(sceneryNameString, HsType.SceneryName, GameObjectTypeHaloOnline.Scenery);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.EffectSceneryName:
                     if (node is ScriptString effectSceneryNameString)
-                        return CompileEffectSceneryNameExpression(effectSceneryNameString);
+                        return CompileObjectNameExpression(effectSceneryNameString, HsType.EffectSceneryName, GameObjectTypeHaloOnline.EffectScenery);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CinematicLightprobe:
@@ -1265,19 +1261,13 @@ namespace TagTool.Scripting.Compiler
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnimationBudgetReference:
-                    if (node is ScriptString animationBudgetReferenceString)
-                        return CompileAnimationBudgetReferenceExpression(animationBudgetReferenceString);
-                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'AnimationBudgetReference' is not yet supported by the compiler.");
 
                 case HsType.LoopingSoundBudgetReference:
-                    if (node is ScriptString loopingSoundBudgetReferenceString)
-                        return CompileLoopingSoundBudgetReferenceExpression(loopingSoundBudgetReferenceString);
-                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'LoopingSoundBudgetReference' is not yet supported by the compiler.");
 
                 case HsType.SoundBudgetReference:
-                    if (node is ScriptString soundBudgetReferenceString)
-                        return CompileSoundBudgetReferenceExpression(soundBudgetReferenceString);
-                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'SoundBudgetReference' is not yet supported by the compiler.");
             }
 
             throw new ScriptCompilerException(node.Line, $"Cannot compile expression '{node}' as type '{type}'. Check that the return type matches the script declaration.");
@@ -2672,9 +2662,6 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileAiCommandListExpression(ScriptString aiCommandListString) =>
-            throw new ScriptCompilerException(aiCommandListString.Line, $"The type 'AiCommandList' is not yet supported by the compiler.");
-
         private DatumHandle CompileAiCommandScriptExpression(ScriptSymbol aiCommandScriptSymbol)
         {
             // An ai_command_script reference is the name of a command_script-type script defined
@@ -3049,9 +3036,9 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileObjectNameExpression(ScriptString objectNameString)
+        private DatumHandle CompileObjectNameExpression(ScriptString objectNameString, HsType hsType, params GameObjectTypeHaloOnline[] allowedTypes)
         {
-            var handle = AllocateExpression(HsType.ObjectName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
+            var handle = AllocateExpression(hsType, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
 
             if (handle != DatumHandle.None)
             {
@@ -3060,146 +3047,7 @@ namespace TagTool.Scripting.Compiler
                 if (objectNameIndex == -1)
                     throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectNameString.Value);
-                Array.Copy(BitConverter.GetBytes((short)objectNameIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileUnitNameExpression(ScriptString objectNameString)
-        {
-            var handle = AllocateExpression(HsType.UnitName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
-
-                if (objectNameIndex == -1)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                var unitObjType = Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline;
-                if (unitObjType != GameObjectTypeHaloOnline.Biped &&
-                    unitObjType != GameObjectTypeHaloOnline.Giant &&
-                    unitObjType != GameObjectTypeHaloOnline.Vehicle)
-                {
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-                }
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectNameString.Value);
-                Array.Copy(BitConverter.GetBytes((short)objectNameIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileVehicleNameExpression(ScriptString objectNameString)
-        {
-            var handle = AllocateExpression(HsType.VehicleName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
-
-                if (objectNameIndex == -1)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Vehicle)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectNameString.Value);
-                Array.Copy(BitConverter.GetBytes((short)objectNameIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileWeaponNameExpression(ScriptString objectNameString)
-        {
-            var handle = AllocateExpression(HsType.WeaponName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
-
-                if (objectNameIndex == -1)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Weapon)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectNameString.Value);
-                Array.Copy(BitConverter.GetBytes((short)objectNameIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileDeviceNameExpression(ScriptString objectNameString)
-        {
-            var handle = AllocateExpression(HsType.DeviceName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
-
-                if (objectNameIndex == -1)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                var deviceObjType = Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline;
-                if (deviceObjType != GameObjectTypeHaloOnline.AlternateRealityDevice &&
-                    deviceObjType != GameObjectTypeHaloOnline.Control &&
-                    deviceObjType != GameObjectTypeHaloOnline.Machine)
-                {
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-                }
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectNameString.Value);
-                Array.Copy(BitConverter.GetBytes((short)objectNameIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileSceneryNameExpression(ScriptString objectNameString)
-        {
-            var handle = AllocateExpression(HsType.SceneryName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
-
-                if (objectNameIndex == -1)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.Scenery)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(objectNameString.Value);
-                Array.Copy(BitConverter.GetBytes((short)objectNameIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileEffectSceneryNameExpression(ScriptString objectNameString)
-        {
-            var handle = AllocateExpression(HsType.EffectSceneryName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)objectNameString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
-
-                if (objectNameIndex == -1)
-                    throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
-
-                if (Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline != GameObjectTypeHaloOnline.EffectScenery)
+                if (allowedTypes.Length > 0 && !allowedTypes.Contains(Definition.ObjectNames[objectNameIndex].ObjectType.HaloOnline))
                     throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
 
                 var expr = ScriptExpressions[handle.Index];
@@ -3228,15 +3076,6 @@ namespace TagTool.Scripting.Compiler
 
             return handle;
         }
-
-        private DatumHandle CompileAnimationBudgetReferenceExpression(ScriptString animationBudgetReferenceString) =>
-            throw new ScriptCompilerException(animationBudgetReferenceString.Line, $"The type 'AnimationBudgetReference' is not yet supported by the compiler.");
-
-        private DatumHandle CompileLoopingSoundBudgetReferenceExpression(ScriptString loopingSoundBudgetReferenceString) =>
-            throw new ScriptCompilerException(loopingSoundBudgetReferenceString.Line, $"The type 'LoopingSoundBudgetReference' is not yet supported by the compiler.");
-
-        private DatumHandle CompileSoundBudgetReferenceExpression(ScriptString soundBudgetReferenceString) =>
-            throw new ScriptCompilerException(soundBudgetReferenceString.Line, $"The type 'SoundBudgetReference' is not yet supported by the compiler.");
 
         private void WriteTagToSourceFileReferences(ScriptString tagString)
         {
