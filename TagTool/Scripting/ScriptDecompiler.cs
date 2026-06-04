@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TagTool.Ai;
 using TagTool.Cache;
 using TagTool.Common;
 using TagTool.Common.Logging;
@@ -316,6 +317,7 @@ namespace TagTool.Scripting
             var valueType = GetHsTypeAsString(Cache.Version, expr.ValueType);
             switch (valueType)
             {
+                // --- Primitives ---
                 case "FunctionName":
                     result.Name = expr.StringAddress == 0 ? OpcodeLookup(expr.Opcode) : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break; //Trust the string table, its faster than going through the dictionary with OpcodeLookup.
@@ -337,16 +339,15 @@ namespace TagTool.Scripting
                     result.Name = BitConverter.ToInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0).ToString();
                     break;
 
+                // --- Quoted types ---
                 case "String":
+                case "UnitSeatMapping":
                     var strVal = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     result.Name = strVal == "none" ? "none" : $"\"{strVal}\"";
                     break;
 
-                case "Script":
-                    result.Name = Definition.Scripts[BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0)].ScriptName;
-                    break;
-
                 case "StringId":
+                case "AiLine":
                     var stringIdVal = BitConverter.ToUInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
                     if (stringIdVal == 0)
                         result.Name = "none";
@@ -357,178 +358,100 @@ namespace TagTool.Scripting
                     }
                     break;
 
-                case "GameDifficulty":
-                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
-                    {
-                        case 0: result.Name = "Easy"; break;
-                        case 1: result.Name = "Normal"; break;
-                        case 2: result.Name = "Heroic"; break;
-                        case 3: result.Name = "Legendary"; break;
-                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
-                    }
-                    break;
-
-                case "PrimarySkull":
-                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
-                    {
-                        case 0: result.Name = "Iron"; break;
-                        case 1: result.Name = "BlackEye"; break;
-                        case 2: result.Name = "ToughLuck"; break;
-                        case 3: result.Name = "Catch"; break;
-                        case 4: result.Name = "Fog"; break;
-                        case 5: result.Name = "Famine"; break;
-                        case 6: result.Name = "Thunderstorm"; break;
-                        case 7: result.Name = "Tilt"; break;
-                        case 8: result.Name = "Mythic"; break;
-                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
-                    }
-                    break;
-
-                case "SecondarySkull":
-                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
-                    {
-                        case 0: result.Name = "Assassin"; break;
-                        case 1: result.Name = "Blind"; break;
-                        case 2: result.Name = "Superman"; break;
-                        case 3: result.Name = "BirthdayParty"; break;
-                        case 4: result.Name = "Daddy"; break;
-                        case 5: result.Name = "ThirdPerson"; break;
-                        case 6: result.Name = "DirectorsCut"; break;
-                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
-                    }
-                    break;
-
-                // Compiler takes ScriptSymbol - no quotes
-                case "CinematicLightprobe":
-                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
-                    break;
-
-                // Compiler takes ScriptSymbol - no quotes
-                case "CutsceneTitle":
-                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
-                    break;
-
-                case "Team":
-                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
-                    {
-                        case 0: result.Name = "Default"; break;
-                        case 1: result.Name = "Player"; break;
-                        case 2: result.Name = "Human"; break;
-                        case 3: result.Name = "Covenant"; break;
-                        case 4: result.Name = "Flood"; break;
-                        case 5: result.Name = "Sentinel"; break;
-                        case 6: result.Name = "Heretic"; break;
-                        case 7: result.Name = "Prophet"; break;
-                        case 8: result.Name = "Guilty"; break;
-                        case 9: result.Name = "Unused9"; break;
-                        case 10: result.Name = "Unused10"; break;
-                        case 11: result.Name = "Unused11"; break;
-                        case 12: result.Name = "Unused12"; break;
-                        case 13: result.Name = "Unused13"; break;
-                        case 14: result.Name = "Unused14"; break;
-                        case 15: result.Name = "Unused15"; break;
-                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
-                    }
-                    break;
-
-                case "MpTeam":
-                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
-                    {
-                        case 0: result.Name = "Mp_Team_Red"; break;
-                        case 1: result.Name = "Mp_Team_Blue"; break;
-                        case 2: result.Name = "Mp_Team_Green"; break;
-                        case 3: result.Name = "Mp_Team_Yellow"; break;
-                        case 4: result.Name = "Mp_Team_Purple"; break;
-                        case 5: result.Name = "Mp_Team_Orange"; break;
-                        case 6: result.Name = "Mp_Team_Brown"; break;
-                        case 7: result.Name = "Mp_Team_Grey"; break;
-                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
-                    }
-                    break;
-
-                case "ModelState":
-                    switch (BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0))
-                    {
-                        case 0: result.Name = "Standard"; break;
-                        case 1: result.Name = "MinorDamage"; break;
-                        case 2: result.Name = "MediumDamage"; break;
-                        case 3: result.Name = "MajorDamage"; break;
-                        case 4: result.Name = "Destroyed"; break;
-                        default: result.Name = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0).ToString(); break;
-                    }
-                    break;
-
-                // Script name reference - compiler takes ScriptSymbol, no quotes
+                // --- Script references (symbol, no quotes) ---
+                case "Script":
                 case "AiCommandScript":
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
-                // These must have their tag extension because the tag type can vary
+                // --- Enums (symbol, no quotes) ---
+                case "GameDifficulty":
+                case "Team":
+                case "MpTeam":
+                case "Controller":
+                case "ButtonPreset":
+                case "JoystickPreset":
+                case "PlayerCharacterType":
+                case "VoiceOutputSetting":
+                case "VoiceMask":
+                case "SubtitleSetting":
+                case "ActorType":
+                case "ModelState":
+                case "Event":
+                case "CharacterPhysics":
+                case "PrimarySkull":
+                case "SecondarySkull":
+                    var enumVal = BitConverter.ToInt16(SortExpressionDataArray(Cache.Endianness, expr.Data, 2), 0);
+                    result.Name = DecompileEnumValue(valueType, enumVal);
+                    break;
+
+                // --- Variable-type tag references (symbol, no quotes, keep extension) ---
                 case "ObjectDefinition":
                 case "AnyTag":
                 case "AnyTagNotResolving":
-                    var anyTagRefStr = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
-                    result.Name = (anyTagRefStr == "none" || anyTagRefStr == "") ? "none" : $"\"{anyTagRefStr}\"";
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
-                // Tag reference and named-object types - compiler takes ScriptString, quoted
+                // --- Tag references (symbol, no quotes, strip extension) ---
+                case "AnimationGraph":
+                case "BinkDefinition":
+                case "CinematicDefinition":
+                case "CinematicSceneDefinition":
+                case "CuiScreenDefinition":
+                case "Damage":
+                case "DamageEffect":
+                case "Effect":
+                case "LightmapDefinition":
+                case "LoopingSound":
+                case "RenderModel":
+                case "Shader":
+                case "Sound":
+                case "StructureDefinition":
+                case "Style":
+                    var tagRefStr = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
+                    if (tagRefStr != "none" && tagRefStr != "")
+                    {
+                        var dotIdx = tagRefStr.LastIndexOf('.');
+                        if (dotIdx >= 0)
+                            tagRefStr = tagRefStr.Substring(0, dotIdx);
+                    }
+                    result.Name = (tagRefStr == "none" || tagRefStr == "") ? "none" : tagRefStr;
+                    break;
+
+                // --- Scenario index / other named references (symbol, no quotes) ---
+                case "Ai":
+                case "AiBehavior":
+                case "AiCommandList":
+                case "AiOrders":
+                case "CinematicLightprobe":
+                case "Conversation":
+                case "CutsceneCameraPoint":
+                case "CutsceneFlag":
+                case "CutsceneRecording":
+                case "CutsceneTitle":
+                case "DesignerZone":
+                case "Device":
+                case "DeviceGroup":
+                case "DeviceName":
+                case "EffectScenery":
+                case "EffectSceneryName":
                 case "Folder":
+                case "Object":
+                case "ObjectList":
+                case "ObjectName":
+                case "PointReference":
+                case "Scenery":
+                case "SceneryName":
+                case "StartingProfile":
+                case "TriggerVolume":
                 case "Unit":
                 case "UnitName":
                 case "Vehicle":
                 case "VehicleName":
                 case "Weapon":
                 case "WeaponName":
-                case "Device":
-                case "DeviceName":
-                case "Scenery":
-                case "SceneryName":
-                case "EffectScenery":
-                case "EffectSceneryName":
-                case "Object":
-                case "ObjectName":
-                case "ObjectList":
-                case "AnimationGraph":
-                case "Effect":
-                case "Sound":
-                case "LoopingSound":
-                case "Damage":
-                case "DamageEffect":
-                case "Shader":
-                case "RenderModel":
-                case "Style":
-                case "CutsceneCameraPoint":
-                case "CutsceneFlag":
-                case "CutsceneRecording":
-                case "TriggerVolume":
-                case "UnitSeatMapping":
-                case "Ai":
-                case "AiCommandList":
-                case "AiBehavior":
-                case "AiOrders":
-                case "AiLine":
-                case "PointReference":
                 case "ZoneSet":
-                case "DesignerZone":
-                case "Conversation":
-                case "StartingProfile":
-                case "DeviceGroup":
-                case "LightmapDefinition":
-                case "StructureDefinition":
-                case "CinematicDefinition":
-                case "CinematicSceneDefinition":
-                case "CinematicTransitionDefinition":
-                case "BinkDefinition":
-                case "CuiScreenDefinition":
-                    var tagRefStr = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
-                    if (tagRefStr != "none" && tagRefStr != "")
-                    {
-                        // All other tag ref types are tag type specific so we strip the extension
-                        var dotIdx = tagRefStr.LastIndexOf('.');
-                        if (dotIdx >= 0)
-                            tagRefStr = tagRefStr.Substring(0, dotIdx);
-                    }
-                    result.Name = (tagRefStr == "none" || tagRefStr == "") ? "none" : $"\"{tagRefStr}\"";
+                    result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
                 default:
@@ -721,6 +644,34 @@ namespace TagTool.Scripting
             }
 
             return data;
+        }
+
+    private static string DecompileEnumValue(string typeName, short value)
+        {
+            Type enumType = typeName switch
+            {
+                "GameDifficulty" => typeof(GameDifficulty),
+                "Team" => typeof(GameTeam),
+                "MpTeam" => typeof(GameMultiplayerTeam),
+                "Controller" => typeof(GameController),
+                "ButtonPreset" => typeof(GameControllerButtonPreset),
+                "JoystickPreset" => typeof(GameControllerJoystickPreset),
+                "PlayerCharacterType" => typeof(GamePlayerCharacterType),
+                "VoiceOutputSetting" => typeof(GameVoiceOutputSetting),
+                "VoiceMask" => typeof(GameVoiceMask),
+                "SubtitleSetting" => typeof(GameSubtitleSetting),
+                "ActorType" => typeof(ActorTypeEnum),
+                "ModelState" => typeof(GameModelState),
+                "Event" => typeof(GameEventType),
+                "CharacterPhysics" => typeof(GameCharacterPhysics),
+                "PrimarySkull" => typeof(GamePrimarySkull),
+                "SecondarySkull" => typeof(GameSecondarySkull),
+                _ => null
+            };
+            if (enumType == null)
+                return value.ToString();
+            var name = Enum.GetName(enumType, (int)value);
+            return name ?? value.ToString();
         }
 
     }
