@@ -837,7 +837,7 @@ namespace TagTool.Scripting.Compiler
                     throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'AiCommandList' is not yet supported by the compiler.");
 
                 case HsType.AiCommandScript:
-                    if (nodeAsSym != null) return CompileAiCommandScriptExpression(nodeAsSym);
+                    if (nodeAsSym != null) return CompileScriptExpression(nodeAsSym, HsType.AiCommandScript, HsScriptType.Command_Script);
                     goto default;
 
                 case HsType.AiBehavior:
@@ -847,7 +847,7 @@ namespace TagTool.Scripting.Compiler
                     throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'AiOrders' is not yet supported by the compiler.");
 
                 case HsType.AiLine:
-                    if (nodeAsStr != null) return CompileAiLineExpression(nodeAsStr);
+                    if (nodeAsStr != null) return CompileStringIdExpression(nodeAsStr, HsType.AiLine);
                     goto default;
 
                 case HsType.StartingProfile:
@@ -2164,13 +2164,15 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileScriptExpression(ScriptSymbol scriptSymbol)
+        private DatumHandle CompileScriptExpression(ScriptSymbol scriptSymbol, HsType type = HsType.Script, HsScriptType? scriptTypeFilter = null)
         {
-            var handle = AllocateExpression(HsType.Script, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)scriptSymbol.Line);
+            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)scriptSymbol.Line);
 
             if (handle != DatumHandle.None)
             {
-                var scriptIndex = Scripts.FindIndex(s => s.ScriptName == scriptSymbol.Value);
+                var scriptIndex = Scripts.FindIndex(s =>
+                    string.Equals(s.ScriptName, scriptSymbol.Value, StringComparison.OrdinalIgnoreCase) &&
+                    (scriptTypeFilter == null || s.Type == scriptTypeFilter.Value));
 
                 if (scriptIndex == -1)
                     throw new ScriptCompilerException(scriptSymbol.Line, $"Script not defined: '{scriptSymbol.Value}'.");
@@ -2183,9 +2185,9 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileStringIdExpression(ScriptString stringIdString)
+        private DatumHandle CompileStringIdExpression(ScriptString stringIdString, HsType type = HsType.StringId)
         {
-            var handle = AllocateExpression(HsType.StringId, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)stringIdString.Line);
+            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)stringIdString.Line);
 
             if (handle != DatumHandle.None)
             {
@@ -2457,54 +2459,6 @@ namespace TagTool.Scripting.Compiler
 
                 expr.StringAddress = CompileStringAddress(aiString.Value);
                 Array.Copy(BitConverter.GetBytes(value), expr.Data, 4);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileAiCommandScriptExpression(ScriptSymbol aiCommandScriptSymbol)
-        {
-            // An ai_command_script reference is the name of a command_script-type script defined
-            // in the same scenario. It encodes identically to the Script type: a 2-byte index into
-            // the Scripts list. The node uses Flags Expression (not Primitive), matching the
-            // 2-byte script index in Data, script name as StringAddress.
-            var handle = AllocateExpression(HsType.AiCommandScript, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiCommandScriptSymbol.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var scriptIndex = Scripts.FindIndex(s =>
-                    string.Equals(s.ScriptName, aiCommandScriptSymbol.Value, StringComparison.OrdinalIgnoreCase) &&
-                    s.Type == HsScriptType.Command_Script);
-
-                if (scriptIndex == -1)
-                    throw new ScriptCompilerException(aiCommandScriptSymbol.Line, $"No command_script named '{aiCommandScriptSymbol.Value}' is defined.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(aiCommandScriptSymbol.Value);
-                Array.Copy(BitConverter.GetBytes((short)scriptIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileAiLineExpression(ScriptString aiLineString)
-        {
-            var handle = AllocateExpression(HsType.AiLine, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiLineString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var expr = ScriptExpressions[handle.Index];
-                if (aiLineString.Value == "none")
-                {
-                    expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes(0u), expr.Data, 4);
-                }
-                else
-                {
-                    var lineStringId = Cache.StringTable.GetStringId(aiLineString.Value);
-                    expr.StringAddress = CompileStringAddress(aiLineString.Value);
-                    Array.Copy(BitConverter.GetBytes(lineStringId.Value), expr.Data, 4);
-                }
             }
 
             return handle;
