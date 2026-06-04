@@ -1171,53 +1171,53 @@ namespace TagTool.Scripting.Compiler
 
                 case HsType.Object:
                     if (node is ScriptSymbol objectSymbol && objectSymbol.Value == "none")
-                        return CompileObjectExpression(new ScriptString { Value = "none" });
+                        return CompileObjectExpression(new ScriptString { Value = "none" }, HsType.Object);
                     else if (node is ScriptString objectString)
-                        return CompileObjectExpression(objectString);
+                        return CompileObjectExpression(objectString, HsType.Object);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Unit:
                     if (node is ScriptSymbol unitSymbol && unitSymbol.Value == "none")
-                        return CompileUnitExpression(new ScriptString { Value = "none" });
+                        return CompileObjectExpression(new ScriptString { Value = "none" }, HsType.Unit);
                     else if (node is ScriptString unitString)
-                        return CompileUnitExpression(unitString);
+                        return CompileObjectExpression(unitString, HsType.Unit);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Vehicle:
                     if (node is ScriptSymbol vehicleSymbol && vehicleSymbol.Value == "none")
-                        return CompileVehicleExpression(new ScriptString { Value = "none" });
+                        return CompileObjectExpression(new ScriptString { Value = "none" }, HsType.Vehicle);
                     else if (node is ScriptString vehicleString)
-                        return CompileVehicleExpression(vehicleString);
+                        return CompileObjectExpression(vehicleString, HsType.Vehicle);
                     else if (node is ScriptSymbol vehicleSymbolString)
-                        return CompileVehicleExpression(new ScriptString { Value = vehicleSymbolString.Value });
+                        return CompileObjectExpression(new ScriptString { Value = vehicleSymbolString.Value }, HsType.Vehicle);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Weapon:
                     if (node is ScriptSymbol weaponSymbol && weaponSymbol.Value == "none")
-                        return CompileWeaponExpression(new ScriptString { Value = "none" });
+                        return CompileObjectExpression(new ScriptString { Value = "none" }, HsType.Weapon);
                     else if (node is ScriptString weaponString)
-                        return CompileWeaponExpression(weaponString);
+                        return CompileObjectExpression(weaponString, HsType.Weapon);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Device:
                     if (node is ScriptSymbol deviceSymbol && deviceSymbol.Value == "none")
-                        return CompileDeviceExpression(new ScriptString { Value = "none" });
+                        return CompileObjectExpression(new ScriptString { Value = "none" }, HsType.Device);
                     else if (node is ScriptString deviceString)
-                        return CompileDeviceExpression(deviceString);
+                        return CompileObjectExpression(deviceString, HsType.Device);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Scenery:
                     if (node is ScriptSymbol scenerySymbol && scenerySymbol.Value == "none")
-                        return CompileSceneryExpression(new ScriptString { Value = "none" });
+                        return CompileObjectExpression(new ScriptString { Value = "none" }, HsType.Scenery);
                     else if (node is ScriptString sceneryString)
-                        return CompileSceneryExpression(sceneryString);
+                        return CompileObjectExpression(sceneryString, HsType.Scenery);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.EffectScenery:
                     if (node is ScriptSymbol effectScenerySymbol && effectScenerySymbol.Value == "none")
-                        return CompileEffectSceneryExpression(new ScriptString { Value = "none" });
+                        return CompileObjectExpression(new ScriptString { Value = "none" }, HsType.EffectScenery);
                     else if (node is ScriptString effectSceneryString)
-                        return CompileEffectSceneryExpression(effectSceneryString);
+                        return CompileObjectExpression(effectSceneryString, HsType.EffectScenery);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ObjectName:
@@ -2890,147 +2890,23 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileObjectExpression(ScriptString objectString)
+        private DatumHandle CompileObjectExpression(ScriptString objectString, HsType hsType)
         {
-            ushort? objectOpcode = objectString.Value == "none" ? null : GetHsTypeAsInteger(HsType.ObjectName);
-            var handle = AllocateExpression(HsType.Object, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, objectOpcode, line: (short)objectString.Line);
+            ushort? opcode = objectString.Value == "none" ? null :
+                GetHsTypeAsInteger(Enum.Parse<HsType>(hsType.ToString() + "Name"));
+            var handle = AllocateExpression(hsType, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, opcode, line: (short)objectString.Line);
 
             if (handle != DatumHandle.None)
             {
-                var objectIndex = objectString.Value == "none" ? -1 :
+                var index = objectString.Value == "none" ? -1 :
                     Definition.ObjectNames.FindIndex(on => on.Name == objectString.Value);
 
-                if (objectString.Value != "none" && objectIndex == -1)
-                    return CompileAiExpression(objectString, HsType.Object);
+                if (objectString.Value != "none" && index == -1)
+                    return CompileAiExpression(objectString, hsType);
 
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(objectString.Value);
-                Array.Copy(BitConverter.GetBytes((short)objectIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileUnitExpression(ScriptString unitString)
-        {
-            ushort? unitOpcode = unitString.Value == "none" ? null : GetHsTypeAsInteger(HsType.UnitName);
-            var handle = AllocateExpression(HsType.Unit, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, unitOpcode, line: (short)unitString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var unitIndex = unitString.Value == "none" ? -1 :
-                    Definition.ObjectNames.FindIndex(on => on.Name == unitString.Value);
-
-                if (unitString.Value != "none" && unitIndex == -1)
-                    return CompileAiExpression(unitString, HsType.Unit);
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(unitString.Value);
-                Array.Copy(BitConverter.GetBytes((short)unitIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileVehicleExpression(ScriptString vehicleString)
-        {
-            ushort? vehicleOpcode = vehicleString.Value == "none" ? null : GetHsTypeAsInteger(HsType.VehicleName);
-            var handle = AllocateExpression(HsType.Vehicle, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, vehicleOpcode, line: (short)vehicleString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                
-                var vehicleIndex = vehicleString.Value == "none" ? -1 :
-                    Definition.ObjectNames.FindIndex(on => on.Name == vehicleString.Value);
-
-                if (vehicleString.Value != "none" && vehicleIndex == -1)
-                    return CompileAiExpression(vehicleString, HsType.Vehicle);
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(vehicleString.Value);
-                Array.Copy(BitConverter.GetBytes((short)vehicleIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileWeaponExpression(ScriptString weaponString)
-        {
-            var handle = AllocateExpression(HsType.Weapon, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)weaponString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var weaponIndex = weaponString.Value == "none" ? -1 :
-                    Definition.ObjectNames.Find(on => on.Name == weaponString.Value).PlacementIndex;
-
-                if (weaponString.Value != "none" && weaponIndex == -1)
-                    throw new ScriptCompilerException(weaponString.Line, $"Value not found or invalid: '{(weaponString.Value)}'.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(weaponString.Value);
-                Array.Copy(BitConverter.GetBytes((short)weaponIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileDeviceExpression(ScriptString deviceString)
-        {
-            ushort? deviceOpcode = deviceString.Value == "none" ? null : GetHsTypeAsInteger(HsType.DeviceName);
-            var handle = AllocateExpression(HsType.Device, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, deviceOpcode, line: (short)deviceString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var deviceIndex = deviceString.Value == "none" ? -1 :
-                    Definition.ObjectNames.FindIndex(on => on.Name == deviceString.Value);
-
-                if (deviceString.Value != "none" && deviceIndex == -1)
-                    throw new ScriptCompilerException(deviceString.Line, $"Value not found or invalid: '{(deviceString.Value)}'.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(deviceString.Value);
-                Array.Copy(BitConverter.GetBytes((short)deviceIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileSceneryExpression(ScriptString sceneryString)
-        {
-            ushort? sceneryOpcode = sceneryString.Value == "none" ? null : GetHsTypeAsInteger(HsType.SceneryName);
-            var handle = AllocateExpression(HsType.Scenery, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, sceneryOpcode, line: (short)sceneryString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var sceneryIndex = sceneryString.Value == "none" ? -1 :
-                    Definition.ObjectNames.FindIndex(on => on.Name == sceneryString.Value);
-
-                if (sceneryString.Value != "none" && sceneryIndex == -1)
-                    throw new ScriptCompilerException(sceneryString.Line, $"Value not found or invalid: '{(sceneryString.Value)}'.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(sceneryString.Value);
-                Array.Copy(BitConverter.GetBytes((short)sceneryIndex), expr.Data, 2);
-            }
-
-            return handle;
-        }
-
-        private DatumHandle CompileEffectSceneryExpression(ScriptString effectSceneryString)
-        {
-            var handle = AllocateExpression(HsType.EffectScenery, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)effectSceneryString.Line);
-
-            if (handle != DatumHandle.None)
-            {
-                var effectSceneryIndex = effectSceneryString.Value == "none" ? -1 :
-                    Definition.ObjectNames.Find(on => on.Name == effectSceneryString.Value).PlacementIndex;
-
-                if (effectSceneryString.Value != "none" && effectSceneryIndex == -1)
-                    throw new ScriptCompilerException(effectSceneryString.Line, $"Value not found or invalid: '{(effectSceneryString.Value)}'.");
-
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(effectSceneryString.Value);
-                Array.Copy(BitConverter.GetBytes(effectSceneryIndex), expr.Data, 4);
+                Array.Copy(BitConverter.GetBytes(index), expr.Data, 2);
             }
 
             return handle;
