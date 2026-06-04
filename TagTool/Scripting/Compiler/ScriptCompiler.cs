@@ -151,7 +151,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
             }
         }
 
@@ -183,7 +183,7 @@ namespace TagTool.Scripting.Compiler
                     break;
 
                 default:
-                    throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
             }
         }
 
@@ -192,7 +192,7 @@ namespace TagTool.Scripting.Compiler
             var result = new HsType();
 
             if (!(node is ScriptSymbol symbol))
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
             if (!Enum.TryParse(symbol.Value, true, out result))
                 result = HsType.Invalid;
@@ -205,7 +205,7 @@ namespace TagTool.Scripting.Compiler
             if (!(node is ScriptSymbol symbol) ||
                 !Enum.TryParse<HsScriptType>(symbol.Value, true, out var result))
             {
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
             }
 
             return result;
@@ -234,7 +234,7 @@ namespace TagTool.Scripting.Compiler
                 !(group.Head is ScriptSymbol symbol && symbol.Value == "global") ||
                 !(group.Tail is ScriptGroup declGroup))
             {
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
             }
 
             //
@@ -283,13 +283,13 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(node is ScriptGroup group))
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Head is ScriptSymbol symbol && symbol.Value == "script"))
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Tail is ScriptGroup declGroup))
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
             //
             // Compile the script type
@@ -508,13 +508,13 @@ namespace TagTool.Scripting.Compiler
             //
 
             if (!(node is ScriptGroup group))
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Head is ScriptSymbol symbol && symbol.Value == "script"))
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
             if (!(group.Tail is ScriptGroup declGroup))
-                throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
             //
             // Compile the script type
@@ -754,7 +754,7 @@ namespace TagTool.Scripting.Compiler
                 case HsType.Boolean:
                     if (node is ScriptBoolean boolValue)
                         return CompileBooleanExpression(boolValue);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Real:
                     if (node is ScriptReal realValue)
@@ -765,43 +765,43 @@ namespace TagTool.Scripting.Compiler
                             Value = (double)realIntegerValue.Value,
                             Line = realIntegerValue.Line
                         });
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Short:
                     if (node is ScriptInteger shortValue)
                         return CompileShortExpression(shortValue);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Long:
                     if (node is ScriptInteger longValue)
                         return CompileLongExpression(longValue);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.String:
                     if (node is ScriptSymbol stringNoneSymbol && stringNoneSymbol.Value == "none")
                         return CompileStringExpression(new ScriptString { Value = "none", Line = stringNoneSymbol.Line });
                     else if (node is ScriptString stringValue)
                         return CompileStringExpression(stringValue);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Script:
                     if (node is ScriptSymbol scriptSymbol)
                         return CompileScriptExpression(scriptSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.StringId:
                     if (node is ScriptSymbol stringIdNoneSymbol && stringIdNoneSymbol.Value == "none")
                         return CompileStringIdExpression(new ScriptString { Value = "none", Line = stringIdNoneSymbol.Line });
                     else if (node is ScriptString stringIdString)
                         return CompileStringIdExpression(stringIdString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.UnitSeatMapping:
                     if (node is ScriptSymbol unitSeatMappingSymbol && unitSeatMappingSymbol.Value == "none")
                         return CompileUnitSeatMappingExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString unitSeatMappingString)
                         return CompileUnitSeatMappingExpression(unitSeatMappingString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.TriggerVolume:
                     if (node is ScriptString triggerVolumeString)
@@ -810,7 +810,7 @@ namespace TagTool.Scripting.Compiler
                     else if (node is ScriptSymbol triggerVolumeSymbolString)
                         return CompileScenarioIndexExpression(HsType.TriggerVolume, new ScriptString { Value = triggerVolumeSymbolString.Value },
                             name => Definition.TriggerVolumes.FindIndex(tv => name == Cache.StringTable.GetString(tv.Name)), 2);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneFlag:
                     if (node is ScriptSymbol cutsceneFlagNoneSymbol && cutsceneFlagNoneSymbol.Value == "none")
@@ -819,7 +819,7 @@ namespace TagTool.Scripting.Compiler
                     else if (node is ScriptString cutsceneFlagString)
                         return CompileScenarioIndexExpression(HsType.CutsceneFlag, cutsceneFlagString,
                             name => Definition.CutsceneFlags.FindIndex(cf => name == Cache.StringTable.GetString(cf.Name)), 2);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneCameraPoint:
                     if (node is ScriptSymbol cutsceneCameraPointNoneSymbol && cutsceneCameraPointNoneSymbol.Value == "none")
@@ -828,19 +828,15 @@ namespace TagTool.Scripting.Compiler
                     else if (node is ScriptString cutsceneCameraPointString)
                         return CompileScenarioIndexExpression(HsType.CutsceneCameraPoint, cutsceneCameraPointString,
                             name => Definition.CutsceneCameraPoints.FindIndex(ccp => name == ccp.Name), 2);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneTitle:
                     if (node is ScriptSymbol cutsceneTitleSymbol)
                         return CompileCutsceneTitleExpression(cutsceneTitleSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneRecording:
-                    if (node is ScriptSymbol cutsceneRecordingNoneSymbol && cutsceneRecordingNoneSymbol.Value == "none")
-                        return CompileCutsceneRecordingExpression(new ScriptString { Value = "none" });
-                    else if (node is ScriptString cutsceneRecordingString)
-                        return CompileCutsceneRecordingExpression(cutsceneRecordingString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
 
                 case HsType.DeviceGroup:
                     if (node is ScriptSymbol deviceGroupNoneSymbol && deviceGroupNoneSymbol.Value == "none")
@@ -849,63 +845,51 @@ namespace TagTool.Scripting.Compiler
                     else if (node is ScriptString deviceGroupString)
                         return CompileScenarioIndexExpression(HsType.DeviceGroup, deviceGroupString,
                             name => Definition.DeviceGroups.FindIndex(dg => dg.Name == name), 4);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Ai:
                     if (node is ScriptSymbol aiSymbol && aiSymbol.Value == "none")
                         return CompileAiExpression(new ScriptString { Value = "none" }, type);
                     else if (node is ScriptString aiString)
                         return CompileAiExpression(aiString, type);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiCommandList:
                     if (node is ScriptSymbol aiCommandListNoneSymbol && aiCommandListNoneSymbol.Value == "none")
                         return CompileAiCommandListExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString aiCommandListString)
                         return CompileAiCommandListExpression(aiCommandListString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiCommandScript:
                     if (node is ScriptSymbol aiCommandScriptSymbol)
                         return CompileAiCommandScriptExpression(aiCommandScriptSymbol);
                     else if (node is ScriptString aiCommandScriptString)
                         return CompileAiCommandScriptExpression(new ScriptSymbol { Value = aiCommandScriptString.Value, Line = aiCommandScriptString.Line });
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AiBehavior:
-                    if (node is ScriptSymbol aiBehaviorNoneSymbol && aiBehaviorNoneSymbol.Value == "none")
-                        return CompileAiBehaviorExpression(new ScriptString { Value = "none" });
-                    else if (node is ScriptString aiBehaviorString)
-                        return CompileAiBehaviorExpression(aiBehaviorString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'AiBehavior' is not yet supported by the compiler.");
 
                 case HsType.AiOrders:
-                    if (node is ScriptSymbol aiOrdersNoneSymbol && aiOrdersNoneSymbol.Value == "none")
-                        return CompileAiOrdersExpression(new ScriptString { Value = "none" });
-                    else if (node is ScriptString aiOrdersString)
-                        return CompileAiOrdersExpression(aiOrdersString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'AiOrders' is not yet supported by the compiler.");
 
                 case HsType.AiLine:
                     if (node is ScriptSymbol aiLineNoneSymbol && aiLineNoneSymbol.Value == "none")
                         return CompileAiLineExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString aiLineString)
                         return CompileAiLineExpression(aiLineString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.StartingProfile:
                     if (node is ScriptSymbol startingProfileNoneSymbol && startingProfileNoneSymbol.Value == "none")
                         return CompileStartingProfileExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString startingProfileString)
                         return CompileStartingProfileExpression(startingProfileString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Conversation:
-                    if (node is ScriptSymbol conversationNoneSymbol && conversationNoneSymbol.Value == "none")
-                        return CompileConversationExpression(new ScriptString { Value = "none" });
-                    else if (node is ScriptString conversationString)
-                        return CompileConversationExpression(conversationString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"The type 'Conversation' is not yet supported by the compiler.");
 
                 case HsType.ZoneSet:
                     if (node is ScriptSymbol zoneSetNoneSymbol && zoneSetNoneSymbol.Value == "none")
@@ -914,7 +898,7 @@ namespace TagTool.Scripting.Compiler
                     else if (node is ScriptString zoneSetString)
                         return CompileScenarioIndexExpression(HsType.ZoneSet, zoneSetString,
                             name => Definition.ZoneSets.FindIndex(zs => name == Cache.StringTable.GetString(zs.Name)), 2);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DesignerZone:
                     if (node is ScriptSymbol designerZoneNoneSymbol && designerZoneNoneSymbol.Value == "none")
@@ -923,257 +907,285 @@ namespace TagTool.Scripting.Compiler
                     else if (node is ScriptString designerZoneString)
                         return CompileScenarioIndexExpression(HsType.ZoneSet, designerZoneString,
                             name => Definition.DesignerZoneSets.FindIndex(dz => name == Cache.StringTable.GetString(dz.Name)), 2);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.PointReference:
                     if (node is ScriptSymbol pointReferenceNoneSymbol && pointReferenceNoneSymbol.Value == "none")
                         return CompilePointReferenceExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString pointReferenceString)
                         return CompilePointReferenceExpression(pointReferenceString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Style:
                     if (node is ScriptSymbol styleNoneSymbol && styleNoneSymbol.Value == "none")
                         return CompileStyleExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString styleString)
                         return CompileStyleExpression(styleString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ObjectList:
                     if (node is ScriptSymbol objectListNoneSymbol && objectListNoneSymbol.Value == "none")
                         return CompileObjectListExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString objectListString)
                         return CompileObjectListExpression(objectListString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Folder:
                     if (node is ScriptSymbol folderSymbol && folderSymbol.Value == "none")
                         return CompileFolderExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString folderString)
                         return CompileFolderExpression(folderString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Sound:
                     if (node is ScriptSymbol soundSymbol && soundSymbol.Value == "none")
                         return CompileTagExpression<Sound>(HsType.Sound, new ScriptString { Value = "none" });
                     else if (node is ScriptString soundString)
                         return CompileTagExpression<Sound>(HsType.Sound, soundString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Effect:
                     if (node is ScriptSymbol effectSymbol && effectSymbol.Value == "none")
                         return CompileTagExpression<Effect>(HsType.Effect, new ScriptString { Value = "none" });
                     else if (node is ScriptString effectString)
                         return CompileTagExpression<Effect>(HsType.Effect, effectString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Damage:
                     if (node is ScriptSymbol damageSymbol && damageSymbol.Value == "none")
                         return CompileTagExpression<DamageEffect>(HsType.Damage, new ScriptString { Value = "none" });
                     else if (node is ScriptString damageString)
                         return CompileTagExpression<DamageEffect>(HsType.Damage, damageString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.LoopingSound:
                     if (node is ScriptSymbol loopingSoundSymbol && loopingSoundSymbol.Value == "none")
                         return CompileTagExpression<SoundLooping>(HsType.LoopingSound, new ScriptString { Value = "none" });
                     else if (node is ScriptString loopingSoundString)
                         return CompileTagExpression<SoundLooping>(HsType.LoopingSound, loopingSoundString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnimationGraph:
                     if (node is ScriptSymbol animationGraphSymbol && animationGraphSymbol.Value == "none")
                         return CompileTagExpression<ModelAnimationGraph>(HsType.AnimationGraph, new ScriptString { Value = "none" });
                     else if (node is ScriptString animationGraphString)
                         return CompileTagExpression<ModelAnimationGraph>(HsType.AnimationGraph, animationGraphString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DamageEffect:
                     if (node is ScriptSymbol damageEffectSymbol && damageEffectSymbol.Value == "none")
                         return CompileTagExpression<DamageEffect>(HsType.DamageEffect, new ScriptString { Value = "none" });
                     else if (node is ScriptString damageEffectString)
                         return CompileTagExpression<DamageEffect>(HsType.DamageEffect, damageEffectString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ObjectDefinition:
                     if (node is ScriptSymbol objectDefinitionSymbol && objectDefinitionSymbol.Value == "none")
                         return CompileObjectDefinitionExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString objectDefinitionString)
                         return CompileObjectDefinitionExpression(objectDefinitionString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Bitmap:
                     if (node is ScriptSymbol bitmapSymbol && bitmapSymbol.Value == "none")
                         return CompileTagExpression<Bitmap>(HsType.Bitmap, new ScriptString { Value = "none" });
                     else if (node is ScriptString bitmapString)
                         return CompileTagExpression<Bitmap>(HsType.Bitmap, bitmapString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Shader:
                     if (node is ScriptSymbol shaderSymbol && shaderSymbol.Value == "none")
                         return CompileTagExpression<RenderMethod>(HsType.Shader, new ScriptString { Value = "none" });
                     else if (node is ScriptString shaderString)
                         return CompileTagExpression<RenderMethod>(HsType.Shader, shaderString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.RenderModel:
                     if (node is ScriptSymbol renderModelSymbol && renderModelSymbol.Value == "none")
                         return CompileTagExpression<RenderModel>(HsType.RenderModel, new ScriptString { Value = "none" });
                     else if (node is ScriptString renderModelString)
                         return CompileTagExpression<RenderModel>(HsType.RenderModel, renderModelString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.StructureDefinition:
                     if (node is ScriptSymbol structureDefinitionSymbol && structureDefinitionSymbol.Value == "none")
                         return CompileTagExpression<ScenarioStructureBsp>(HsType.StructureDefinition, new ScriptString { Value = "none" });
                     else if (node is ScriptString structureDefinitionString)
                         return CompileTagExpression<ScenarioStructureBsp>(HsType.StructureDefinition, structureDefinitionString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.LightmapDefinition:
                     if (node is ScriptSymbol lightmapDefinitionSymbol && lightmapDefinitionSymbol.Value == "none")
                         throw new ScriptCompilerException(lightmapDefinitionSymbol.Line, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
                     else if (node is ScriptString lightmapDefinitionString)
                         throw new ScriptCompilerException(lightmapDefinitionString.Line, $"The type 'LightmapDefinition' is not yet supported by the compiler.");
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CinematicDefinition:
                     if (node is ScriptSymbol cinematicDefinitionSymbol && cinematicDefinitionSymbol.Value == "none")
                         return CompileTagExpression<Cinematic>(HsType.CinematicDefinition, new ScriptString { Value = "none" });
                     else if (node is ScriptString cinematicDefinitionString)
                         return CompileTagExpression<Cinematic>(HsType.CinematicDefinition, cinematicDefinitionString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CinematicSceneDefinition:
                     if (node is ScriptSymbol cinematicSceneSymbol && cinematicSceneSymbol.Value == "none")
                         return CompileTagExpression<CinematicScene>(HsType.CinematicSceneDefinition, new ScriptString { Value = "none" });
                     else if (node is ScriptString cinematicSceneDefinitionString)
                         return CompileTagExpression<CinematicScene>(HsType.CinematicSceneDefinition, cinematicSceneDefinitionString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.BinkDefinition:
                     if (node is ScriptSymbol binkDefinitionSymbol && binkDefinitionSymbol.Value == "none")
                         return CompileTagExpression<Bink>(HsType.BinkDefinition, new ScriptString { Value = "none" });
                     else if (node is ScriptString binkDefinitionString)
                         return CompileTagExpression<Bink>(HsType.BinkDefinition, binkDefinitionString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnyTag:
                     if (node is ScriptSymbol anyTagSymbol && anyTagSymbol.Value == "none")
                         return CompileUntypedTagExpression(HsType.AnyTag, new ScriptString { Value = "none" });
                     else if (node is ScriptString anyTagString)
                         return CompileUntypedTagExpression(HsType.AnyTag, anyTagString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnyTagNotResolving:
                     if (node is ScriptSymbol anyTagNotResolvingSymbol && anyTagNotResolvingSymbol.Value == "none")
                         return CompileUntypedTagExpression(HsType.AnyTagNotResolving, new ScriptString { Value = "none" });
                     else if (node is ScriptString anyTagNotResolvingString)
                         return CompileUntypedTagExpression(HsType.AnyTagNotResolving, anyTagNotResolvingString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.GameDifficulty:
-                    if (node is ScriptSymbol gameDifficultySymbol)
-                        return CompileEnumExpression<GameDifficulty>(HsType.GameDifficulty, gameDifficultySymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameDifficulty>(HsType.GameDifficulty, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameDifficulty>(HsType.GameDifficulty, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.Team:
-                    if (node is ScriptSymbol teamSymbol)
-                        return CompileEnumExpression<GameTeam>(HsType.Team, teamSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameTeam>(HsType.Team, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameTeam>(HsType.Team, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.MpTeam:
-                    if (node is ScriptSymbol mpTeamSymbol)
-                        return CompileEnumExpression<GameMultiplayerTeam>(HsType.MpTeam, mpTeamSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameMultiplayerTeam>(HsType.MpTeam, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameMultiplayerTeam>(HsType.MpTeam, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.Controller:
-                    if (node is ScriptSymbol controllerSymbol)
-                        return CompileEnumExpression<GameController>(HsType.Controller, controllerSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameController>(HsType.Controller, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameController>(HsType.Controller, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.ButtonPreset:
-                    if (node is ScriptSymbol buttonPresetSymbol)
-                        return CompileEnumExpression<GameControllerButtonPreset>(HsType.ButtonPreset, buttonPresetSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameControllerButtonPreset>(HsType.ButtonPreset, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameControllerButtonPreset>(HsType.ButtonPreset, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.JoystickPreset:
-                    if (node is ScriptSymbol joystickPresetSymbol)
-                        return CompileEnumExpression<GameControllerJoystickPreset>(HsType.JoystickPreset, joystickPresetSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameControllerJoystickPreset>(HsType.JoystickPreset, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameControllerJoystickPreset>(HsType.JoystickPreset, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 //case HsType.PlayerColor:
                 //    if (node is ScriptSymbol playerColorSymbol)
                 //        return CompilePlayerColorExpression(playerColorSymbol);
-                //    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                //    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.PlayerCharacterType:
-                    if (node is ScriptSymbol playerCharacterTypeSymbol)
-                        return CompileEnumExpression<GamePlayerCharacterType>(HsType.PlayerCharacterType, playerCharacterTypeSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GamePlayerCharacterType>(HsType.PlayerCharacterType, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GamePlayerCharacterType>(HsType.PlayerCharacterType, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.VoiceOutputSetting:
-                    if (node is ScriptSymbol voiceOutputSettingSymbol)
-                        return CompileEnumExpression<GameVoiceOutputSetting>(HsType.VoiceOutputSetting, voiceOutputSettingSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameVoiceOutputSetting>(HsType.VoiceOutputSetting, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameVoiceOutputSetting>(HsType.VoiceOutputSetting, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.VoiceMask:
-                    if (node is ScriptSymbol voiceMaskSymbol)
-                        return CompileEnumExpression<GameVoiceMask>(HsType.VoiceMask, voiceMaskSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameVoiceMask>(HsType.VoiceMask, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameVoiceMask>(HsType.VoiceMask, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.SubtitleSetting:
-                    if (node is ScriptSymbol subtitleSettingSymbol)
-                        return CompileEnumExpression<GameSubtitleSetting>(HsType.SubtitleSetting, subtitleSettingSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameSubtitleSetting>(HsType.SubtitleSetting, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameSubtitleSetting>(HsType.SubtitleSetting, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.ActorType:
-                    if (node is ScriptSymbol actorTypeSymbol)
-                        return CompileEnumExpression<ActorTypeEnum>(HsType.ActorType, actorTypeSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<ActorTypeEnum>(HsType.ActorType, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<ActorTypeEnum>(HsType.ActorType, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.ModelState:
-                    if (node is ScriptSymbol modelStateSymbol)
-                        return CompileEnumExpression<GameModelState>(HsType.ModelState, modelStateSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameModelState>(HsType.ModelState, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameModelState>(HsType.ModelState, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.Event:
-                    if (node is ScriptSymbol eventSymbol)
-                        return CompileEnumExpression<GameEventType>(HsType.Event, eventSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameEventType>(HsType.Event, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameEventType>(HsType.Event, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.CharacterPhysics:
-                    if (node is ScriptSymbol characterPhysicsSymbol)
-                        return CompileEnumExpression<GameCharacterPhysics>(HsType.CharacterPhysics, characterPhysicsSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameCharacterPhysics>(HsType.CharacterPhysics, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameCharacterPhysics>(HsType.CharacterPhysics, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.PrimarySkull:
-                    if (node is ScriptSymbol primarySkullSymbol)
-                        return CompileSkullExpression<GamePrimarySkull>(HsType.PrimarySkull, primarySkullSymbol, "Primary");
-                    else if (node is ScriptInteger primarySkullInt)
-                        return CompileSkullExpression<GamePrimarySkull>(HsType.PrimarySkull, new ScriptSymbol { Value = primarySkullInt.Value.ToString(), Line = primarySkullInt.Line }, "Primary");
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GamePrimarySkull>(HsType.PrimarySkull, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GamePrimarySkull>(HsType.PrimarySkull, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.SecondarySkull:
-                    if (node is ScriptSymbol secondarySkullSymbol)
-                        return CompileSkullExpression<GameSecondarySkull>(HsType.SecondarySkull, secondarySkullSymbol, "Secondary");
-                    else if (node is ScriptInteger secondarySkullInt)
-                        return CompileSkullExpression<GameSecondarySkull>(HsType.SecondarySkull, new ScriptSymbol { Value = secondarySkullInt.Value.ToString(), Line = secondarySkullInt.Line }, "Secondary");
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                {
+                    if (node is ScriptSymbol s) return CompileEnumExpression<GameSecondarySkull>(HsType.SecondarySkull, s);
+                    else if (node is ScriptInteger i) return CompileEnumExpression<GameSecondarySkull>(HsType.SecondarySkull, new ScriptSymbol { Value = i.Value.ToString(), Line = i.Line });
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
+                }
 
                 case HsType.Object:
                     if (node is ScriptSymbol objectSymbol && objectSymbol.Value == "none")
                         return CompileObjectExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString objectString)
                         return CompileObjectExpression(objectString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Unit:
                     if (node is ScriptSymbol unitSymbol && unitSymbol.Value == "none")
                         return CompileUnitExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString unitString)
                         return CompileUnitExpression(unitString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Vehicle:
                     if (node is ScriptSymbol vehicleSymbol && vehicleSymbol.Value == "none")
@@ -1182,90 +1194,90 @@ namespace TagTool.Scripting.Compiler
                         return CompileVehicleExpression(vehicleString);
                     else if (node is ScriptSymbol vehicleSymbolString)
                         return CompileVehicleExpression(new ScriptString { Value = vehicleSymbolString.Value });
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Weapon:
                     if (node is ScriptSymbol weaponSymbol && weaponSymbol.Value == "none")
                         return CompileWeaponExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString weaponString)
                         return CompileWeaponExpression(weaponString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Device:
                     if (node is ScriptSymbol deviceSymbol && deviceSymbol.Value == "none")
                         return CompileDeviceExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString deviceString)
                         return CompileDeviceExpression(deviceString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Scenery:
                     if (node is ScriptSymbol scenerySymbol && scenerySymbol.Value == "none")
                         return CompileSceneryExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString sceneryString)
                         return CompileSceneryExpression(sceneryString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.EffectScenery:
                     if (node is ScriptSymbol effectScenerySymbol && effectScenerySymbol.Value == "none")
                         return CompileEffectSceneryExpression(new ScriptString { Value = "none" });
                     else if (node is ScriptString effectSceneryString)
                         return CompileEffectSceneryExpression(effectSceneryString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.ObjectName:
                     if (node is ScriptString objectNameString)
                         return CompileObjectNameExpression(objectNameString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.UnitName:
                     if (node is ScriptString unitNameString)
                         return CompileUnitNameExpression(unitNameString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.VehicleName:
                     if (node is ScriptString vehicleNameString)
                         return CompileVehicleNameExpression(vehicleNameString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.WeaponName:
                     if (node is ScriptString weaponNameString)
                         return CompileWeaponNameExpression(weaponNameString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DeviceName:
                     if (node is ScriptString deviceNameString)
                         return CompileDeviceNameExpression(deviceNameString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SceneryName:
                     if (node is ScriptString sceneryNameString)
                         return CompileSceneryNameExpression(sceneryNameString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.EffectSceneryName:
                     if (node is ScriptString effectSceneryNameString)
                         return CompileEffectSceneryNameExpression(effectSceneryNameString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CinematicLightprobe:
                     if (node is ScriptSymbol cinematicLightprobeSymbol)
                         return CompileCinematicLightprobeExpression(cinematicLightprobeSymbol);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.AnimationBudgetReference:
                     if (node is ScriptString animationBudgetReferenceString)
                         return CompileAnimationBudgetReferenceExpression(animationBudgetReferenceString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.LoopingSoundBudgetReference:
                     if (node is ScriptString loopingSoundBudgetReferenceString)
                         return CompileLoopingSoundBudgetReferenceExpression(loopingSoundBudgetReferenceString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.SoundBudgetReference:
                     if (node is ScriptString soundBudgetReferenceString)
                         return CompileSoundBudgetReferenceExpression(soundBudgetReferenceString);
-                    else throw new ScriptCompilerException(node is IScriptSyntax sn_ ? sn_.Line : 0, $"Unexpected expression \'{node}\'.");
+                    else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
             }
 
             throw new ScriptCompilerException(node.Line, $"Cannot compile expression '{node}' as type '{type}'. Check that the return type matches the script declaration.");
@@ -2212,11 +2224,25 @@ namespace TagTool.Scripting.Compiler
             var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)symbol.Line);
             if (handle != DatumHandle.None)
             {
-                if (!Enum.TryParse<TEnum>(symbol.Value, true, out var value))
-                    throw new ScriptCompilerException(symbol.Line, $"Unknown {typeof(TEnum).Name} value: '{symbol.Value}'. Check the valid values for this type.");
+                short value;
+                if (short.TryParse(symbol.Value, out var rawIndex))
+                {
+                    var maxIndex = (short)(Enum.GetValues(typeof(TEnum)).Length - 1);
+                    if (rawIndex < 0 || rawIndex > maxIndex)
+                        throw new ScriptCompilerException(symbol.Line, $"Index {rawIndex} is out of range (0-{maxIndex}) for {typeof(TEnum).Name}.");
+                    value = rawIndex;
+                }
+                else if (Enum.TryParse<TEnum>(symbol.Value, true, out var enumVal))
+                {
+                    value = Convert.ToInt16(enumVal);
+                }
+                else
+                {
+                    throw new ScriptCompilerException(symbol.Line, $"Unknown {typeof(TEnum).Name} value: '{symbol.Value}'.");
+                }
                 var expr = ScriptExpressions[handle.Index];
                 expr.StringAddress = CompileStringAddress(symbol.Value);
-                Array.Copy(BitConverter.GetBytes(Convert.ToInt16(value)), expr.Data, 2);
+                Array.Copy(BitConverter.GetBytes(value), expr.Data, 2);
             }
             return handle;
         }
@@ -2511,9 +2537,6 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileCutsceneRecordingExpression(ScriptString cutsceneRecordingString) =>
-            throw new ScriptCompilerException(cutsceneRecordingString.Line, $"The type 'CutsceneRecording' is not yet supported by the compiler.");
-
         private DatumHandle CompileAiExpression(ScriptString aiString, HsType emitType = HsType.Ai)
         {
             // The expression ValueType reflects the slot context (e.g. Object, Unit) so the
@@ -2677,12 +2700,6 @@ namespace TagTool.Scripting.Compiler
             return handle;
         }
 
-        private DatumHandle CompileAiBehaviorExpression(ScriptString aiBehaviorString) =>
-            throw new ScriptCompilerException(aiBehaviorString.Line, $"The type 'AiBehavior' is not yet supported by the compiler.");
-
-        private DatumHandle CompileAiOrdersExpression(ScriptString aiOrdersString) =>
-            throw new ScriptCompilerException(aiOrdersString.Line, $"The type 'AiOrders' is not yet supported by the compiler.");
-
         private DatumHandle CompileAiLineExpression(ScriptString aiLineString)
         {
             var handle = AllocateExpression(HsType.AiLine, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)aiLineString.Line);
@@ -2730,9 +2747,6 @@ namespace TagTool.Scripting.Compiler
 
             return handle;
         }
-
-        private DatumHandle CompileConversationExpression(ScriptString conversationString) =>
-            throw new ScriptCompilerException(conversationString.Line, $"The type 'Conversation' is not yet supported by the compiler.");
 
         private DatumHandle CompilePointReferenceExpression(ScriptString pointReferenceString)
         {
@@ -2888,37 +2902,6 @@ namespace TagTool.Scripting.Compiler
             }
             return handle;
         }
-
-        private DatumHandle CompileSkullExpression<TEnum>(HsType type, ScriptSymbol symbol, string label) where TEnum : struct, Enum
-        {
-            var handle = AllocateExpression(type, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)symbol.Line);
-            if (handle != DatumHandle.None)
-            {
-                short skullIndex;
-                if (short.TryParse(symbol.Value, out var rawIndex))
-                {
-                    var maxIndex = (short)(Enum.GetValues(typeof(TEnum)).Length - 1);
-                    if (rawIndex < 0 || rawIndex > maxIndex)
-                        throw new ScriptCompilerException(symbol.Line, $"{label} skull index {rawIndex} is out of range (0-{maxIndex}).");
-                    skullIndex = rawIndex;
-                }
-                else if (Enum.TryParse<TEnum>(symbol.Value, true, out var skull))
-                {
-                    skullIndex = Convert.ToInt16(skull);
-                }
-                else
-                {
-                    throw new ScriptCompilerException(symbol.Line, $"Unknown {label.ToLower()} skull '{symbol.Value}'. Use the enum name or a numeric index.");
-                }
-                var expr = ScriptExpressions[handle.Index];
-                expr.StringAddress = CompileStringAddress(symbol.Value);
-                Array.Copy(BitConverter.GetBytes(skullIndex), expr.Data, 2);
-            }
-            return handle;
-        }
-
-        private DatumHandle CompilePlayerColorExpression(ScriptSymbol playerColorSymbol) =>
-            throw new ScriptCompilerException(playerColorSymbol.Line, $"The type 'PlayerColor' is not yet supported by the compiler.");
 
         private DatumHandle CompileObjectExpression(ScriptString objectString)
         {
