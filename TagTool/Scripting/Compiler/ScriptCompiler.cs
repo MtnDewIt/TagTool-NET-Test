@@ -806,28 +806,28 @@ namespace TagTool.Scripting.Compiler
                 case HsType.TriggerVolume:
                     if (node is ScriptString triggerVolumeString)
                         return CompileScenarioIndexExpression(HsType.TriggerVolume, triggerVolumeString,
-                            name => Definition.TriggerVolumes.FindIndex(tv => name == Cache.StringTable.GetString(tv.Name)), 2);
+                            name => Definition.TriggerVolumes.FindIndex(tv => string.Equals(name, Cache.StringTable.GetString(tv.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else if (node is ScriptSymbol triggerVolumeSymbolString)
                         return CompileScenarioIndexExpression(HsType.TriggerVolume, new ScriptString { Value = triggerVolumeSymbolString.Value },
-                            name => Definition.TriggerVolumes.FindIndex(tv => name == Cache.StringTable.GetString(tv.Name)), 2);
+                            name => Definition.TriggerVolumes.FindIndex(tv => string.Equals(name, Cache.StringTable.GetString(tv.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneFlag:
                     if (node is ScriptSymbol cutsceneFlagNoneSymbol && cutsceneFlagNoneSymbol.Value == "none")
                         return CompileScenarioIndexExpression(HsType.CutsceneFlag, new ScriptString { Value = "none" },
-                            name => Definition.CutsceneFlags.FindIndex(cf => name == Cache.StringTable.GetString(cf.Name)), 2);
+                            name => Definition.CutsceneFlags.FindIndex(cf => string.Equals(name, Cache.StringTable.GetString(cf.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else if (node is ScriptString cutsceneFlagString)
                         return CompileScenarioIndexExpression(HsType.CutsceneFlag, cutsceneFlagString,
-                            name => Definition.CutsceneFlags.FindIndex(cf => name == Cache.StringTable.GetString(cf.Name)), 2);
+                            name => Definition.CutsceneFlags.FindIndex(cf => string.Equals(name, Cache.StringTable.GetString(cf.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneCameraPoint:
                     if (node is ScriptSymbol cutsceneCameraPointNoneSymbol && cutsceneCameraPointNoneSymbol.Value == "none")
                         return CompileScenarioIndexExpression(HsType.CutsceneCameraPoint, new ScriptString { Value = "none" },
-                            name => Definition.CutsceneCameraPoints.FindIndex(ccp => name == ccp.Name), 2);
+                            name => Definition.CutsceneCameraPoints.FindIndex(ccp => string.Equals(name, ccp.Name, StringComparison.OrdinalIgnoreCase)), 2);
                     else if (node is ScriptString cutsceneCameraPointString)
                         return CompileScenarioIndexExpression(HsType.CutsceneCameraPoint, cutsceneCameraPointString,
-                            name => Definition.CutsceneCameraPoints.FindIndex(ccp => name == ccp.Name), 2);
+                            name => Definition.CutsceneCameraPoints.FindIndex(ccp => string.Equals(name, ccp.Name, StringComparison.OrdinalIgnoreCase)), 2);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.CutsceneTitle:
@@ -841,10 +841,10 @@ namespace TagTool.Scripting.Compiler
                 case HsType.DeviceGroup:
                     if (node is ScriptSymbol deviceGroupNoneSymbol && deviceGroupNoneSymbol.Value == "none")
                         return CompileScenarioIndexExpression(HsType.DeviceGroup, new ScriptString { Value = "none" },
-                            name => Definition.DeviceGroups.FindIndex(dg => dg.Name == name), 4);
+                            name => Definition.DeviceGroups.FindIndex(dg => string.Equals(dg.Name, name, StringComparison.OrdinalIgnoreCase)), 4);
                     else if (node is ScriptString deviceGroupString)
                         return CompileScenarioIndexExpression(HsType.DeviceGroup, deviceGroupString,
-                            name => Definition.DeviceGroups.FindIndex(dg => dg.Name == name), 4);
+                            name => Definition.DeviceGroups.FindIndex(dg => string.Equals(dg.Name, name, StringComparison.OrdinalIgnoreCase)), 4);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.Ai:
@@ -890,19 +890,19 @@ namespace TagTool.Scripting.Compiler
                 case HsType.ZoneSet:
                     if (node is ScriptSymbol zoneSetNoneSymbol && zoneSetNoneSymbol.Value == "none")
                         return CompileScenarioIndexExpression(HsType.ZoneSet, new ScriptString { Value = "none" },
-                            name => Definition.ZoneSets.FindIndex(zs => name == Cache.StringTable.GetString(zs.Name)), 2);
+                            name => Definition.ZoneSets.FindIndex(zs => string.Equals(name, Cache.StringTable.GetString(zs.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else if (node is ScriptString zoneSetString)
                         return CompileScenarioIndexExpression(HsType.ZoneSet, zoneSetString,
-                            name => Definition.ZoneSets.FindIndex(zs => name == Cache.StringTable.GetString(zs.Name)), 2);
+                            name => Definition.ZoneSets.FindIndex(zs => string.Equals(name, Cache.StringTable.GetString(zs.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.DesignerZone:
                     if (node is ScriptSymbol designerZoneNoneSymbol && designerZoneNoneSymbol.Value == "none")
                         return CompileScenarioIndexExpression(HsType.ZoneSet, new ScriptString { Value = "none" },
-                            name => Definition.DesignerZoneSets.FindIndex(dz => name == Cache.StringTable.GetString(dz.Name)), 2);
+                            name => Definition.DesignerZoneSets.FindIndex(dz => string.Equals(name, Cache.StringTable.GetString(dz.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else if (node is ScriptString designerZoneString)
                         return CompileScenarioIndexExpression(HsType.ZoneSet, designerZoneString,
-                            name => Definition.DesignerZoneSets.FindIndex(dz => name == Cache.StringTable.GetString(dz.Name)), 2);
+                            name => Definition.DesignerZoneSets.FindIndex(dz => string.Equals(name, Cache.StringTable.GetString(dz.Name), StringComparison.OrdinalIgnoreCase)), 2);
                     else throw new ScriptCompilerException((node as IScriptSyntax)?.Line ?? 0, $"Unexpected expression \'{node}\'.");
 
                 case HsType.PointReference:
@@ -2516,7 +2516,7 @@ namespace TagTool.Scripting.Compiler
                 }
                 else
                 {
-                    var cutsceneTitleIndex = Definition.CutsceneTitles.FindIndex(ct => cutsceneTitleSymbol.Value == Cache.StringTable.GetString(ct.Name));
+                    var cutsceneTitleIndex = Definition.CutsceneTitles.FindIndex(ct => string.Equals(cutsceneTitleSymbol.Value, Cache.StringTable.GetString(ct.Name), StringComparison.OrdinalIgnoreCase));
                     if (cutsceneTitleIndex == -1)
                         throw new ScriptCompilerException(cutsceneTitleSymbol.Line, $"Value not found or invalid: '{(cutsceneTitleSymbol.Value)}'.");
                     expr.StringAddress = CompileStringAddress(cutsceneTitleSymbol.Value);
@@ -2556,7 +2556,7 @@ namespace TagTool.Scripting.Compiler
                             // type 1: squad
                             //
 
-                            var squadIndex = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
+                            var squadIndex = Definition.Squads.FindIndex(s => string.Equals(s.Name, tokens[0], StringComparison.OrdinalIgnoreCase));
 
                             if (squadIndex != -1)
                             {
@@ -2568,7 +2568,7 @@ namespace TagTool.Scripting.Compiler
                             // type 2: squad group
                             //
 
-                            var squadGroupIndex = Definition.SquadGroups.FindIndex(sg => sg.Name == tokens[0]);
+                            var squadGroupIndex = Definition.SquadGroups.FindIndex(sg => string.Equals(sg.Name, tokens[0], StringComparison.OrdinalIgnoreCase));
 
                             if (squadGroupIndex != -1)
                             {
@@ -2585,7 +2585,7 @@ namespace TagTool.Scripting.Compiler
                             // type 6: objective (without task)
                             //
 
-                            var objectiveIndex = Definition.AiObjectives.FindIndex(o => tokens[0] == Cache.StringTable.GetString(o.Name));
+                            var objectiveIndex = Definition.AiObjectives.FindIndex(o => string.Equals(tokens[0], Cache.StringTable.GetString(o.Name), StringComparison.OrdinalIgnoreCase));
 
                             if (objectiveIndex != -1)
                             {
@@ -2598,7 +2598,7 @@ namespace TagTool.Scripting.Compiler
 
                     case 2:
                         {
-                            var squadIndex = Definition.Squads.FindIndex(s => s.Name == tokens[0]);
+                            var squadIndex = Definition.Squads.FindIndex(s => string.Equals(s.Name, tokens[0], StringComparison.OrdinalIgnoreCase));
 
                             if (squadIndex != -1)
                             {
@@ -2608,7 +2608,7 @@ namespace TagTool.Scripting.Compiler
                                 // type 4: spawn point
                                 //
 
-                                var spawnPointIndex = squad.SpawnPoints.FindIndex(sp => tokens[1] == Cache.StringTable.GetString(sp.Name));
+                                var spawnPointIndex = squad.SpawnPoints.FindIndex(sp => string.Equals(tokens[1], Cache.StringTable.GetString(sp.Name), StringComparison.OrdinalIgnoreCase));
 
                                 if (spawnPointIndex != -1)
                                 {
@@ -2620,7 +2620,7 @@ namespace TagTool.Scripting.Compiler
                                 // type 5: spawn formation
                                 //
 
-                                var spawnFormationIndex = squad.SpawnFormations.FindIndex(sf => tokens[1] == Cache.StringTable.GetString(sf.Name));
+                                var spawnFormationIndex = squad.SpawnFormations.FindIndex(sf => string.Equals(tokens[1], Cache.StringTable.GetString(sf.Name), StringComparison.OrdinalIgnoreCase));
 
                                 if (spawnFormationIndex != -1)
                                 {
@@ -2635,11 +2635,11 @@ namespace TagTool.Scripting.Compiler
                             // type 6: objective task
                             //
 
-                            var objectiveIndex = Definition.AiObjectives.FindIndex(o => tokens[0] == Cache.StringTable.GetString(o.Name));
+                            var objectiveIndex = Definition.AiObjectives.FindIndex(o => string.Equals(tokens[0], Cache.StringTable.GetString(o.Name), StringComparison.OrdinalIgnoreCase));
 
                             if (objectiveIndex != -1)
                             {
-                                var taskIndex = Definition.AiObjectives[objectiveIndex].Tasks.FindIndex(t => tokens[1] == Cache.StringTable.GetString(t.Name));
+                                var taskIndex = Definition.AiObjectives[objectiveIndex].Tasks.FindIndex(t => string.Equals(tokens[1], Cache.StringTable.GetString(t.Name), StringComparison.OrdinalIgnoreCase));
 
                                 if (taskIndex != -1)
                                 {
@@ -2673,7 +2673,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 var scriptIndex = Scripts.FindIndex(s =>
-                    s.ScriptName == aiCommandScriptSymbol.Value &&
+                    string.Equals(s.ScriptName, aiCommandScriptSymbol.Value, StringComparison.OrdinalIgnoreCase) &&
                     s.Type == HsScriptType.Command_Script);
 
                 if (scriptIndex == -1)
@@ -2724,7 +2724,7 @@ namespace TagTool.Scripting.Compiler
                 }
                 else
                 {
-                    var startingProfileIndex = Definition.PlayerStartingProfile.FindIndex(sp => sp.Name == startingProfileString.Value);
+                    var startingProfileIndex = Definition.PlayerStartingProfile.FindIndex(sp => string.Equals(sp.Name, startingProfileString.Value, StringComparison.OrdinalIgnoreCase));
                     if (startingProfileIndex == -1)
                         throw new ScriptCompilerException(startingProfileString.Line, $"No starting profile named '{startingProfileString.Value}' found in the scenario.");
                     expr.StringAddress = CompileStringAddress(startingProfileString.Value);
@@ -2752,7 +2752,7 @@ namespace TagTool.Scripting.Compiler
                     var tokens = pointReferenceString.Value.Split('/');
                     if (tokens.Length == 1)
                     {
-                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
+                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => string.Equals(ps.Name, tokens[0], StringComparison.OrdinalIgnoreCase));
                         if (pointSetIndex == -1)
                             throw new ScriptCompilerException(pointReferenceString.Line, $"No point set named '{pointReferenceString.Value}' found.");
                         expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
@@ -2760,10 +2760,10 @@ namespace TagTool.Scripting.Compiler
                     }
                     else if (tokens.Length == 2)
                     {
-                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => ps.Name == tokens[0]);
+                        var pointSetIndex = Definition.ScriptingData[0].PointSets.FindIndex(ps => string.Equals(ps.Name, tokens[0], StringComparison.OrdinalIgnoreCase));
                         if (pointSetIndex == -1)
                             throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
-                        var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => p.Name == tokens[1]);
+                        var pointIndex = Definition.ScriptingData[0].PointSets[pointSetIndex].Points.FindIndex(p => string.Equals(p.Name, tokens[1], StringComparison.OrdinalIgnoreCase));
                         if (pointIndex == -1)
                             throw new ScriptCompilerException(pointReferenceString.Line, $"No point reference named '{pointReferenceString.Value}' found. Expected format: 'point_set/point_name'.");
                         expr.StringAddress = CompileStringAddress(pointReferenceString.Value);
@@ -2814,7 +2814,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 var objectIndex = objectListString.Value == "none" ? -1 :
-                    Definition.ObjectNames.FindIndex(on => on.Name == objectListString.Value);
+                    Definition.ObjectNames.FindIndex(on => string.Equals(on.Name, objectListString.Value, StringComparison.OrdinalIgnoreCase));
 
                 if (objectListString.Value != "none" && objectIndex == -1)
                     return CompileAiExpression(objectListString, HsType.ObjectList);
@@ -2833,7 +2833,7 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var folderIndex = folderString.Value == "none" ? -1 : Definition.EditorFolders.FindIndex(ef => ef.Name == folderString.Value);
+                var folderIndex = folderString.Value == "none" ? -1 : Definition.EditorFolders.FindIndex(ef => string.Equals(ef.Name, folderString.Value, StringComparison.OrdinalIgnoreCase));
 
                 if (folderString.Value != "none" && folderIndex == -1)
                     throw new ScriptCompilerException(folderString.Line, $"Value not found or invalid: '{(folderString.Value)}'.");
@@ -2899,7 +2899,7 @@ namespace TagTool.Scripting.Compiler
             if (handle != DatumHandle.None)
             {
                 var index = objectString.Value == "none" ? -1 :
-                    Definition.ObjectNames.FindIndex(on => on.Name == objectString.Value);
+                    Definition.ObjectNames.FindIndex(on => string.Equals(on.Name, objectString.Value, StringComparison.OrdinalIgnoreCase));
 
                 if (objectString.Value != "none" && index == -1)
                     return CompileAiExpression(objectString, hsType);
@@ -2918,7 +2918,7 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var objectNameIndex = Definition.ObjectNames.FindIndex(on => on.Name == objectNameString.Value);
+                var objectNameIndex = Definition.ObjectNames.FindIndex(on => string.Equals(on.Name, objectNameString.Value, StringComparison.OrdinalIgnoreCase));
 
                 if (objectNameIndex == -1)
                     throw new ScriptCompilerException(objectNameString.Line, $"No object named '{objectNameString.Value}' found in the scenario.");
@@ -2940,7 +2940,7 @@ namespace TagTool.Scripting.Compiler
 
             if (handle != DatumHandle.None)
             {
-                var cinematicLightprobeIndex = Definition.CinematicLighting.FindIndex(cl => cinematicLightprobeSymbol.Value == Cache.StringTable.GetString(cl.Name));
+                var cinematicLightprobeIndex = Definition.CinematicLighting.FindIndex(cl => string.Equals(cinematicLightprobeSymbol.Value, Cache.StringTable.GetString(cl.Name), StringComparison.OrdinalIgnoreCase));
 
                 if (cinematicLightprobeIndex == -1)
                     throw new ScriptCompilerException(cinematicLightprobeSymbol.Line, $"Value not found or invalid: '{(cinematicLightprobeSymbol.Value)}'.");
