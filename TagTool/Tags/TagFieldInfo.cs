@@ -334,14 +334,14 @@ namespace TagTool.Tags
 				case TypeCode.Double:
 				case TypeCode.Int64:
 				case TypeCode.UInt64:
-				case TypeCode.Object when type == typeof(CachedTag) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC) && targetVersion != CacheVersion.Halo2Alpha:
-				case TypeCode.Object when attr.Length == 0 && type == typeof(byte[]) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Beta, CacheVersion.Halo2PC):
+				case TypeCode.Object when type == typeof(CachedTag) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
+				case TypeCode.Object when attr.Length == 0 && type == typeof(byte[]) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
 				case TypeCode.Object when type == typeof(Rectangle2d):
                 case TypeCode.Object when type == typeof(RealEulerAngles2d):
 				case TypeCode.Object when type == typeof(RealPoint2d):
 				case TypeCode.Object when type == typeof(RealVector2d):
-				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Beta, CacheVersion.Halo2PC):
-				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagBlock<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Beta, CacheVersion.Halo2PC):
+				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
+				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagBlock<>) && targetVersion != CacheVersion.Unknown && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo2Alpha, CacheVersion.Halo2PC):
 				case TypeCode.Object when type == typeof(PlatformUnsignedValue) && CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._64Bit:
 				case TypeCode.Object when type == typeof(PlatformSignedValue) && CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._64Bit:
 					return 0x08;
@@ -351,9 +351,7 @@ namespace TagTool.Tags
 				case TypeCode.Object when type == typeof(RealPoint3d):
 				case TypeCode.Object when type == typeof(RealVector3d):
 				case TypeCode.Object when type == typeof(RealPlane2d):
-                case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && targetVersion != CacheVersion.Unknown && targetVersion == CacheVersion.Halo2Alpha:
-                case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagBlock<>) && targetVersion != CacheVersion.Unknown && targetVersion == CacheVersion.Halo2Alpha:
-                case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo3Beta, CacheVersion.Unknown):
+				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo3Beta, CacheVersion.Unknown):
 				case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagBlock<>) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo3Beta, CacheVersion.Unknown):
                 case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.HaloXbox, CacheVersion.HaloCustomEdition):
                 case TypeCode.Object when type.IsGenericType && type.GetGenericTypeDefinition() == typeof(TagBlock<>) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.HaloXbox, CacheVersion.HaloCustomEdition):
@@ -361,8 +359,7 @@ namespace TagTool.Tags
 					return 0x0C;
 
 				case TypeCode.Decimal:
-                case TypeCode.Object when type == typeof(CachedTag) && targetVersion == CacheVersion.Halo2Alpha:
-                case TypeCode.Object when type == typeof(CachedTag) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo3Beta, CacheVersion.Unknown):
+				case TypeCode.Object when type == typeof(CachedTag) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo3Beta, CacheVersion.Unknown):
                 case TypeCode.Object when type == typeof(CachedTag) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.HaloXbox, CacheVersion.HaloCustomEdition):
                 case TypeCode.Object when type == typeof(RealArgbColor):
 				case TypeCode.Object when type == typeof(RealRgbaColor):
@@ -371,8 +368,7 @@ namespace TagTool.Tags
 				case TypeCode.Object when type == typeof(RealPlane3d):
 					return 0x10;
 
-                case TypeCode.Object when attr.Length == 0 && type == typeof(byte[]) && targetVersion != CacheVersion.Unknown && targetVersion == CacheVersion.Halo2Alpha:
-                case TypeCode.Object when attr.Length == 0 && type == typeof(byte[]) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo3Beta, CacheVersion.Unknown):
+				case TypeCode.Object when attr.Length == 0 && type == typeof(byte[]) && CacheVersionDetection.IsBetween(targetVersion, CacheVersion.Halo3Beta, CacheVersion.Unknown):
 				case TypeCode.Object when type == typeof(TagData):
 					return 0x14;
 
