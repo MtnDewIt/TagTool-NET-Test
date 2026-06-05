@@ -2654,11 +2654,22 @@ namespace TagTool.Scripting.Compiler
                 }
                 else
                 {
-                    if (!Cache.TagCache.TryGetTag(tagString.Value, out var instance))
+                    var tagName = tagString.Value;
+                    var dotIndex = tagName.LastIndexOf('.');
+                    if (dotIndex < 0)
+                        throw new ScriptCompilerException(tagString.Line, $"Tag reference '{tagString.Value}' is missing the group extension (e.g. '{tagString.Value}.weapon').");
+
+                    var nameWithoutExtension = tagName.Substring(0, dotIndex);
+                    var extension = tagName.Substring(dotIndex + 1);
+
+                    var instance = Cache.TagCache.TagTable.FirstOrDefault(t =>
+                        t != null && t.Name == nameWithoutExtension &&
+                        (t.Group.ToString() == extension || t.Group.Tag.ToString() == extension) &&
+                        (groupFilter == null || t.IsInGroup(groupFilter)));
+
+                    if (instance == null)
                         throw new ScriptCompilerException(tagString.Line, $"Value not found or invalid: '{tagString.Value}'.");
-                    if (groupFilter != null && !instance.IsInGroup(groupFilter))
-                        throw new ScriptCompilerException(tagString.Line, $"Value not found or invalid: '{tagString.Value}'.");
-                    WriteTagToSourceFileReferences(new ScriptString { Value = tagString.Value + "." + instance.Group.ToString() });
+                    WriteTagToSourceFileReferences(new ScriptString { Value = instance.Name + "." + instance.Group.ToString() });
                     expr.StringAddress = CompileStringAddress(tagString.Value);
                     Array.Copy(BitConverter.GetBytes(instance.Index), expr.Data, 4);
                 }
