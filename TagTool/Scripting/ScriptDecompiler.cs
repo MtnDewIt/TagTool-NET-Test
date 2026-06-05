@@ -349,8 +349,10 @@ namespace TagTool.Scripting
                 case "StringId":
                 case "AiLine":
                     var stringIdVal = BitConverter.ToUInt32(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
-                    if (stringIdVal == 0)
+                    if (stringIdVal == 0xFFFFFFFF)
                         result.Name = "none";
+                    else if (stringIdVal == 0)
+                        result.Name = "\"\"";
                     else
                     {
                         var resolvedStr = Cache.StringTable.GetString(new StringId(stringIdVal));

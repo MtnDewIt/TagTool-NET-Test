@@ -2282,7 +2282,7 @@ namespace TagTool.Scripting.Compiler
                 if (stringIdString.Value == "none")
                 {
                     expr.StringAddress = 0;
-                    Array.Copy(BitConverter.GetBytes(0u), expr.Data, 4);
+                    Array.Copy(BitConverter.GetBytes(0xFFFFFFFFu), expr.Data, 4);
                 }
                 else
                 {
