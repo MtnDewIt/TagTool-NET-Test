@@ -28,7 +28,7 @@ namespace TagTool.Scripting
             scriptStringReader = new BinaryReader(scriptStringStream);
         }
 
-        public void DecompileScripts(TextWriter scriptWriter)
+        public void DecompileScripts(TextWriter scriptWriter, string startScriptName = null)
         {
             if (Cache.Version >= CacheVersion.HaloReach)
             {
@@ -38,6 +38,16 @@ namespace TagTool.Scripting
 
             ParseScripts();
 
+            HashSet<string> scriptFilter = null;
+            HashSet<string> globalFilter = null;
+
+            if (startScriptName != null)
+            {
+                scriptFilter = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                globalFilter = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                CollectDependencies(startScriptName, scriptFilter, globalFilter);
+            }
+
             using (var indentWriter = new IndentedTextWriter(scriptWriter, "	"))
             {
                 indentWriter.Indent = 0;
@@ -46,10 +56,19 @@ namespace TagTool.Scripting
                 // Export scenario script globals
                 //
 
-                indentWriter.WriteLine("; Globals");
+                bool firstGlobal = true;
                 for (var g = 0; g < Definition.Globals.Count; g++)
                 {
                     var scriptGlobal = Definition.Globals[g];
+                    if (globalFilter != null && !globalFilter.Contains(scriptGlobal.Name))
+                        continue;
+
+                    if (firstGlobal)
+                    {
+                        indentWriter.WriteLine("; Globals");
+                        firstGlobal = false;
+                    }
+
                     indentWriter.Write($"(global {GetHsTypeAsString(Cache.Version, scriptGlobal.Type).ToLower()} {scriptGlobal.Name} ");
 
                     WriteExpression(Globals[g], indentWriter);
@@ -57,18 +76,27 @@ namespace TagTool.Scripting
                     indentWriter.WriteLine(')');
                 }
 
-                indentWriter.WriteLine();
+                if (!firstGlobal)
+                    indentWriter.WriteLine();
 
                 //
                 // Export Externals
                 //
 
-                indentWriter.WriteLine("; Externs");
+                bool firstExtern = true;
                 for (var s = 0; s < Definition.Scripts.Count; s++)
                 {
                     var script = Definition.Scripts[s];
                     if (script.Type != HsScriptType.Extern)
                         continue;
+                    if (scriptFilter != null && !scriptFilter.Contains(script.ScriptName))
+                        continue;
+
+                    if (firstExtern)
+                    {
+                        indentWriter.WriteLine("; Externs");
+                        firstExtern = false;
+                    }
 
                     indentWriter.Write($"(script {script.Type.ToString().ToLower()} {GetHsTypeAsString(Cache.Version, script.ReturnType).ToLower()} ");
 
@@ -94,18 +122,27 @@ namespace TagTool.Scripting
                     indentWriter.WriteLine(')');
                 }
 
-                indentWriter.WriteLine();
+                if (!firstExtern)
+                    indentWriter.WriteLine();
 
                 //
                 // Export scenario scripts
                 //
 
-                indentWriter.WriteLine("; Scripts");
+                bool firstScript = true;
                 for (var s = 0; s < Definition.Scripts.Count; s++)
                 {
                     var script = Definition.Scripts[s];
                     if (script.Type == HsScriptType.Extern)
                         continue;
+                    if (scriptFilter != null && !scriptFilter.Contains(script.ScriptName))
+                        continue;
+
+                    if (firstScript)
+                    {
+                        indentWriter.WriteLine("; Scripts");
+                        firstScript = false;
+                    }
 
                     indentWriter.Write($"(script {script.Type.ToString().ToLower()} {GetHsTypeAsString(Cache.Version, script.ReturnType).ToLower()} ");
 
@@ -132,6 +169,57 @@ namespace TagTool.Scripting
                     indentWriter.WriteLine();
                 }
             }
+        }
+
+        private void CollectDependencies(string scriptName, HashSet<string> scriptFilter, HashSet<string> globalFilter)
+        {
+            var scriptIndex = Definition.Scripts.FindIndex(s => string.Equals(s.ScriptName, scriptName, StringComparison.OrdinalIgnoreCase));
+            if (scriptIndex < 0)
+                throw new Exception($"Script '{scriptName}' not found in the scenario.");
+
+            var queue = new Queue<int>();
+            queue.Enqueue(scriptIndex);
+            scriptFilter.Add(Definition.Scripts[scriptIndex].ScriptName);
+
+            while (queue.Count > 0)
+            {
+                var idx = queue.Dequeue();
+                WalkExpression(Scripts[idx], scriptFilter, globalFilter, queue);
+            }
+        }
+
+        private void WalkExpression(GenericExpression expr, HashSet<string> scriptFilter, HashSet<string> globalFilter, Queue<int> scriptQueue)
+        {
+            if (expr.Type == GenericExpression.ExpressionType.ScriptReference)
+            {
+                if (!scriptFilter.Contains(expr.Name))
+                {
+                    var idx = Definition.Scripts.FindIndex(s => string.Equals(s.ScriptName, expr.Name, StringComparison.OrdinalIgnoreCase));
+                    if (idx >= 0)
+                    {
+                        scriptFilter.Add(Definition.Scripts[idx].ScriptName);
+                        scriptQueue.Enqueue(idx);
+                    }
+                }
+                return;
+            }
+
+            if (expr.Type == GenericExpression.ExpressionType.Value && !string.IsNullOrEmpty(expr.Name))
+            {
+                var scriptIdx = Definition.Scripts.FindIndex(s => string.Equals(s.ScriptName, expr.Name, StringComparison.OrdinalIgnoreCase));
+                if (scriptIdx >= 0 && !scriptFilter.Contains(Definition.Scripts[scriptIdx].ScriptName))
+                {
+                    scriptFilter.Add(Definition.Scripts[scriptIdx].ScriptName);
+                    scriptQueue.Enqueue(scriptIdx);
+                }
+
+                var globalIdx = Definition.Globals.FindIndex(g => string.Equals(g.Name, expr.Name, StringComparison.OrdinalIgnoreCase));
+                if (globalIdx >= 0)
+                    globalFilter.Add(Definition.Globals[globalIdx].Name);
+            }
+
+            foreach (var child in expr.ChildExpressions)
+                WalkExpression(child, scriptFilter, globalFilter, scriptQueue);
         }
 
         private void ParseScripts()
@@ -478,6 +566,8 @@ namespace TagTool.Scripting
                     break;
                 case HsSyntaxNodeFlags.ExternReference:
                     result.Type = GenericExpression.ExpressionType.ScriptReference;
+                    if (expr.LineNumber >= 0 && expr.LineNumber < Definition.Scripts.Count)
+                        result.Name = Definition.Scripts[expr.LineNumber].ScriptName;
                     break;
                 case HsSyntaxNodeFlags.ScriptReference:
                     result.Type = GenericExpression.ExpressionType.ScriptReference;
