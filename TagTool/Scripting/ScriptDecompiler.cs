@@ -342,8 +342,7 @@ namespace TagTool.Scripting
                 // --- Quoted types ---
                 case "String":
                 case "UnitSeatMapping":
-                    var strVal = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
-                    result.Name = strVal == "none" ? "none" : $"\"{strVal}\"";
+                    result.Name = $"\"{ReadScriptString(scriptStringReader, expr.StringAddress)}\"";
                     break;
 
                 case "StringId":
