@@ -748,6 +748,13 @@ namespace TagTool.Scripting.Compiler
             switch (type)
             {
                 case HsType.Unparsed:
+                    if (node is ScriptSymbol)
+                    {
+                        var unparsedHandle = AllocateExpression(HsType.Unparsed, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)((ScriptSymbol)node).Line);
+                        if (unparsedHandle != DatumHandle.None)
+                            ScriptExpressions[unparsedHandle.Index].StringAddress = CompileStringAddress(((ScriptSymbol)node).Value);
+                        return unparsedHandle;
+                    }
                     switch (node)
                     {
                         case ScriptBoolean unparsedBoolean:
@@ -761,7 +768,10 @@ namespace TagTool.Scripting.Compiler
                         case ScriptString unparsedString:
                             return CompileStringExpression(unparsedString);
                     }
-                    goto default;
+                    {
+                        var unparsedHandle = AllocateExpression(HsType.Unparsed, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, line: (short)((node as IScriptSyntax)?.Line ?? 0));
+                        return unparsedHandle;
+                    }
 
                 case HsType.Boolean:
                     if (node is ScriptBoolean boolValue)
@@ -1608,6 +1618,58 @@ namespace TagTool.Scripting.Compiler
 
                 case "=":
                 case "!=":
+                    {
+                        var builtin = Cache.ScriptDefinitions.Scripts.First(x => x.Value.Name == functionNameSymbol.Value);
+
+                        var handle = AllocateExpression(builtin.Value.Type, HsSyntaxNodeFlags.Group, (ushort)builtin.Key, (short)group.Line);
+                        var expr = ScriptExpressions[handle.Index];
+
+                        var functionNameHandle = AllocateExpression(HsType.FunctionName, HsSyntaxNodeFlags.Primitive | HsSyntaxNodeFlags.DoNotGC, (ushort)builtin.Key, (short)functionNameSymbol.Line);
+                        var functionNameExpr = ScriptExpressions[functionNameHandle.Index];
+                        functionNameExpr.StringAddress = CompileStringAddress(functionNameSymbol.Value);
+
+                        Array.Copy(BitConverter.GetBytes(functionNameHandle.Value), expr.Data, 4);
+                        Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
+
+                        if (!(group.Tail is ScriptGroup tailGroup))
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near '{group}'.");
+
+                        if (!(tailGroup.Tail is ScriptGroup tailTailGroup) || !(tailTailGroup.Tail is ScriptInvalid))
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near '{group}'.");
+
+                        // Three-tier fallback matching hs_parse_equality
+                        var firstArgHandle = CompileExpression(HsType.Unparsed, tailGroup.Head);
+                        var firstExpr = ScriptExpressions[firstArgHandle.Index];
+
+                        if (firstExpr.ValueType != HsType.Unparsed && firstExpr.ValueType != HsType.Invalid)
+                        {
+                            firstExpr.NextExpressionHandle = (tailTailGroup.Head is ScriptGroup)
+                                ? CompileExpression(HsType.Unparsed, tailTailGroup.Head)
+                                : CompileExpression(firstExpr.ValueType, tailTailGroup.Head);
+                        }
+                        else
+                        {
+                            var secondArgHandle = CompileExpression(HsType.Unparsed, tailTailGroup.Head);
+                            var secondExpr = ScriptExpressions[secondArgHandle.Index];
+
+                            if (secondExpr.ValueType != HsType.Unparsed && secondExpr.ValueType != HsType.Invalid)
+                            {
+                                firstArgHandle = CompileExpression(secondExpr.ValueType, tailGroup.Head);
+                                firstExpr = ScriptExpressions[firstArgHandle.Index];
+                                firstExpr.NextExpressionHandle = secondArgHandle;
+                            }
+                            else
+                            {
+                                firstArgHandle = CompileExpression(HsType.Real, tailGroup.Head);
+                                firstExpr = ScriptExpressions[firstArgHandle.Index];
+                                firstExpr.NextExpressionHandle = CompileExpression(HsType.Real, tailTailGroup.Head);
+                            }
+                        }
+
+                        functionNameExpr.NextExpressionHandle = firstArgHandle;
+                        return handle;
+                    }
+
                 case "<":
                 case ">":
                 case "<=":
@@ -1626,27 +1688,41 @@ namespace TagTool.Scripting.Compiler
                         Array.Copy(BitConverter.GetBytes(0), functionNameExpr.Data, 4);
 
                         if (!(group.Tail is ScriptGroup tailGroup))
-                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
-
-                        // Match hs_parse_equality: parse first arg as Unparsed so it resolves
-                        // to its own type. Bare literals have no type so fall back to Real,
-                        // matching the engine's own fallback path in hs_parse_equality.
-                        var firstArgType = (tailGroup.Head is ScriptInteger || tailGroup.Head is ScriptReal)
-                            ? HsType.Real
-                            : HsType.Unparsed;
-                        functionNameExpr.NextExpressionHandle = CompileExpression(firstArgType, tailGroup.Head);
-
-                        var firstExpr = ScriptExpressions[functionNameExpr.NextExpressionHandle.Index];
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near '{group}'.");
 
                         if (!(tailGroup.Tail is ScriptGroup tailTailGroup) || !(tailTailGroup.Tail is ScriptInvalid))
-                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near \'{group}\'.");
+                            throw new ScriptCompilerException(group.Line, $"Unexpected expression near '{group}'.");
 
-                        // Second arg matches first's resolved type. If first resolved to Unparsed
-                        // (e.g. a sub-expression group), compile second as Unparsed too.
-                        firstExpr.NextExpressionHandle = (tailTailGroup.Head is ScriptGroup)
-                            ? CompileExpression(HsType.Unparsed, tailTailGroup.Head)
-                            : CompileExpression(firstExpr.ValueType, tailTailGroup.Head);
+                        // Three-tier fallback matching hs_parse_inequality
+                        var firstArgHandle = CompileExpression(HsType.Unparsed, tailGroup.Head);
+                        var firstExpr = ScriptExpressions[firstArgHandle.Index];
 
+                        if (firstExpr.ValueType != HsType.Unparsed && firstExpr.ValueType != HsType.Invalid
+                            && IsNumericOrAllowedEnum(firstExpr.ValueType))
+                        {
+                            firstExpr.NextExpressionHandle = CompileExpression(firstExpr.ValueType, tailTailGroup.Head);
+                        }
+                        else
+                        {
+                            var secondArgHandle = CompileExpression(HsType.Unparsed, tailTailGroup.Head);
+                            var secondExpr = ScriptExpressions[secondArgHandle.Index];
+
+                            if (secondExpr.ValueType != HsType.Unparsed && secondExpr.ValueType != HsType.Invalid
+                                && IsNumericOrAllowedEnum(secondExpr.ValueType))
+                            {
+                                firstArgHandle = CompileExpression(secondExpr.ValueType, tailGroup.Head);
+                                firstExpr = ScriptExpressions[firstArgHandle.Index];
+                                firstExpr.NextExpressionHandle = secondArgHandle;
+                            }
+                            else
+                            {
+                                firstArgHandle = CompileExpression(HsType.Real, tailGroup.Head);
+                                firstExpr = ScriptExpressions[firstArgHandle.Index];
+                                firstExpr.NextExpressionHandle = CompileExpression(HsType.Real, tailTailGroup.Head);
+                            }
+                        }
+
+                        functionNameExpr.NextExpressionHandle = firstArgHandle;
                         return handle;
                     }
 
@@ -2024,6 +2100,17 @@ namespace TagTool.Scripting.Compiler
             Array.Copy(BitConverter.GetBytes(CurrentScript.Parameters.IndexOf(parameter)), expr.Data, 4);
 
             return handle;
+        }
+
+        private static bool IsNumericOrAllowedEnum(HsType type)
+        {
+            if (type == HsType.Unparsed || type == HsType.Invalid)
+                return false;
+            if (type >= HsType.Real && type <= HsType.Long)
+                return true;
+            if (type >= HsType.GameDifficulty && type <= HsType.SecondarySkull)
+                return true;
+            return false;
         }
 
         private DatumHandle CompileEnumExpression<TEnum>(HsType type, ScriptSymbol symbol) where TEnum : struct, Enum
