@@ -9,7 +9,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x354, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x358, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x394, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x394, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED_END, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x384, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline449175, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x390, MinVersion = CacheVersion.HaloOnline498295, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x2CC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
@@ -246,9 +246,9 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<WeaponScreenEffectBlock> ScreenEffects;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED_END)]
         public RealPoint3d CenteredFirstPersonWeaponOffset;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED_END)]
         public StringId WeaponTypeName;
 
         public enum SecondaryTriggerModeValue : short

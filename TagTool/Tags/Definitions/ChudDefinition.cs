@@ -1795,7 +1795,7 @@ namespace TagTool.Tags.Definitions
                 [TagField(Version = CacheVersion.Halo3ODST)]
                 public WidgetBitmapFlagsODST FlagsODST;
 
-                [TagField(Version = CacheVersion.HaloOnlineED)]
+                [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED_END)]
                 public WidgetBitmapFlagsHO Flags;
 
                 [TagField(MinVersion = CacheVersion.HaloReach)]
