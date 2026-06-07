@@ -408,11 +408,7 @@ namespace TagTool.Commands.Scenarios
                                },
                                ClusterMappings = new List<ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping>() {
                                    new ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping() {
-                                       Clusters = new List<ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping.ClusterReference>() {
-                                           new ZoneSetPvsBlock.BspPvsBlock.BspSeamClusterMapping.ClusterReference() {
-                                               ClusterIndex = 0
-                                           }
-                                       }
+                                       Clusters = [0]
                                    }
                                }
                            },
