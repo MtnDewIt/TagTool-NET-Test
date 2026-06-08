@@ -106,8 +106,7 @@ namespace TagTool.Tags.Definitions
 
         [TagStructure(Size = 0x84, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
         [TagStructure(Size = 0xAC, MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
-        [TagStructure(Size = 0x84, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3Retail)]
-        [TagStructure(Size = 0x8C, Platform = CachePlatform.MCC, Version = CacheVersion.Halo3ODST)]
+        [TagStructure(Size = 0x8C, Platform = CachePlatform.MCC, MaxVersion = CacheVersion.Halo3ODST)]
         [TagStructure(Size = 0xB4, Platform = CachePlatform.MCC, MinVersion = CacheVersion.HaloReach)]
         public class RenderMethodPostprocessBlock : TagStructure
         {
