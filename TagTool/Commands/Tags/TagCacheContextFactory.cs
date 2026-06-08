@@ -122,6 +122,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new NameShaderTagsCommand(hoCache));
 
                 context.AddCommand(new TagResourceReportCommand(hoCache));
+                context.AddCommand(new BitmapFormatsReportCommand(hoCache));
             }
 
             if(cache is GameCacheHaloOnline)
