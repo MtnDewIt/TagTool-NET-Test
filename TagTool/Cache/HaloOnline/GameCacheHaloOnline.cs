@@ -31,7 +31,7 @@ namespace TagTool.Cache.HaloOnline
                 FileShare.Read);
         }
 
-        public GameCacheHaloOnline(DirectoryInfo directory)
+        public GameCacheHaloOnline(DirectoryInfo directory, CacheVersion version = CacheVersion.HaloOnlineED)
         {
             Directory = directory;
             TagsFile = new FileInfo(Path.Combine(directory.FullName, "tags.dat"));
@@ -43,7 +43,7 @@ namespace TagTool.Cache.HaloOnline
             
             using (var tagsStream = OpenFileStream(TagsFile))
             {
-                FindVersion(new EndianReader(tagsStream));
+                FindVersion(new EndianReader(tagsStream), version);
 
                 using (var stream = StringIdCacheFile.Open(FileMode.OpenOrCreate))
                     StringTableHaloOnline = new StringTableHaloOnline(Version, stream);

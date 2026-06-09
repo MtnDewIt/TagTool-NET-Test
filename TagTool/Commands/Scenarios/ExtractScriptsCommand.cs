@@ -59,14 +59,19 @@ namespace TagTool.Commands.Scenarios
 
             if (outputPath != null)
             {
-                scriptFile = new FileInfo(outputPath);
-            }
-            else
-            {
-                if (Cache.Version == CacheVersion.HaloOnlineED)
-                    scriptFile = new FileInfo($"haloscript\\ED" + fileName);
-                else
-                    scriptFile = new FileInfo($"haloscript\\{Cache.Version}" + fileName);
+                case 0:
+                    {
+                        if (CacheVersionDetection.IsEldewrito(Cache.Version))
+                            scriptFile = new FileInfo($"haloscript\\ED" + fileName);
+                        else
+                            scriptFile = new FileInfo($"haloscript\\{Cache.Version}" + fileName);
+                    }
+                    break;
+                case 1:
+                    scriptFile = new FileInfo(args[0]);
+                    break;
+                default:
+                    return new TagToolError(CommandError.ArgCount);
             }
 
             System.IO.Directory.CreateDirectory("haloscript");

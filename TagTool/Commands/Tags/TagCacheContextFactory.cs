@@ -130,6 +130,8 @@ namespace TagTool.Commands.Tags
 
                 context.AddCommand(new EditMapCommand(contextStack, hoCache));
                 context.AddCommand(new ListMapsCommand(hoCache));
+
+                context.AddCommand(new BitmapFormatsReportCommand(hoCache));
             }
 
             if(cache is GameCacheHaloOnline)
