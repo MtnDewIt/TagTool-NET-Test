@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TagTool.Tags;
 
 namespace TagTool.Cache
@@ -20,21 +21,12 @@ namespace TagTool.Cache
             0x77, 0x24, 0x74, 0x66
         };
 
-        public static string GetCreator(byte[] author)
+        public bool IsInvalid() 
         {
-            char[] creatorString = new char[32];
-
-            author.CopyTo(creatorString, 0);
-
-            for (int i = 0; i < 32; i++)
-            {
-                creatorString[i] ^= (char)FileCreatorKey[i];
-            }
-
-            return new string(creatorString.Where(c => c != 0).ToArray());
+            return Array.TrueForAll(Data, b => b == 0);
         }
 
-        public static byte[] SetCreator(string author)
+        public void SetCreator(string author)
         {
             char[] creatorArray = new char[32];
 
@@ -43,12 +35,24 @@ namespace TagTool.Cache
             for (int i = 0; i < 32; i++)
                 creatorArray[i] ^= (char)FileCreatorKey[i];
 
-            byte[] authorBytes = new byte[32];
+            Data = new byte[32];
 
             for (int i = 0; i < 32; i++)
-                authorBytes[i] = (byte)creatorArray[i];
+                Data[i] = (byte)creatorArray[i];
+        }
 
-            return authorBytes;
+        public override string ToString()
+        {
+            char[] creatorString = new char[32];
+
+            Data.CopyTo(creatorString, 0);
+
+            for (int i = 0; i < 32; i++)
+            {
+                creatorString[i] ^= (char)FileCreatorKey[i];
+            }
+
+            return new string([.. creatorString.Where(c => c != 0)]);
         }
     }
 }

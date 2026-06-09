@@ -243,13 +243,13 @@ namespace TagTool.Commands.Editing
                     }
                     return Cache.StringTable.GetString(stringId);
                 case LastModificationDate lastModificationDate:
-                    return lastModificationDate == null || lastModificationDate.Low == 0 && lastModificationDate.High == 0 ? $@"null" : $"\"{lastModificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}\"";
+                    return lastModificationDate == null || lastModificationDate.IsInvalid() ? $@"null" : $"\"{lastModificationDate}\"";
                 case FileCreator fileCreator:
-                    return fileCreator == null || Array.TrueForAll(fileCreator.Data, b => b == 0) ? $@"null" : $"\"{FileCreator.GetCreator(fileCreator.Data)}\"";
+                    return fileCreator == null || fileCreator.IsInvalid() ? $@"null" : $"\"{fileCreator}\"";
                 case NetworkRequestHash networkRequestHash:
-                    return networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? $@"null" : $"{networkRequestHash.GetHash()}";
+                    return networkRequestHash == null || networkRequestHash.IsInvalid() ? $@"null" : $"{networkRequestHash}";
                 case RSASignature rsaSignature:
-                    return rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? $@"null" : $"{rsaSignature.GetSignature()}";
+                    return rsaSignature == null || rsaSignature.IsInvalid() ? $@"null" : $"{rsaSignature}";
                 default:
                     return $"{value}";
             }

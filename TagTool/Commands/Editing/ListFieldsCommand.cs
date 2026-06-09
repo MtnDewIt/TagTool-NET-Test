@@ -118,22 +118,22 @@ namespace TagTool.Commands.Editing
                 else if (fieldType == typeof(LastModificationDate))
                 {
                     var modificationDate = (LastModificationDate)fieldValue;
-                    valueString = modificationDate == null || modificationDate.Low == 0 && modificationDate.High == 0 ? "null" : $@"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+                    valueString = modificationDate == null || modificationDate.IsInvalid() ? "null" : $@"{modificationDate}";
                 }
                 else if (fieldType == typeof(FileCreator))
                 {
                     var creator = (FileCreator)fieldValue;
-                    valueString = creator == null || Array.TrueForAll(creator.Data, b => b == 0) ? "null" : $@"{FileCreator.GetCreator(creator.Data)}";
+                    valueString = creator == null || creator.IsInvalid() ? "null" : $@"{creator}";
                 }
                 else if (fieldType == typeof(NetworkRequestHash))
                 {
                     var networkRequestHash = (NetworkRequestHash)fieldValue;
-                    valueString = networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? "null" : $@"{networkRequestHash.GetHash()}";
+                    valueString = networkRequestHash == null || networkRequestHash.IsInvalid() ? "null" : $@"{networkRequestHash}";
                 }
                 else if (fieldType == typeof(RSASignature)) 
                 {
                     var rsaSignature = (RSASignature)fieldValue;
-                    valueString = rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? "null" : $@"{rsaSignature.GetSignature()}";
+                    valueString = rsaSignature == null || rsaSignature.IsInvalid() ? "null" : $@"{rsaSignature}";
                 }
                 else if (tagFieldInfo.FieldType.IsArray && tagFieldInfo.Attribute.Length != 0)
                 {

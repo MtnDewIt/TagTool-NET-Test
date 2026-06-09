@@ -107,7 +107,12 @@ namespace TagTool.Common
             var timestampLine = reader.ReadLine();
             if (timestampLine == null)
                 return result;
-            var timestamps = timestampLine.Split(',');
+            var timestamps = timestampLine.Split(',').Select(t =>
+            {
+                if (long.TryParse(t, NumberStyles.HexNumber, null, out long r))
+                    return r;
+                return -1;
+            });
             var versions = timestamps.Select(CacheVersionDetection.DetectFromTimestamp).ToArray();
 
             // Read each line and store the tag indices in the result map
