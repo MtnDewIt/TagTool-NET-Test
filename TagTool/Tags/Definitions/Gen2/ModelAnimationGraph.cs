@@ -7,32 +7,56 @@ using static TagTool.Tags.TagFieldFlags;
 
 namespace TagTool.Tags.Definitions.Gen2
 {
-    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0xAC, MinVersion = CacheVersion.Halo2PC)]
-    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0xB4, MaxVersion = CacheVersion.Halo2Xbox)]
+    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0x98, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0xB4, MinVersion = CacheVersion.Halo2Xbox, MaxVersion = CacheVersion.Halo2Xbox)]
+    [TagStructure(Name = "model_animation_graph", Tag = "jmad", Size = 0xAC, MinVersion = CacheVersion.Halo2PC, MaxVersion = CacheVersion.Halo2PC)]
     public class ModelAnimationGraph : TagStructure
     {
         public AnimationGraphResourcesStructBlock Resources;
         public AnimationGraphContentsStructBlock Content;
         public ModelAnimationRuntimeDataStructBlock RunTimeData;
         public byte[] LastImportResults;
+
+        [TagField(MinVersion = CacheVersion.Halo2Xbox)]
         public List<AdditionalNodeDataBlock> AdditionalNodeData;
-        [TagField(MaxVersion = CacheVersion.Halo2Xbox)]
+
+        [TagField(MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2Xbox)]
         public List<AnimationRawData> AnimationData;
-        
-        [TagStructure(Size = 0x34)]
+
+        [TagStructure(Size = 0x48, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+        [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo2Xbox)]
         public class AnimationGraphResourcesStructBlock : TagStructure
         {
-            [TagField(ValidTags = new [] { "jmad" })]
+            [TagField(ValidTags = new[] { "jmad" })]
             public CachedTag ParentAnimationGraph;
+
+            [TagField(MinVersion = CacheVersion.Halo2Xbox)]
             public InheritanceFlagsValue InheritanceFlags;
+
+            [TagField(MinVersion = CacheVersion.Halo2Xbox)]
             public PrivateFlagsValue PrivateFlags;
+
+            [TagField(MinVersion = CacheVersion.Halo2Xbox)]
             public short AnimationCodecPack;
+
             public List<AnimationGraphNodeBlock> SkeletonNodesAbcdcc;
+
+            [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+            public int NodeChecksum;
+
             public List<AnimationGraphSoundReferenceBlock> SoundReferencesAbcdcc;
+
+            [TagField(MinVersion = CacheVersion.Halo2Xbox)]
             public List<AnimationGraphEffectReferenceBlock> EffectReferencesAbcdcc;
+
             public List<AnimationBlendScreenBlock> BlendScreensAbcdcc;
             public List<AnimationPoolBlock> AnimationsAbcdcc;
-            
+
+            [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+            public short Unknown1;
+            [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+            public short Unknown2;
+
             [Flags]
             public enum InheritanceFlagsValue : byte
             {
@@ -83,8 +107,9 @@ namespace TagTool.Tags.Definitions.Gen2
                     NoMovement = 1 << 2
                 }
             }
-            
-            [TagStructure(Size = 0xC)]
+
+            [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+            [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Xbox)]
             public class AnimationGraphSoundReferenceBlock : TagStructure
             {
                 [TagField(ValidTags = new [] { "snd!" })]
@@ -145,15 +170,21 @@ namespace TagTool.Tags.Definitions.Gen2
                     public short UpPitchFrameCount;
                 }
             }
-            
-            [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo2PC)]
+
+            [TagStructure(Size = 0x84, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
             [TagStructure(Size = 0x6C, MaxVersion = CacheVersion.Halo2Xbox)]
+            [TagStructure(Size = 0x60, MinVersion = CacheVersion.Halo2PC)]
             public class AnimationPoolBlock : TagStructure
             {
                 public StringId Name;
+
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public int NodeListChecksum;
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public int ProductionChecksum;
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public int ImportChecksum;
+
                 public TypeValue Type;
                 public FrameInfoTypeValue FrameInfoType;
                 public sbyte BlendScreen;
@@ -161,34 +192,61 @@ namespace TagTool.Tags.Definitions.Gen2
                 public short FrameCount;
                 public InternalFlagsValue InternalFlags;
                 public ProductionFlagsValue ProductionFlags;
+
+                [TagField(Length = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+                public byte[] Unknown1;
+
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public PlaybackFlagsValue PlaybackFlags;
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public DesiredCompressionValue DesiredCompression;
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public CurrentCompressionValue CurrentCompression;
+
                 public float Weight;
 
-                [TagField(MaxVersion = CacheVersion.Halo2Xbox)]
+                [TagField(MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2Xbox)]
                 public int ResourceParentGraphIndex;
-                [TagField(MaxVersion = CacheVersion.Halo2Xbox)]
+                [TagField(MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2Xbox)]
                 public int ResourceIndex;
-                [TagField(MaxVersion = CacheVersion.Halo2Xbox)]
+                [TagField(MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2Xbox)]
                 public int ResourceBlockOffset;
-                [TagField(MaxVersion = CacheVersion.Halo2Xbox)]
+                [TagField(MinVersion = CacheVersion.Halo2Beta, MaxVersion = CacheVersion.Halo2Xbox)]
                 public short ResourceUnknown;
 
                 public short LoopFrameIndex;
+
+                [TagField(Length = 0x26, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+                public byte[] Unknown2;
+
+                [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+                public PackedDataSizesStructBlock DataSizesAlpha;
+
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public short PreviousVariantSibling;
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public short NextVariantSibling;
 
                 [TagField(Length = 0x2, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo2PC)]
                 public byte[] Padding;
 
                 public byte[] AnimationData;
+
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public PackedDataSizesStructBlock DataSizes;
+
                 public List<AnimationFrameEventBlock> FrameEventsAbcdcc;
                 public List<AnimationSoundEventBlock> SoundEventsAbcdcc;
+
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public List<AnimationEffectEventBlock> EffectEventsAbcdcc;
+
+                [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public List<ObjectSpaceNodeDataBlock> ObjectSpaceParentNodesAbcdcc;
-                
+
+                [TagField(Length = 0x4, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+                public byte[] Unknown3;
+
                 public enum TypeValue : sbyte
                 {
                     Base,
@@ -334,29 +392,32 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
         }
-        
-        [TagStructure(Size = 0x18)]
+
+        [TagStructure(Size = 0x24, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+        [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo2Xbox)]
         public class AnimationGraphContentsStructBlock : TagStructure
         {
             public List<AnimationModeBlock> ModesAabbcc;
             public List<VehicleSuspensionBlock> VehicleSuspensionCcaabb;
             public List<ObjectAnimationBlock> ObjectOverlaysCcaabb;
-            
-            [TagStructure(Size = 0x14)]
+
+            [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+            [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Xbox)]
             public class AnimationModeBlock : TagStructure
             {
                 public StringId Label;
                 public List<WeaponClassBlock> WeaponClassAabbcc;
                 public List<AnimationIkBlock> ModeIkAabbcc;
-                
-                [TagStructure(Size = 0x14)]
+
+                [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+                [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Xbox)]
                 public class WeaponClassBlock : TagStructure
                 {
                     public StringId Label;
                     public List<WeaponTypeBlock> WeaponTypeAabbcc;
                     public List<AnimationIkBlock> WeaponIkAabbcc;
-                    
-                    [TagStructure(Size = 0x34)]
+
+                    [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo2Alpha)]
                     public class WeaponTypeBlock : TagStructure
                     {
                         public StringId Label;
@@ -364,7 +425,10 @@ namespace TagTool.Tags.Definitions.Gen2
                         public List<AnimationEntryBlock1> OverlaysAabbcc;
                         public List<DamageAnimationBlock> DeathAndDamageAabbcc;
                         public List<AnimationTransitionBlock> TransitionsAabbcc;
+
+                        [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                         public List<PrecacheListBlock> HighPrecacheCcccc;
+                        [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                         public List<PrecacheListBlock1> LowPrecacheCcccc;
                         
                         [TagStructure(Size = 0x8)]
@@ -394,14 +458,16 @@ namespace TagTool.Tags.Definitions.Gen2
                                 public short Animation;
                             }
                         }
-                        
-                        [TagStructure(Size = 0xC)]
+
+                        [TagStructure(Size = 0x10, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+                        [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Xbox)]
                         public class DamageAnimationBlock : TagStructure
                         {
                             public StringId Label;
                             public List<DamageDirectionBlock> DirectionsAabbcc;
-                            
-                            [TagStructure(Size = 0x8)]
+
+                            [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+                            [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo2Xbox)]
                             public class DamageDirectionBlock : TagStructure
                             {
                                 public List<DamageRegionBlock> RegionsAabbcc;
@@ -597,15 +663,17 @@ namespace TagTool.Tags.Definitions.Gen2
                 }
             }
         }
-        
-        [TagStructure(Size = 0x50)]
+
+        [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
+        [TagStructure(Size = 0x50, MinVersion = CacheVersion.Halo2Xbox)]
         public class ModelAnimationRuntimeDataStructBlock : TagStructure
         {
             public List<InheritedAnimationBlock> InheritenceListBbaaaa;
             public List<WeaponClassLookupBlock> WeaponListBbaaaa;
-            [TagField(Length = 8)]
+
+            [TagField(Length = 8, MinVersion = CacheVersion.Halo2Xbox)]
             public uint[] LeftArmNodes;
-            [TagField(Length = 8)]
+            [TagField(Length = 8, MinVersion = CacheVersion.Halo2Xbox)]
             public uint[] RightArmNodes;
 
             [TagStructure(Size = 0x20)]

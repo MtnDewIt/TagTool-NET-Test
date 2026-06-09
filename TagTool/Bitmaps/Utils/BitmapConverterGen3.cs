@@ -19,6 +19,7 @@ namespace TagTool.Bitmaps.Utils
         public bool HqNormalMapCompression { get; set; }
         public bool ForceDxt5nm { get; set; }
         public BitmapConverterMode Mode { get; set; }
+        public bool AllowOptimization { get; set; } = true;
 
         public BitmapConverterGen3(GameCache cache)
         {
@@ -32,7 +33,7 @@ namespace TagTool.Bitmaps.Utils
                 return null;
 
             Bitmap.Image image = bitmap.Images[imageIndex];
-            BitmapFormat destFormat = GestDestinationFormat(image.Format, tagName, bitmap, imageIndex);
+            BitmapFormat destFormat = GestDestinationFormat(image.Format, tagName, bitmap, imageIndex, extractor);
 
             int mipCount = image.MipmapCount + 1;
             int layerCount = image.Type == BitmapType.CubeMap ? 6 : image.Depth;
@@ -81,7 +82,7 @@ namespace TagTool.Bitmaps.Utils
             return resultBitmap;
         }
 
-        private BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex)
+        private BitmapFormat GestDestinationFormat(BitmapFormat format, string tagName, Bitmap bitmap, int imageIndex, BitmapExtractorGen3 extractor)
         {
             var image = bitmap.Images[imageIndex];
 
@@ -107,6 +108,19 @@ namespace TagTool.Bitmaps.Utils
             {
                 Log.Warning($"DXTn bitmap '{tagName}' has invalid dimensions {image.Width}x{image.Height} (must be divisible by 4); Using a8r8g8b8.");
                 return BitmapFormat.A8R8G8B8;
+            }
+
+            if (AllowOptimization && image.Type == BitmapType.Texture2D && format == BitmapFormat.A8R8G8B8)
+            {
+                BitmapFormat chosenFormat = BitmapFormatSelector.ChooseOptimalBitmapFormat(
+                    extractor.ExtractSurface(0, 0, out int _, out int _),
+                    image.Width, image.Height, format, BitmapUtils.GetBitmapUsageFormat(bitmap));
+
+                if (chosenFormat != format)
+                {
+                    Log.Info($"Using {chosenFormat} instead of {format} for bitmap '{tagName}'");
+                    format = chosenFormat;
+                }
             }
 
             return format;

@@ -31,7 +31,7 @@ namespace TagTool.Cache.HaloOnline
                 FileShare.Read);
         }
 
-        public GameCacheHaloOnline(DirectoryInfo directory)
+        public GameCacheHaloOnline(DirectoryInfo directory, CacheVersion version = CacheVersion.HaloOnlineED)
         {
             Directory = directory;
             TagsFile = new FileInfo(Path.Combine(directory.FullName, "tags.dat"));
@@ -43,7 +43,7 @@ namespace TagTool.Cache.HaloOnline
             
             using (var tagsStream = OpenFileStream(TagsFile))
             {
-                FindVersion(new EndianReader(tagsStream));
+                FindVersion(new EndianReader(tagsStream), version);
 
                 using (var stream = StringIdCacheFile.Open(FileMode.OpenOrCreate))
                     StringTableHaloOnline = new StringTableHaloOnline(Version, stream);
@@ -71,17 +71,17 @@ namespace TagTool.Cache.HaloOnline
                 StringTableHaloOnline.Save(stream);
         }
 
-        private void FindVersion(EndianReader reader)
+        private void FindVersion(EndianReader reader, CacheVersion version)
         {
             reader.SeekTo(0);
             // hackfix until we fix tag cache creation
             if (reader.BaseStream.Length == 0)
             {
-                Version = CacheVersion.HaloOnlineED;
+                Version = version;
                 return;
             }
 
-            var header = CacheFileSectionHeader.ReadHeader(reader, CacheVersion.HaloOnlineED, Platform);
+            var header = CacheFileSectionHeader.ReadHeader(reader, version, Platform);
             var timestamp = LastModificationDate.GetTimestamp(header.CreationDate);
 
             Version = CacheVersionDetection.DetectFromTimestamp(timestamp);

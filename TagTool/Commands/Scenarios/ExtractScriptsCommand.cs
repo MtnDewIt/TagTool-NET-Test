@@ -22,11 +22,12 @@ namespace TagTool.Commands.Scenarios
             : base(true,
 
                   "ExtractScripts",
-                  "Extracts all scripts in the current scenario tag to a file.",
+                  "Extracts scripts from the current scenario tag to a file.",
 
-                  "ExtractScripts [Output Filename]",
+                  "ExtractScripts [Output Filename] [-script <name>]",
 
-                  "Extracts all scripts in the current scenario tag to a file.")
+                  "Extracts scripts from the current scenario tag to a file.\n" +
+                  "Use -script <name> to extract only a specific script and all scripts/globals it calls recursively.")
         {
             Cache = cache;
             Tag = tag;
@@ -35,36 +36,56 @@ namespace TagTool.Commands.Scenarios
 
         public override object Execute(List<string> args)
         {
+            string scriptName = null;
+            string outputPath = null;
+
+            for (int i = 0; i < args.Count; i++)
+            {
+                if (args[i] == "-script")
+                {
+                    if (i + 1 >= args.Count)
+                        return new TagToolError(CommandError.ArgInvalid, "Expected a script name after -script.");
+                    scriptName = args[++i];
+                }
+                else
+                {
+                    outputPath = args[i];
+                }
+            }
+
             FileInfo scriptFile;
             string mapName = Tag.Name.Split('\\').Last();
             string fileName = $"_{Definition.MapId}_{mapName}.hsc";
 
-            switch (args.Count)
+            if (outputPath != null)
             {
-                case 0:
-                    {
-                        if (Cache.Version == CacheVersion.HaloOnlineED)
-                            scriptFile = new FileInfo($"haloscript\\ED" + fileName);
-                        else
-                            scriptFile = new FileInfo($"haloscript\\{Cache.Version}" + fileName);
-                    }
-                    break;
-                case 1:
-                    scriptFile = new FileInfo(args[0]);
-                    break;
-                default:
-                    return new TagToolError(CommandError.ArgCount);
-            }
+                switch (args.Count)
+                {
+                    case 0:
+                        {
+                            if (CacheVersionDetection.IsEldewrito(Cache.Version))
+                                scriptFile = new FileInfo($"haloscript\\ED" + fileName);
+                            else
+                                scriptFile = new FileInfo($"haloscript\\{Cache.Version}" + fileName);
+                        }
+                        break;
+                    case 1:
+                        scriptFile = new FileInfo(args[0]);
+                        break;
+                    default:
+                        return new TagToolError(CommandError.ArgCount);
+                }
 
-            System.IO.Directory.CreateDirectory("haloscript");
-            using (var scriptFileStream = scriptFile.Create())
-            using (var scriptWriter = new StreamWriter(scriptFileStream))
-            {
-                var decompiler = new ScriptDecompiler(Cache, Definition);
-                decompiler.DecompileScripts(scriptWriter);
-            }
+                System.IO.Directory.CreateDirectory("haloscript");
+                using (var scriptFileStream = scriptFile.Create())
+                using (var scriptWriter = new StreamWriter(scriptFileStream))
+                {
+                    var decompiler = new ScriptDecompiler(Cache, Definition);
+                    decompiler.DecompileScripts(scriptWriter, scriptName);
+                }
 
-            Console.WriteLine($"\nDecompiled script extracted to \"{scriptFile.FullName}\"");
+                Console.WriteLine($"\nDecompiled script extracted to \"{scriptFile.FullName}\"");
+            }
 
             return true;
         }
