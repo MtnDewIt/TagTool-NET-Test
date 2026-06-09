@@ -59,30 +59,33 @@ namespace TagTool.Commands.Scenarios
 
             if (outputPath != null)
             {
-                case 0:
-                    {
-                        if (CacheVersionDetection.IsEldewrito(Cache.Version))
-                            scriptFile = new FileInfo($"haloscript\\ED" + fileName);
-                        else
-                            scriptFile = new FileInfo($"haloscript\\{Cache.Version}" + fileName);
-                    }
-                    break;
-                case 1:
-                    scriptFile = new FileInfo(args[0]);
-                    break;
-                default:
-                    return new TagToolError(CommandError.ArgCount);
-            }
+                switch (args.Count)
+                {
+                    case 0:
+                        {
+                            if (CacheVersionDetection.IsEldewrito(Cache.Version))
+                                scriptFile = new FileInfo($"haloscript\\ED" + fileName);
+                            else
+                                scriptFile = new FileInfo($"haloscript\\{Cache.Version}" + fileName);
+                        }
+                        break;
+                    case 1:
+                        scriptFile = new FileInfo(args[0]);
+                        break;
+                    default:
+                        return new TagToolError(CommandError.ArgCount);
+                }
 
-            System.IO.Directory.CreateDirectory("haloscript");
-            using (var scriptFileStream = scriptFile.Create())
-            using (var scriptWriter = new StreamWriter(scriptFileStream))
-            {
-                var decompiler = new ScriptDecompiler(Cache, Definition);
-                decompiler.DecompileScripts(scriptWriter, scriptName);
-            }
+                System.IO.Directory.CreateDirectory("haloscript");
+                using (var scriptFileStream = scriptFile.Create())
+                using (var scriptWriter = new StreamWriter(scriptFileStream))
+                {
+                    var decompiler = new ScriptDecompiler(Cache, Definition);
+                    decompiler.DecompileScripts(scriptWriter, scriptName);
+                }
 
-            Console.WriteLine($"\nDecompiled script extracted to \"{scriptFile.FullName}\"");
+                Console.WriteLine($"\nDecompiled script extracted to \"{scriptFile.FullName}\"");
+            }
 
             return true;
         }
