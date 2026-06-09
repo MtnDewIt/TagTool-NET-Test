@@ -383,38 +383,6 @@ namespace TagTool.Commands.Editing
                         return false;
                 }
 
-                string[] split = query.Split(',');
-
-                if (enumInfo.IsFlags)
-                {
-                    ulong mask = 0;
-                    foreach (var name in split)
-                    {
-                        if (long.TryParse(name, out long value))
-                        {
-                            if (split.Length == 1)
-                                mask = (ulong)value;
-                            else if (value >= 0 && value < 64)
-                                mask |= 1UL << (int)value;
-                            else
-                                return false;
-                        }
-                        else if (Enum.TryParse(type, name, true, out var enumValue))
-                        {
-                            var unsignedValue = Convert.ToUInt64(enumValue);
-                            mask |= unsignedValue;
-                        }
-                        else if (string.Equals(query, "none", StringComparison.OrdinalIgnoreCase))
-                            return Enum.ToObject(type, 0);
-                        else
-                            return false;
-                    }
-
-                    query = mask.ToString();
-                }
-                else if (split.Length > 1)
-                    return false;
-
                 if (Enum.TryParse(type, query, true, out found))
                 {
                     if (enumInfo.IsFlags || Enum.IsDefined(type, found))
