@@ -71,17 +71,17 @@ namespace TagTool.Cache.HaloOnline
                 StringTableHaloOnline.Save(stream);
         }
 
-        private void FindVersion(EndianReader reader)
+        private void FindVersion(EndianReader reader, CacheVersion version)
         {
             reader.SeekTo(0);
             // hackfix until we fix tag cache creation
             if (reader.BaseStream.Length == 0)
             {
-                Version = CacheVersion.HaloOnlineED;
+                Version = version;
                 return;
             }
 
-            var header = CacheFileSectionHeader.ReadHeader(reader, CacheVersion.HaloOnlineED, Platform);
+            var header = CacheFileSectionHeader.ReadHeader(reader, version, Platform);
             var timestamp = LastModificationDate.GetTimestamp(header.CreationDate);
 
             Version = CacheVersionDetection.DetectFromTimestamp(timestamp);
