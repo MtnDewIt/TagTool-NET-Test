@@ -1037,8 +1037,8 @@ namespace TagTool.Tags.Definitions
         MagnitizesOnlyWhenZoomed = 1 << 0,
         ForceEnableEquipmentTossing = 1 << 1,
         NonlungeMeleeDashDisabled = 1 << 2, // melee-physics dash is disabled on melees that are not lunges
-        Bit3 = 1 << 3,
-        Bit4 = 1 << 4,
+        DoesntUsePlayerControlCrosshairLocation = 1 << 3,
+        BypassJumpAimScreenHack = 1 << 4,
         Bit5 = 1 << 5,
         Bit6 = 1 << 6,
         Bit7 = 1 << 7,
