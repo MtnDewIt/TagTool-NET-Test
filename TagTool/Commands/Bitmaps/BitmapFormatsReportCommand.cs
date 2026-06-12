@@ -4,6 +4,7 @@ using System.Linq;
 using TagTool.Bitmaps;
 using TagTool.Cache;
 using TagTool.Cache.HaloOnline;
+using TagTool.Common;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
 
@@ -73,20 +74,14 @@ namespace TagTool.Commands.Bitmaps
             foreach ((BitmapFormat format, FormatReport report) in formatReports.OrderByDescending(x => x.Value.DataSize))
             {
                 double percent = totalSize > 0 ? (report.DataSize * 100.0) / totalSize : 0;
-                Console.WriteLine($"║  {format,-18}  {report.Count,8:N0}  {FormatSize(report.DataSize),12}  {percent,10:F2}%  ║");
+                Console.WriteLine($"║  {format,-18}  {report.Count,8:N0}  {FormatUtils.FormatBytes(report.DataSize),12}  {percent,10:F2}%  ║");
             }
 
             Console.WriteLine("╠═══════════════════════════════════════════════════════════╣");
-            Console.WriteLine($"║  {"TOTAL",-18}  {totalCount,8:N0}  {FormatSize(totalSize),12}  {"100.00",10}%  ║");
+            Console.WriteLine($"║  {"TOTAL",-18}  {totalCount,8:N0}  {FormatUtils.FormatBytes(totalSize),12}  {"100.00",10}%  ║");
             Console.WriteLine("╚═══════════════════════════════════════════════════════════╝");
 
             return true;
-        }
-
-        class FormatReport
-        {
-            public int Count;
-            public uint DataSize;
         }
 
         static long GetResourceID(TagResourceReference resource)
@@ -96,19 +91,10 @@ namespace TagTool.Commands.Bitmaps
 
             return ((long)resource.HaloOnlinePageableResource.GetLocation() << 32) | (long)resource.HaloOnlinePageableResource.Page.Index;
         }
-
-        static string FormatSize(long bytes)
+        class FormatReport
         {
-            if (bytes < 0) return $"-{FormatSize(-bytes)}";
-            if (bytes == 0) return "0 B";
-
-            string[] units = ["B", "KB", "MB", "GB", "TB", "PB"];
-            int unitIndex = (int)Math.Log(bytes, 1024);
-            double value = bytes / Math.Pow(1024, unitIndex);
-
-            return unitIndex == 0
-                ? $"{bytes:N0} B"
-                : $"{value:0.##} {units[unitIndex]}";
+            public int Count;
+            public uint DataSize;
         }
     }
 }
