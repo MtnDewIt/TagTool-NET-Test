@@ -62,6 +62,9 @@ namespace TagTool.Commands.Tags
 
             foreach (ResourceLocation location in referencedResources.Select(x => x.Location).Distinct())
             {
+                if (location == ResourceLocation.None)
+                    continue;
+
                 ResourceCacheHaloOnline resourceCache = Cache.ResourceCaches.GetResourceCache(location);
                 using Stream resourceStream = Cache.ResourceCaches.OpenCacheReadWrite(location);
 
@@ -101,9 +104,27 @@ namespace TagTool.Commands.Tags
 
         private static HashSet<ResourceHandle> FindReferencedResources(GameCacheHaloOnlineBase cache)
         {
-            using Stream stream = cache.OpenCacheRead();
+            HashSet<ResourceHandle> foundResource = [];
 
-            HashSet<ResourceHandle> foundResources = [];
+            if (cache is GameCacheModPackage modCache)
+            {
+                for (int i = 0; i < modCache.BaseModPackage.GetTagCacheCount(); i++)
+                {
+                    modCache.SetActiveTagCache(i);
+                    FindReferencedResources(modCache, foundResource);
+                }
+            }
+            else
+            {
+                FindReferencedResources(cache, foundResource);
+            }
+
+            return foundResource;
+        }
+
+        private static void FindReferencedResources(GameCacheHaloOnlineBase cache, HashSet<ResourceHandle> foundResources)
+        {
+            using Stream stream = cache.OpenCacheRead();
 
             foreach (CachedTagHaloOnline tag in cache.TagCache.TagTable)
             {
@@ -112,8 +133,6 @@ namespace TagTool.Commands.Tags
 
                 Traverse(cache, cache.Deserialize(stream, tag), foundResources);
             }
-
-            return foundResources;
 
             static void Traverse(GameCacheHaloOnlineBase cache, object data, HashSet<ResourceHandle> foundResources)
             {
