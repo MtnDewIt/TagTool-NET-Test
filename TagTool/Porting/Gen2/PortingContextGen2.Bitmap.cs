@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Numerics;
+using System.Threading.Tasks;
 using TagTool.Bitmaps;
 using TagTool.Bitmaps.Utils;
 using TagTool.Cache;
@@ -61,19 +62,47 @@ namespace TagTool.Porting.Gen2
                 HqNormalMapCompression = Options.HqNormalMapConversion
             };
 
+            var tasks = new List<Task<(BaseBitmap, Bitmap.Image)>>();
+
             //convert images
             for (var i = 0; i < gen2Bitmap.Bitmaps.Count; i++)
             {
                 var gen2Img = gen2Bitmap.Bitmaps[i];
 
-                BaseBitmap bitmapbase = BitmapConverterGen2.ConvertBitmap((GameCacheGen2)BlamCache, gen2Bitmap, i, out Bitmap.Image newImg, gen2TagName, forDDS: false, converterOptions);
+                int index = i;
+                tasks.Add(RunOnThreadPool(() =>
+                {
+                    BaseBitmap bitmapbase = BitmapConverterGen2.ConvertBitmap(
+                        (GameCacheGen2)BlamCache,
+                        gen2Bitmap,
+                        index,
+                        out Bitmap.Image newImg,
+                        gen2TagName,
+                        forDDS: false,
+                        converterOptions
+                        );
 
-                var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(bitmapbase);
-                var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
-                newBitmap.HardwareTextures.Add(resourceReference);
-
-                newBitmap.Images.Add(newImg);
+                    return (bitmapbase, newImg);
+                }));
             }
+
+            AddTask(Task.WhenAll(tasks)
+                .ContinueWith(task =>
+                {
+                    // on main thread: Finish bitmap conversion
+
+                    for (int i = 0; i < gen2Bitmap.Bitmaps.Count; i++)
+                    {
+                        (BaseBitmap bitmapbase, Bitmap.Image newImg) = tasks[i].GetAwaiter().GetResult();
+
+                        var bitmapResourceDefinition = BitmapUtils.CreateBitmapTextureInteropResource(bitmapbase);
+                        var resourceReference = CacheContext.ResourceCache.CreateBitmapResource(bitmapResourceDefinition);
+                        newBitmap.HardwareTextures.Add(resourceReference);
+
+                        newBitmap.Images.Add(newImg);
+                    }
+
+                }, MainThreadScheduler));
 
             //set scope mask data to make shit work
             if (gen2TagName.Contains("scope_masks"))
