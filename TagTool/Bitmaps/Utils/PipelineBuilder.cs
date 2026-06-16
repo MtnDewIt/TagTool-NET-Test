@@ -89,7 +89,7 @@ namespace TagTool.Bitmaps.Utils
             return (data, width, height) =>
             {
                 foreach (var transform in DirectTransforms)
-                    transform(data, width, height);
+                    data = transform(data, width, height);
 
                 if (PixelTransforms.Count > 0 || Format != DestFormat)
                 {
