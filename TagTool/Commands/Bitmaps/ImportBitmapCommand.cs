@@ -80,10 +80,13 @@ namespace TagTool.Commands.Bitmaps
                 {
                     switch (a)
                     {
-                        case "linear": curve = BitmapImageCurve.Linear; break;
-                        case "srgb": curve = BitmapImageCurve.sRGB; break;
-                        case "gamma2": curve = BitmapImageCurve.Gamma2; break;
+                        case "unknown": curve = BitmapImageCurve.Unknown; break;
                         case "xrgb": curve = BitmapImageCurve.xRGB; break;
+                        case "gamma2": curve = BitmapImageCurve.Gamma2; break;
+                        case "linear": curve = BitmapImageCurve.Linear; break;
+                        case "offsetlog": curve = BitmapImageCurve.OffsetLog; break;
+                        case "srgb": curve = BitmapImageCurve.sRGB; break;
+                        case "rec709": curve = BitmapImageCurve.Rec709; break;
                         case "dxt1":
                         case "dxt5":
                         case "dxn":
@@ -138,6 +141,7 @@ namespace TagTool.Commands.Bitmaps
                     0x31545844 => BitmapFormat.Dxt1,
                     0x33545844 => BitmapFormat.Dxt3,
                     0x35545844 => BitmapFormat.Dxt5,
+                    0x32495441 => BitmapFormat.Dxn,  // BC5 ATI2/DXN
                     0 => BitmapFormat.A8R8G8B8,
                     _ => throw new Exception("Unsupported DDS format: " + fourcc)
                 };
