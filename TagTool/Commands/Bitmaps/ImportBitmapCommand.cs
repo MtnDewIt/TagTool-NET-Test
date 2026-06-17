@@ -28,7 +28,7 @@ namespace TagTool.Commands.Bitmaps
                    "Imports an image from a DDS file.",
                    "ImportBitmap <image index> <dds file> [curve] [conversion] [mipCount|-1]",
                    "The image index must be in hexadecimal.\n" +
-                   "Optional curve (linear, sRGB, gamma2, xRGB), conversion (DXT1, DXT5, DXN), and mip count (0–16).\n" +
+                   "Optional curve (Unknown, xRGB, Gamma2, Linear, OffsetLog, sRGB, Rec709), conversion (DXT1, DXT5, DXN), and mip count (0–16).\n" +
                    "If no mipCount is provided, uses the DDS's own mips.\n" +
                    "If mipCount = -1, matches the original tag mip counts.")
         {
