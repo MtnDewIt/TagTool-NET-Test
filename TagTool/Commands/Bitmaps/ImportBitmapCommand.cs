@@ -143,7 +143,6 @@ namespace TagTool.Commands.Bitmaps
                     0x35545844 => BitmapFormat.Dxt5,
                     0x32495441 => BitmapFormat.Dxn,  // BC5 ATI2/DXN
                     0 => BitmapFormat.A8R8G8B8,
-                    _ => throw new Exception("Unsupported DDS format: " + fourcc)
                 };
 
                 // Choose target format
