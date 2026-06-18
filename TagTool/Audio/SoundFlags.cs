@@ -27,7 +27,7 @@ namespace TagTool.Audio
         InstantSoundPropagation,
         [TagEnumMember(MinVersion = CacheVersion.Halo3Beta)]
         FakeSpatializationWithDistance,
-        [TagEnumMember(MinVersion = CacheVersion.HaloReach)]
+        [TagEnumMember(MinVersion = CacheVersion.HaloOnlineED)]
         PlayPermutationsInOrder,
         VehicleWeatherUnknown,
         Invalid,

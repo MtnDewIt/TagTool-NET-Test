@@ -36,7 +36,7 @@ namespace TagTool.Bitmaps.Utils
             }
 
             // dimensions must be a multiple of 4
-            return ((width | height) & 3) == 0;
+            return BitmapUtils.IsBlockAligned(width, height);
         }
 
         private static unsafe (bool isMono, bool hasAlpha, bool isAlphaOnly) AnalyzeChannels(byte[] data)
