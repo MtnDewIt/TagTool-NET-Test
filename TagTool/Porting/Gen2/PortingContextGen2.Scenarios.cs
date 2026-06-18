@@ -835,6 +835,46 @@ namespace TagTool.Porting.Gen2
                 UniqueIDList.Add((uint)eqipobj.ObjectData.ObjectId.UniqueId);
             }
 
+            // Sound Scenery  
+            foreach (var sndscenpal in gen2Tag.SoundSceneryPalette)
+            {
+                newScenario.SoundSceneryPalette.Add(new Scenario.ScenarioPaletteEntry
+                {
+                    Object = sndscenpal.Name
+                });
+            }
+            for (var sndscenobjindex = 0; sndscenobjindex < gen2Tag.SoundScenery.Count; sndscenobjindex++)
+            {
+                var sndscenobj = gen2Tag.SoundScenery[sndscenobjindex];
+                var soundScenery = new Scenario.SoundSceneryInstance
+                {
+                    PaletteIndex = sndscenobj.Type,
+                    NameIndex = sndscenobj.Name,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags { Flags = (Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags)sndscenobj.ObjectData.PlacementFlags },
+                    Position = sndscenobj.ObjectData.Position,
+                    Rotation = sndscenobj.ObjectData.Rotation,
+                    Scale = sndscenobj.ObjectData.Scale,
+                    BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)sndscenobj.ObjectData.BspPolicy,
+                    CanAttachToBspFlags = (ushort)(sndscenobj.ObjectData.ManualBspFlags + 1),
+                    EditorFolder = -1,
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)sndscenobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)sndscenobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.SoundScenery },
+                        Source = (ObjectIdentifier.SourceValue)sndscenobj.ObjectData.ObjectId.Source,
+                    },
+                    VolumeType = (Scenario.SoundSceneryInstance.SoundSceneryVolumeType)sndscenobj.SoundScenery.VolumeType,
+                    Height = sndscenobj.SoundScenery.Height,
+                    OverrideDistance = sndscenobj.SoundScenery.OverrideDistanceBounds,
+                    OverrideConeAngle = sndscenobj.SoundScenery.OverrideConeAngleBounds,
+                    OverrideOuterConeGain = sndscenobj.SoundScenery.OverrideOuterConeGain
+                };
+                newScenario.SoundScenery.Add(soundScenery);
+
+                UniqueIDList.Add((uint)sndscenobj.ObjectData.ObjectId.UniqueId);
+            }
+
             // Player starting locations
             foreach (var startlocation in gen2Tag.PlayerStartingLocations)
             {

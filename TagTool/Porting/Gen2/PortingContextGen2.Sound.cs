@@ -79,8 +79,8 @@ namespace TagTool.Porting.Gen2
             }
             else
             {
-                Log.Error($"Looping sound {gen2Tag.Name} unable to determine sound class from child sound! Returning null!");
-                return null;
+                Log.Warning($"Looping sound {gen2Tag.Name} unable to determine sound class from child sound! Using default.");
+                newLoop.SoundClass = SoundClass.AmbientNature; // or SoundClass.Unused as a safe fallback
             }
             
             return newLoop;
