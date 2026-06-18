@@ -81,13 +81,13 @@ namespace TagTool.Cache
             return new ModPackageTagSerializationContext(stream, this, (CachedTagHaloOnline)instance);
         }
 
-        public override Stream OpenCacheRead() => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, BaseCacheReference.OpenCacheRead());
+        public override Stream OpenCacheRead() => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex], BaseCacheReference.OpenCacheRead());
 
-        public Stream OpenCacheRead(Stream baseCacheStream) => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, baseCacheStream);
+        public Stream OpenCacheRead(Stream baseCacheStream) => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex], baseCacheStream);
 
-        public override Stream OpenCacheReadWrite() => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, BaseCacheReference.OpenCacheRead());
+        public override Stream OpenCacheReadWrite() => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex], BaseCacheReference.OpenCacheRead());
 
-        public override Stream OpenCacheWrite() => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, BaseCacheReference.OpenCacheRead());
+        public override Stream OpenCacheWrite() => new ModPackageStream(BaseModPackage.TagCachesStreams[CurrentTagCacheIndex], BaseCacheReference.OpenCacheRead());
 
         public override void SaveStrings() { }
 
@@ -111,7 +111,7 @@ namespace TagTool.Cache
                 throw new ArgumentOutOfRangeException(nameof(index), index, "Invalid tag cache index");
 
             CurrentTagCacheIndex = index;
-            TagCacheGenHO = new TagCacheHaloOnline(Version, BaseModPackage.TagCachesStreams[CurrentTagCacheIndex].Stream, StringTableHaloOnline, BaseModPackage.TagCacheNames[CurrentTagCacheIndex]);
+            TagCacheGenHO = new TagCacheHaloOnline(Version, BaseModPackage.TagCachesStreams[CurrentTagCacheIndex], StringTableHaloOnline, BaseModPackage.TagCacheNames[CurrentTagCacheIndex]);
             if (GetTagCacheCount() > 1)
                 DisplayName = BaseModPackage.Metadata.Name + $" {BaseModPackage.CacheNames[CurrentTagCacheIndex]}" + ".pak";
             else

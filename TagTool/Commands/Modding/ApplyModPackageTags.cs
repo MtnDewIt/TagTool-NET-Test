@@ -472,7 +472,7 @@ namespace TagTool.Commands.Modding
                 return resource;
 
             var resourceCache = ModCache.ResourceCaches.GetResourceCache(ResourceLocation.Mods);
-            byte[] data = resourceCache.ExtractRaw(modPack.ResourcesStream.Stream, resource.Page.Index, resource.Page.CompressedBlockSize);
+            byte[] data = resourceCache.ExtractRaw(modPack.ResourcesStream, resource.Page.Index, resource.Page.CompressedBlockSize);
             resource.ChangeLocation(ResourceLocation.ResourcesB);
             BaseCache.ResourceCaches.AddRawResource(resource, data);
 
