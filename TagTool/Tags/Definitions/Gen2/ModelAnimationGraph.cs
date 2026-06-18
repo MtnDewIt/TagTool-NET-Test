@@ -39,18 +39,18 @@ namespace TagTool.Tags.Definitions.Gen2
             [TagField(MinVersion = CacheVersion.Halo2Xbox)]
             public short AnimationCodecPack;
 
-            public List<AnimationGraphNodeBlock> SkeletonNodesAbcdcc;
+            public List<AnimationGraphNodeBlock> SkeletonNodes;
 
             [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
             public int NodeChecksum;
 
-            public List<AnimationGraphSoundReferenceBlock> SoundReferencesAbcdcc;
+            public List<AnimationGraphSoundReferenceBlock> SoundReferences;
 
             [TagField(MinVersion = CacheVersion.Halo2Xbox)]
-            public List<AnimationGraphEffectReferenceBlock> EffectReferencesAbcdcc;
+            public List<AnimationGraphEffectReferenceBlock> EffectReferences;
 
-            public List<AnimationBlendScreenBlock> BlendScreensAbcdcc;
-            public List<AnimationPoolBlock> AnimationsAbcdcc;
+            public List<AnimationBlendScreenBlock> BlendScreens;
+            public List<AnimationPoolBlock> Animations;
 
             [TagField(MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
             public short Unknown1;
@@ -235,14 +235,14 @@ namespace TagTool.Tags.Definitions.Gen2
                 [TagField(MinVersion = CacheVersion.Halo2Xbox)]
                 public PackedDataSizesStructBlock DataSizes;
 
-                public List<AnimationFrameEventBlock> FrameEventsAbcdcc;
-                public List<AnimationSoundEventBlock> SoundEventsAbcdcc;
+                public List<AnimationFrameEventBlock> FrameEvents;
+                public List<AnimationSoundEventBlock> SoundEvents;
 
                 [TagField(MinVersion = CacheVersion.Halo2Xbox)]
-                public List<AnimationEffectEventBlock> EffectEventsAbcdcc;
+                public List<AnimationEffectEventBlock> EffectEvents;
 
                 [TagField(MinVersion = CacheVersion.Halo2Xbox)]
-                public List<ObjectSpaceNodeDataBlock> ObjectSpaceParentNodesAbcdcc;
+                public List<ObjectSpaceNodeDataBlock> ObjectSpaceParentNodes;
 
                 [TagField(Length = 0x4, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
                 public byte[] Unknown3;
@@ -397,39 +397,39 @@ namespace TagTool.Tags.Definitions.Gen2
         [TagStructure(Size = 0x18, MinVersion = CacheVersion.Halo2Xbox)]
         public class AnimationGraphContentsStructBlock : TagStructure
         {
-            public List<AnimationModeBlock> ModesAabbcc;
-            public List<VehicleSuspensionBlock> VehicleSuspensionCcaabb;
-            public List<ObjectAnimationBlock> ObjectOverlaysCcaabb;
+            public List<AnimationModeBlock> Modes;
+            public List<VehicleSuspensionBlock> VehicleSuspension;
+            public List<ObjectAnimationBlock> ObjectOverlays;
 
             [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
             [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Xbox)]
             public class AnimationModeBlock : TagStructure
             {
                 public StringId Label;
-                public List<WeaponClassBlock> WeaponClassAabbcc;
-                public List<AnimationIkBlock> ModeIkAabbcc;
+                public List<WeaponClassBlock> WeaponClass;
+                public List<AnimationIkBlock> ModeIk;
 
                 [TagStructure(Size = 0x1C, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
                 [TagStructure(Size = 0x14, MinVersion = CacheVersion.Halo2Xbox)]
                 public class WeaponClassBlock : TagStructure
                 {
                     public StringId Label;
-                    public List<WeaponTypeBlock> WeaponTypeAabbcc;
-                    public List<AnimationIkBlock> WeaponIkAabbcc;
+                    public List<WeaponTypeBlock> WeaponType;
+                    public List<AnimationIkBlock> WeaponIk;
 
                     [TagStructure(Size = 0x34, MinVersion = CacheVersion.Halo2Alpha)]
                     public class WeaponTypeBlock : TagStructure
                     {
                         public StringId Label;
-                        public List<AnimationEntryBlock> ActionsAabbcc;
-                        public List<AnimationEntryBlock1> OverlaysAabbcc;
-                        public List<DamageAnimationBlock> DeathAndDamageAabbcc;
-                        public List<AnimationTransitionBlock> TransitionsAabbcc;
+                        public List<AnimationEntryBlock> Actions;
+                        public List<AnimationEntryBlock1> Overlays;
+                        public List<DamageAnimationBlock> DeathAndDamage;
+                        public List<AnimationTransitionBlock> Transitions;
 
                         [TagField(MinVersion = CacheVersion.Halo2Xbox)]
-                        public List<PrecacheListBlock> HighPrecacheCcccc;
+                        public List<PrecacheListBlock> HighPrecache;
                         [TagField(MinVersion = CacheVersion.Halo2Xbox)]
-                        public List<PrecacheListBlock1> LowPrecacheCcccc;
+                        public List<PrecacheListBlock1> LowPrecache;
                         
                         [TagStructure(Size = 0x8)]
                         public class AnimationEntryBlock : TagStructure
@@ -464,13 +464,13 @@ namespace TagTool.Tags.Definitions.Gen2
                         public class DamageAnimationBlock : TagStructure
                         {
                             public StringId Label;
-                            public List<DamageDirectionBlock> DirectionsAabbcc;
+                            public List<DamageDirectionBlock> Directions;
 
                             [TagStructure(Size = 0xC, MinVersion = CacheVersion.Halo2Alpha, MaxVersion = CacheVersion.Halo2Alpha)]
                             [TagStructure(Size = 0x8, MinVersion = CacheVersion.Halo2Xbox)]
                             public class DamageDirectionBlock : TagStructure
                             {
-                                public List<DamageRegionBlock> RegionsAabbcc;
+                                public List<DamageRegionBlock> Regions;
                                 
                                 [TagStructure(Size = 0x4)]
                                 public class DamageRegionBlock : TagStructure
@@ -495,7 +495,7 @@ namespace TagTool.Tags.Definitions.Gen2
                             /// </summary>
                             public StringId FullName;
                             public AnimationTransitionStateStructBlock StateInfo;
-                            public List<AnimationTransitionDestinationBlock> DestinationsAabbcc;
+                            public List<AnimationTransitionDestinationBlock> Destinations;
                             
                             [TagStructure(Size = 0x8)]
                             public class AnimationTransitionStateStructBlock : TagStructure
@@ -668,8 +668,8 @@ namespace TagTool.Tags.Definitions.Gen2
         [TagStructure(Size = 0x50, MinVersion = CacheVersion.Halo2Xbox)]
         public class ModelAnimationRuntimeDataStructBlock : TagStructure
         {
-            public List<InheritedAnimationBlock> InheritenceListBbaaaa;
-            public List<WeaponClassLookupBlock> WeaponListBbaaaa;
+            public List<InheritedAnimationBlock> InheritenceList;
+            public List<WeaponClassLookupBlock> WeaponList;
 
             [TagField(Length = 8, MinVersion = CacheVersion.Halo2Xbox)]
             public uint[] LeftArmNodes;

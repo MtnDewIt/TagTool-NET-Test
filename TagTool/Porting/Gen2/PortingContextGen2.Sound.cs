@@ -264,7 +264,7 @@ namespace TagTool.Porting.Gen2
             if (playbackParameters.MaximumDistance == 0)
                 playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceD;
 
-            playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.Bit4;
+            playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DirectionalAttenuation;
 
             playbackParameters.DistanceParameters = new SoundDistanceParameters()
             {

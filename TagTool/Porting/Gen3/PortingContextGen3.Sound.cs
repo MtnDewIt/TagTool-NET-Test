@@ -174,7 +174,7 @@ namespace TagTool.Porting.Gen3
 
             BlamSound audioData = null;
 
-            // If using an audio cache try to load it from there
+            // If using an audio cache try to load it from there4
             if (useCache)
             {
                 int sampleRate = sound.PlatformCodec.SampleRate.GetSampleRateHz();
@@ -232,7 +232,7 @@ namespace TagTool.Porting.Gen3
                 InnerConeAngle = playback.InnerConeAngle,
                 OuterConeAngle = playback.OuterConeAngle,
                 OuterConeGain = playback.OuterConeGain,
-                Flags = playback.Flags,
+                GainOverrideFlags = playback.GainOverrideFlags,
                 Azimuth = playback.Azimuth,
                 PositionalGain = playback.PositionalGain,
                 FirstPersonGain = playback.FirstPersonGain,
@@ -251,7 +251,7 @@ namespace TagTool.Porting.Gen3
             if (playback.DistanceParameters.MaximumDistance == 0)
                 newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceD;
 
-            newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.Bit4;
+            newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DirectionalAttenuation;
 
             return newPlayback;
         }
@@ -515,7 +515,7 @@ namespace TagTool.Porting.Gen3
                 foreach (var pattern in adlg.Patterns) 
                 {
                     if (pattern.DangerLevelMCC == Ai.VocalizationPattern.DangerEnumMCC.NONE)
-                        pattern.DangerLevel = Ai.VocalizationPattern.DangerEnum.NONE;
+                        pattern.DangerLevel = Ai.VocalizationPattern.DangerEnum.None;
                     else 
                         pattern.DangerLevel = pattern.DangerLevelMCC.ConvertLexical<Ai.VocalizationPattern.DangerEnum>();
 

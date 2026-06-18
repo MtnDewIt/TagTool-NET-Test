@@ -9,7 +9,7 @@ namespace TagTool.Tags.Definitions
 {
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x354, MaxVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x358, MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.Original)]
-    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x394, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED, Platform = CachePlatform.Original)]
+    [TagStructure(Name = "weapon", Tag = "weap", Size = 0x394, MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED_END, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x384, MinVersion = CacheVersion.HaloOnline106708, MaxVersion = CacheVersion.HaloOnline235640, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x390, MinVersion = CacheVersion.HaloOnline301003, MaxVersion = CacheVersion.HaloOnline604673, Platform = CachePlatform.Original)]
     [TagStructure(Name = "weapon", Tag = "weap", Size = 0x394, MinVersion = CacheVersion.HaloOnline700123, MaxVersion = CacheVersion.HaloOnline700123, Platform = CachePlatform.Original)]
@@ -247,9 +247,9 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<WeaponScreenEffectBlock> ScreenEffects;
 
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED_END)]
         public RealPoint3d CenteredFirstPersonWeaponOffset;
-        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED)]
+        [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnlineED_END)]
         public StringId WeaponTypeName;
 
         public enum SecondaryTriggerModeValue : short
@@ -1038,8 +1038,8 @@ namespace TagTool.Tags.Definitions
         MagnitizesOnlyWhenZoomed = 1 << 0,
         ForceEnableEquipmentTossing = 1 << 1,
         NonlungeMeleeDashDisabled = 1 << 2, // melee-physics dash is disabled on melees that are not lunges
-        Bit3 = 1 << 3,
-        Bit4 = 1 << 4,
+        DoesntUsePlayerControlCrosshairLocation = 1 << 3,
+        BypassJumpAimScreenHack = 1 << 4,
         Bit5 = 1 << 5,
         Bit6 = 1 << 6,
         Bit7 = 1 << 7,

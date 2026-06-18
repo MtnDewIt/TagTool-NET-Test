@@ -89,6 +89,7 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ImportTagCommand(hoCache));
                 context.AddCommand(new ImportLooseTagCommand(hoCache));
                 context.AddCommand(new TagResourceCommand(hoCache));
+                context.AddCommand(new DeleteOrphanResourcesCommand(hoCache));
                 context.AddCommand(new ListUnusedTagsCommand(hoCache));
                 context.AddCommand(new ListDuplicateTagsCommand(hoCache));
                 context.AddCommand(new GetTagInfoCommand(hoCache));
@@ -130,6 +131,8 @@ namespace TagTool.Commands.Tags
 
                 context.AddCommand(new EditMapCommand(contextStack, hoCache));
                 context.AddCommand(new ListMapsCommand(hoCache));
+
+                context.AddCommand(new BitmapFormatsReportCommand(hoCache));
             }
 
             if(cache is GameCacheHaloOnline)

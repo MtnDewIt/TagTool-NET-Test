@@ -35,7 +35,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public CacheMissModeODSTValue CacheMissModeODST;
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
-            public AccousticsFlagsValue BindToAccoustics;
+            public AcousticsFlagsValue BindToAcoustics;
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public SuppressSpatializationFlagsValue SuppressSpatialization;
             [TagField(Length = 3, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST)]
@@ -172,7 +172,7 @@ namespace TagTool.Tags.Definitions
             }
 
             [Flags]
-            public enum AccousticsFlagsValue : sbyte
+            public enum AcousticsFlagsValue : sbyte
             {
                Outside = (1 << 0),
                Inside = (1 << 1)

@@ -10,9 +10,9 @@ namespace TagTool.Cache
         [TagField(Length = 20)]
         public byte[] Data;
 
-        public string GetHash()
+        public bool IsInvalid() 
         {
-            return BitConverter.ToString(Data).Replace("-", "");
+            return Array.TrueForAll(Data, b => b == 0);
         }
 
         public void SetHash(string hashString)
@@ -29,6 +29,11 @@ namespace TagTool.Cache
                 int length = Math.Min(chunkSize, parsedString.Length - start);
                 Data[i] = byte.Parse(parsedString.Substring(start, length), NumberStyles.HexNumber);
             }
+        }
+
+        public override string ToString()
+        {
+            return Convert.ToHexString(Data);
         }
     }
 }

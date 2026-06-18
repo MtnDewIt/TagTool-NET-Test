@@ -327,7 +327,7 @@ namespace TagTool.Tags
 				case TypeCode.Object when type == typeof(PixelShaderReference):
 				case TypeCode.Object when type == typeof(PlatformUnsignedValue) && CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._32Bit:
 				case TypeCode.Object when type == typeof(PlatformSignedValue) && CacheVersionDetection.GetPlatformType(cachePlatform) == PlatformType._32Bit:
-				case TypeCode.Object when type == typeof(IndexBufferIndex) && (targetVersion >= CacheVersion.HaloReach || targetVersion == CacheVersion.HaloOnlineED):
+				case TypeCode.Object when type == typeof(IndexBufferIndex) && (targetVersion >= CacheVersion.HaloReach || CacheVersionDetection.IsEldewrito(targetVersion)):
 				case TypeCode.Object when type == typeof(StructureSurfaceToTriangleMapping):
 					return 0x04;
 
