@@ -515,7 +515,7 @@ namespace TagTool.Porting.Gen3
                 foreach (var pattern in adlg.Patterns) 
                 {
                     if (pattern.DangerLevelMCC == Ai.VocalizationPattern.DangerEnumMCC.NONE)
-                        pattern.DangerLevel = Ai.VocalizationPattern.DangerEnum.NONE;
+                        pattern.DangerLevel = Ai.VocalizationPattern.DangerEnum.None;
                     else 
                         pattern.DangerLevel = pattern.DangerLevelMCC.ConvertLexical<Ai.VocalizationPattern.DangerEnum>();
 
