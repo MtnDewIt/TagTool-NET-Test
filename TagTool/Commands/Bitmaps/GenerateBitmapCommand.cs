@@ -29,7 +29,7 @@ namespace TagTool.Commands.Tags
                   "Creates bitm tag(s) with a specified name from DDS image(s) at the provided path."
                   + "\nIf <path> is a folder, a tag for each DDS within is created as <prefix>\\filename."
                   + "\nAny flags should be separated with commas (e.g. a,b,c)."
-                  + "\nOptional curve (linear, sRGB, gamma2, xRGB), conversion (DXT1, DXT5, DXN), and mip count (0–16)."
+                  + "\nOptional curve (Unknown, xRGB, Gamma2, Linear, OffsetLog, sRGB, Rec709), conversion (DXT1, DXT5, DXN), and mip count (0–16)."
                   + "\nIf no mipCount is provided, uses the DDS's own mips."
                   + "\nIf mipCount = -1, generates full mip chain."
 
@@ -107,10 +107,13 @@ namespace TagTool.Commands.Tags
                 {
                     switch (a)
                     {
-                        case "linear": curve = BitmapImageCurve.Linear; break;
-                        case "srgb": curve = BitmapImageCurve.sRGB; break;
-                        case "gamma2": curve = BitmapImageCurve.Gamma2; break;
+                        case "unknown": curve = BitmapImageCurve.Unknown; break;
                         case "xrgb": curve = BitmapImageCurve.xRGB; break;
+                        case "gamma2": curve = BitmapImageCurve.Gamma2; break;
+                        case "linear": curve = BitmapImageCurve.Linear; break;
+                        case "offsetlog": curve = BitmapImageCurve.OffsetLog; break;
+                        case "srgb": curve = BitmapImageCurve.sRGB; break;
+                        case "rec709": curve = BitmapImageCurve.Rec709; break;
                         case "dxt1":
                         case "dxt5":
                         case "dxn":
@@ -310,8 +313,8 @@ namespace TagTool.Commands.Tags
                     0x31545844 => BitmapFormat.Dxt1,
                     0x33545844 => BitmapFormat.Dxt3,
                     0x35545844 => BitmapFormat.Dxt5,
+                    0x32495441 => BitmapFormat.Dxn,  // BC5 ATI2/DXN
                     0 => BitmapFormat.A8R8G8B8,
-                    _ => throw new Exception("Unsupported DDS format: " + fourcc)
                 };
 
                 // Choose target format
