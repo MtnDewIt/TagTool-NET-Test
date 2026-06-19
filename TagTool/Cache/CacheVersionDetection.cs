@@ -420,12 +420,8 @@ namespace TagTool.Cache
                 case CacheVersion.HaloReachBeta:
                 case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
-                case CacheVersion.Halo4220811:
-                case CacheVersion.Halo4280911:
                 case CacheVersion.Halo4E3:
                 case CacheVersion.Halo4:
-                case CacheVersion.Halo4140113:
-                case CacheVersion.Halo4131113:
                     return false;
 
                 case CacheVersion.HaloXbox:
@@ -589,10 +585,6 @@ namespace TagTool.Cache
             switch (version)
             {
                 case CacheVersion.HaloReach11883:
-                case CacheVersion.Halo4220811:
-                case CacheVersion.Halo4280911:
-                case CacheVersion.Halo4140113:
-                case CacheVersion.Halo4131113:
                     return CacheBuildType.TagsBuild;
             }
 
@@ -714,12 +706,8 @@ namespace TagTool.Cache
                 case CacheVersion.HaloOnline700123:
                     return CacheGeneration.HaloOnline;
 
-                case CacheVersion.Halo4220811:
-                case CacheVersion.Halo4280911:
                 case CacheVersion.Halo4E3:
                 case CacheVersion.Halo4:
-                case CacheVersion.Halo4140113:
-                case CacheVersion.Halo4131113:
                 case CacheVersion.H2AMP:
                     return CacheGeneration.Fourth;
 
@@ -792,12 +780,8 @@ namespace TagTool.Cache
                 case CacheVersion.HaloReach:
                 case CacheVersion.HaloReach11883:
                     return GameTitle.HaloReach;
-                case CacheVersion.Halo4220811:
-                case CacheVersion.Halo4280911:
                 case CacheVersion.Halo4E3:
                 case CacheVersion.Halo4:
-                case CacheVersion.Halo4140113:
-                case CacheVersion.Halo4131113:
                     return GameTitle.Halo4;
                 case CacheVersion.H2AMP:
                     return GameTitle.Halo2AMP;
@@ -886,12 +870,8 @@ namespace TagTool.Cache
         HaloReachBeta,
         HaloReach,
         HaloReach11883,
-        Halo4220811,
-        Halo4280911,
         Halo4E3,
         Halo4,
-        Halo4140113,
-        Halo4131113,
         H2AMP
     }
 
