@@ -64,6 +64,7 @@ namespace TagTool.Porting.Gen2
                 "ctrl",
                 "bipd",
                 "nhdt",
+                "ssce",
             };
             // don't print a warning for these
             List<string> hiddenTagGroups = new List<string>
@@ -167,6 +168,7 @@ namespace TagTool.Porting.Gen2
                 case Equipment equipment:
                 case DeviceControl devicecontrol:
                 case Biped biped:
+                case SoundScenery soundScenery:
                     definition = ConvertObject(gen2definition, cacheStream);
                     break;
                 case CameraTrack track:
