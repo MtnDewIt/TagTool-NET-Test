@@ -65,6 +65,7 @@ namespace TagTool.Porting.Gen2
                 "bipd",
                 "nhdt",
                 "ssce",
+                "unic",
             };
             // don't print a warning for these
             List<string> hiddenTagGroups = new List<string>
@@ -220,6 +221,9 @@ namespace TagTool.Porting.Gen2
                 case NewHudDefinition nhdt:
                     NewHudDefinition gen2Hud = BlamCache.Deserialize<NewHudDefinition>(blamCacheStream, blamTag);
                     definition = ConvertNewHudDefinition(nhdt, gen2Hud, cacheStream, blamCacheStream, blamTag);
+                    break;
+                case MultilingualUnicodeStringList unic:
+                    definition = ConvertMultilingualUnicodeStringList(blamCacheStream, unic);
                     break;
                 default:
                     throw new NotSupportedException($"Porting tag group '{blamTag.Group}' not yet supported!");

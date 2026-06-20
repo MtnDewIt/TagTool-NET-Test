@@ -45,33 +45,10 @@ namespace TagTool.Cache.Gen1.Headers
         public override Tag GetHeaderSignature() => HeaderSignature;
         public override Tag GetFooterSignature() => FooterSignature;
         public override ulong GetTagsHeaderWhenLoaded() => TagsOffset;
-        public override ulong GetExpectedBaseAddress() => 0;
         public override uint GetSize() => Size;
         public override string GetName() => Name;
         public override string GetBuildNumber() => BuildNumber;
-        public override string GetTagPath() => null;
-        public override int GetMapId() => -1;
-        public override int GetScenarioIndex() => -1;
         public override ScenarioType GetScenarioType() => ScenarioType;
         public override CacheFileSharedType GetSharedCacheFileType() => CacheFileSharedType.None;
-        public override int GetStringIdCount() => -1;
-        public override int GetStringIdDataCount() => -1;
-        public override uint GetStringIdIndexOffset() => 0;
-        public override uint GetStringIdDataOffset() => 0;
-        public override int GetStringIdNamespaceCount() => -1;
-        public override uint GetStringIdNamespaceOffset() => 0;
-        public override int GetDebugTagNameCount() => -1;
-        public override uint GetDebugTagNameDataOffset() => 0;
-        public override int GetDebugTagNameDataSize() => -1;
-        public override uint GetDebugTagNameIndexOffset() => 0;
-        public override uint GetTagsOffset() => 0;
-        public override uint GetTagsVirtualBase() => 0;
-        public override bool GetCompression() => false;
-        public override int GetCompressedDataChunkSize() => -1;
-        public override int GetCompressedDataOffset() => -1;
-        public override int GetCompressedChunkTableOffset() => -1;
-        public override int GetCompressedChunkCount() => -1;
-        public override CacheFileSectionTable GetSectionTable() => null;
-        public override CacheFileSectionFileBounds GetReports() => null;
     }
 }

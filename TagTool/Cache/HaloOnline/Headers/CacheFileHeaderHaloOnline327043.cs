@@ -126,19 +126,12 @@ namespace TagTool.Cache.HaloOnline.Headers
         public override int GetStringIdDataCount() => StringIdDataCount;
         public override uint GetStringIdIndexOffset() => StringIdIndexOffset;
         public override uint GetStringIdDataOffset() => StringIdDataOffset;
-        public override int GetStringIdNamespaceCount() => -1;
-        public override uint GetStringIdNamespaceOffset() => 0;
         public override int GetDebugTagNameCount() => DebugTagNameCount;
         public override uint GetDebugTagNameDataOffset() => DebugTagNameDataOffset;
         public override int GetDebugTagNameDataSize() => DebugTagNameDataSize;
         public override uint GetDebugTagNameIndexOffset() => DebugTagNameIndexOffset;
         public override uint GetTagsOffset() => TagsOffset;
-        public override uint GetTagsVirtualBase() => 0;
         public override bool GetCompression() => Uncompressed;
-        public override int GetCompressedDataChunkSize() => -1;
-        public override int GetCompressedDataOffset() => -1;
-        public override int GetCompressedChunkTableOffset() => -1;
-        public override int GetCompressedChunkCount() => -1;
         public override CacheFileSectionTable GetSectionTable() => SectionTable;
         public override CacheFileSectionFileBounds GetReports() => Reports;
 

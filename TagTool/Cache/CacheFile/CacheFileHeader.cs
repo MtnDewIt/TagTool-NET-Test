@@ -159,44 +159,46 @@ namespace TagTool.Cache
             }
         }
 
-        public abstract Tag GetHeaderSignature();
-        public abstract Tag GetFooterSignature();
-        public abstract ulong GetTagsHeaderWhenLoaded();
-        public abstract ulong GetExpectedBaseAddress();
-        public abstract uint GetSize();
-        public abstract string GetName();
-        public abstract string GetBuildNumber();
-        public abstract string GetTagPath();
-        public abstract int GetMapId();
-        public abstract int GetScenarioIndex();
-        public abstract ScenarioType GetScenarioType();
-        public abstract CacheFileSharedType GetSharedCacheFileType();
+        public virtual Tag GetHeaderSignature() => Tag.Null;
+        public virtual Tag GetFooterSignature() => Tag.Null;
+        public virtual ulong GetTagsHeaderWhenLoaded() => 0;
+        public virtual ulong GetExpectedBaseAddress() => 0;
+        public virtual uint GetSize() => 0;
+        public virtual string GetName() => string.Empty;
+        public virtual string GetBuildNumber() => string.Empty;
+        public virtual string GetTagPath() => string.Empty;
+        public virtual int GetMapId() => -1;
+        public virtual int GetScenarioIndex() => -1;
+        public virtual ScenarioType GetScenarioType() => ScenarioType.None;
+        public virtual CacheFileSharedType GetSharedCacheFileType() => CacheFileSharedType.None;
 
-        public abstract int GetStringIdCount();
-        public abstract int GetStringIdDataCount();
-        public abstract uint GetStringIdIndexOffset();
-        public abstract uint GetStringIdDataOffset();
-        public abstract int GetStringIdNamespaceCount();
-        public abstract uint GetStringIdNamespaceOffset();
+        public virtual int GetStringIdCount() => -1;
+        public virtual int GetStringIdDataCount() => -1;
+        public virtual uint GetStringIdIndexOffset() => 0;
+        public virtual uint GetStringIdDataOffset() => 0;
+        public virtual int GetStringIdNamespaceCount() => -1;
+        public virtual uint GetStringIdNamespaceOffset() => 0;
 
-        public abstract int GetDebugTagNameCount();
-        public abstract uint GetDebugTagNameDataOffset();
-        public abstract int GetDebugTagNameDataSize();
-        public abstract uint GetDebugTagNameIndexOffset();
+        public virtual int GetDebugTagNameCount() => -1;
+        public virtual uint GetDebugTagNameDataOffset() => 0;
+        public virtual int GetDebugTagNameDataSize() => -1;
+        public virtual uint GetDebugTagNameIndexOffset() => 0;
 
-        public abstract uint GetTagsOffset();
-        public abstract uint GetTagsVirtualBase();
+        public virtual uint GetTagsOffset() => 0;
+        public virtual uint GetTagsVirtualBase() => 0;
 
-        public abstract bool GetCompression();
-        public abstract int GetCompressedDataChunkSize();
-        public abstract int GetCompressedDataOffset();
-        public abstract int GetCompressedChunkTableOffset();
-        public abstract int GetCompressedChunkCount();
+        public virtual bool GetCompression() => false;
+        public virtual int GetCompressedDataChunkSize() => -1;
+        public virtual int GetCompressedDataOffset() => -1;
+        public virtual int GetCompressedChunkTableOffset() => -1;
+        public virtual int GetCompressedChunkCount() => -1;
 
-        public abstract CacheFileSectionTable GetSectionTable();
-        public abstract CacheFileSectionFileBounds GetReports();
-        
-        // TODO: Figure out a better way of handling this
+        public virtual uint GetCustomLanguagePacksOffset() => 0;
+        public virtual int GetCustomLanguagePacksSize() => -1;
+
+        public virtual CacheFileSectionTable GetSectionTable() => null;
+        public virtual CacheFileSectionFileBounds GetReports() => null;
+
         public virtual void SetScenarioIndex(int index) { return; }
         public virtual void SetScenarioType(ScenarioType scenarioType) { return; }
     }
