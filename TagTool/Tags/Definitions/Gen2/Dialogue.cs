@@ -22,6 +22,7 @@ namespace TagTool.Tags.Definitions.Gen2
         [Flags]
         public enum FlagsValue : uint
         {
+            None = 0,
             Female = 1 << 0
         }
         
@@ -38,6 +39,7 @@ namespace TagTool.Tags.Definitions.Gen2
             [Flags]
             public enum FlagsValue : ushort
             {
+                None = 0,
                 NewVocalization = 1 << 0
             }
         }

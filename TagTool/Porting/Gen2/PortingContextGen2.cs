@@ -66,6 +66,7 @@ namespace TagTool.Porting.Gen2
                 "nhdt",
                 "ssce",
                 "snde",
+                "udlg",
                 "unic",
             };
             // don't print a warning for these
@@ -218,6 +219,9 @@ namespace TagTool.Porting.Gen2
                     break;
                 case SoundEnvironment snde:
                     definition = ConvertSoundEnvironment(snde);
+                    break;
+                case Dialogue udlg:
+                    definition = ConvertDialogue(cacheStream, udlg);
                     break;
                 case NewHudDefinition nhdt:
                     NewHudDefinition gen2Hud = BlamCache.Deserialize<NewHudDefinition>(blamCacheStream, blamTag);
