@@ -282,7 +282,7 @@ namespace TagTool.Porting.Gen2
             Dialogue dialogue = new()
             {
                 GlobalDialogueInfo = gen2Dialogue.GlobalDialogueInfo,
-                MissionDialogueDesignator = ConvertStringId(gen2Dialogue.MissionDialogueDesignator)
+                MissionDialogueDesignator = gen2Dialogue.MissionDialogueDesignator
             };
 
             AutoConverter.TranslateEnum(gen2Dialogue.Flags, out dialogue.Flags, dialogue.Flags.GetType());
