@@ -20,6 +20,7 @@ using TagTool.Tags.Definitions.Common;
 using TagTool.Tags.Resources;
 using static TagTool.Porting.Gen2.Gen2BspGeometryConverter;
 using static TagTool.Tags.Definitions.Scenario;
+using static TagTool.Tags.Definitions.Scenario.LightVolumeInstance;
 using static TagTool.Tags.Definitions.Scenario.SpawnDatum;
 using static TagTool.Tags.Definitions.Scenario.ZoneSetPvsBlock;
 using Gen2Scenario = TagTool.Tags.Definitions.Gen2.Scenario;
@@ -915,6 +916,68 @@ namespace TagTool.Porting.Gen2
                 newScenario.SoundScenery.Add(soundScenery);
 
                 UniqueIDList.Add((uint)sndscenobj.ObjectData.ObjectId.UniqueId);
+            }
+
+            // Light Volumes
+            foreach (var lighpal in gen2Tag.LightVolumesPalette) 
+            {
+                newScenario.LightVolumePalette.Add(new Scenario.ScenarioPaletteEntry
+                {
+                    Object = lighpal.Name
+                });
+            }
+            for (var lighobjindex = 0; lighobjindex < gen2Tag.LightVolumes.Count; lighobjindex++)
+            {
+                var lightobj = gen2Tag.LightVolumes[lighobjindex];
+                var lightVolume = new Scenario.LightVolumeInstance
+                {
+                    PaletteIndex = lightobj.Type,
+                    NameIndex = lightobj.Name,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags { Flags = (Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags)lightobj.ObjectData.PlacementFlags },
+                    Position = lightobj.ObjectData.Position,
+                    Rotation = lightobj.ObjectData.Rotation,
+                    Scale = lightobj.ObjectData.Scale,
+                    BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)lightobj.ObjectData.BspPolicy,
+                    CanAttachToBspFlags = (ushort)(lightobj.ObjectData.ManualBspFlags + 1),
+                    EditorFolder = -1,
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)lightobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)lightobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.None },
+                        Source = (ObjectIdentifier.SourceValue)lightobj.ObjectData.ObjectId.Source,
+                    },
+                    PowerGroup = lightobj.DeviceData.PowerGroup,
+                    PositionGroup = lightobj.DeviceData.PositionGroup,
+                    DeviceFlags = (Scenario.LightVolumeInstance.DeviceFlagsValue)lightobj.DeviceData.Flags,
+                    Flags = (Scenario.LightVolumeInstance.LightVolumeFlags)lightobj.LightData.Flags,
+                    LightmapType = (Scenario.LightVolumeInstance.LightmapTypeValue)lightobj.LightData.LightmapType,
+                    LightmapFlags = (Scenario.LightVolumeInstance.LightmapFlagsValue)lightobj.LightData.LightmapFlags,
+                    LightmapHalfLife = lightobj.LightData.LightmapHalfLife,
+                    LightmapLightScale = lightobj.LightData.LightmapLightScale,
+                    TargetPoint = lightobj.LightData.TargetPoint,
+                    Width = lightobj.LightData.Width,
+                    HeightScale = lightobj.LightData.HeightScale,
+                    FieldOfView = lightobj.LightData.FieldOfView,
+                    FalloffDistance = lightobj.LightData.FalloffDistance,
+                    CutoffDistance = lightobj.LightData.CutoffDistance,
+                };
+
+                switch (lightobj.LightData.Type) 
+                {
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Sphere:
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Orthogonal:
+                        lightVolume.Type = LightVolumeType.Sphere;
+                        break;
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Projective:
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Pyramid:
+                        lightVolume.Type = LightVolumeType.Frustum;
+                        break;
+                }
+
+                newScenario.LightVolumes.Add(lightVolume);
+
+                UniqueIDList.Add((uint)lightobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Player starting locations

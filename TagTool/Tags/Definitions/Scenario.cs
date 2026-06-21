@@ -1848,26 +1848,44 @@ namespace TagTool.Tags.Definitions
         {
             public short PowerGroup;
             public short PositionGroup;
-            public uint DeviceFlags;
-            public TypeValue2 Type2;
-            public ushort Flags;
+            public DeviceFlagsValue DeviceFlags;
+            public LightVolumeType Type;
+            public LightVolumeFlags Flags;
             public LightmapTypeValue LightmapType;
-            public ushort LightmapFlags;
+            public LightmapFlagsValue LightmapFlags;
             public float LightmapHalfLife;
             public float LightmapLightScale;
-            public float X;
-            public float Y;
-            public float Z;
+            public RealPoint3d TargetPoint;
             public float Width;
             public float HeightScale;
             public Angle FieldOfView;
             public float FalloffDistance;
             public float CutoffDistance;
 
-            public enum TypeValue2 : short
+            [Flags]
+            public enum DeviceFlagsValue : uint 
+            {
+                None = 0,
+                InitiallyOpen10 = 1 << 0,
+                InitiallyOff00 = 1 << 1,
+                CanChangeOnlyOnce = 1 << 2,
+                PositionReversed = 1 << 3,
+                NotUsableFromAnySide = 1 << 4
+            };
+
+            public enum LightVolumeType : short
             {
                 Sphere,
-                Projective,
+                Frustum,
+            }
+
+            [Flags]
+            public enum LightVolumeFlags : ushort
+            {
+                None = 0,
+                CustomGeometry = 1 << 0,
+                Unused = 1 << 1,
+                CinematicOnly = 1 << 2
             }
 
             public enum LightmapTypeValue : short
@@ -1876,6 +1894,13 @@ namespace TagTool.Tags.Definitions
                 DynamicOnly,
                 DynamicWithLightmaps,
                 LightmapsOnly,
+            }
+
+            [Flags]
+            public enum LightmapFlagsValue : ushort
+            {
+                None = 0,
+                Unused = 1 << 0
             }
         }
 
