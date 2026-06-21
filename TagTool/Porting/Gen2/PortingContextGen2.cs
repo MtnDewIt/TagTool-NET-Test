@@ -64,6 +64,7 @@ namespace TagTool.Porting.Gen2
                 "ctrl",
                 "bipd",
                 "nhdt",
+                "foot",
                 "ssce",
                 "snde",
                 "udlg",
@@ -184,6 +185,9 @@ namespace TagTool.Porting.Gen2
                 case ParticlePhysics pmov:
                 case DamageEffect damage:
                     definition = ConvertEffect(gen2definition, origGen2definition, cacheStream, blamCacheStream);
+                    break;
+                case MaterialEffects foot:
+                    definition = ConvertMaterialEffects(foot);
                     break;
                 case Shader shader:
                     definition = ConvertShader(shader, (Shader)origGen2definition, blamTag.Name, cacheStream, blamCacheStream, blamTag);

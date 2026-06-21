@@ -17,7 +17,7 @@ namespace TagTool.Tags.Definitions.Gen2
         {
             public List<OldMaterialEffectMaterialBlock> OldMaterialsDoNotUse;
             public List<MaterialEffectMaterialBlock> Sounds;
-            public List<MaterialEffectMaterialBlock1> Effects;
+            public List<MaterialEffectMaterialBlock> Effects;
             
             [TagStructure(Size = 0x1C)]
             public class OldMaterialEffectMaterialBlock : TagStructure
@@ -27,11 +27,12 @@ namespace TagTool.Tags.Definitions.Gen2
                 [TagField(ValidTags = new [] { "snd!","lsnd" })]
                 public CachedTag Sound;
                 public StringId MaterialName;
-                [TagField(Length = 0x4)]
-                public byte[] Unknown;
+                public short RuntimeMaterialIndex;
+                [TagField(Length = 0x2, Flags = TagFieldFlags.Padding)]
+                public byte[] Padding0;
                 public SweetenerModeValue SweetenerMode;
                 [TagField(Length = 0x3, Flags = TagFieldFlags.Padding)]
-                public byte[] Padding;
+                public byte[] Padding1;
                 
                 public enum SweetenerModeValue : sbyte
                 {
@@ -49,30 +50,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [TagField(ValidTags = new [] { "snd!","lsnd","effe" })]
                 public CachedTag SecondaryTagEffectOrSound;
                 public StringId MaterialName;
-                [TagField(Length = 0x2)]
-                public byte[] Unknown;
-                public SweetenerModeValue SweetenerMode;
-                [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
-                public byte[] Padding;
-                
-                public enum SweetenerModeValue : sbyte
-                {
-                    SweetenerDefault,
-                    SweetenerEnabled,
-                    SweetenerDisabled
-                }
-            }
-            
-            [TagStructure(Size = 0x18)]
-            public class MaterialEffectMaterialBlock1 : TagStructure
-            {
-                [TagField(ValidTags = new [] { "snd!","lsnd","effe" })]
-                public CachedTag TagEffectOrSound;
-                [TagField(ValidTags = new [] { "snd!","lsnd","effe" })]
-                public CachedTag SecondaryTagEffectOrSound;
-                public StringId MaterialName;
-                [TagField(Length = 0x2)]
-                public byte[] Unknown;
+                public short RuntimeMaterialIndex;
                 public SweetenerModeValue SweetenerMode;
                 [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
                 public byte[] Padding;
