@@ -65,6 +65,7 @@ namespace TagTool.Porting.Gen2
                 "bipd",
                 "nhdt",
                 "ssce",
+                "snde",
                 "unic",
             };
             // don't print a warning for these

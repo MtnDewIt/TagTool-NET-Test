@@ -64,6 +64,41 @@ namespace TagTool.Porting.Gen2
                 });
             }
 
+            //acoustics palette
+            foreach (var soundEnvironmentPalette in gen2Tag.SoundEnvironmentPalette)
+            {
+                ScenarioStructureBsp.AcousticsPaletteBlock block = new()
+                {
+                    Name = CacheContext.StringTable.AddString(soundEnvironmentPalette.Name),
+                    SoundEnvironment = soundEnvironmentPalette.SoundEnvironment,
+                    ReverbCutoffDistance = soundEnvironmentPalette.CutoffDistance,
+                    ReverbInterpolationSpeed = soundEnvironmentPalette.InterpolationSpeed,
+                };
+
+                newSbsp.AcousticsPalette.Add(block);
+            }
+
+            // #TODO: Merge gen2Tag.BackgroundSoundPalette into existing acoustics palette, somehow :/
+            /*
+            for (int i = 0; i < gen2Tag.BackgroundSoundPalette.Count; i++)
+            {
+                if (i < newSbsp.AcousticsPalette.Count)
+                {
+                    Gen2ScenarioStructureBsp.StructureBspBackgroundSoundPaletteBlock backgroundSoundpalette = gen2Tag.BackgroundSoundPalette[i];
+
+                    newSbsp.AcousticsPalette[i].AmbienceBackgroundSound = backgroundSoundpalette.BackgroundSound;
+                    newSbsp.AcousticsPalette[i].AmbienceInsideClusterSound = backgroundSoundpalette.InsideClusterSound;
+                    newSbsp.AcousticsPalette[i].AmbienceCutoffDistance = backgroundSoundpalette.CutoffDistance;
+                    newSbsp.AcousticsPalette[i].AmbienceInteriorScale = backgroundSoundpalette.InteriorScale;
+                    newSbsp.AcousticsPalette[i].AmbiencePortalScale = backgroundSoundpalette.PortalScale;
+                    newSbsp.AcousticsPalette[i].AmbienceExteriorScale = backgroundSoundpalette.ExteriorScale;
+                    newSbsp.AcousticsPalette[i].AmbienceInterpolationSpeed = backgroundSoundpalette.InterpolationSpeed;
+
+                    AutoConverter.TranslateEnum(backgroundSoundpalette.ScaleFlags, out newSbsp.AcousticsPalette[i].AmbienceScaleFlags, newSbsp.AcousticsPalette[i].AmbienceScaleFlags.GetType());
+                }
+            }
+            */
+
             //RENDER GEO RESOURCE
             //begin building render geo resource
             var builder = new RenderModelBuilder(CacheContext);
