@@ -65,39 +65,46 @@ namespace TagTool.Porting.Gen2
             }
 
             //acoustics palette
-            foreach (var soundEnvironmentPalette in gen2Tag.SoundEnvironmentPalette)
+            int maxCount = Math.Max(gen2Tag.SoundEnvironmentPalette.Count, gen2Tag.BackgroundSoundPalette.Count);
+
+            for (int i = 0; i < maxCount; i++)
             {
-                ScenarioStructureBsp.AcousticsPaletteBlock block = new()
+                ScenarioStructureBsp.AcousticsPaletteBlock block = new();
+
+                if (i < gen2Tag.SoundEnvironmentPalette.Count)
                 {
-                    Name = CacheContext.StringTable.AddString(soundEnvironmentPalette.Name),
-                    SoundEnvironment = soundEnvironmentPalette.SoundEnvironment,
-                    ReverbCutoffDistance = soundEnvironmentPalette.CutoffDistance,
-                    ReverbInterpolationSpeed = soundEnvironmentPalette.InterpolationSpeed,
-                };
+                    var soundEnvironmentPalette = gen2Tag.SoundEnvironmentPalette[i];
 
-                newSbsp.AcousticsPalette.Add(block);
-            }
+                    block.Name = CacheContext.StringTable.AddString(soundEnvironmentPalette.Name);
+                    block.SoundEnvironment = soundEnvironmentPalette.SoundEnvironment;
+                    block.ReverbCutoffDistance = soundEnvironmentPalette.CutoffDistance;
+                    block.ReverbInterpolationSpeed = soundEnvironmentPalette.InterpolationSpeed;
+                }
 
-            // #TODO: Merge gen2Tag.BackgroundSoundPalette into existing acoustics palette, somehow :/
-            /*
-            for (int i = 0; i < gen2Tag.BackgroundSoundPalette.Count; i++)
-            {
-                if (i < newSbsp.AcousticsPalette.Count)
+                if (i < gen2Tag.BackgroundSoundPalette.Count)
                 {
-                    Gen2ScenarioStructureBsp.StructureBspBackgroundSoundPaletteBlock backgroundSoundpalette = gen2Tag.BackgroundSoundPalette[i];
+                    var backgroundSoundpalette = gen2Tag.BackgroundSoundPalette[i];
 
-                    newSbsp.AcousticsPalette[i].AmbienceBackgroundSound = backgroundSoundpalette.BackgroundSound;
-                    newSbsp.AcousticsPalette[i].AmbienceInsideClusterSound = backgroundSoundpalette.InsideClusterSound;
-                    newSbsp.AcousticsPalette[i].AmbienceCutoffDistance = backgroundSoundpalette.CutoffDistance;
-                    newSbsp.AcousticsPalette[i].AmbienceInteriorScale = backgroundSoundpalette.InteriorScale;
-                    newSbsp.AcousticsPalette[i].AmbiencePortalScale = backgroundSoundpalette.PortalScale;
-                    newSbsp.AcousticsPalette[i].AmbienceExteriorScale = backgroundSoundpalette.ExteriorScale;
-                    newSbsp.AcousticsPalette[i].AmbienceInterpolationSpeed = backgroundSoundpalette.InterpolationSpeed;
+                    block.Name = block.Name == StringId.Empty ? CacheContext.StringTable.AddString(backgroundSoundpalette.Name) : block.Name;
+                    block.AmbienceBackgroundSound = backgroundSoundpalette.BackgroundSound;
+                    block.AmbienceInsideClusterSound = backgroundSoundpalette.InsideClusterSound;
+                    block.AmbienceCutoffDistance = backgroundSoundpalette.CutoffDistance;
+                    block.AmbienceInteriorScale = backgroundSoundpalette.InteriorScale;
+                    block.AmbiencePortalScale = backgroundSoundpalette.PortalScale;
+                    block.AmbienceExteriorScale = backgroundSoundpalette.ExteriorScale;
+                    block.AmbienceInterpolationSpeed = backgroundSoundpalette.InterpolationSpeed;
 
-                    AutoConverter.TranslateEnum(backgroundSoundpalette.ScaleFlags, out newSbsp.AcousticsPalette[i].AmbienceScaleFlags, newSbsp.AcousticsPalette[i].AmbienceScaleFlags.GetType());
+                    AutoConverter.TranslateEnum(backgroundSoundpalette.ScaleFlags, out block.AmbienceScaleFlags, block.AmbienceScaleFlags.GetType());
+                }
+
+                // Ignore blocks that don't contain any valid references
+                if (block.SoundEnvironment != null ||
+                    block.AmbienceBackgroundSound != null ||
+                    block.AmbienceInsideClusterSound != null) 
+                {
+                    newSbsp.AcousticsPalette.Add(block);
                 }
             }
-            */
 
             //RENDER GEO RESOURCE
             //begin building render geo resource
