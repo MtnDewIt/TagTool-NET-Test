@@ -163,6 +163,12 @@ namespace TagTool.Porting.Gen3
             sound.TotalSampleCount = totalSampleCount;
             sound.PitchRanges = newPitchRanges;
 
+            // Set ImportType based on pitch range count
+            if (newPitchRanges.Count <= 1)
+                sound.ImportType = ImportType.SingleLayer;
+            else
+                sound.ImportType = ImportType.MultiLayer;
+
             ConvertExtraInfo(sound);
             ConvertLanguages(sound);
         }
