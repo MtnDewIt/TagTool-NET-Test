@@ -198,8 +198,11 @@ namespace TagTool.Commands.Sounds
                                     var frameSync = Array.IndexOf(permutationData, (byte)255);
                                     Array.Copy(permutationData, frameSync, header, 0, 32);
                                     bits = new BitArray(header);
-
-                                    if (bits[18] == false && bits[19] == false && bits[11] == true && bits[12] == true) // 44100Hz, MPEG1
+                                    if (bits[18] == true && bits[19] == false && bits[11] == true && bits[12] == true) // 48000Hz, MPEG1
+                                    {
+                                        Definition.SampleRate.value = SampleRate.SampleRateValue._48khz;
+                                    }
+                                    else if (bits[18] == false && bits[19] == false && bits[11] == true && bits[12] == true) // 44100Hz, MPEG1
                                     {
                                         Definition.SampleRate.value = SampleRate.SampleRateValue._44khz;
                                     }
@@ -212,7 +215,7 @@ namespace TagTool.Commands.Sounds
                                         Definition.SampleRate.value = SampleRate.SampleRateValue._22khz;
                                     }
                                     else
-                                        return new TagToolError(CommandError.CustomError, $"Sample rate not supported! Use 44100, 32000, or 22050Hz mp3s.");
+                                        return new TagToolError(CommandError.CustomError, $"Sample rate not supported! Use 48000, 44100, 32000, or 22050Hz mp3s.");
 
                                     // channel configuration
 
@@ -230,7 +233,7 @@ namespace TagTool.Commands.Sounds
                                     string bitrateNibble = BoolToBinary(bits[23]) + BoolToBinary(bits[22]) + BoolToBinary(bits[21]) + BoolToBinary(bits[20]);
                                     var bitrateLookup = new Dictionary<string, int>();
 
-                                    if (Definition.SampleRate.value == SampleRate.SampleRateValue._44khz || Definition.SampleRate.value == SampleRate.SampleRateValue._32khz)
+                                    if (Definition.SampleRate.value == SampleRate.SampleRateValue._48khz || Definition.SampleRate.value == SampleRate.SampleRateValue._44khz || Definition.SampleRate.value == SampleRate.SampleRateValue._32khz)
                                         bitrateLookup = new Dictionary<string, int>(){  // MPEG1 Layer 3 bitrates
                                             { "0001", 32 }, { "0010", 40 }, { "0011", 48 }, { "0100", 56 }, { "0101", 64 }, { "0110", 80 }, { "0111", 96 },
                                             { "1000", 112 }, { "1001", 128 }, { "1010", 160 }, { "1011", 192 }, { "1100", 224 }, { "1101", 256 }, { "1110", 320 }
@@ -395,7 +398,7 @@ namespace TagTool.Commands.Sounds
 
         private static SampleRate.SampleRateValue GetSoundSampleRateUser()
         {
-            int sampleRate = GetIntFromUser($"Enter the sample rate of the sound: (0: 22050 Hz, 1: 44100 Hz, 2: 32000 Hz): ");
+            int sampleRate = GetIntFromUser($"Enter the sample rate of the sound: (0: 22050 Hz, 1: 44100 Hz, 2: 32000 Hz, 3: 48000 Hz): ");
             switch (sampleRate)
             {
                 case 0:
@@ -404,6 +407,8 @@ namespace TagTool.Commands.Sounds
                     return SampleRate.SampleRateValue._44khz;
                 case 2:
                     return SampleRate.SampleRateValue._32khz;
+                case 3:
+                    return SampleRate.SampleRateValue._48khz;
                 default:
                     Log.Warning($"Invalid sample rate, using 44100 Hz");
                     return SampleRate.SampleRateValue._44khz;
@@ -420,6 +425,8 @@ namespace TagTool.Commands.Sounds
                     return SampleRate.SampleRateValue._44khz;
                 case 32000:
                     return SampleRate.SampleRateValue._32khz;
+                case 48000:
+                    return SampleRate.SampleRateValue._48khz;
                 default:
                     Log.Warning("Invalid sample rate, using 44100 Hz");
                     return SampleRate.SampleRateValue._44khz;
