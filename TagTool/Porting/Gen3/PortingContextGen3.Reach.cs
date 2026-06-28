@@ -92,7 +92,7 @@ namespace TagTool.Porting.Gen3
                 {
                     ssceInstance.OverrideDistance = new Bounds<float>
                     {
-                        Lower = ssceInstance.DistanceParameters.DontPlayDistance,
+                        Lower = ssceInstance.DistanceParameters.MinimumDistance,
                         Upper = ssceInstance.DistanceParameters.MaximumDistance
                     };
                 }
