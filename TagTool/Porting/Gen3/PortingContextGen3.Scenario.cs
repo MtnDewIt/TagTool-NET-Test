@@ -734,11 +734,10 @@ namespace TagTool.Porting.Gen3
                         // TODO: proper conversion for fog.
 
                         AtmosphereFog.FogSettings fogSettings = null;
-
-                        if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
-                            fogSettings = fogg.GroundFog;
-                        else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
+                        if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
                             fogSettings = fogg.SkyFog;
+                        else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
+                            fogSettings = fogg.GroundFog;
 
                         if (fogSettings != null)
                         {
@@ -768,17 +767,23 @@ namespace TagTool.Porting.Gen3
                             }
 
                             atmosphereSettings.SeaLevel = fogSettings.BaseHeight; // WU, lowest height of scenario
+                            // WU, height above sea where atmo 30% thick
+                            atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight * 0.3f;
+                            // the MieHeightScale is always lower than the RayleighHeightScale. Speculative guess but it works ig
+                            // Maybe get the value from ground fog height?
+                            atmosphereSettings.MieHeightScale = fogSettings.FogHeight * 0.05f;
+                            
+                            // Another speculative guess
+                            atmosphereSettings.RayleighMultiplier = fogSettings.FogThickness;
+                            atmosphereSettings.MieMultiplier = fogSettings.FogThickness * 0.25f;
 
-                            // these are definitely wrong
-                            atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
-                            atmosphereSettings.MieHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
-
-                            atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 65536.0f;
+                            atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 100000.0f;
                         }
-
-                        // todo: scale these with fog thickness
-                        atmosphereSettings.RayleighMultiplier = 0.05f; // scattering amount, small
-                        atmosphereSettings.MieMultiplier = 0.025f; // scattering amount, large
+                        else
+                        {
+                            atmosphereSettings.RayleighMultiplier = 0.05f; // scattering amount, small
+                            atmosphereSettings.MieMultiplier = 0.025f; // scattering amount, large
+                        }
 
                         atmosphereSettings.SunPhaseFunction = 0.2f; //todo
                         atmosphereSettings.Desaturation = 0.0f;

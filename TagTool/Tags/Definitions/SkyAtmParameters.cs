@@ -101,10 +101,14 @@ namespace TagTool.Tags.Definitions
                 // todo: B particle and molecular calculation according to tool.
                 // these are still accurate, as the only thing that changes these constants are:
                 // mie_multiplier, rayleigh_multiplier, desaturation
-                BetaM = new RealVector3d(0.000005893206f, 0.000010048514f, 0.00002117206f);
-                BetaP = new RealVector3d(0.00005737284f, 0.00007397888f, 0.00010511476f);
-                BetaMThetaPrefix = new RealVector3d(0.0000003577744f, 0.0000006100418f, 0.0000012853482f);
-                BetaPThetaPrefix = new RealVector3d(0.000013338932f, 0.000017345952f, 0.000024978172f);
+                                    //  (0.000005893206f, 0.000010048514f, 0.00002117206f);
+                BetaM = new RealVector3d(0.000010048514f, 0.000010048514f, 0.000010048514f);
+                BetaMThetaPrefix = BetaM * (3.0f / (16.0f * (float)Math.PI));
+                
+                                    //  (0.00005737284f, 0.00007397888f, 0.00010511476f);
+                BetaP = new RealVector3d(0.00007397888f, 0.00007397888f, 0.00007397888f);
+                float miePhasePrefix = 3.0f / (4.0f * (float)Math.PI) * (1.0f - SunPhaseFunction * SunPhaseFunction);
+                BetaPThetaPrefix = new RealVector3d(BetaP.I * miePhasePrefix, BetaP.J * miePhasePrefix, BetaP.K * miePhasePrefix);
 
                 // apply multipliers
                 BetaM *= RayleighMultiplier;
@@ -147,7 +151,7 @@ namespace TagTool.Tags.Definitions
             {
                 SunAnglePitch = MathHelper.Clamp(SunAnglePitch, 0.0f, 90.0f);
                 SunAngleYaw = MathHelper.Clamp(SunAngleYaw, 0.0f, 360.0f);
-                Color = MathHelper.Clamp(Color, 0.0f, 1.0f);
+                // Color = MathHelper.Clamp(Color, 0.0f, 1.0f);
                 Intensity = MathHelper.Clamp(Intensity, 0.0f, 65536.0f);
                 SeaLevel = MathHelper.Clamp(SeaLevel, -65536.0f, 65536.0f);
                 RayleignHeightScale = MathHelper.Clamp(RayleignHeightScale, 0.01f, 65536.0f);
