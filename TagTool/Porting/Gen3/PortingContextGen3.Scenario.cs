@@ -20,6 +20,12 @@ using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Porting.Gen3
 {
+    public enum ReachFogPortingMode
+    {
+        Auto,
+        Sky,
+        Ground
+    }
     partial class PortingContextGen3
     {
         private Scenario CurrentScenario = null;
@@ -705,14 +711,13 @@ namespace TagTool.Porting.Gen3
 
                 foreach (var atmospherePalette in scnr.Atmosphere)
                 {
-                    while (atmospherePalette.AtmosphereSettingIndex >= skya.AtmosphereSettings.Count)
-                        skya.AtmosphereSettings.Add(new SkyAtmParameters.AtmosphereProperty());
-
                     if (atmospherePalette.AtmosphereFog != null)
                     {
                         var fogg = BlamCache.Deserialize<AtmosphereFog>(blamCacheStream, atmospherePalette.AtmosphereFog);
 
-                        var atmosphereSettings = skya.AtmosphereSettings[atmospherePalette.AtmosphereSettingIndex];
+                        // Create a new entry for each fog instead of using the setting index, fixing the issue of multiple Atmosphere that have the same setting index overriding each other
+                        var atmosphereSettings = new SkyAtmParameters.AtmosphereProperty();
+                        skya.AtmosphereSettings.Add(atmosphereSettings);
 
                         atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.EnableAtmosphere;
                         atmosphereSettings.Name = (StringId)ConvertData(cacheStream, blamCacheStream, atmospherePalette.Name, null, null);
@@ -734,11 +739,23 @@ namespace TagTool.Porting.Gen3
                         // TODO: proper conversion for fog.
 
                         AtmosphereFog.FogSettings fogSettings = null;
-                        if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
-                            fogSettings = fogg.SkyFog;
-                        else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
-                            fogSettings = fogg.GroundFog;
+                        switch (Options.ReachFogType)
+                        {
+                            case Gen3.ReachFogPortingMode.Auto:
+                            default:
+                                if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
+                                    fogSettings = fogg.SkyFog;
+                                else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
+                                    fogSettings = fogg.GroundFog;
+                                break;
 
+                            case Gen3.ReachFogPortingMode.Sky:
+                                fogSettings = fogg.SkyFog;
+                                break;
+                            case Gen3.ReachFogPortingMode.Ground:
+                                fogSettings = fogg.GroundFog;
+                                break;
+                        }
                         if (fogSettings != null)
                         {
                             atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.OverrideRealSunValues;

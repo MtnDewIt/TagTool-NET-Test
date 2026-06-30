@@ -38,5 +38,9 @@ namespace TagTool.Porting
 
         [Description("Enables bitmap format optimization to reduce cache sizes")]
         public bool BitmapFormatOptimization = true;
+
+        [Description("Force which FogType to use when porting reach scenario (Auto, Sky, Ground)")]
+        public Gen3.ReachFogPortingMode ReachFogType = Gen3.ReachFogPortingMode.Auto;
+
     }
 }
