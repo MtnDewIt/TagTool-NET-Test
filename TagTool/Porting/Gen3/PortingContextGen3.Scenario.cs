@@ -23,8 +23,8 @@ namespace TagTool.Porting.Gen3
     public enum ReachFogPortingMode
     {
         Auto,
-        Sky,
-        Ground
+        ForceSky,
+        ForceGround
     }
     partial class PortingContextGen3
     {
@@ -749,10 +749,10 @@ namespace TagTool.Porting.Gen3
                                     fogSettings = fogg.GroundFog;
                                 break;
 
-                            case Gen3.ReachFogPortingMode.Sky:
+                            case Gen3.ReachFogPortingMode.ForceSky:
                                 fogSettings = fogg.SkyFog;
                                 break;
-                            case Gen3.ReachFogPortingMode.Ground:
+                            case Gen3.ReachFogPortingMode.ForceGround:
                                 fogSettings = fogg.GroundFog;
                                 break;
                         }
@@ -787,19 +787,28 @@ namespace TagTool.Porting.Gen3
                             // WU, height above sea where atmo 30% thick
                             atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight * 0.3f;
                             // the MieHeightScale is always lower than the RayleighHeightScale. Speculative guess but it works ig
-                            // Maybe get the value from ground fog height?
+                            // Maybe get the value from ground fog height? (fogSettings.FogHeight * 0.3f / 6.0f)
                             atmosphereSettings.MieHeightScale = fogSettings.FogHeight * 0.05f;
                             
+                            // Use default multipliers when fog thickness is zero
+                            if (fogSettings.FogThickness == 0.0f)
+                            {
+                                atmosphereSettings.RayleighMultiplier = 0.3f;
+                                atmosphereSettings.MieMultiplier = 0.075f;
+                            }
+                            else
                             // Another speculative guess
-                            atmosphereSettings.RayleighMultiplier = fogSettings.FogThickness;
-                            atmosphereSettings.MieMultiplier = fogSettings.FogThickness * 0.25f;
+                            {
+                                atmosphereSettings.RayleighMultiplier = fogSettings.FogThickness;
+                                atmosphereSettings.MieMultiplier = fogSettings.FogThickness * 0.25f;
+                            }
 
                             atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 100000.0f;
                         }
                         else
                         {
-                            atmosphereSettings.RayleighMultiplier = 0.05f; // scattering amount, small
-                            atmosphereSettings.MieMultiplier = 0.025f; // scattering amount, large
+                            atmosphereSettings.RayleighMultiplier = 0.3f; // scattering amount, small
+                            atmosphereSettings.MieMultiplier = 0.075f; // scattering amount, large
                         }
 
                         atmosphereSettings.SunPhaseFunction = 0.2f; //todo
@@ -809,7 +818,7 @@ namespace TagTool.Porting.Gen3
                 }
 
                 // validate all values and recalculate atmosphere constants
-                skya.Postprocess();
+                skya.Postprocess(Options.HackyFogPostProcessType);
 
                 CacheContext.Serialize(cacheStream, skyaTag, skya);
 

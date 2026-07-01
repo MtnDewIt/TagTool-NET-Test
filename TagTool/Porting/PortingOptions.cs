@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using TagTool.Audio;
+using TagTool.Tags.Definitions;
 
 namespace TagTool.Porting
 {
@@ -39,8 +40,11 @@ namespace TagTool.Porting
         [Description("Enables bitmap format optimization to reduce cache sizes")]
         public bool BitmapFormatOptimization = true;
 
-        [Description("Force which FogType to use when porting reach scenario (Auto, Sky, Ground)")]
+        [Description("Force which FogType to use when porting reach scenario")]
         public Gen3.ReachFogPortingMode ReachFogType = Gen3.ReachFogPortingMode.Auto;
+
+        [Description("Type of Fog Post-Process Hack to use when porting reach scenario. (BetaI = Less dense fog, BetaK = More dense fog)")]
+        public SkyAtmParameters.HackyPostProcessType HackyFogPostProcessType = SkyAtmParameters.HackyPostProcessType.BetaJ;
 
     }
 }
