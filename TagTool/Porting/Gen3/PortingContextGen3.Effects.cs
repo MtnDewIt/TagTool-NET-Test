@@ -75,9 +75,12 @@ namespace TagTool.Porting.Gen3
 
                             if (BlamCache.Platform == CachePlatform.MCC) 
                             {
-                                emitter.RuntimeMGpu.Properties = emitter.RuntimeMGpu.RuntimeGpuBlocks?[0].Properties;
-                                emitter.RuntimeMGpu.Functions = emitter.RuntimeMGpu.RuntimeGpuBlocks?[0].Functions;
-                                emitter.RuntimeMGpu.Colors = emitter.RuntimeMGpu.RuntimeGpuBlocks?[0].Colors;
+                                if (emitter.RuntimeMGpu.RuntimeGpuBlocks != null && emitter.RuntimeMGpu.RuntimeGpuBlocks.Count > 0)
+                                {
+                                    emitter.RuntimeMGpu.Properties = emitter.RuntimeMGpu.RuntimeGpuBlocks[0].Properties;
+                                    emitter.RuntimeMGpu.Functions = emitter.RuntimeMGpu.RuntimeGpuBlocks[0].Functions;
+                                    emitter.RuntimeMGpu.Colors = emitter.RuntimeMGpu.RuntimeGpuBlocks[0].Colors;
+                                }
                             }
                         }
                     }
