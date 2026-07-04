@@ -261,6 +261,11 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.MCC;
                     break;
 
+                case "Jul 16 2023 16:12:13":
+                    version = CacheVersion.HaloReach;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+
                 case "Apr  1 2023 17:35:22":
                     version = CacheVersion.Halo4;
                     cachePlatform = CachePlatform.MCC;

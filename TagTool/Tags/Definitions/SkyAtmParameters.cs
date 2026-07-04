@@ -48,6 +48,14 @@ namespace TagTool.Tags.Definitions
             LockEffectsToNearestCluster = 1 << 0
         }
 
+        public enum HackyPostProcessType
+        {
+            BetaI,
+            BetaJ,
+            BetaK,
+            Off
+        }
+
         [TagStructure(Size = 0xA4)]
         public class AtmosphereProperty : TagStructure
         {
@@ -96,15 +104,37 @@ namespace TagTool.Tags.Definitions
                 Bit3 = 1 << 3,
             }
 
-            private void PostprocessFogConstants()
+            private void PostprocessFogConstants(HackyPostProcessType hackyPostProcessType)
             {
+                switch (hackyPostProcessType)
+                {
+                    case SkyAtmParameters.HackyPostProcessType.Off:
+                    default:
+                        BetaM = new RealVector3d(0.000005893206f, 0.000010048514f, 0.00002117206f);
+                        BetaP = new RealVector3d(0.00005737284f, 0.00007397888f, 0.00010511476f);
+                        break;  
+
+                    case SkyAtmParameters.HackyPostProcessType.BetaI:
+                        BetaM = new RealVector3d(0.000005893206f, 0.000005893206f, 0.000005893206f);
+                        BetaP = new RealVector3d(0.00005737284f, 0.00005737284f, 0.00005737284f);
+                        break;
+                    case SkyAtmParameters.HackyPostProcessType.BetaJ:
+                        BetaM = new RealVector3d(0.000010048514f, 0.000010048514f, 0.000010048514f);
+                        BetaP = new RealVector3d(0.00007397888f, 0.00007397888f, 0.00007397888f);
+                        break;
+                    case SkyAtmParameters.HackyPostProcessType.BetaK:
+                        BetaM = new RealVector3d(0.00002117206f, 0.00002117206f, 0.00002117206f);
+                        BetaP = new RealVector3d(0.00010511476f, 0.00010511476f, 0.00010511476f);
+                        break;
+                }
+
                 // todo: B particle and molecular calculation according to tool.
                 // these are still accurate, as the only thing that changes these constants are:
                 // mie_multiplier, rayleigh_multiplier, desaturation
-                BetaM = new RealVector3d(0.000005893206f, 0.000010048514f, 0.00002117206f);
-                BetaP = new RealVector3d(0.00005737284f, 0.00007397888f, 0.00010511476f);
-                BetaMThetaPrefix = new RealVector3d(0.0000003577744f, 0.0000006100418f, 0.0000012853482f);
-                BetaPThetaPrefix = new RealVector3d(0.000013338932f, 0.000017345952f, 0.000024978172f);
+                BetaMThetaPrefix = BetaM * (3.0f / (16.0f * (float)Math.PI));
+                
+                float miePhasePrefix = 3.0f / (4.0f * (float)Math.PI) * (1.0f - SunPhaseFunction * SunPhaseFunction);
+                BetaPThetaPrefix = new RealVector3d(BetaP.I * miePhasePrefix, BetaP.J * miePhasePrefix, BetaP.K * miePhasePrefix);
 
                 // apply multipliers
                 BetaM *= RayleighMultiplier;
@@ -147,7 +177,7 @@ namespace TagTool.Tags.Definitions
             {
                 SunAnglePitch = MathHelper.Clamp(SunAnglePitch, 0.0f, 90.0f);
                 SunAngleYaw = MathHelper.Clamp(SunAngleYaw, 0.0f, 360.0f);
-                Color = MathHelper.Clamp(Color, 0.0f, 1.0f);
+                // Color = MathHelper.Clamp(Color, 0.0f, 1.0f);
                 Intensity = MathHelper.Clamp(Intensity, 0.0f, 65536.0f);
                 SeaLevel = MathHelper.Clamp(SeaLevel, -65536.0f, 65536.0f);
                 RayleignHeightScale = MathHelper.Clamp(RayleignHeightScale, 0.01f, 65536.0f);
@@ -161,14 +191,14 @@ namespace TagTool.Tags.Definitions
                 SheetDensity = MathHelper.Clamp(SheetDensity, 0.0f, 10000.0f);
             }
 
-            public void Postprocess()
+            public void Postprocess(HackyPostProcessType hackyPostProcessType)
             {
                 if (Math.Abs(MaxFogThickness) < 0.001f)
                     MaxFogThickness = 65535.0f;
                 RuntimeWeight = 0.0f;
 
                 ClampValues();
-                PostprocessFogConstants();
+                PostprocessFogConstants(hackyPostProcessType);
             }
         }
 
@@ -222,7 +252,7 @@ namespace TagTool.Tags.Definitions
             public RealRgbColor FogColor;
         }
 
-        public void Postprocess()
+        public void Postprocess(HackyPostProcessType hackyPostProcessType)
         {
             if (Math.Abs(DistanceFalloffPower) < 0.001f)
                 DistanceFalloffPower = 2.0f;
@@ -234,7 +264,7 @@ namespace TagTool.Tags.Definitions
                 TransparentSortDistance = 100.0f;
 
             foreach (var atmosphere in AtmosphereSettings)
-                atmosphere.Postprocess();
+                atmosphere.Postprocess(hackyPostProcessType);
 
             TextureRepeatRate = MathHelper.Clamp(TextureRepeatRate, 0.1f, 100.0f);
             DistanceBetweenSheets = MathHelper.Clamp(DistanceBetweenSheets, 0.1f, 10000.0f);
