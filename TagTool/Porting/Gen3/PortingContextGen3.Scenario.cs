@@ -543,7 +543,7 @@ namespace TagTool.Porting.Gen3
                     scnr.TriggerVolumes[i] = ConvertTriggerVolumeReach(scnr.TriggerVolumes[i]);
 
                 for (int i = 0; i < scnr.Decals.Count; i++)
-                    scnr.Decals[i].Scale = 1.0f;  
+                    scnr.Decals[i].Scale = (scnr.Decals[i].ScaleReach.Lower + scnr.Decals[i].ScaleReach.Upper) / 2.0f;
             }
 
             if (BlamCache.Version >= CacheVersion.HaloReach && FlagIsSet(PortingFlags.Recursive))
