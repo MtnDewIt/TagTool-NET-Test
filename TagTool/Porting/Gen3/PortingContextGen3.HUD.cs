@@ -341,6 +341,7 @@ namespace TagTool.Porting.Gen3
             if (BlamCache.Version >= CacheVersion.HaloReach)
             {
                 Enum.TryParse(chudAnimation.ReachFlags.ToString(), out chudAnimation.Flags);
+                chudAnimation.RuntimePeriodMsec = (int)chudAnimation.RuntimePeriodMsecReach;
             }
 
             return chudAnimation;

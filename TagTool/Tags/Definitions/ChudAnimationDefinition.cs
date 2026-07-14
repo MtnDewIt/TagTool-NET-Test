@@ -31,7 +31,11 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<ChudAnimationExternalInputBBlock> ExternalInputB;
 
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public int RuntimePeriodMsec;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public float RuntimePeriodMsecReach;
 
         [Flags]
         public enum ChudAnimationFlags : ushort
