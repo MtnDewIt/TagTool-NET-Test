@@ -7,7 +7,14 @@ namespace TagTool.Tags.Definitions
     public class Flock : TagStructure
 	{
         public float ForwardScale;
+        public float LevelingForceScale;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public float SinkScale;
+        
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public float DestinationWeight;
+        
         public float AverageThrottle;
         public float MaximumThrottle;
         public float MovementWeightThreshold;
@@ -26,6 +33,6 @@ namespace TagTool.Tags.Definitions
         public float AvoidanceRadius;
         public float AlignmentScale;
         public float PositionScale;
-        public Bounds<float> PositionRadii;
+        public Bounds<float> PositionRadius;
     }
 }
