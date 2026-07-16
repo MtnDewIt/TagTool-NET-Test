@@ -134,6 +134,7 @@ namespace TagTool.Porting.Gen3
             Promotion promotion = sound.SoundReference.PromotionIndex != -1 ? BlamSoundGestalt.Promotions[sound.SoundReference.PromotionIndex] : null;
 
             sound.Flags = ConvertSoundFlags(sound.Flags);
+            sound.SoundClass = ConvertSoundClass(sound.SoundClass);
             sound.SampleRate = platformCodec.SampleRate;
             sound.Playback = ConvertPlayback(playback);
             sound.Scale = scale;

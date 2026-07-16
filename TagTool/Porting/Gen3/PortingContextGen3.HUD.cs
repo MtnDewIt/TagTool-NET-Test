@@ -341,6 +341,63 @@ namespace TagTool.Porting.Gen3
             if (BlamCache.Version >= CacheVersion.HaloReach)
             {
                 Enum.TryParse(chudAnimation.ReachFlags.ToString(), out chudAnimation.Flags);
+                // Convert every Reach keyframe Float TimeOffset to int TimeOffset for all animation blocks
+                if (chudAnimation.Position != null)
+                {
+                    foreach (var block in chudAnimation.Position)
+                        if (block?.Keyframes != null)
+                            foreach (var k in block.Keyframes)
+                                k.TimeOffset = (int)k.TimeOffsetReach;
+                }
+
+                if (chudAnimation.Rotation != null)
+                {
+                    foreach (var block in chudAnimation.Rotation)
+                        if (block?.Keyframes != null)
+                            foreach (var k in block.Keyframes)
+                                k.TimeOffset = (int)k.TimeOffsetReach;
+                }
+
+                if (chudAnimation.Scale != null)
+                {
+                    foreach (var block in chudAnimation.Scale)
+                        if (block?.Keyframes != null)
+                            foreach (var k in block.Keyframes)
+                                k.TimeOffset = (int)k.TimeOffsetReach;
+                }
+
+                if (chudAnimation.Color != null)
+                {
+                    foreach (var block in chudAnimation.Color)
+                        if (block?.Keyframes != null)
+                            foreach (var k in block.Keyframes)
+                                k.TimeOffset = (int)k.TimeOffsetReach;
+                }
+
+                if (chudAnimation.Alpha != null)
+                {
+                    foreach (var block in chudAnimation.Alpha)
+                        if (block?.Keyframes != null)
+                            foreach (var k in block.Keyframes)
+                                k.TimeOffset = (int)k.TimeOffsetReach;
+                }
+
+                if (chudAnimation.Flash != null)
+                {
+                    foreach (var block in chudAnimation.Flash)
+                        if (block?.Keyframes != null)
+                            foreach (var k in block.Keyframes)
+                                k.TimeOffset = (int)k.TimeOffsetReach;
+                }
+
+                if (chudAnimation.Texture != null)
+                {
+                    foreach (var block in chudAnimation.Texture)
+                        if (block?.Keyframes != null)
+                            foreach (var k in block.Keyframes)
+                                k.TimeOffset = (int)k.TimeOffsetReach;
+                }
+                chudAnimation.RuntimePeriodMsec = (int)chudAnimation.RuntimePeriodMsecReach;
             }
 
             return chudAnimation;

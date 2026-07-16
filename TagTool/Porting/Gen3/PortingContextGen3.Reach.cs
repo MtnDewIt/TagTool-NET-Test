@@ -97,10 +97,10 @@ namespace TagTool.Porting.Gen3
                     };
                 }
 
-                scenario.Flocks.Clear();
-                scenario.FlockPalette.Clear();
-                scenario.Creatures.Clear();
-                scenario.CreaturePalette.Clear();
+                //scenario.Flocks.Clear();
+                //scenario.FlockPalette.Clear();
+                //scenario.Creatures.Clear();
+                //scenario.CreaturePalette.Clear();
 
                 //scenario.LightVolumes.Clear();
                 //scenario.LightVolumePalette.Clear();
@@ -290,6 +290,12 @@ namespace TagTool.Porting.Gen3
 
                 if (proj.ConicalSpread.Any())
                     proj.Flags |= Projectile.ProjectileFlags.TravelsInstantaneously;
+            }
+
+            if (definition is Creature crea)
+            {
+                Enum.TryParse(crea.Flags2Reach.ToString(), out crea.Flags2);
+                Enum.TryParse(crea.Flags3Reach.ToString(), out crea.Flags3);
             }
         }
 
