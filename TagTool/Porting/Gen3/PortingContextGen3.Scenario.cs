@@ -1104,7 +1104,8 @@ namespace TagTool.Porting.Gen3
                 var ctfReturnIndex = GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_return_area");
 
                 switch (mpProperties.MegaloLabel)
-                {   // respawn area large
+                {   
+                    // respawn area large
                     case "ctf_res_zone_away":
                         newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_away_respawn_zone") : -1);
                         break;
