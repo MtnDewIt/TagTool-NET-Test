@@ -1105,9 +1105,9 @@ namespace TagTool.Porting.Gen3
 
                 switch (mpProperties.MegaloLabel)
                 {   // respawn area large
-                    //case "ctf_res_zone_away":
-                        //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_away_respawn_zone") : -1);
-                        //break;
+                    case "ctf_res_zone_away":
+                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_away_respawn_zone") : -1);
+                        break;
                     // respawn area normal
                     case "ctf_res_zone":
                         //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_at_home_respawn_zone") : -1);
