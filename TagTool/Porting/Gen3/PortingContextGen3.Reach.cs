@@ -352,6 +352,8 @@ namespace TagTool.Porting.Gen3
                         case "objects\\multi\\boundaries\\soft_safe_volume":
                         case "objects\\multi\\named_location_area\\named_location_area":
                         case "objects\\multi\\spawning\\danger_zone":
+                        case "objects\\multi\\spawning\\weak_anti_respawn_zone":
+                        case "objects\\multi\\spawning\\weak_respawn_zone":
                             block.Object = null;
                             break;
                     }
