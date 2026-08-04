@@ -259,7 +259,9 @@ namespace TagTool.Commands.Forge
                         var instance = objectTypeDef.Instances[i] as ScenarioInstance;
 
                         // We can ignore objects that don't have any palette object associated with them. We also only want to leave objects that are not in the forge palette left in the scenario
-                        if (instance.PaletteIndex == -1 || ForgePalette.Contains((objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry).Object?.ToString() ?? ""))
+                        if (instance.PaletteIndex == -1 ||
+                            (objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry)?.Object == null ||
+                            ForgePalette.Contains((objectTypeDef.Palette[instance.PaletteIndex] as ScenarioPaletteEntry).Object.ToString()))
                         {
                             // If the ignored placement has a valid object name index, update the corresponding object name block accordingly
                             if (instance.NameIndex != -1)

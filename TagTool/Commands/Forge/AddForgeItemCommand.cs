@@ -173,7 +173,9 @@ namespace TagTool.Commands.Forge
                     Setters = setterList
                 });
 
-                PaletteCategoryName = ForgeGlobals.PaletteCategories[PaletteCategoryIndex].Name;
+                PaletteCategoryName = PaletteCategoryIndex >= 0
+                    ? ForgeGlobals.PaletteCategories[PaletteCategoryIndex].Name
+                    : "None";
                 Cache.Serialize(cacheStream, Cache.TagCache.GetTag($"multiplayer\\forge_globals.forg"), ForgeGlobals);
 
                 // check for multiplayerobject block
