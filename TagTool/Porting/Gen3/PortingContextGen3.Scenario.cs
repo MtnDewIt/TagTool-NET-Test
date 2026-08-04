@@ -1104,12 +1104,15 @@ namespace TagTool.Porting.Gen3
                 var ctfReturnIndex = GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_return_area");
 
                 switch (mpProperties.MegaloLabel)
-                {
+                {   
+                    // respawn area large
                     case "ctf_res_zone_away":
                         newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_away_respawn_zone") : -1);
                         break;
+                    // respawn area normal
                     case "ctf_res_zone":
-                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_at_home_respawn_zone") : -1);
+                        //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_at_home_respawn_zone") : -1);
+                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_respawn_zone") : -1);
                         break;
                     case "ctf_flag_return":
                         {
@@ -1134,7 +1137,8 @@ namespace TagTool.Porting.Gen3
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\vip\vip_destination_static");
                         break;
                     case "assault":
-                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\assault\assault_respawn_zone") : -1);
+                        if (palette[newPaletteIndex].Object?.Name != @"objects\multi\generic\mp_cinematic_camera")
+                            newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\assault\assault_respawn_zone") : -1);
                         break;
                     case "inf_spawn":
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\infection\infection_initial_spawn_point");
@@ -1146,15 +1150,16 @@ namespace TagTool.Porting.Gen3
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\vip\vip_initial_spawn_point");
                         break;
                     case "ctf":
-                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_initial_spawn_point") : -1);
-                        break;
+                        //if (palette[newPaletteIndex].Object?.Name != @"objects\multi\generic\mp_cinematic_camera")
+                            //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_initial_spawn_point") : -1);
+                        //break;
                     case "oddball_ball":
                     case "koth_hill":
                     case "slayer":
                     case "lift":
                     case "none":
+                    case "team_only":
                         break;
-                    //case "team_only":
                     //case "hh_drop_point":
                     //case "inv_objective":
                     //case "inv_obj_flag":
