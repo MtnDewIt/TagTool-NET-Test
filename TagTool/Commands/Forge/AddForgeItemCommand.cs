@@ -43,6 +43,54 @@ namespace TagTool.Commands.Forge
                 if (args.Count > 4 || args.Count < 2)
                     return new TagToolError(CommandError.ArgCount);
 
+                // get setters and description
+
+                var setterList = new List<ForgeGlobalsDefinition.PaletteItem.Setter>();
+                string line;
+
+                if (args.Count > 3)
+                {
+                    if (args[2].ToLower() == "setters")
+                    {
+                        while (!string.IsNullOrWhiteSpace(line = Console.ReadLine()))
+                        {
+                            var currentSetter = new ForgeGlobalsDefinition.PaletteItem.Setter();
+                            var segments = line.Split(' ');
+
+                            if (segments.Count() != 3)
+                                return new TagToolError(CommandError.CustomError, "Setters must be in this format: <Target> <Real/Integer> <Value>");
+
+                            if (!Enum.TryParse(segments[0], out currentSetter.Target))
+                                return new TagToolError(CommandError.CustomError, "Setter target could not be parsed.");
+
+                            if (!Enum.TryParse(segments[1], out currentSetter.Type))
+                                return new TagToolError(CommandError.CustomError, "Setter type could not be parsed.");
+
+                            if (!float.TryParse(segments[2], out float value))
+                                return new TagToolError(CommandError.CustomError, "Setter value could not be parsed.");
+
+                            switch (currentSetter.Type)
+                            {
+                                case ForgeGlobalsDefinition.PaletteItem.SetterType.Integer:
+                                    currentSetter.IntegerValue = (int)value;
+                                    currentSetter.RealValue = 0f;
+                                    break;
+                                case ForgeGlobalsDefinition.PaletteItem.SetterType.Real:
+                                    currentSetter.IntegerValue = 0;
+                                    currentSetter.RealValue = value;
+                                    break;
+                            }
+
+                            setterList.Add(currentSetter);
+                        }
+                    }
+                    else
+                        ItemDescription = args[2];
+
+                    if (args.Count == 5)
+                        ItemDescription = args[3];
+                }
+
                 if (!Cache.TagCache.TryGetCachedTag(args.Last(), out Item))
                     return new TagToolError(CommandError.TagInvalid);
                 else if (!Item.IsInGroup("obje"))
@@ -105,54 +153,6 @@ namespace TagTool.Commands.Forge
                 }
                 else if (PaletteCategoryIndex >= ForgeGlobals.PaletteCategories.Count || PaletteCategoryIndex < -1)
                     return new TagToolError(CommandError.CustomError, $"Category index must be less than the current category count of {ForgeGlobals.PaletteCategories.Count}.");
-
-                // get setters and description
-
-                var setterList = new List<ForgeGlobalsDefinition.PaletteItem.Setter>();
-                string line;
-
-                if (args.Count > 3)
-                {
-                    if (args[2].ToLower() == "setters")
-                    {
-                        while (!string.IsNullOrWhiteSpace(line = Console.ReadLine()))
-                        {
-                            var currentSetter = new ForgeGlobalsDefinition.PaletteItem.Setter();
-                            var segments = line.Split(' ');
-
-                            if (segments.Count() != 3)
-                                return new TagToolError(CommandError.CustomError, "Setters must be in this format: <Target> <Real/Integer> <Value>");
-
-                            if (!Enum.TryParse(segments[0], out currentSetter.Target))
-                                return new TagToolError(CommandError.CustomError, "Setter target could not be parsed.");
-
-                            if (!Enum.TryParse(segments[1], out currentSetter.Type))
-                                return new TagToolError(CommandError.CustomError, "Setter type could not be parsed.");
-
-                            if (!float.TryParse(segments[2], out float value))
-                                return new TagToolError(CommandError.CustomError, "Setter value could not be parsed.");
-
-                            switch (currentSetter.Type)
-                            {
-                                case ForgeGlobalsDefinition.PaletteItem.SetterType.Integer:
-                                    currentSetter.IntegerValue = (int)value;
-                                    currentSetter.RealValue = 0f;
-                                    break;
-                                case ForgeGlobalsDefinition.PaletteItem.SetterType.Real:
-                                    currentSetter.IntegerValue = 0;
-                                    currentSetter.RealValue = value;
-                                    break;
-                            }
-
-                            setterList.Add(currentSetter);
-                        }
-                    }
-                    else
-                        ItemDescription = args[2];
-
-                    if (args.Count == 5)
-                        ItemDescription = args[3];
-                }
 
                 if (!string.IsNullOrEmpty(ItemDescription))
                 {
