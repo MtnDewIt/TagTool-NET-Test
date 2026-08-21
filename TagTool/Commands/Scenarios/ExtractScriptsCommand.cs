@@ -12,7 +12,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Scenarios
 {
-    class ExtractScriptsCommand : Command
+    public class ExtractScriptsCommand : Command
     {
         private GameCache Cache { get; }
         private CachedTag Tag { get; }
