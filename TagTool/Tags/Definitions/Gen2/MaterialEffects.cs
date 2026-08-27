@@ -66,29 +66,6 @@ namespace TagTool.Tags.Definitions.Gen2
                     SweetenerDisabled
                 }
             }
-            
-            [TagStructure(Size = 0x18)]
-            public class MaterialEffectMaterialBlock1 : TagStructure
-            {
-                [TagField(ValidTags = new [] { "snd!","lsnd","effe" })]
-                public CachedTag TagEffectOrSound;
-                [TagField(ValidTags = new [] { "snd!","lsnd","effe" })]
-                public CachedTag SecondaryTagEffectOrSound;
-                [TagField(Flags = GlobalMaterial | Label)]
-                public StringId MaterialName;
-                [TagField(Flags = GlobalMaterial)]
-                public short RuntimeMaterialIndex;
-                public SweetenerModeValue SweetenerMode;
-                [TagField(Length = 0x1, Flags = TagFieldFlags.Padding)]
-                public byte[] Padding;
-                
-                public enum SweetenerModeValue : sbyte
-                {
-                    SweetenerDefault,
-                    SweetenerEnabled,
-                    SweetenerDisabled
-                }
-            }
         }
     }
 }
