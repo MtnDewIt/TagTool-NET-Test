@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using TagTool.Ai;
@@ -17,15 +18,21 @@ namespace TagTool.Scripting
         public Scenario Definition { get; set; }
         public BinaryReader scriptStringReader { get; set; }
         public GameCache Cache { get; set; }
+        public CachedTag Tag { get; set; }
         public List<GenericExpression> Globals = new List<GenericExpression>();
         public List<GenericExpression> Scripts = new List<GenericExpression>();
+        public bool PerformCleanup { get; } = true;
+        public string Indent { get; }
 
-        public ScriptDecompiler(GameCache cache, Scenario definition)
+        public ScriptDecompiler(GameCache cache, Scenario definition, CachedTag tag, bool cleanup = true, bool spaces = false)
         {
             Cache = cache;
             Definition = definition;
+            Tag = tag;
             var scriptStringStream = new MemoryStream(Definition.ScriptStrings);
             scriptStringReader = new BinaryReader(scriptStringStream);
+            PerformCleanup = cleanup;
+            Indent = spaces ? "    " : "	";
         }
 
         public void DecompileScripts(TextWriter scriptWriter, string startScriptName = null)
@@ -48,9 +55,15 @@ namespace TagTool.Scripting
                 CollectDependencies(startScriptName, scriptFilter, globalFilter);
             }
 
-            using (var indentWriter = new IndentedTextWriter(scriptWriter, "	"))
+            using (var indentWriter = new IndentedTextWriter(scriptWriter, Indent))
             {
                 indentWriter.Indent = 0;
+
+                indentWriter.WriteLine($"; TagTool Script Decompiler");
+                indentWriter.WriteLine($"; {Tag}");
+                indentWriter.WriteLine($"; {Cache.Version},{Cache.Platform} - {Cache.DisplayName}");
+                indentWriter.WriteLine();
+                indentWriter.WriteLine();
 
                 //
                 // Export scenario script globals
@@ -256,7 +269,10 @@ namespace TagTool.Scripting
                     WriteGroupExpression(expr, indentWriter);
                     break;
                 case GenericExpression.ExpressionType.MultilineGroup:
-                    WriteMultiLineGroupExpression(expr, indentWriter);
+                    if (expr.Opcode == GetOpcode("cond") && PerformCleanup)
+                        WriteCondExpression(expr, indentWriter);
+                    else
+                        WriteMultiLineGroupExpression(expr, indentWriter);
                     break;
                 case GenericExpression.ExpressionType.Value:
                     indentWriter.Write(expr.Name);
@@ -367,6 +383,54 @@ namespace TagTool.Scripting
             indentWriter.WriteLine(')');
         }
 
+        private void WriteCondExpression(GenericExpression expr, IndentedTextWriter indentWriter)
+        {
+            indentWriter.WriteLine("(cond");
+            indentWriter.Indent++;
+
+            List<GenericExpression> conditions = GetConditions(expr);
+
+            foreach (var condition in conditions)
+            {
+                GenericExpression caseLabel = condition.ChildExpressions[0];
+                GenericExpression caseBody = condition.ChildExpressions[1];
+
+                indentWriter.Write('(');
+                WriteExpression(caseLabel, indentWriter);
+                indentWriter.Indent++;
+                indentWriter.WriteLine();
+                foreach (var line in caseBody.ChildExpressions.Skip(1))
+                {
+                    WriteExpression(line, indentWriter);
+                    if (line.Type != GenericExpression.ExpressionType.MultilineGroup)
+                        indentWriter.WriteLine();
+                }
+                indentWriter.Indent--;
+                indentWriter.WriteLine(')');
+            }
+
+            indentWriter.Indent--;
+            indentWriter.WriteLine(')');
+        }
+
+        private List<GenericExpression> GetConditions(GenericExpression expr)
+        {
+            List<GenericExpression> conditions = new List<GenericExpression>();
+            GenericExpression nextCond = expr;
+            GenericExpression child = nextCond.ChildExpressions.Last();
+
+            while (child is not null)
+            {
+                nextCond.ChildExpressions = nextCond.ChildExpressions[1..^1];
+                conditions.Add(nextCond);
+                nextCond = child;
+
+                child = nextCond.ChildExpressions.LastOrDefault();
+            }
+
+            return conditions;
+        }
+
         private string ReadScriptString(BinaryReader reader, long address)
         {
             var result = "";
@@ -377,12 +441,12 @@ namespace TagTool.Scripting
             return result;
         }
 
-        private string OpcodeLookup(ushort Opcode)
+        private string OpcodeLookup(ushort opcode)
         {
             string result = "unk_op";
 
-            if (Cache.ScriptDefinitions.Scripts.ContainsKey(Opcode))
-                result = Cache.ScriptDefinitions.Scripts[Opcode].Name;
+            if (Cache.ScriptDefinitions.Scripts.TryGetValue(opcode, out ScriptInfo info))
+                return info.Name;
 
             return result;
         }
@@ -395,6 +459,17 @@ namespace TagTool.Scripting
                     return (ushort)pair.Key;
             }
             return ushort.MaxValue;
+        }
+
+        private bool IsCond(HsSyntaxNode expr)
+        {
+            if (expr.Opcode == GetOpcode("cond"))
+                return true;
+
+            if (expr.Opcode == GetOpcode("if") && expr.LineNumber == 0)
+                return true;
+
+            return false;
         }
 
         private GenericExpression ParseValueExpression(int exprIndex)
@@ -415,8 +490,8 @@ namespace TagTool.Scripting
                     break;
 
                 case "Real":
-                    var realVal = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
-                    result.Name = realVal % 1 == 0 ? $"{realVal:F1}" : realVal.ToString();
+                    float real = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
+                    result.Name = real.ToString("0.0############", CultureInfo.InvariantCulture);
                     break;
 
                 case "Short":
@@ -543,6 +618,8 @@ namespace TagTool.Scripting
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
+                case "Void":
+                    break;
                 default:
                     result.Name = $"<UNIMPLEMENTED VALUE: {expr.Flags.ToString()} {valueType}>";
                     break;
@@ -618,6 +695,18 @@ namespace TagTool.Scripting
                 result.ChildExpressions.Add(ParseExpression(nextIndex));
                 nextIndex = GetNextExpressionIndex(nextIndex);
                 IndexHistory.Add(nextIndex);
+            }
+
+            if (PerformCleanup && expr.LineNumber == 0)
+            {
+                if (expr.Opcode == GetOpcode("begin"))
+                    result.Opcode = -1;
+
+                if (IsCond(expr))
+                {
+                    result.Opcode = GetOpcode("cond");
+                    result.Name = "cond";
+                }
             }
 
             return result;
