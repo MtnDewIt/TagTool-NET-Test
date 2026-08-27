@@ -269,10 +269,7 @@ namespace TagTool.Scripting
                     WriteGroupExpression(expr, indentWriter);
                     break;
                 case GenericExpression.ExpressionType.MultilineGroup:
-                    if (expr.Opcode == GetOpcode("cond") && PerformCleanup)
-                        WriteCondExpression(expr, indentWriter);
-                    else
-                        WriteMultiLineGroupExpression(expr, indentWriter);
+                    WriteMultiLineGroupExpression(expr, indentWriter);
                     break;
                 case GenericExpression.ExpressionType.Value:
                     indentWriter.Write(expr.Name);
@@ -383,54 +380,6 @@ namespace TagTool.Scripting
             indentWriter.WriteLine(')');
         }
 
-        private void WriteCondExpression(GenericExpression expr, IndentedTextWriter indentWriter)
-        {
-            indentWriter.WriteLine("(cond");
-            indentWriter.Indent++;
-
-            List<GenericExpression> conditions = GetConditions(expr);
-
-            foreach (var condition in conditions)
-            {
-                GenericExpression caseLabel = condition.ChildExpressions[0];
-                GenericExpression caseBody = condition.ChildExpressions[1];
-
-                indentWriter.Write('(');
-                WriteExpression(caseLabel, indentWriter);
-                indentWriter.Indent++;
-                indentWriter.WriteLine();
-                foreach (var line in caseBody.ChildExpressions.Skip(1))
-                {
-                    WriteExpression(line, indentWriter);
-                    if (line.Type != GenericExpression.ExpressionType.MultilineGroup)
-                        indentWriter.WriteLine();
-                }
-                indentWriter.Indent--;
-                indentWriter.WriteLine(')');
-            }
-
-            indentWriter.Indent--;
-            indentWriter.WriteLine(')');
-        }
-
-        private List<GenericExpression> GetConditions(GenericExpression expr)
-        {
-            List<GenericExpression> conditions = new List<GenericExpression>();
-            GenericExpression nextCond = expr;
-            GenericExpression child = nextCond.ChildExpressions.Last();
-
-            while (child is not null)
-            {
-                nextCond.ChildExpressions = nextCond.ChildExpressions[1..^1];
-                conditions.Add(nextCond);
-                nextCond = child;
-
-                child = nextCond.ChildExpressions.LastOrDefault();
-            }
-
-            return conditions;
-        }
-
         private string ReadScriptString(BinaryReader reader, long address)
         {
             var result = "";
@@ -461,17 +410,6 @@ namespace TagTool.Scripting
             return ushort.MaxValue;
         }
 
-        private bool IsCond(HsSyntaxNode expr)
-        {
-            if (expr.Opcode == GetOpcode("cond"))
-                return true;
-
-            if (expr.Opcode == GetOpcode("if") && expr.LineNumber == 0)
-                return true;
-
-            return false;
-        }
-
         private GenericExpression ParseValueExpression(int exprIndex)
         {
             var expr = Definition.ScriptExpressions[exprIndex];
@@ -490,8 +428,8 @@ namespace TagTool.Scripting
                     break;
 
                 case "Real":
-                    float real = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
-                    result.Name = real.ToString("0.0############", CultureInfo.InvariantCulture);
+                    var realVal = BitConverter.ToSingle(SortExpressionDataArray(Cache.Endianness, expr.Data, 4), 0);
+                    result.Name = realVal % 1 == 0 ? $"{realVal:F1}" : realVal.ToString();
                     break;
 
                 case "Short":
@@ -695,18 +633,6 @@ namespace TagTool.Scripting
                 result.ChildExpressions.Add(ParseExpression(nextIndex));
                 nextIndex = GetNextExpressionIndex(nextIndex);
                 IndexHistory.Add(nextIndex);
-            }
-
-            if (PerformCleanup && expr.LineNumber == 0)
-            {
-                if (expr.Opcode == GetOpcode("begin"))
-                    result.Opcode = -1;
-
-                if (IsCond(expr))
-                {
-                    result.Opcode = GetOpcode("cond");
-                    result.Name = "cond";
-                }
             }
 
             return result;

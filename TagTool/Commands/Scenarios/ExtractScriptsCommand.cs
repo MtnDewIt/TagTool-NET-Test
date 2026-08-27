@@ -80,7 +80,7 @@ namespace TagTool.Commands.Scenarios
                 using (var scriptFileStream = scriptFile.Create())
                 using (var scriptWriter = new StreamWriter(scriptFileStream))
                 {
-                    var decompiler = new ScriptDecompiler(Cache, Definition);
+                    var decompiler = new ScriptDecompiler(Cache, Definition, Tag);
                     decompiler.DecompileScripts(scriptWriter, scriptName);
                 }
 
