@@ -69,6 +69,7 @@ namespace TagTool.Cache
                     CacheVersion.HaloReachBeta => deserializer.Deserialize<CacheFileHeaderHaloReachBeta>(dataContext),
                     CacheVersion.HaloReach => deserializer.Deserialize<CacheFileHeaderHaloReach>(dataContext),
                     CacheVersion.HaloOnlineED => deserializer.Deserialize<CacheFileHeaderHaloOnlineED>(dataContext),
+                    CacheVersion.HaloOnlineED_072 => deserializer.Deserialize<CacheFileHeaderHaloOnlineED>(dataContext),
                     CacheVersion.HaloOnline106708 => deserializer.Deserialize<CacheFileHeaderHaloOnline106708>(dataContext),
                     CacheVersion.HaloOnline155080 => deserializer.Deserialize<CacheFileHeaderHaloOnline155080>(dataContext),
                     CacheVersion.HaloOnline235640 => deserializer.Deserialize<CacheFileHeaderHaloOnline235640>(dataContext),
