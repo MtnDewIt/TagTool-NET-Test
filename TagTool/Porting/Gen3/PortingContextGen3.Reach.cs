@@ -92,15 +92,15 @@ namespace TagTool.Porting.Gen3
                 {
                     ssceInstance.OverrideDistance = new Bounds<float>
                     {
-                        Lower = ssceInstance.DistanceParameters.DontPlayDistance,
+                        Lower = ssceInstance.DistanceParameters.MinimumDistance,
                         Upper = ssceInstance.DistanceParameters.MaximumDistance
                     };
                 }
 
-                scenario.Flocks.Clear();
-                scenario.FlockPalette.Clear();
-                scenario.Creatures.Clear();
-                scenario.CreaturePalette.Clear();
+                //scenario.Flocks.Clear();
+                //scenario.FlockPalette.Clear();
+                //scenario.Creatures.Clear();
+                //scenario.CreaturePalette.Clear();
 
                 //scenario.LightVolumes.Clear();
                 //scenario.LightVolumePalette.Clear();
@@ -291,6 +291,12 @@ namespace TagTool.Porting.Gen3
                 if (proj.ConicalSpread.Any())
                     proj.Flags |= Projectile.ProjectileFlags.TravelsInstantaneously;
             }
+
+            if (definition is Creature crea)
+            {
+                Enum.TryParse(crea.Flags2Reach.ToString(), out crea.Flags2);
+                Enum.TryParse(crea.Flags3Reach.ToString(), out crea.Flags3);
+            }
         }
 
         public void CullInvasionObjects<T>(List<Scenario.ScenarioPaletteEntry> palette, List<T> instanceList, List<string> whiteList) 
@@ -346,6 +352,8 @@ namespace TagTool.Porting.Gen3
                         case "objects\\multi\\boundaries\\soft_safe_volume":
                         case "objects\\multi\\named_location_area\\named_location_area":
                         case "objects\\multi\\spawning\\danger_zone":
+                        case "objects\\multi\\spawning\\weak_anti_respawn_zone":
+                        case "objects\\multi\\spawning\\weak_respawn_zone":
                             block.Object = null;
                             break;
                     }

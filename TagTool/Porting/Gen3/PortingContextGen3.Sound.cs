@@ -134,6 +134,7 @@ namespace TagTool.Porting.Gen3
             Promotion promotion = sound.SoundReference.PromotionIndex != -1 ? BlamSoundGestalt.Promotions[sound.SoundReference.PromotionIndex] : null;
 
             sound.Flags = ConvertSoundFlags(sound.Flags);
+            sound.SoundClass = ConvertSoundClass(sound.SoundClass);
             sound.SampleRate = platformCodec.SampleRate;
             sound.Playback = ConvertPlayback(playback);
             sound.Scale = scale;
@@ -163,6 +164,12 @@ namespace TagTool.Porting.Gen3
             sound.TotalSampleCount = totalSampleCount;
             sound.PitchRanges = newPitchRanges;
 
+            // Set ImportType based on pitch range count
+            if (newPitchRanges.Count <= 1)
+                sound.ImportType = ImportType.SingleLayer;
+            else
+                sound.ImportType = ImportType.MultiLayer;
+
             ConvertExtraInfo(sound);
             ConvertLanguages(sound);
         }
@@ -174,7 +181,7 @@ namespace TagTool.Porting.Gen3
 
             BlamSound audioData = null;
 
-            // If using an audio cache try to load it from there
+            // If using an audio cache try to load it from there4
             if (useCache)
             {
                 int sampleRate = sound.PlatformCodec.SampleRate.GetSampleRateHz();
@@ -232,7 +239,7 @@ namespace TagTool.Porting.Gen3
                 InnerConeAngle = playback.InnerConeAngle,
                 OuterConeAngle = playback.OuterConeAngle,
                 OuterConeGain = playback.OuterConeGain,
-                Flags = playback.Flags,
+                GainOverrideFlags = playback.GainOverrideFlags,
                 Azimuth = playback.Azimuth,
                 PositionalGain = playback.PositionalGain,
                 FirstPersonGain = playback.FirstPersonGain,
@@ -251,7 +258,7 @@ namespace TagTool.Porting.Gen3
             if (playback.DistanceParameters.MaximumDistance == 0)
                 newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceD;
 
-            newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.Bit4;
+            newPlayback.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DirectionalAttenuation;
 
             return newPlayback;
         }
@@ -319,6 +326,18 @@ namespace TagTool.Porting.Gen3
             {
                 // Used for facial animations
                 extraInfo.EncodedPermutationSections = BlamSoundGestalt.ExtraInfo[sound.SoundReference.ExtraInfoIndex].EncodedPermutationSections;
+                
+                // Remove additional facial animation permutations for now
+                if (extraInfo.EncodedPermutationSections.Count > 0 && BlamCache.Platform == CachePlatform.MCC)
+                {
+                    var dialogueInfoNew = extraInfo.EncodedPermutationSections[0].SoundDialogueInfoNew?[0];
+                    if (dialogueInfoNew is not null)
+                    {
+                        int index = dialogueInfoNew.LanguageIndices.EnglishIndex;
+                        if (dialogueInfoNew.FacialAnimation.Count > index)
+                            dialogueInfoNew.FacialAnimation = [dialogueInfoNew.FacialAnimation[index]];
+                    }
+                }
             }
             else
             {
@@ -515,7 +534,7 @@ namespace TagTool.Porting.Gen3
                 foreach (var pattern in adlg.Patterns) 
                 {
                     if (pattern.DangerLevelMCC == Ai.VocalizationPattern.DangerEnumMCC.NONE)
-                        pattern.DangerLevel = Ai.VocalizationPattern.DangerEnum.NONE;
+                        pattern.DangerLevel = Ai.VocalizationPattern.DangerEnum.None;
                     else 
                         pattern.DangerLevel = pattern.DangerLevelMCC.ConvertLexical<Ai.VocalizationPattern.DangerEnum>();
 

@@ -45,8 +45,8 @@ namespace TagTool.Tags.Definitions.Gen2
         public List<UiLevelsDefinitionBlock> UiLevelData;
         [TagField(ValidTags = new [] { "gldf" })]
         public CachedTag DefaultGlobalLighting;
-        [TagField(Length = 0xFC, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding1;
+        [TagField(Length = 9)]
+        public LanguagePack[] LanguagePacks = new LanguagePack[9];
         
         public enum LanguageValue : int
         {
@@ -2177,6 +2177,21 @@ namespace TagTool.Tags.Definitions.Gen2
                     Unlockable = 1 << 0
                 }
             }
+        }
+
+        [TagStructure(Size = 0x1C)]
+        public class LanguagePack : TagStructure
+        {
+            public PlatformUnsignedValue StringReferenceAddress;
+            public PlatformUnsignedValue StringDataAddress;
+
+            public int StringCount;
+            public int LocaleTableSize;
+
+            public uint LocaleIndexTableAddress;
+            public uint LocaleDataIndexAddress;
+
+            public uint DataLoadedBoolean;
         }
     }
 }

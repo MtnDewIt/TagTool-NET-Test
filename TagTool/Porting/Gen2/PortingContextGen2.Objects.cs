@@ -77,8 +77,15 @@ namespace TagTool.Porting.Gen2
                 case TagTool.Tags.Definitions.Gen2.Biped biped:
                     Biped newbiped = new Biped();
                     AutoConverter.TranslateTagStructure(biped, newbiped);
+
                     newbiped.ObjectType = new GameObjectType16 { Halo3ODST = GameObjectTypeHalo3ODST.Biped };
                     newObject = FixupBiped(biped, newbiped);
+                    break;
+                case TagTool.Tags.Definitions.Gen2.SoundScenery soundScenery:
+                    SoundScenery newsoundScenery = new SoundScenery();
+                    AutoConverter.TranslateTagStructure(soundScenery, newsoundScenery);
+                    newsoundScenery.ObjectType = new GameObjectType16 { Halo3ODST = GameObjectTypeHalo3ODST.SoundScenery };
+                    newObject = newsoundScenery;
                     break;
                 default:
                     return null;

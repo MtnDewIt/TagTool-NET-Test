@@ -1164,6 +1164,7 @@ namespace TagTool.Tags.Definitions.Gen2
             [Flags]
             public enum ScaleFlagsValue : uint
             {
+                None = 0,
                 OverrideDefaultScale = 1 << 0,
                 UseAdjacentClusterAsPortalScale = 1 << 1,
                 UseAdjacentClusterAsExteriorScale = 1 << 2,

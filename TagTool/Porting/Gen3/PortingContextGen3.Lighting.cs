@@ -340,7 +340,10 @@ namespace TagTool.Porting.Gen3
                 }
             }
 
-            // convert main structure (recursive)
+            //convert main structure (recursive)
+            Lbsp.LightmapDominantLightDirectionBitmap = null; // don't convert the bitmaps
+            Lbsp.LightmapSHCoefficientsBitmap = null;
+
             Lbsp = ConvertStructure(cacheStream, blamCacheStream, Lbsp, blamTagName, blamTagName);
 
             //
@@ -349,16 +352,8 @@ namespace TagTool.Porting.Gen3
 
             if (convertedLightmap != null)
             {
-                // can't async bitmaps here... only pending should be the lightmaps anyway as they are the first tagref ported from a scenario
-                WaitForTag(Lbsp.LightmapSHCoefficientsBitmap);
-                WaitForTag(Lbsp.LightmapDominantLightDirectionBitmap);
-
-                Lbsp.LightmapSHCoefficientsBitmap.Name = $"{LbspTag.Name}_16f_lp_array_dxt5";
-                Lbsp.LightmapDominantLightDirectionBitmap.Name = $"{LbspTag.Name}_16f_lp_array_intensity_dxt5";
-
-                convertedLightmap.ImportIntoLbsp(CacheContext, cacheStream, Lbsp);
+                convertedLightmap.ImportIntoLbsp(CacheContext, cacheStream, Lbsp, LbspTag.Name);
             }
-
 
             //
             // convert tag light probes

@@ -102,21 +102,16 @@ namespace TagTool.Cache.Gen2.Headers
         public override Tag GetHeaderSignature() => HeaderSignature;
         public override Tag GetFooterSignature() => FooterSignature;
         public override ulong GetTagsHeaderWhenLoaded() => TagsOffset;
-        public override ulong GetExpectedBaseAddress() => 0;
         public override uint GetSize() => Size;
         public override string GetName() => Name;
         public override string GetBuildNumber() => BuildNumber;
         public override string GetTagPath() => TagPath;
-        public override int GetMapId() => -1;
-        public override int GetScenarioIndex() => -1;
         public override ScenarioType GetScenarioType() => ScenarioType;
         public override CacheFileSharedType GetSharedCacheFileType() => CacheFileSharedType.None;
         public override int GetStringIdCount() => StringIdCount;
         public override int GetStringIdDataCount() => StringIdDataCount;
         public override uint GetStringIdIndexOffset() => StringIdIndexOffset;
         public override uint GetStringIdDataOffset() => StringIdDataOffset;
-        public override int GetStringIdNamespaceCount() => -1;
-        public override uint GetStringIdNamespaceOffset() => 0;
         public override int GetDebugTagNameCount() => DebugTagNameCount;
         public override uint GetDebugTagNameDataOffset() => DebugTagNameDataOffset;
         public override int GetDebugTagNameDataSize() => DebugTagNameDataSize;
@@ -124,11 +119,7 @@ namespace TagTool.Cache.Gen2.Headers
         public override uint GetTagsOffset() => TagsInstancesSize;
         public override uint GetTagsVirtualBase() => TagsVirtualBase;
         public override bool GetCompression() => Uncompressed;
-        public override int GetCompressedDataChunkSize() => -1;
-        public override int GetCompressedDataOffset() => -1;
-        public override int GetCompressedChunkTableOffset() => -1;
-        public override int GetCompressedChunkCount() => -1;
-        public override CacheFileSectionTable GetSectionTable() => null;
-        public override CacheFileSectionFileBounds GetReports() => null;
+        public override uint GetCustomLanguagePacksOffset() => CustomLanguagePacksOffset;
+        public override int GetCustomLanguagePacksSize() => CustomLanguagePacksSize;
     }
 }

@@ -30,6 +30,11 @@ namespace TagTool.Bitmaps
             return IsPowerOfTwo(width) && IsPowerOfTwo(height);
         }
 
+        public static bool IsBlockAligned(int width, int height)
+        {
+            return ((width | height) & 3) == 0;
+        }
+
         public static BitmapTextureInteropDefinition CreateBitmapTextureInteropDefinition(BaseBitmap bitmap)
         {
             var result = new BitmapTextureInteropDefinition

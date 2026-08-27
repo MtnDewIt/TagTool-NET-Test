@@ -148,7 +148,7 @@ namespace TagTool.Porting.Gen3
                 // convert runtime decal placements
                 foreach (var runtimeDecal in sbsp.RuntimeDecals)
                 {
-                    runtimeDecal.Scale = 1.0f;
+                    runtimeDecal.Scale = (runtimeDecal.ScaleReach.I + runtimeDecal.ScaleReach.J) / 2.0f;
                 }
             }
 

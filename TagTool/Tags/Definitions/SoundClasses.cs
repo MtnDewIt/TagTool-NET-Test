@@ -1,7 +1,7 @@
-using TagTool.Cache;
 using System;
 using System.Collections.Generic;
-using static TagTool.Tags.TagFieldFlags;
+using TagTool.Audio;
+using TagTool.Cache;
 using TagTool.Common;
 
 namespace TagTool.Tags.Definitions
@@ -9,6 +9,7 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "sound_classes", Tag = "sncl", Size = 0xC, MinVersion = CacheVersion.Halo3Retail)]
     public class SoundClasses : TagStructure
 	{
+        [TagField(LabelSourceType = typeof(SoundClass))]
         public List<Class> Classes;
 
         [TagStructure(Size = 0x98, MinVersion = CacheVersion.Halo3Retail, MaxVersion = CacheVersion.Halo3Retail)]
@@ -35,7 +36,7 @@ namespace TagTool.Tags.Definitions
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public CacheMissModeODSTValue CacheMissModeODST;
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
-            public AccousticsFlagsValue BindToAccoustics;
+            public AcousticsFlagsValue BindToAcoustics;
             [TagField(MinVersion = CacheVersion.Halo3ODST)]
             public SuppressSpatializationFlagsValue SuppressSpatialization;
             [TagField(Length = 3, Flags = TagFieldFlags.Padding, MinVersion = CacheVersion.Halo3ODST)]
@@ -172,7 +173,7 @@ namespace TagTool.Tags.Definitions
             }
 
             [Flags]
-            public enum AccousticsFlagsValue : sbyte
+            public enum AcousticsFlagsValue : sbyte
             {
                Outside = (1 << 0),
                Inside = (1 << 1)

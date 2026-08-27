@@ -12,6 +12,8 @@ using TagTool.Common;
 using TagTool.Common.Logging;
 using TagTool.Tags;
 using TagTool.Tags.Definitions;
+using static TagTool.Tags.Definitions.Dialogue;
+using Gen2Dialogue = TagTool.Tags.Definitions.Gen2.Dialogue;
 using Gen2LoopingSound = TagTool.Tags.Definitions.Gen2.SoundLooping;
 using Gen2Sound = TagTool.Tags.Definitions.Gen2.Sound;
 using Gen2SoundCacheFileGestalt = TagTool.Tags.Definitions.Gen2.SoundCacheFileGestalt;
@@ -79,8 +81,8 @@ namespace TagTool.Porting.Gen2
             }
             else
             {
-                Log.Error($"Looping sound {gen2Tag.Name} unable to determine sound class from child sound! Returning null!");
-                return null;
+                Log.Warning($"Looping sound {gen2Tag.Name} unable to determine sound class from child sound! Using default.");
+                newLoop.SoundClass = SoundClass.AmbientNature; // or SoundClass.Unused as a safe fallback
             }
             
             return newLoop;
@@ -264,7 +266,7 @@ namespace TagTool.Porting.Gen2
             if (playbackParameters.MaximumDistance == 0)
                 playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DistanceD;
 
-            playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.Bit4;
+            playbackParameters.FieldDisableFlags |= PlaybackParameter.FieldDisableFlagsValue.DirectionalAttenuation;
 
             playbackParameters.DistanceParameters = new SoundDistanceParameters()
             {
@@ -273,6 +275,62 @@ namespace TagTool.Porting.Gen2
             };
 
             return playbackParameters;
+        }
+
+        private Dialogue ConvertDialogue(Stream cacheStream, Gen2Dialogue gen2Dialogue) 
+        {
+            Dialogue dialogue = new()
+            {
+                GlobalDialogueInfo = gen2Dialogue.GlobalDialogueInfo,
+                MissionDialogueDesignator = gen2Dialogue.MissionDialogueDesignator
+            };
+
+            AutoConverter.TranslateEnum(gen2Dialogue.Flags, out dialogue.Flags, dialogue.Flags.GetType());
+
+            CachedTag edAdlg = null;
+            AiDialogueGlobals adlg; ;
+            foreach (var tag in CacheContext.TagCache.FindAllInGroup("adlg"))
+            {
+                edAdlg = tag;
+                break;
+            }
+
+            adlg = CacheContext.Deserialize<AiDialogueGlobals>(cacheStream, edAdlg);
+
+            //Create empty udlg vocalization block and fill it with empty blocks matching adlg
+
+            List<Dialogue.SoundReference> newSoundReference = new List<Dialogue.SoundReference>();
+            foreach (var soundreference in adlg.Vocalizations)
+            {
+                Dialogue.SoundReference block = new Dialogue.SoundReference
+                {
+                    Sound = null,
+                    Flags = 0,
+                    Vocalization = soundreference.Vocalization,
+                };
+                newSoundReference.Add(block);
+            }
+
+            //Match the tags with the proper stringId
+
+            for (int i = 0; i < 304; i++)
+            {
+                var soundreference = newSoundReference[i];
+                for (int j = 0; j < gen2Dialogue.Vocalizations.Count; j++)
+                {
+                    var soundreferenceH2 = gen2Dialogue.Vocalizations[j];
+                    if (CacheContext.StringTable.GetString(soundreference.Vocalization).Equals(CacheContext.StringTable.GetString(soundreferenceH2.Vocalization)))
+                    {
+                        soundreference.Sound = soundreferenceH2.Sound;
+                        AutoConverter.TranslateEnum(soundreferenceH2.Flags, out soundreference.Flags, soundreference.Flags.GetType());
+                        break;
+                    }
+                }
+            }
+
+            dialogue.Vocalizations = newSoundReference;
+
+            return dialogue;
         }
     }
 }

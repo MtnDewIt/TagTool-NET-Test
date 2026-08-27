@@ -217,13 +217,13 @@ namespace TagTool.Commands.ModelAnimationGraphs
                                 MergePartialFromDonorIntoTarget(donorMode, parts);
                             else
                             {
-                                var labels = JmadHelper.GetLabelStringIDs(specific, CacheContext);
+                                var labels = AnimationUtil.GetLabelStringIDs(specific, CacheContext);
                                 if (labels.Count == 0 || labels.Contains(StringId.Invalid))
                                     return new TagToolError(CommandError.CustomError, $"Part of the graph path {specific} is invalid.");
-                                var toInherit = JmadHelper.TraverseGraph(donorGraph, labels);
+                                var toInherit = AnimationUtil.TraverseGraph(donorGraph, labels);
                                 if (toInherit == null)
                                     return new TagToolError(CommandError.CustomError, $"\"{specific}\" not defined in donor graph.");
-                                JmadHelper.SetGraphIndex(Animation, Index, labels);
+                                AnimationUtil.SetGraphIndex(Animation, Index, labels);
                             }
                         }
                         else
@@ -244,13 +244,13 @@ namespace TagTool.Commands.ModelAnimationGraphs
                             }
                             else
                             {
-                                var labels = JmadHelper.GetLabelStringIDs(specific, CacheContext);
+                                var labels = AnimationUtil.GetLabelStringIDs(specific, CacheContext);
                                 if (labels.Count == 0 || labels.Contains(StringId.Invalid))
                                     return new TagToolError(CommandError.CustomError, $"Part of the graph path {specific} is invalid.");
-                                var toInherit = JmadHelper.TraverseGraph(donorGraph, labels);
+                                var toInherit = AnimationUtil.TraverseGraph(donorGraph, labels);
                                 if (toInherit == null)
                                     return new TagToolError(CommandError.CustomError, $"\"{specific}\" not defined in donor graph.");
-                                JmadHelper.SetGraphIndex(Animation, Index, labels);
+                                AnimationUtil.SetGraphIndex(Animation, Index, labels);
                             }
                         }
                     }
@@ -783,8 +783,8 @@ namespace TagTool.Commands.ModelAnimationGraphs
             if (inh.NodeMap != null && inh.NodeMap.Count > 0)
                 return;
 
-            float targetRoot = JmadHelper.GetRootNode(Animation).ZPosition;
-            float donorRoot = JmadHelper.GetRootNode(donorGraph).ZPosition;
+            float targetRoot = AnimationUtil.GetRootNode(Animation).ZPosition;
+            float donorRoot = AnimationUtil.GetRootNode(donorGraph).ZPosition;
             inh.RootZOffset = (targetRoot == 0.0f || donorRoot == 0.0f) ? 1.0f : targetRoot / donorRoot;
 
             bool sameMapping = false;

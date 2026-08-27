@@ -20,6 +20,12 @@ using TagTool.Cache.HaloOnline;
 
 namespace TagTool.Porting.Gen3
 {
+    public enum ReachFogPortingMode
+    {
+        Auto,
+        ForceSky,
+        ForceGround
+    }
     partial class PortingContextGen3
     {
         private Scenario CurrentScenario = null;
@@ -537,7 +543,7 @@ namespace TagTool.Porting.Gen3
                     scnr.TriggerVolumes[i] = ConvertTriggerVolumeReach(scnr.TriggerVolumes[i]);
 
                 for (int i = 0; i < scnr.Decals.Count; i++)
-                    scnr.Decals[i].Scale = 1.0f;  
+                    scnr.Decals[i].Scale = (scnr.Decals[i].ScaleReach.Lower + scnr.Decals[i].ScaleReach.Upper) / 2.0f;
             }
 
             if (BlamCache.Version >= CacheVersion.HaloReach && FlagIsSet(PortingFlags.Recursive))
@@ -705,14 +711,13 @@ namespace TagTool.Porting.Gen3
 
                 foreach (var atmospherePalette in scnr.Atmosphere)
                 {
-                    while (atmospherePalette.AtmosphereSettingIndex >= skya.AtmosphereSettings.Count)
-                        skya.AtmosphereSettings.Add(new SkyAtmParameters.AtmosphereProperty());
-
                     if (atmospherePalette.AtmosphereFog != null)
                     {
                         var fogg = BlamCache.Deserialize<AtmosphereFog>(blamCacheStream, atmospherePalette.AtmosphereFog);
 
-                        var atmosphereSettings = skya.AtmosphereSettings[atmospherePalette.AtmosphereSettingIndex];
+                        // Create a new entry for each fog instead of using the setting index, fixing the issue of multiple Atmosphere that have the same setting index overriding each other
+                        var atmosphereSettings = new SkyAtmParameters.AtmosphereProperty();
+                        skya.AtmosphereSettings.Add(atmosphereSettings);
 
                         atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.EnableAtmosphere;
                         atmosphereSettings.Name = (StringId)ConvertData(cacheStream, blamCacheStream, atmospherePalette.Name, null, null);
@@ -734,12 +739,23 @@ namespace TagTool.Porting.Gen3
                         // TODO: proper conversion for fog.
 
                         AtmosphereFog.FogSettings fogSettings = null;
+                        switch (Options.ReachFogType)
+                        {
+                            case Gen3.ReachFogPortingMode.Auto:
+                            default:
+                                if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
+                                    fogSettings = fogg.SkyFog;
+                                else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
+                                    fogSettings = fogg.GroundFog;
+                                break;
 
-                        if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.GroundFogEnabled))
-                            fogSettings = fogg.GroundFog;
-                        else if (fogg.Flags.HasFlag(AtmosphereFog.AtmosphereFogFlags.SkyFogEnabled))
-                            fogSettings = fogg.SkyFog;
-
+                            case Gen3.ReachFogPortingMode.ForceSky:
+                                fogSettings = fogg.SkyFog;
+                                break;
+                            case Gen3.ReachFogPortingMode.ForceGround:
+                                fogSettings = fogg.GroundFog;
+                                break;
+                        }
                         if (fogSettings != null)
                         {
                             atmosphereSettings.Flags |= SkyAtmParameters.AtmosphereProperty.AtmosphereFlags.OverrideRealSunValues;
@@ -768,17 +784,32 @@ namespace TagTool.Porting.Gen3
                             }
 
                             atmosphereSettings.SeaLevel = fogSettings.BaseHeight; // WU, lowest height of scenario
+                            // WU, height above sea where atmo 30% thick
+                            atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight * 0.3f;
+                            // the MieHeightScale is always lower than the RayleighHeightScale. Speculative guess but it works ig
+                            // Maybe get the value from ground fog height? (fogSettings.FogHeight * 0.3f / 6.0f)
+                            atmosphereSettings.MieHeightScale = fogSettings.FogHeight * 0.05f;
+                            
+                            // Use default multipliers when fog thickness is zero
+                            if (fogSettings.FogThickness == 0.0f)
+                            {
+                                atmosphereSettings.RayleighMultiplier = 0.3f;
+                                atmosphereSettings.MieMultiplier = 0.075f;
+                            }
+                            else
+                            // Another speculative guess
+                            {
+                                atmosphereSettings.RayleighMultiplier = fogSettings.FogThickness;
+                                atmosphereSettings.MieMultiplier = fogSettings.FogThickness * 0.25f;
+                            }
 
-                            // these are definitely wrong
-                            atmosphereSettings.RayleignHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
-                            atmosphereSettings.MieHeightScale = fogSettings.FogHeight; // WU, height above sea where atmo 30% thick
-
-                            atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 65536.0f;
+                            atmosphereSettings.MaxFogThickness = fogSettings.FogThickness * 100000.0f;
                         }
-
-                        // todo: scale these with fog thickness
-                        atmosphereSettings.RayleighMultiplier = 0.05f; // scattering amount, small
-                        atmosphereSettings.MieMultiplier = 0.025f; // scattering amount, large
+                        else
+                        {
+                            atmosphereSettings.RayleighMultiplier = 0.3f; // scattering amount, small
+                            atmosphereSettings.MieMultiplier = 0.075f; // scattering amount, large
+                        }
 
                         atmosphereSettings.SunPhaseFunction = 0.2f; //todo
                         atmosphereSettings.Desaturation = 0.0f;
@@ -787,7 +818,7 @@ namespace TagTool.Porting.Gen3
                 }
 
                 // validate all values and recalculate atmosphere constants
-                skya.Postprocess();
+                skya.Postprocess(Options.HackyFogPostProcessType);
 
                 CacheContext.Serialize(cacheStream, skyaTag, skya);
 
@@ -1073,12 +1104,15 @@ namespace TagTool.Porting.Gen3
                 var ctfReturnIndex = GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_return_area");
 
                 switch (mpProperties.MegaloLabel)
-                {
+                {   
+                    // respawn area large
                     case "ctf_res_zone_away":
                         newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_away_respawn_zone") : -1);
                         break;
+                    // respawn area normal
                     case "ctf_res_zone":
-                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_at_home_respawn_zone") : -1);
+                        //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_at_home_respawn_zone") : -1);
+                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_respawn_zone") : -1);
                         break;
                     case "ctf_flag_return":
                         {
@@ -1103,7 +1137,8 @@ namespace TagTool.Porting.Gen3
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\vip\vip_destination_static");
                         break;
                     case "assault":
-                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\assault\assault_respawn_zone") : -1);
+                        if (palette[newPaletteIndex].Object?.Name != @"objects\multi\generic\mp_cinematic_camera")
+                            newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\assault\assault_respawn_zone") : -1);
                         break;
                     case "inf_spawn":
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\infection\infection_initial_spawn_point");
@@ -1115,15 +1150,16 @@ namespace TagTool.Porting.Gen3
                         newPaletteIndex = GetPaletteIndex(palette, @"objects\multi\vip\vip_initial_spawn_point");
                         break;
                     case "ctf":
-                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_initial_spawn_point") : -1);
-                        break;
+                        //if (palette[newPaletteIndex].Object?.Name != @"objects\multi\generic\mp_cinematic_camera")
+                            //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_initial_spawn_point") : -1);
+                        //break;
                     case "oddball_ball":
                     case "koth_hill":
                     case "slayer":
                     case "lift":
                     case "none":
+                    case "team_only":
                         break;
-                    //case "team_only":
                     //case "hh_drop_point":
                     //case "inv_objective":
                     //case "inv_obj_flag":

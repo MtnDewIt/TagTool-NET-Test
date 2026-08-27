@@ -7,6 +7,8 @@ using TagTool.Commands.Common;
 using TagTool.Tags.Definitions;
 using TagTool.Scripting;
 using TagTool.Scripting.Compiler;
+using TagTool.Common.Logging;
+using System.Diagnostics;
 
 namespace TagTool.Commands.Scenarios
 {

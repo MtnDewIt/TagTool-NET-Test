@@ -223,22 +223,22 @@ namespace TagTool.Commands.Editing
             else if (fieldType == typeof(LastModificationDate))
             {
                 var modificationDate = (LastModificationDate)fieldValue;
-                valueString = modificationDate == null || modificationDate.Low == 0 && modificationDate.High == 0 ? "null" : $@"{modificationDate.GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
+                valueString = modificationDate == null || modificationDate.IsInvalid() ? "null" : $@"{modificationDate}";
             }
             else if (fieldType == typeof(FileCreator)) 
             {
                 var creator = (FileCreator)fieldValue;
-                valueString = creator == null || Array.TrueForAll(creator.Data, b => b == 0) ? "null" : $@"{FileCreator.GetCreator(creator.Data)}";
+                valueString = creator == null || creator.IsInvalid() ? "null" : $@"{creator}";
             }
             else if (fieldType == typeof(NetworkRequestHash))
             {
                 var networkRequestHash = (NetworkRequestHash)fieldValue;
-                valueString = networkRequestHash == null || Array.TrueForAll(networkRequestHash.Data, b => b == 0) ? "null" : $@"{networkRequestHash.GetHash()}";
+                valueString = networkRequestHash == null || networkRequestHash.IsInvalid() ? "null" : $@"{networkRequestHash}";
             }
             else if (fieldType == typeof(RSASignature))
             {
                 var rsaSignature = (RSASignature)fieldValue;
-                valueString = rsaSignature == null || Array.TrueForAll(rsaSignature.Data, b => b == 0) ? "null" : $@"{rsaSignature.GetSignature()}";
+                valueString = rsaSignature == null || rsaSignature.IsInvalid() ? "null" : $@"{rsaSignature}";
             }
             else if (fieldInfo.FieldType.IsArray && fieldInfo.Attribute.Length != 0)
             {
@@ -382,38 +382,6 @@ namespace TagTool.Commands.Editing
                     else
                         return false;
                 }
-
-                string[] split = query.Split(',');
-
-                if (enumInfo.IsFlags)
-                {
-                    ulong mask = 0;
-                    foreach (var name in split)
-                    {
-                        if (long.TryParse(name, out long value))
-                        {
-                            if (split.Length == 1)
-                                mask = (ulong)value;
-                            else if (value >= 0 && value < 64)
-                                mask |= 1UL << (int)value;
-                            else
-                                return false;
-                        }
-                        else if (Enum.TryParse(type, name, true, out var enumValue))
-                        {
-                            var unsignedValue = Convert.ToUInt64(enumValue);
-                            mask |= unsignedValue;
-                        }
-                        else if (string.Equals(query, "none", StringComparison.OrdinalIgnoreCase))
-                            return Enum.ToObject(type, 0);
-                        else
-                            return false;
-                    }
-
-                    query = mask.ToString();
-                }
-                else if (split.Length > 1)
-                    return false;
 
                 if (Enum.TryParse(type, query, true, out found))
                 {
@@ -588,10 +556,9 @@ namespace TagTool.Commands.Editing
                 if (args.Count != 1 || args[0].Length > 32)
                     return false;
 
-                var fileCreator = new FileCreator 
-                {
-                    Data = FileCreator.SetCreator(args[0]),
-                };
+                var fileCreator = new FileCreator();
+
+                fileCreator.SetCreator(args[0]);
 
                 output = args[0] == "null" ? null : fileCreator;
             }

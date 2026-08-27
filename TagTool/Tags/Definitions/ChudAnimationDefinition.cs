@@ -31,7 +31,11 @@ namespace TagTool.Tags.Definitions
         [TagField(MinVersion = CacheVersion.HaloReach)]
         public List<ChudAnimationExternalInputBBlock> ExternalInputB;
 
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public int RuntimePeriodMsec;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public float RuntimePeriodMsecReach;
 
         [Flags]
         public enum ChudAnimationFlags : ushort
@@ -63,7 +67,7 @@ namespace TagTool.Tags.Definitions
             public class AnimationBlock : TagStructure
 			{
                 [TagField(MinVersion = CacheVersion.HaloReach)]
-                public float FrameNumber;
+                public float TimeOffsetReach;
 
                 [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public int TimeOffset; // milliseconds
@@ -80,7 +84,11 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x10)]
             public class AnimationBlock : TagStructure
 			{
-                public int FrameNumber;
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public float TimeOffsetReach;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+                public int TimeOffset; // milliseconds
                 public RealEulerAngles3d Angles;
             }
         }
@@ -94,6 +102,10 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0xC)]
             public class AnimationBlock : TagStructure
 			{
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public float TimeOffsetReach;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public int TimeOffset; // milliseconds
                 public RealPoint2d Scale;
             }
@@ -111,6 +123,10 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x4, MinVersion = CacheVersion.HaloReach)]
             public class AnimationBlock : TagStructure
 			{
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public float TimeOffsetReach;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public int TimeOffset; // milliseconds
 
                 [TagField(MinVersion = CacheVersion.HaloOnlineED, MaxVersion = CacheVersion.HaloOnline700123)]
@@ -133,6 +149,10 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x8)]
             public class ChudAnimationScalarBlock : TagStructure
 			{
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public float TimeOffsetReach;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public int TimeOffset; // milliseconds
                 public float ScalarValue;
             }
@@ -147,6 +167,10 @@ namespace TagTool.Tags.Definitions
             [TagStructure(Size = 0x14)]
             public class AnimationBlock : TagStructure
 			{
+                [TagField(MinVersion = CacheVersion.HaloReach)]
+                public float TimeOffsetReach;
+
+                [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
                 public int TimeOffset; // milliseconds
                 public RealPoint2d TextureScale;
                 public RealPoint2d TextureOffset;

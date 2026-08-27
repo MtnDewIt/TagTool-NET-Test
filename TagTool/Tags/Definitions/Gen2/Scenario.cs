@@ -1667,6 +1667,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [Flags]
                 public enum FlagsValue : uint
                 {
+                    None = 0,
                     InitiallyOpen10 = 1 << 0,
                     InitiallyOff00 = 1 << 1,
                     CanChangeOnlyOnce = 1 << 2,
@@ -1702,6 +1703,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [Flags]
                 public enum FlagsValue : ushort
                 {
+                    None = 0,
                     CustomGeometry = 1 << 0,
                     Unused = 1 << 1,
                     CinematicOnly = 1 << 2
@@ -1718,6 +1720,7 @@ namespace TagTool.Tags.Definitions.Gen2
                 [Flags]
                 public enum LightmapFlagsValue : ushort
                 {
+                    None = 0,
                     Unused = 1 << 0
                 }
             }

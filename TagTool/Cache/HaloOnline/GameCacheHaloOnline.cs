@@ -82,7 +82,7 @@ namespace TagTool.Cache.HaloOnline
             }
 
             var header = CacheFileSectionHeader.ReadHeader(reader, version, Platform);
-            var timestamp = LastModificationDate.GetTimestamp(header.CreationDate);
+            var timestamp = header.CreationDate.GetTimestamp();
 
             Version = CacheVersionDetection.DetectFromTimestamp(timestamp);
 

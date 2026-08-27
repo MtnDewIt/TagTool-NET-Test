@@ -12,8 +12,8 @@ namespace TagTool.Tags.Definitions.Gen2
     {
         public List<MultilingualUnicodeStringReferenceBlock> StringReferences;
         public byte[] StringDataUtf8;
-        [TagField(Length = 0x24, Flags = TagFieldFlags.Padding)]
-        public byte[] Padding;
+        [TagField(Length = 0x12)]
+        public ushort[] OffsetCounts;
         
         [TagStructure(Size = 0x28)]
         public class MultilingualUnicodeStringReferenceBlock : TagStructure

@@ -70,17 +70,17 @@ namespace TagTool.Porting.Gen3
                 case Scenario scenario:
                     if (!FlagIsSet(PortingFlags.Squads))
                     {
-                        scenario.Squads.Clear();
+                        scenario.Squads?.Clear();
                     }
                     if (!FlagIsSet(PortingFlags.ForgePalette))
                     {
-                        scenario.SandboxEquipment.Clear();
-                        scenario.SandboxGoalObjects.Clear();
-                        scenario.SandboxScenery.Clear();
-                        scenario.SandboxSpawning.Clear();
-                        scenario.SandboxTeleporters.Clear();
-                        scenario.SandboxVehicles.Clear();
-                        scenario.SandboxWeapons.Clear();
+                        scenario.SandboxEquipment?.Clear();
+                        scenario.SandboxGoalObjects?.Clear();
+                        scenario.SandboxScenery?.Clear();
+                        scenario.SandboxSpawning?.Clear();
+                        scenario.SandboxTeleporters?.Clear();
+                        scenario.SandboxVehicles?.Clear();
+                        scenario.SandboxWeapons?.Clear();
                     }
                     break;
 

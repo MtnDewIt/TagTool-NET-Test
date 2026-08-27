@@ -10,7 +10,10 @@ namespace TagTool.Tags.Definitions
     [TagStructure(Name = "creature", Tag = "crea", Size = 0x174, MinVersion = CacheVersion.HaloReach)]
     public class Creature : GameObject
     {
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
         public CreatureFlags Flags2;
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public CreatureFlagsReach Flags2Reach;
 
         public Unit.DefaultTeamValue DefaultTeam;
         public Unit.MotionSensorBlipSizeValue MotionSensorBlipSize;
@@ -27,7 +30,13 @@ namespace TagTool.Tags.Definitions
 
         public float CasualTurningModifer;
         public float AutoaimWidth;
-        public uint Flags3;
+
+        [TagField(MaxVersion = CacheVersion.HaloOnline700123)]
+        public CreaturePhysicsFlags Flags3;
+
+        [TagField(MinVersion = CacheVersion.HaloReach)]
+        public CreaturePhysicsFlagsReach Flags3Reach;
+
         public float HeightStanding;
         public float HeightCrouching;
         public float Radius;
@@ -112,7 +121,6 @@ namespace TagTool.Tags.Definitions
     [Flags]
     public enum CreatureFlagsReach : uint
     {
-        // TODO: convert
         None = 0,
         Unused = 1 << 0,
         ImmuneToFallingDamage = 1 << 1,
@@ -121,6 +129,35 @@ namespace TagTool.Tags.Definitions
         AttachUponImpact = 1 << 4,
         NotOnMotionSensor = 1 << 5,
         ForceGroundMovement = 1 << 6
+    }
+
+    [Flags]
+    public enum CreaturePhysicsFlags : uint
+    {
+        None,
+        CenteredAtOrigin = 1 << 0,
+        ShapeSpherical = 1 << 1,
+        UsePlayerPhysics = 1 << 2,
+        ClimbAnySurface = 1 << 3,
+        Flying = 1 << 4,
+        NotPhysical = 1 << 5,
+        DeadCharacterCollisionGroup = 1 << 6,
+        SuppressGroundPlanesOnBipeds = 1 << 7
+    }
+
+    [Flags]
+    public enum CreaturePhysicsFlagsReach : uint
+    {
+        None,
+        CenteredAtOrigin = 1 << 0,
+        ShapeSpherical = 1 << 1,
+        UsePlayerPhysics = 1 << 2,
+        ClimbAnySurface = 1 << 3,
+        Flying = 1 << 4,
+        NotPhysical = 1 << 5,
+        DeadCharacterCollisionGroup = 1 << 6,
+        SuppressGroundPlanesOnBipeds = 1 << 7,
+        PhysicalRagdoll = 1 << 8
     }
 
     [Flags]

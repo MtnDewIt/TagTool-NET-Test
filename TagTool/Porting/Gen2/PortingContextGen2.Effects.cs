@@ -23,6 +23,68 @@ namespace TagTool.Porting.Gen2
 {
 	partial class PortingContextGen2
 	{
+        public TagStructure ConvertMaterialEffects(TagTool.Tags.Definitions.Gen2.MaterialEffects gen2Foot) 
+        {
+            MaterialEffects newFoot = new()
+            {
+                Effects = [],
+            };
+
+            foreach (TagTool.Tags.Definitions.Gen2.MaterialEffects.MaterialEffectBlockV2 effect in gen2Foot.Effects)
+            {
+                MaterialEffects.Effect newEffect = new()
+                {
+                    OldMaterials = [],
+                    Effects = [],
+                    Sounds = [],
+                };
+
+                foreach (TagTool.Tags.Definitions.Gen2.MaterialEffects.MaterialEffectBlockV2.OldMaterialEffectMaterialBlock material in effect.OldMaterialsDoNotUse)
+                {
+                    MaterialEffects.Effect.OldMaterialEffectBlock newMaterial = new()
+                    {
+                        Effect = material.Effect,
+                        Sound = material.Sound,
+                        MaterialName = material.MaterialName,
+                        RuntimeMaterialIndex = material.RuntimeMaterialIndex,
+                    };
+
+                    AutoConverter.TranslateEnum(material.SweetenerMode, out newMaterial.SweetenerMode, newMaterial.SweetenerMode.GetType());
+
+                    newEffect.OldMaterials.Add(newMaterial);
+                }
+
+                foreach (TagTool.Tags.Definitions.Gen2.MaterialEffects.MaterialEffectBlockV2.MaterialEffectMaterialBlock materialEffect in effect.Effects)
+                {
+                    newEffect.Effects.Add(ConvertMaterialEffectBlock(materialEffect));
+                }
+
+                foreach (TagTool.Tags.Definitions.Gen2.MaterialEffects.MaterialEffectBlockV2.MaterialEffectMaterialBlock materialSound in effect.Sounds)
+                {
+                    newEffect.Effects.Add(ConvertMaterialEffectBlock(materialSound));
+                }
+
+                newFoot.Effects.Add(newEffect);
+            }
+
+            return newFoot;
+        }
+
+        private MaterialEffects.Effect.EffectBlock ConvertMaterialEffectBlock(TagTool.Tags.Definitions.Gen2.MaterialEffects.MaterialEffectBlockV2.MaterialEffectMaterialBlock source) 
+        {
+            MaterialEffects.Effect.EffectBlock target = new()
+            {
+                Primary = source.TagEffectOrSound,
+                Secondary = source.SecondaryTagEffectOrSound,
+                MaterialName = source.MaterialName,
+                RuntimeMaterialIndex = source.RuntimeMaterialIndex,
+            };
+
+            AutoConverter.TranslateEnum(target.SweetenerMode, out target.SweetenerMode, target.SweetenerMode.GetType());
+
+            return target;
+        }
+
         public TagStructure ConvertEffect(object gen2Tag, object origGen2Tag, Stream stream, Stream blamStream)
         {
             switch (gen2Tag)

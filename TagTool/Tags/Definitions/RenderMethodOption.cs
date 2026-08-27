@@ -29,7 +29,7 @@ namespace TagTool.Tags.Definitions
             public RenderMethodExternH3MCC RenderMethodExternH3MCC;
             [TagField(MinVersion = CacheVersion.Halo3ODST, MaxVersion = CacheVersion.Halo3ODST, Platform = CachePlatform.MCC)]
             public RenderMethodExternODSTMCC RenderMethodExternODSTMCC;
-            [TagField(MinVersion = CacheVersion.HaloReach, Platform = CachePlatform.Original)]
+            [TagField(MinVersion = CacheVersion.HaloReach)]
             public RenderMethodExternReach RenderMethodExternReach;
 
             public CachedTag DefaultSamplerBitmap;

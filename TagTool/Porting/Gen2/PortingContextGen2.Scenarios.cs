@@ -20,6 +20,7 @@ using TagTool.Tags.Definitions.Common;
 using TagTool.Tags.Resources;
 using static TagTool.Porting.Gen2.Gen2BspGeometryConverter;
 using static TagTool.Tags.Definitions.Scenario;
+using static TagTool.Tags.Definitions.Scenario.LightVolumeInstance;
 using static TagTool.Tags.Definitions.Scenario.SpawnDatum;
 using static TagTool.Tags.Definitions.Scenario.ZoneSetPvsBlock;
 using Gen2Scenario = TagTool.Tags.Definitions.Gen2.Scenario;
@@ -493,6 +494,48 @@ namespace TagTool.Porting.Gen2
                 }
             }
 
+            //acoustics palette
+            int maxCount = Math.Max(gen2Tag.SoundEnvironmentPalette.Count, gen2Tag.BackgroundSoundPalette.Count);
+
+            for (int i = 0; i < maxCount; i++)
+            {
+                ScenarioStructureBsp.AcousticsPaletteBlock block = new();
+
+                if (i < gen2Tag.SoundEnvironmentPalette.Count)
+                {
+                    var soundEnvironmentPalette = gen2Tag.SoundEnvironmentPalette[i];
+
+                    block.Name = CacheContext.StringTable.AddString(soundEnvironmentPalette.Name);
+                    block.SoundEnvironment = soundEnvironmentPalette.SoundEnvironment;
+                    block.ReverbCutoffDistance = soundEnvironmentPalette.CutoffDistance;
+                    block.ReverbInterpolationSpeed = soundEnvironmentPalette.InterpolationSpeed;
+                }
+
+                if (i < gen2Tag.BackgroundSoundPalette.Count)
+                {
+                    var backgroundSoundpalette = gen2Tag.BackgroundSoundPalette[i];
+
+                    block.Name = block.Name == StringId.Empty ? CacheContext.StringTable.AddString(backgroundSoundpalette.Name) : block.Name;
+                    block.AmbienceBackgroundSound = backgroundSoundpalette.BackgroundSound;
+                    block.AmbienceInsideClusterSound = backgroundSoundpalette.InsideClusterSound;
+                    block.AmbienceCutoffDistance = backgroundSoundpalette.CutoffDistance;
+                    block.AmbienceInteriorScale = backgroundSoundpalette.InteriorScale;
+                    block.AmbiencePortalScale = backgroundSoundpalette.PortalScale;
+                    block.AmbienceExteriorScale = backgroundSoundpalette.ExteriorScale;
+                    block.AmbienceInterpolationSpeed = backgroundSoundpalette.InterpolationSpeed;
+
+                    AutoConverter.TranslateEnum(backgroundSoundpalette.ScaleFlags, out block.AmbienceScaleFlags, block.AmbienceScaleFlags.GetType());
+                }
+
+                // Ignore blocks that don't contain any valid references
+                if (block.SoundEnvironment != null ||
+                    block.AmbienceBackgroundSound != null ||
+                    block.AmbienceInsideClusterSound != null)
+                {
+                    newScenario.AcousticsPalette.Add(block);
+                }
+            }
+
             ConvertScenarioPlacements(gen2Tag, rawgen2Tag, newScenario, gen2CacheStream, cacheStream);
 
             newScenario.Lightmap = ConvertLightmap(rawgen2Tag, newScenario, scenarioPath, cacheStream, gen2CacheStream);
@@ -833,6 +876,108 @@ namespace TagTool.Porting.Gen2
                 newScenario.Equipment.Add(equipment);
 
                 UniqueIDList.Add((uint)eqipobj.ObjectData.ObjectId.UniqueId);
+            }
+
+            // Sound Scenery  
+            foreach (var sndscenpal in gen2Tag.SoundSceneryPalette)
+            {
+                newScenario.SoundSceneryPalette.Add(new Scenario.ScenarioPaletteEntry
+                {
+                    Object = sndscenpal.Name
+                });
+            }
+            for (var sndscenobjindex = 0; sndscenobjindex < gen2Tag.SoundScenery.Count; sndscenobjindex++)
+            {
+                var sndscenobj = gen2Tag.SoundScenery[sndscenobjindex];
+                var soundScenery = new Scenario.SoundSceneryInstance
+                {
+                    PaletteIndex = sndscenobj.Type,
+                    NameIndex = sndscenobj.Name,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags { Flags = (Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags)sndscenobj.ObjectData.PlacementFlags },
+                    Position = sndscenobj.ObjectData.Position,
+                    Rotation = sndscenobj.ObjectData.Rotation,
+                    Scale = sndscenobj.ObjectData.Scale,
+                    BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)sndscenobj.ObjectData.BspPolicy,
+                    CanAttachToBspFlags = (ushort)(sndscenobj.ObjectData.ManualBspFlags + 1),
+                    EditorFolder = -1,
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)sndscenobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)sndscenobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.SoundScenery },
+                        Source = (ObjectIdentifier.SourceValue)sndscenobj.ObjectData.ObjectId.Source,
+                    },
+                    VolumeType = (Scenario.SoundSceneryInstance.SoundSceneryVolumeType)sndscenobj.SoundScenery.VolumeType,
+                    Height = sndscenobj.SoundScenery.Height,
+                    OverrideDistance = sndscenobj.SoundScenery.OverrideDistanceBounds,
+                    OverrideConeAngle = sndscenobj.SoundScenery.OverrideConeAngleBounds,
+                    OverrideOuterConeGain = sndscenobj.SoundScenery.OverrideOuterConeGain
+                };
+                newScenario.SoundScenery.Add(soundScenery);
+
+                UniqueIDList.Add((uint)sndscenobj.ObjectData.ObjectId.UniqueId);
+            }
+
+            // Light Volumes
+            foreach (var lighpal in gen2Tag.LightVolumesPalette) 
+            {
+                newScenario.LightVolumePalette.Add(new Scenario.ScenarioPaletteEntry
+                {
+                    Object = lighpal.Name
+                });
+            }
+            for (var lighobjindex = 0; lighobjindex < gen2Tag.LightVolumes.Count; lighobjindex++)
+            {
+                var lightobj = gen2Tag.LightVolumes[lighobjindex];
+                var lightVolume = new Scenario.LightVolumeInstance
+                {
+                    PaletteIndex = lightobj.Type,
+                    NameIndex = lightobj.Name,
+                    PlacementFlags = new Scenario.ObjectPlacementFlags { Flags = (Scenario.ObjectPlacementFlags.ObjectLocationPlacementFlags)lightobj.ObjectData.PlacementFlags },
+                    Position = lightobj.ObjectData.Position,
+                    Rotation = lightobj.ObjectData.Rotation,
+                    Scale = lightobj.ObjectData.Scale,
+                    BspPolicy = (Scenario.ScenarioInstance.BspPolicyValue)lightobj.ObjectData.BspPolicy,
+                    CanAttachToBspFlags = (ushort)(lightobj.ObjectData.ManualBspFlags + 1),
+                    EditorFolder = -1,
+                    ObjectId = new ObjectIdentifier
+                    {
+                        UniqueId = new DatumHandle((uint)lightobj.ObjectData.ObjectId.UniqueId),
+                        OriginBspIndex = (short)lightobj.ObjectData.ManualBspFlags,
+                        Type = new GameObjectType8 { Halo3ODST = GameObjectTypeHalo3ODST.None },
+                        Source = (ObjectIdentifier.SourceValue)lightobj.ObjectData.ObjectId.Source,
+                    },
+                    PowerGroup = lightobj.DeviceData.PowerGroup,
+                    PositionGroup = lightobj.DeviceData.PositionGroup,
+                    DeviceFlags = (Scenario.LightVolumeInstance.DeviceFlagsValue)lightobj.DeviceData.Flags,
+                    Flags = (Scenario.LightVolumeInstance.LightVolumeFlags)lightobj.LightData.Flags,
+                    LightmapType = (Scenario.LightVolumeInstance.LightmapTypeValue)lightobj.LightData.LightmapType,
+                    LightmapFlags = (Scenario.LightVolumeInstance.LightmapFlagsValue)lightobj.LightData.LightmapFlags,
+                    LightmapHalfLife = lightobj.LightData.LightmapHalfLife,
+                    LightmapLightScale = lightobj.LightData.LightmapLightScale,
+                    TargetPoint = lightobj.LightData.TargetPoint,
+                    Width = lightobj.LightData.Width,
+                    HeightScale = lightobj.LightData.HeightScale,
+                    FieldOfView = lightobj.LightData.FieldOfView,
+                    FalloffDistance = lightobj.LightData.FalloffDistance,
+                    CutoffDistance = lightobj.LightData.CutoffDistance,
+                };
+
+                switch (lightobj.LightData.Type) 
+                {
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Sphere:
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Orthogonal:
+                        lightVolume.Type = LightVolumeType.Sphere;
+                        break;
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Projective:
+                    case Gen2Scenario.ScenarioLightBlock.ScenarioLightStructBlock.TypeValue.Pyramid:
+                        lightVolume.Type = LightVolumeType.Frustum;
+                        break;
+                }
+
+                newScenario.LightVolumes.Add(lightVolume);
+
+                UniqueIDList.Add((uint)lightobj.ObjectData.ObjectId.UniqueId);
             }
 
             // Player starting locations

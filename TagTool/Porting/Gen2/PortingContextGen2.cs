@@ -64,6 +64,11 @@ namespace TagTool.Porting.Gen2
                 "ctrl",
                 "bipd",
                 "nhdt",
+                "foot",
+                "ssce",
+                "snde",
+                "udlg",
+                "unic",
             };
             // don't print a warning for these
             List<string> hiddenTagGroups = new List<string>
@@ -167,6 +172,7 @@ namespace TagTool.Porting.Gen2
                 case Equipment equipment:
                 case DeviceControl devicecontrol:
                 case Biped biped:
+                case SoundScenery soundScenery:
                     definition = ConvertObject(gen2definition, cacheStream);
                     break;
                 case CameraTrack track:
@@ -179,6 +185,9 @@ namespace TagTool.Porting.Gen2
                 case ParticlePhysics pmov:
                 case DamageEffect damage:
                     definition = ConvertEffect(gen2definition, origGen2definition, cacheStream, blamCacheStream);
+                    break;
+                case MaterialEffects foot:
+                    definition = ConvertMaterialEffects(foot);
                     break;
                 case Shader shader:
                     definition = ConvertShader(shader, (Shader)origGen2definition, blamTag.Name, cacheStream, blamCacheStream, blamTag);
@@ -215,9 +224,15 @@ namespace TagTool.Porting.Gen2
                 case SoundEnvironment snde:
                     definition = ConvertSoundEnvironment(snde);
                     break;
+                case Dialogue udlg:
+                    definition = ConvertDialogue(cacheStream, udlg);
+                    break;
                 case NewHudDefinition nhdt:
                     NewHudDefinition gen2Hud = BlamCache.Deserialize<NewHudDefinition>(blamCacheStream, blamTag);
                     definition = ConvertNewHudDefinition(nhdt, gen2Hud, cacheStream, blamCacheStream, blamTag);
+                    break;
+                case MultilingualUnicodeStringList unic:
+                    definition = ConvertMultilingualUnicodeStringList(blamCacheStream, unic);
                     break;
                 default:
                     throw new NotSupportedException($"Porting tag group '{blamTag.Group}' not yet supported!");

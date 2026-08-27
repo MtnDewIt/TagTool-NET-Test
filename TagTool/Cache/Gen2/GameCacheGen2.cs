@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using TagTool.BlamFile;
+using TagTool.Cache.CacheFile;
 using TagTool.Cache.Gen2;
 using TagTool.Cache.Resources;
-using TagTool.Extensions;
+using TagTool.Common.Logging;
 using TagTool.IO;
 using TagTool.Serialization;
+using TagTool.Tags.Definitions.Gen2;
 
 namespace TagTool.Cache
 {
@@ -307,6 +309,39 @@ namespace TagTool.Cache
             throw new NotImplementedException();
         }
 
+        // #TODO: Account for shared.map locale table
+        public override void LoadLocaleTables(Stream stream)
+        {
+            if (LocaleTables != null)
+                return;
+
+            if (TagCacheGen2.Tags.Count == 0)
+                return;
+
+            try
+            {
+                EndianReader reader = new EndianReader(stream, Endianness);
+                DataSerializationContext dataContext = new DataSerializationContext(reader, useAlignment: false);
+
+                uint languagePackOffset = BaseMapFile.Header.GetCustomLanguagePacksOffset();
+
+                reader.SeekTo(languagePackOffset);
+
+                Globals.LanguagePack[] languagePacks = new Globals.LanguagePack[9];
+
+                for (int i = 0; i < 9; i++)
+                {
+                    languagePacks[i] = Deserializer.Deserialize<Globals.LanguagePack>(dataContext);
+                }
+
+                LocaleTables = CacheFileLocaleTables.Load(reader, languagePacks);
+            }
+            catch
+            {
+                Log.Warning("Failed to build locales table (Invalid Globals definition?)");
+            }
+        }
+
         // Purpose: to opaquely manage the lifetime of the shared cache stream
         internal class Gen2CacheStream : Stream
         {
@@ -347,7 +382,7 @@ namespace TagTool.Cache
             }
         }
 
-        internal class CompressedFileChunk 
+        private struct CompressedFileChunk 
         {
             public int Size { get; set; }
             public int Offset { get; set; }

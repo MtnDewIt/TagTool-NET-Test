@@ -33,7 +33,7 @@ namespace TagTool.Cache.HaloOnline
             else
                 CreateTagCache(stream);
 
-            var timestamp = LastModificationDate.GetTimestamp(Header.CreationDate);
+            var timestamp = Header.CreationDate.GetTimestamp();
             Version = CacheVersionDetection.DetectFromTimestamp(timestamp);
 
             CachePlatform = CachePlatform.Original;
