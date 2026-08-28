@@ -443,8 +443,22 @@ namespace TagTool.Commands.RenderModels
                 short index = builder.AddNode(node);
                 nodes[name] = index;
             }
-            Dictionary<string, short> materialIndices = new Dictionary<string, short>();
-            Dictionary<string, RenderMaterial> originalMaterialMap = new Dictionary<string, RenderMaterial>();
+            // Report each missing scene bone/node match once before processing permutations/meshes.
+            // Per-mesh node mapping below silently skips the same missing nodes.
+            var warnedMissingNodes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var sceneMesh in scene.Meshes)
+            {
+                foreach (var bone in sceneMesh.Bones)
+                {
+                    string bonefix = MakeHEKCompatibleName(bone.Name);
+                    if (!nodes.ContainsKey(bonefix) && warnedMissingNodes.Add(bonefix))
+                        Log.Warning($"There is no node {bonefix} to match bone {bone.Name}");
+                }
+            }
+
+            Dictionary<string, short> materialIndices = new Dictionary<string, short>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, short> invalidMaterialIndices = new Dictionary<string, short>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, RenderMaterial> originalMaterialMap = new Dictionary<string, RenderMaterial>(StringComparer.OrdinalIgnoreCase);
             bool usePerMeshNodeMapping = true;
 
             string CleanMaterialName(string name)
@@ -474,13 +488,49 @@ namespace TagTool.Commands.RenderModels
                     if (!originalMaterialMap.ContainsKey(materialName))
                         originalMaterialMap[materialName] = material;
                 }
+            }
+
+            // Resolve every imported Assimp material exactly once before processing meshes.
+            var sceneMaterialIndices = new short[scene.Materials.Count];
+            var sceneMaterialNames = new string[scene.Materials.Count];
+            var missingMaterialNames = new List<string>();
+            for (int sceneMaterialIndex = 0; sceneMaterialIndex < scene.Materials.Count; sceneMaterialIndex++)
+            {
+                var sceneMaterial = scene.Materials[sceneMaterialIndex];
+                string originalMaterialName = sceneMaterial.Name ?? string.Empty;
+                string shaderName = CleanMaterialName(Path.GetFileNameWithoutExtension(originalMaterialName));
+                sceneMaterialNames[sceneMaterialIndex] = shaderName;
+
+                if (originalMaterialMap.TryGetValue(shaderName, out var originalMaterial))
+                {
+                    if (!materialIndices.TryGetValue(shaderName, out short materialIndex))
+                    {
+                        materialIndex = builder.AddMaterial(originalMaterial);
+                        materialIndices[shaderName] = materialIndex;
+                    }
+
+                    sceneMaterialIndices[sceneMaterialIndex] = materialIndex;
+                }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Warning: One of the shaders was is invalid or does not exist");
-                    Console.ResetColor();
+                    if (!invalidMaterialIndices.TryGetValue(shaderName, out short materialIndex))
+                    {
+                        materialIndex = builder.AddMaterial(new RenderMaterial { RenderMethod = defaultShaderTag });
+                        invalidMaterialIndices[shaderName] = materialIndex;
+                        missingMaterialNames.Add(shaderName);
+                    }
+
+                    sceneMaterialIndices[sceneMaterialIndex] = materialIndex;
                 }
             }
+
+            if (missingMaterialNames.Count > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"[WARNING]: Some materials were not found for name matching: {string.Join(", ", missingMaterialNames.Select(name => $"\"{name}\""))}");
+                Console.ResetColor();
+            }
+
             var sceneMeshGroups = new Dictionary<string, Dictionary<string, List<AssimpMesh>>>();
             foreach (var mesh in scene.Meshes)
             {
@@ -545,7 +595,7 @@ namespace TagTool.Commands.RenderModels
                     if (permMeshes.Count == 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"   No mesh found for [{regionName}:{permName}], we will try to prevent issues!");
+                        Console.WriteLine($"   [WARNING]: No mesh found for [{regionName}:{permName}], we will try to prevent issues!");
                         Console.ResetColor();
                         builder.BeginPermutationNone(permId);
                         builder.EndPermutation();
@@ -583,6 +633,7 @@ namespace TagTool.Commands.RenderModels
                     {
                         bool isRigidPermutation = true;
                         sbyte permutationRigidNode = -1;
+                        bool warnedAboutUnweightedVertices = false;
 
                         foreach (var part in permMeshes)
                         {
@@ -630,9 +681,14 @@ namespace TagTool.Commands.RenderModels
                                 }
                                 else
                                 {
-                                    Console.ForegroundColor = ConsoleColor.Yellow;
-                                    Console.WriteLine($"   No bone info found for vertex {i} in [{regionName}:{permName}], parenting to root bone.");
-                                    Console.ResetColor();
+                                    if (!warnedAboutUnweightedVertices)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Yellow;
+                                        Console.WriteLine($"   [WARNING]: Some vertices in [{regionName}:{permName}] have no weights or are not parented to anything, parenting to root bone.");
+                                        Console.ResetColor();
+                                        warnedAboutUnweightedVertices = true;
+                                    }
+
                                     if (partRigidBone == -1)
                                         partRigidBone = 0;
                                     else if (partRigidBone != 0)
@@ -713,11 +769,8 @@ namespace TagTool.Commands.RenderModels
                             foreach (var bone in part.Bones)
                             {
                                 string bonefix = MakeHEKCompatibleName(bone.Name);
-                                if (!nodes.ContainsKey(bonefix))
-                                    Log.Warning($"There is no node {bonefix} to match bone {bone.Name}");
-                                else
+                                if (nodes.TryGetValue(bonefix, out short nodeIndex))
                                 {
-                                    short nodeIndex = nodes[bonefix];
                                     int meshNodeIndex = meshNodeIndices.IndexOf((byte)nodeIndex);
                                     if (meshNodeIndex == -1)
                                         meshNodeIndices.Add((byte)nodeIndex);
@@ -815,39 +868,19 @@ namespace TagTool.Commands.RenderModels
                         MeshIndexCountNew += meshIndices.Count();
 
                         var meshMaterial = scene.Materials[part.MaterialIndex];
-                        short materialIndex = 0;
-                        string originalMatName = meshMaterial.Name;
-                        var shaderName = Path.GetFileNameWithoutExtension(originalMatName);
-                        shaderName = CleanMaterialName(shaderName);
+                        string originalMatName = meshMaterial.Name ?? string.Empty;
+                        string shaderName = sceneMaterialNames[part.MaterialIndex];
+                        short materialIndex = sceneMaterialIndices[part.MaterialIndex];
 
-                        if (originalMaterialMap.TryGetValue(shaderName, out var originalMaterial))
+                        if (originalMaterialMap.ContainsKey(shaderName))
                         {
                             Console.WriteLine($" Found material: {shaderName}");
-                            if (!materialIndices.TryGetValue(shaderName, out materialIndex))
-                            {
-                                materialIndex = builder.AddMaterial(originalMaterial);
-                                materialIndices[shaderName] = materialIndex;
-                            }
                         }
-                        /*
-                        else if (!materialIndices.ContainsKey(meshMaterial.Name))
-                        {
-                            if (!Cache.TagCache.TryGetTag(meshMaterial.Name, out CachedTag shaderTag))
-                                shaderTag = defaultShaderTag;
-
-                            materialIndices.Add(meshMaterial.Name, builder.AddMaterial(new RenderMaterial
-                            {
-                                RenderMethod = shaderTag,
-                            }));
-                            materialIndex = materialIndices[meshMaterial.Name];
-                        }
-                        */
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine($" Material not found: {shaderName}, using default material");
+                            Console.WriteLine($" Material not found: {shaderName}");
                             Console.ResetColor();
-                            materialIndex = builder.AddMaterial(new RenderMaterial { RenderMethod = defaultShaderTag });
                         }
 
                         bool preventBackfaceCulling = false;
