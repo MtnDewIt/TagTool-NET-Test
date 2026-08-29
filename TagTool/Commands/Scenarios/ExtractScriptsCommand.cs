@@ -12,7 +12,7 @@ using TagTool.Tags.Definitions;
 
 namespace TagTool.Commands.Scenarios
 {
-    class ExtractScriptsCommand : Command
+    public class ExtractScriptsCommand : Command
     {
         private GameCache Cache { get; }
         private CachedTag Tag { get; }
@@ -80,7 +80,7 @@ namespace TagTool.Commands.Scenarios
                 using (var scriptFileStream = scriptFile.Create())
                 using (var scriptWriter = new StreamWriter(scriptFileStream))
                 {
-                    var decompiler = new ScriptDecompiler(Cache, Definition);
+                    var decompiler = new ScriptDecompiler(Cache, Definition, Tag);
                     decompiler.DecompileScripts(scriptWriter, scriptName);
                 }
 

@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using TagTool.Ai;
@@ -17,15 +18,21 @@ namespace TagTool.Scripting
         public Scenario Definition { get; set; }
         public BinaryReader scriptStringReader { get; set; }
         public GameCache Cache { get; set; }
+        public CachedTag Tag { get; set; }
         public List<GenericExpression> Globals = new List<GenericExpression>();
         public List<GenericExpression> Scripts = new List<GenericExpression>();
+        public bool PerformCleanup { get; } = true;
+        public string Indent { get; }
 
-        public ScriptDecompiler(GameCache cache, Scenario definition)
+        public ScriptDecompiler(GameCache cache, Scenario definition, CachedTag tag, bool cleanup = true, bool spaces = false)
         {
             Cache = cache;
             Definition = definition;
+            Tag = tag;
             var scriptStringStream = new MemoryStream(Definition.ScriptStrings);
             scriptStringReader = new BinaryReader(scriptStringStream);
+            PerformCleanup = cleanup;
+            Indent = spaces ? "    " : "	";
         }
 
         public void DecompileScripts(TextWriter scriptWriter, string startScriptName = null)
@@ -48,9 +55,15 @@ namespace TagTool.Scripting
                 CollectDependencies(startScriptName, scriptFilter, globalFilter);
             }
 
-            using (var indentWriter = new IndentedTextWriter(scriptWriter, "	"))
+            using (var indentWriter = new IndentedTextWriter(scriptWriter, Indent))
             {
                 indentWriter.Indent = 0;
+
+                indentWriter.WriteLine($"; TagTool Script Decompiler");
+                indentWriter.WriteLine($"; {Tag}");
+                indentWriter.WriteLine($"; {Cache.Version},{Cache.Platform} - {Cache.DisplayName}");
+                indentWriter.WriteLine();
+                indentWriter.WriteLine();
 
                 //
                 // Export scenario script globals
@@ -377,12 +390,12 @@ namespace TagTool.Scripting
             return result;
         }
 
-        private string OpcodeLookup(ushort Opcode)
+        private string OpcodeLookup(ushort opcode)
         {
             string result = "unk_op";
 
-            if (Cache.ScriptDefinitions.Scripts.ContainsKey(Opcode))
-                result = Cache.ScriptDefinitions.Scripts[Opcode].Name;
+            if (Cache.ScriptDefinitions.Scripts.TryGetValue(opcode, out ScriptInfo info))
+                return info.Name;
 
             return result;
         }
@@ -543,6 +556,8 @@ namespace TagTool.Scripting
                     result.Name = expr.StringAddress == 0 ? "none" : ReadScriptString(scriptStringReader, expr.StringAddress);
                     break;
 
+                case "Void":
+                    break;
                 default:
                     result.Name = $"<UNIMPLEMENTED VALUE: {expr.Flags.ToString()} {valueType}>";
                     break;

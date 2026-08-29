@@ -13,13 +13,14 @@ namespace TagTool.Commands.Scenarios
     class DiffScriptsCommand : Command
     {
         private GameCache Cache { get; }
+        private CachedTag Tag { get; }
         private Scenario Definition { get; }
         private bool OmitData { get; set; }
         private bool OnlyDiffs { get; set; }
         private bool IgnoreCond { get; set; }
         private bool IgnoreAddresses { get; set; }
 
-        public DiffScriptsCommand(GameCache cache, Scenario definition) :
+        public DiffScriptsCommand(GameCache cache, CachedTag tag, Scenario definition) :
             base(true,
                 "DiffScripts",
                 "Diff script expression blocks between this scenario and another.",
@@ -42,6 +43,7 @@ namespace TagTool.Commands.Scenarios
                 "                     whose Data field is always a datum handle that differs between builds")
         {
             Cache = cache;
+            Tag = tag;
             Definition = definition;
         }
 
@@ -94,8 +96,8 @@ namespace TagTool.Commands.Scenarios
             }
 
             // --- Decompile both scenarios to string maps keyed by script name ---
-            var thisDecomp  = DecompileToScriptMap(Cache, Definition);
-            var otherDecomp = DecompileToScriptMap(Cache, other);
+            var thisDecomp  = DecompileToScriptMap(Cache, Tag, Definition);
+            var otherDecomp = DecompileToScriptMap(Cache, otherTagInstance, other);
 
             // --- Diff each pair ---
             int scriptsChecked = 0;
@@ -379,7 +381,7 @@ namespace TagTool.Commands.Scenarios
         // Decompile to per-script text map
         // -------------------------------------------------------------------
 
-        private static Dictionary<string, string> DecompileToScriptMap(GameCache cache, Scenario scnr)
+        private static Dictionary<string, string> DecompileToScriptMap(GameCache cache, CachedTag tag, Scenario scnr)
         {
             var result = new Dictionary<string, string>(StringComparer.Ordinal);
 
@@ -387,7 +389,7 @@ namespace TagTool.Commands.Scenarios
             var sb = new StringBuilder();
             using (var sw = new StringWriter(sb))
             {
-                var decompiler = new ScriptDecompiler(cache, scnr);
+                var decompiler = new ScriptDecompiler(cache, scnr, tag);
                 decompiler.DecompileScripts(sw);
             }
 

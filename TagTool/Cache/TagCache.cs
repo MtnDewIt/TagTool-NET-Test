@@ -169,8 +169,8 @@ namespace TagTool.Cache
                     return false;
                 }
 
-                result = TagTable.Last(tag => tag != null && tag.IsInGroup(starGroupTag));
-                return true;
+                result = TagTable.LastOrDefault(tag => tag != null && tag.IsInGroup(starGroupTag));
+                return result is not null;
             }
 
             if (name.StartsWith("0x"))
@@ -329,8 +329,8 @@ namespace TagTool.Cache
                     return false;
                 }
 
-                result = TagTable.Last(tag => tag != null && tag.IsInGroup(starGroupTag));
-                return true;
+                result = TagTable.LastOrDefault(tag => tag != null && tag.IsInGroup(starGroupTag));
+                return result is not null;
             }
 
             if (name.StartsWith("0x"))
