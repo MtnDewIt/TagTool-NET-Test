@@ -97,8 +97,8 @@ namespace TagTool.Commands.Editing
             }
 
             var fieldType = field.FieldType;
-            var fieldAttrs = field.GetCustomAttributes(typeof(TagFieldAttribute), false);
-            var fieldAttr = fieldAttrs?.Length < 1 ? new TagFieldAttribute() : (TagFieldAttribute)fieldAttrs[0];
+            var fieldAttrs = field.GetCustomAttributes(typeof(TagFieldAttribute), false) as TagFieldAttribute[];
+            var fieldAttr = fieldAttrs.FirstOrDefault(x => CacheVersionDetection.AttributeInCacheVersion(x, Version) && CacheVersionDetection.AttributeInPlatform(x, Platform));
             var fieldInfo = new TagFieldInfo(field, fieldAttr, uint.MaxValue, uint.MaxValue);
             var fieldValue = ParseArgs(Cache, field.FieldType, fieldInfo, args.Skip(1).ToList());
 
