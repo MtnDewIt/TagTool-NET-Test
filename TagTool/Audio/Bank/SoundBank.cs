@@ -16,6 +16,11 @@ namespace TagTool.Audio.Bank
 
         public BlamSound ExtractSound(int index)
         {
+            if (index > Bank.SubSounds.Count) 
+            {
+                return null;
+            }
+
             FSBSubSound subsound = Bank.SubSounds[index];
 
             using Stream stream = Bank.OpenRead();

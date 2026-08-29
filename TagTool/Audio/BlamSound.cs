@@ -12,7 +12,7 @@ namespace TagTool.Audio
 
         public BlamSound() 
         {
-            Data = Array.Empty<byte>();
+            Data = [];
         }
 
         public BlamSound(int sampleRate, int channelCount, uint sampleCount, Compression compression, byte[] data)
