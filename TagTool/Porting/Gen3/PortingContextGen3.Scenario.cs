@@ -105,6 +105,67 @@ namespace TagTool.Porting.Gen3
 
                     RemoveNullPlacements(scnr.ControlPalette, scnr.Controls);
                 }
+                // use ED kill volume instead of reach
+                if (CacheContext.TagCache.TryGetCachedTag("objects\\multi\\boundaries\\kill_volume.scen", out CachedTag killVolumeScen))
+                {
+                    var paletteIndices = new List<short>();
+
+                    for (short i = 0; i < scnr.SceneryPalette.Count; i++)
+                        if (scnr.SceneryPalette[i].Object == killVolumeScen)
+                            paletteIndices.Add(i);
+
+                    if (paletteIndices.Count > 0 &&
+                        CacheContext.TagCache.TryGetCachedTag("objects\\multi\\boundaries\\kill_volume.bloc", out CachedTag killVolumeCrate))
+                    {
+                        scnr.CratePalette.Add(new Scenario.ScenarioPaletteEntry()
+                        {
+                            Object = killVolumeCrate
+                        });
+
+                        var cratePaletteIndex = (short)(scnr.CratePalette.Count - 1);
+
+                        foreach (var sceneryInstance in scnr.Scenery)
+                        {
+                            if (paletteIndices.Contains(sceneryInstance.PaletteIndex))
+                            {
+                                scnr.Crates.Add(new Scenario.CrateInstance()
+                                {
+                                    PaletteIndex = cratePaletteIndex,
+                                    NameIndex = sceneryInstance.NameIndex,
+                                    PlacementFlags = sceneryInstance.PlacementFlags,
+                                    Position = sceneryInstance.Position,
+                                    Rotation = sceneryInstance.Rotation,
+                                    Scale = sceneryInstance.Scale,
+                                    NodeOrientations = sceneryInstance.NodeOrientations,
+                                    TransformFlags = sceneryInstance.TransformFlags,
+                                    ManualBspFlags = sceneryInstance.ManualBspFlags,
+                                    LightAirprobeName = sceneryInstance.LightAirprobeName,
+                                    ObjectId = new ObjectIdentifier
+                                    {
+                                        UniqueId = sceneryInstance.ObjectId.UniqueId,
+                                        OriginBspIndex = sceneryInstance.ObjectId.OriginBspIndex,
+                                        Type = new GameObjectType8() { Halo3ODST = GameObjectTypeHalo3ODST.Crate },
+                                        Source = sceneryInstance.ObjectId.Source,
+                                    },
+                                    BspPolicy = sceneryInstance.BspPolicy,
+                                    EditingBoundToBsp = sceneryInstance.EditingBoundToBsp,
+                                    EditorFolder = sceneryInstance.EditorFolder,
+                                    ParentId = sceneryInstance.ParentId,
+                                    CanAttachToBspFlags = sceneryInstance.CanAttachToBspFlags,
+                                    Multiplayer = sceneryInstance.Multiplayer,
+                                });
+
+                                if (sceneryInstance.NameIndex != -1)
+                                    scnr.ObjectNames[sceneryInstance.NameIndex].ObjectType = new GameObjectType16() { Halo3ODST = GameObjectTypeHalo3ODST.Crate };
+                            }
+                        }
+
+                        foreach (var idx in paletteIndices)
+                            scnr.SceneryPalette[idx].Object = null;
+
+                        RemoveNullPlacements(scnr.SceneryPalette, scnr.Scenery);
+                    }
+                }
             }
 
             foreach (var zoneset in scnr.ZoneSets)
@@ -1106,9 +1167,9 @@ namespace TagTool.Porting.Gen3
                 switch (mpProperties.MegaloLabel)
                 {   
                     // respawn area large
-                    case "ctf_res_zone_away":
-                        newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_away_respawn_zone") : -1);
-                        break;
+                    // case "ctf_res_zone_away":
+                        //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_away_respawn_zone") : -1);
+                        //break;
                     // respawn area normal
                     case "ctf_res_zone":
                         //newPaletteIndex = (short)(CheckTeamValue(permutationInstance) ? GetPaletteIndex(palette, @"objects\multi\ctf\ctf_flag_at_home_respawn_zone") : -1);

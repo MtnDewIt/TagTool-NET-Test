@@ -224,18 +224,22 @@ namespace TagTool.Commands.Files
             converter.SubstitutedTags.Add(@"objects\levels\shared\device_controls\health_station\health_station.ctrl", @"objects\powerups\health_pack\health_pack_large.eqip");
 
             converter.SubstitutedTags.Add(@"objects\weapons\melee\energy_sword\energy_sword.weap", @"objects\weapons\melee\energy_blade\energy_blade.weap");
-            converter.SubstitutedTags.Add(@"objects\levels\shared\golf_club\golf_club.weap", @"objects\weapons\melee\gravity_hammer\gravity_hammer.weap");
+            //converter.SubstitutedTags.Add(@"objects\levels\shared\golf_club\golf_club.weap", @"objects\weapons\melee\gravity_hammer\gravity_hammer.weap");
 
+            // these should have a megalo if switch case ngl
             converter.SubstitutedTags.Add(@"objects\multi\models\mp_hill_beacon\mp_hill_beacon.bloc", @"objects\multi\koth\koth_hill_static.bloc");
             converter.SubstitutedTags.Add(@"objects\multi\models\mp_flag_base\mp_flag_base.bloc", @"objects\multi\ctf\ctf_flag_spawn_point.bloc");
             converter.SubstitutedTags.Add(@"objects\multi\models\mp_circle\mp_circle.bloc", @"objects\multi\oddball\oddball_ball_spawn_point.bloc");
             converter.SubstitutedTags.Add(@"objects\multi\archive\vip\vip_boundary.bloc", @"objects\multi\vip\vip_destination_static.bloc");
 
+            converter.SubstitutedTags.Add(@"objects\multi\boundaries\soft_kill_volume.scen", @"objects\multi\boundaries\kill_volume.bloc");
+            converter.SubstitutedTags.Add(@"objects\multi\boundaries\kill_volume.scen", @"objects\multi\boundaries\kill_volume.bloc");
+
             converter.ExcludedTags.Add(@"objects\multi\spawning\weak_anti_respawn_zone.scen");
             converter.ExcludedTags.Add(@"objects\multi\spawning\weak_respawn_zone.scen");
             converter.ExcludedTags.Add(@"objects\multi\boundaries\soft_safe_volume.scen");
-            converter.ExcludedTags.Add(@"objects\multi\boundaries\soft_kill_volume.scen");
-            converter.ExcludedTags.Add(@"objects\multi\boundaries\kill_volume.scen");
+            //converter.ExcludedTags.Add(@"objects\multi\boundaries\soft_kill_volume.scen");
+            //converter.ExcludedTags.Add(@"objects\multi\boundaries\kill_volume.scen");
             //converter.ExcludedTags.Add(@"objects\multi\spawning\respawn_zone.scen");
 
             converter.ExcludedTags.Add(@"objects\levels\shared\screen_fx_orb\fx\juicy.bloc");

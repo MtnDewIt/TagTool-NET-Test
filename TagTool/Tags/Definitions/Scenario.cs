@@ -2321,14 +2321,25 @@ namespace TagTool.Tags.Definitions
             }
         }
 
-        [TagStructure(Size = 0x14)]
+        [TagStructure(Size = 0x14, MaxVersion = CacheVersion.HaloOnline700123)]
+        [TagStructure(Size = 0x20, MinVersion = CacheVersion.HaloReach)]
         public class PlayerSpawnInfluencerBlock : TagStructure
-		{
+        {
             public float OverrideFullWeightRadius; // wu
             public float OverrideFalloffRadius; // wu
+
+            [TagField(MinVersion = CacheVersion.HaloReach)]
+            public List<OverrideFalloffFunctionBlock> OverrideFalloffFunction;
+
             public float OverrideUpperHeight; // wu
             public float OverrideLowerHeight; // wu
             public float OverrideWeight;
+
+            [TagStructure(Size = 0x14)]
+            public class OverrideFalloffFunctionBlock : TagStructure
+            {
+                public TagFunction Function;
+            }
         }
 
         [TagStructure(Size = 0x20)]
