@@ -339,7 +339,7 @@ namespace TagTool.Commands.Modding
             int[] baseBlockCounts = new int[] { 0, 20, 173, 6, 83, 498, 9, 12 };
 
             for (int i = baseBlockCounts[0]; i < forg.ReForgeMaterialTypes.Count; i++)
-                currentForg.ReForgeMaterialTypes.Add(forg.ReForgeMaterialTypes[i]);
+                currentForg.ReForgeMaterials.Add(forg.ReForgeMaterials[i]);
 
             for (int i = baseBlockCounts[1]; i < forg.ReForgeMaterialTypes.Count; i++)
                 currentForg.ReForgeMaterialTypes.Add(forg.ReForgeMaterialTypes[i]);
