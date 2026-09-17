@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using TagTool.Cache;
+using TagTool.Cache.Gen3;
+using TagTool.Cache.MCC.Headers;
 using TagTool.Commands.Common;
 using TagTool.Commands.Tags;
 using TagTool.Common;
@@ -56,7 +58,7 @@ namespace TagTool.Commands
             var contextStack = new CommandContextStack();
 
             // if the first argument is a c# script, execute it and exit
-            if (args.Length > 0 && args[0].Trim('\"').EndsWith(".cs"))
+            if (args.Length > 0 && args[0].Trim('"').EndsWith(".cs"))
                 return ExecuteCSharpScript(args, contextStack);
 
             // If there are extra arguments, use them to automatically execute a command
@@ -89,6 +91,11 @@ namespace TagTool.Commands
 
             if (!cacheFileInfo.Exists)
                 cacheFileInfo = PromptCacheFile();
+
+            // Compressed Xbox One maps cannot initialize TagCacheGen3 directly. Detect them
+            // while only reading the map header, then offer to expand the sections first.
+            if (!PrepareCacheForOpening(cacheFileInfo, out cacheFileInfo))
+                return -1;
 
             GameCache gameCache = OpenCacheFile(cacheFileInfo);
             if (gameCache == null)
@@ -160,6 +167,76 @@ namespace TagTool.Commands
             }
         }
 
+        private static bool PrepareCacheForOpening(FileInfo inputFile, out FileInfo preparedFile)
+        {
+            preparedFile = inputFile;
+
+            if (!IsCompressedXboxOneCache(inputFile))
+                return true;
+
+            Console.WriteLine();
+            Console.WriteLine("This Halo 3 Xbox One cache is compressed and cannot be opened directly.");
+            Console.Write("Would you like to decompress it now? [Y/n]: ");
+
+            string answer = Console.ReadLine()?.Trim();
+            if (!string.IsNullOrEmpty(answer) &&
+                !answer.Equals("y", StringComparison.OrdinalIgnoreCase) &&
+                !answer.Equals("yes", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("The cache was not decompressed.");
+                return false;
+            }
+
+            string tempPath = inputFile.FullName + ".tagtool-decompress-" + Guid.NewGuid().ToString("N") + ".tmp";
+
+            try
+            {
+                using (var input = inputFile.OpenRead())
+                using (var output = DurangoCacheCompression.Decompress(input))
+                using (var destination = new FileStream(tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                {
+                    output.CopyTo(destination);
+                    destination.Flush(true);
+                }
+
+                File.Move(tempPath, inputFile.FullName, true);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                return false;
+            }
+            finally
+            {
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+            }
+
+            preparedFile = new FileInfo(inputFile.FullName);
+            Console.WriteLine();
+            Console.WriteLine("Decompressed cache replaced in place:");
+            Console.WriteLine(preparedFile.FullName);
+            Console.WriteLine("Opening the decompressed cache...");
+            return true;
+        }
+
+        private static bool IsCompressedXboxOneCache(FileInfo inputFile)
+        {
+            try
+            {
+                // Do NOT use MapFile/GameCache here. The point of this probe is to identify
+                // a compressed Durango cache before TagCacheGen3 is constructed.
+                using var stream = inputFile.OpenRead();
+                return DurangoCacheCompression.TryReadHeader(stream, out var xboxHeader) &&
+                    DurangoCacheCompression.IsCompressed(xboxHeader);
+            }
+            catch
+            {
+                // If this is not a supported Durango cache, let normal GameCache.Open report it.
+                return false;
+            }
+        }
+
         private static GameCache OpenCacheFile(FileInfo fileInfo)
         {
 #if !DEBUG
@@ -180,7 +257,7 @@ namespace TagTool.Commands
 
         private static string ResolveCacheFilePath(string path)
         {
-            path = path.Trim('\"', '\\', '/');
+            path = path.Trim('"', '\\', '/');
 
             // Legacy support for maps and root directories
             if (!path.EndsWith(".map") && !path.EndsWith(".dat"))

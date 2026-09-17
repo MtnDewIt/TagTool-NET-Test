@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using TagTool.Tags;
 
@@ -54,7 +54,5 @@ namespace TagTool.Cache
 
             return new string([.. creatorString.Where(c => c != 0)]);
         }
-
-        public override string ToString() => GetCreator(Data);
     }
 }

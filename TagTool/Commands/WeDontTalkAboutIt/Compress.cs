@@ -6,14 +6,14 @@ using TagTool.Commands.Common;
 
 namespace TagTool.Commands.WeDontTalkAboutIt
 {
-    public class DecompressCommand : Command
+    public class CompressCommand : Command
     {
-        public DecompressCommand() : base(
+        public CompressCommand() : base(
             false,
-            "Decompress",
-            "Decompresses a 2014 Xbox One Halo 3 MCC cache file",
-            "Decompress <Path>",
-            "Decompresses the map and replaces the same file directly.")
+            "Compress",
+            "Compresses a decompressed 2014 Xbox One Halo 3 MCC cache file in place",
+            "Compress <Path>",
+            "Compresses the map and replaces the same file directly.")
         {
         }
 
@@ -26,14 +26,17 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             if (!inputFile.Exists)
                 return new TagToolError(CommandError.FileNotFound, inputFile.FullName);
 
-            string tempPath = inputFile.FullName + ".tagtool-decompress-" + Guid.NewGuid().ToString("N") + ".tmp";
+            MemoryStream compressed;
+            using (var input = inputFile.OpenRead())
+                compressed = DurangoCacheCompression.Compress(input);
+
+            string tempPath = inputFile.FullName + ".tagtool-compress-" + Guid.NewGuid().ToString("N") + ".tmp";
             try
             {
-                using (var input = inputFile.OpenRead())
-                using (var output = DurangoCacheCompression.Decompress(input))
+                compressed.Position = 0;
                 using (var destination = new FileStream(tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
                 {
-                    output.CopyTo(destination);
+                    compressed.CopyTo(destination);
                     destination.Flush(true);
                 }
 
@@ -41,11 +44,12 @@ namespace TagTool.Commands.WeDontTalkAboutIt
             }
             finally
             {
+                compressed.Dispose();
                 if (File.Exists(tempPath))
                     File.Delete(tempPath);
             }
 
-            Console.WriteLine($"Decompressed cache replaced in place: {inputFile.FullName}");
+            Console.WriteLine($"Compressed cache replaced in place: {inputFile.FullName}");
             return true;
         }
     }

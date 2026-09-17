@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TagTool.Tags;
 
 namespace TagTool.Cache
@@ -78,15 +78,6 @@ namespace TagTool.Cache
         {
             var modificationDate = GetModificationDate();
             return modificationDate.HasValue ? modificationDate.Value.ToString("yyyy-MM-dd HH:mm:ss.FFFFFFF") : "Invalid Timestamp";
-        }
-
-        public override string ToString() 
-        {
-            string date = $"{GetModificationDate():yyyy-MM-dd HH:mm:ss.FFFFFFF}";
-
-            string output = (Low != 0 && High != 0) ? date : "None";
-
-            return $"{output} - (Low: {Low} High: {High})";
         }
     }
 }
