@@ -1,4 +1,4 @@
-﻿using TagTool.Cache;
+using TagTool.Cache;
 using TagTool.Commands.Editing;
 using TagTool.Commands.Common;
 using TagTool.Commands.Definitions;
@@ -82,6 +82,7 @@ namespace TagTool.Commands.Tags
 
             context.AddCommand(new DebugTestCommand(cache, cache as GameCacheHaloOnline, contextStack));
             context.AddCommand(new DecompressCommand());
+            context.AddCommand(new CompressCommand());
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)
@@ -110,8 +111,8 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new GenerateBitmapCommand(hoCache));
                 context.AddCommand(new SwitchObjectTypeCommand(hoCache));
 
-				// modding commands
-				context.AddCommand(new OpenModPackageCommand(contextStack, hoCache));
+                // modding commands
+                context.AddCommand(new OpenModPackageCommand(contextStack, hoCache));
                 context.AddCommand(new CreateCharacterType(cache));
                 context.AddCommand(new SetCustomizationFromModelCommand(cache));
                 context.AddCommand(new GenerateCanvasCommand(hoCache));
@@ -161,8 +162,8 @@ namespace TagTool.Commands.Tags
                 context.AddCommand(new ExtractFontsCommand(modCache));
                 context.AddCommand(new ExtractModFilesCommand(modCache));
                 context.AddCommand(new ApplyModPackageCommand(modCache));
-				context.AddCommand(new ApplyModPackageTagsCommand(modCache));
-				context.AddCommand(new AddTagCacheCommand(modCache));
+                context.AddCommand(new ApplyModPackageTagsCommand(modCache));
+                context.AddCommand(new AddTagCacheCommand(modCache));
                 context.AddCommand(new OptimizeBitmapsCommand(modCache));
                 context.AddCommand(new DeleteTagCacheCommand(modCache));
                 context.AddCommand(new AddModFilesCommand(modCache));
