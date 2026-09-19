@@ -27,7 +27,7 @@ namespace TagTool.Cache.MCC.Resolvers
                 return Array.Empty<int>();
 
             List<int> offsetList = new List<int>();
-            uint namespacesOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, namespaceOffset);
+            uint namespacesOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, namespaceOffset);
             reader.SeekTo(namespacesOffset);
             int current = 0;
             for (int i = 0; i < namespaceCount; i++)

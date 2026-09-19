@@ -24,7 +24,7 @@ namespace TagTool.Cache.Gen4
             var namespaceOffset = gen4Header.GetStringIdNamespaceOffset();
 
             // means no strings
-            if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.StringSection].Size == 0)
+            if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.DebugSection].Size == 0)
                 return;
 
             if (baseMapFile.Platform == CachePlatform.Original)
@@ -48,8 +48,8 @@ namespace TagTool.Cache.Gen4
             else if (baseMapFile.Platform == CachePlatform.MCC)
                 Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
 
-            uint stringIdIndexOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
-            uint stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
+            uint stringIdIndexOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, indexOffset);
+            uint stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, dataOffset);
             
             //
             // Read offsets

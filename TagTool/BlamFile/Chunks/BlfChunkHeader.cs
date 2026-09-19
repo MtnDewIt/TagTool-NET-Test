@@ -1,4 +1,5 @@
-﻿using TagTool.Common;
+﻿using System.Buffers.Binary;
+using TagTool.Common;
 using TagTool.Tags;
 
 namespace TagTool.BlamFile.Chunks
@@ -10,5 +11,13 @@ namespace TagTool.BlamFile.Chunks
         public int Length;
         public short MajorVersion;
         public short MinorVersion;
+
+        public void ByteSwap()
+        {
+            Signature = new Tag(BinaryPrimitives.ReverseEndianness(Signature.Value));
+            Length = BinaryPrimitives.ReverseEndianness(Length);
+            MajorVersion = BinaryPrimitives.ReverseEndianness(MajorVersion);
+            MinorVersion = BinaryPrimitives.ReverseEndianness(MinorVersion);
+        }
     }
 }

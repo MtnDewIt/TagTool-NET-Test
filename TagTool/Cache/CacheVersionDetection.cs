@@ -251,6 +251,13 @@ namespace TagTool.Cache
                     cachePlatform = CachePlatform.MCC;
                     break;
 
+                case "Oct  1 2014 16:20:07":
+                case "Oct 30 2014 19:01:55":
+                case "Mar 25 2015 15:34:41":
+                    version = CacheVersion.Halo3Ares;
+                    cachePlatform = CachePlatform.MCC;
+                    break;
+
                 case "May 16 2023 11:44:41":
                     version = CacheVersion.Halo3ODST;
                     cachePlatform = CachePlatform.MCC;
@@ -302,6 +309,8 @@ namespace TagTool.Cache
                         return "";
                     case CacheVersion.Halo3Retail:
                         return "Dec 21 2023 22:31:37";
+                    case CacheVersion.Halo3Ares:
+                        return "Oct  1 2014 16:20:07";
                     case CacheVersion.Halo3ODST:
                         return "May 16 2023 11:44:41";
                     case CacheVersion.HaloReach:
@@ -436,7 +445,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo2Beta:
 				case CacheVersion.Halo2Xbox:
 				case CacheVersion.Halo2PC:
-				case CacheVersion.HaloOnlineED:
+                case CacheVersion.HaloOnlineED:
                 case CacheVersion.HaloOnlineED_072:
                 case CacheVersion.HaloOnline106708:
                 case CacheVersion.HaloOnline155080:
@@ -681,6 +690,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo3March9Delta:
                 case CacheVersion.Halo3Epsilon:
                 case CacheVersion.Halo3DLC:
+                case CacheVersion.Halo3Ares:
                 case CacheVersion.Halo3Retail:
                 case CacheVersion.Halo3ODST:
                 case CacheVersion.HaloReachAlpha:
@@ -755,6 +765,7 @@ namespace TagTool.Cache
                 case CacheVersion.Halo3March9Delta:
                 case CacheVersion.Halo3Epsilon:
                 case CacheVersion.Halo3DLC:
+                case CacheVersion.Halo3Ares:
                 case CacheVersion.Halo3Retail:
                     return GameTitle.Halo3;
                 case CacheVersion.Halo3ODST:
@@ -846,6 +857,7 @@ namespace TagTool.Cache
         Halo3March9Delta,
         Halo3Epsilon,
         Halo3DLC,
+        Halo3Ares,
         Halo3Retail,
         Halo3ODST,
 

@@ -226,6 +226,11 @@ namespace TagTool.BlamFile
                         dataContext.Reader.SeekTo(dataContext.Reader.Position + (currentHeader.Length - 0xC));
                         break;
                 }
+
+                if (reader.Position < (chunkHeaderPosition + header.Length))
+                {
+                    reader.SeekTo(reader.Position + Math.Abs((chunkHeaderPosition + header.Length) - reader.Position));
+                }
             }
 
             return true;
@@ -334,7 +339,7 @@ namespace TagTool.BlamFile
             var deserializer = new TagDeserializer(Version, CachePlatform);
             var dataContext = new DataSerializationContext(reader, useAlignment: false);
 
-            var header = (BlfChunkHeader)deserializer.Deserialize(dataContext, typeof(BlfChunkHeader));
+            var header = deserializer.Deserialize<BlfChunkHeader>(dataContext);
             reader.SeekTo(position);
 
             if (header.Signature == "_blf")

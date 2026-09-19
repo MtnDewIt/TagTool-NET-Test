@@ -5,6 +5,7 @@ using TagTool.Audio.Bank;
 using TagTool.BlamFile;
 using TagTool.Cache.CacheFile;
 using TagTool.Cache.Gen3;
+using TagTool.Cache.MCC;
 using TagTool.Cache.Resources;
 using TagTool.Common.Logging;
 using TagTool.IO;
@@ -147,7 +148,18 @@ namespace TagTool.Cache
 
         public override Stream OpenCacheRead() 
         {
-            return CacheFile.OpenRead();
+            Stream resultStream = CacheFile.OpenRead();
+
+            if (Version == CacheVersion.Halo3Ares && AresCacheCompression.IsCompressed(BaseMapFile.Header))
+            {
+                MemoryStream decompressedStream = AresCacheCompression.Decompress(BaseMapFile.Header, resultStream);
+
+                BaseMapFile.Header = AresCacheCompression.AresHeader;
+
+                return decompressedStream;
+            }
+
+            return resultStream;
         }
 
         public override Stream OpenCacheReadWrite() 
@@ -196,7 +208,7 @@ namespace TagTool.Cache
             if (LocaleTables != null)
                 return;
 
-            if (TagCacheGen3.Instances.Count == 0 || sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+            if (TagCacheGen3.Instances.Count == 0 || sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LanguagePackSection].Size == 0)
                 return;
 
             //Allow caches to open even if Globals cannot deserialize

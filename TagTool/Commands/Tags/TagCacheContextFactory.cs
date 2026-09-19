@@ -1,24 +1,25 @@
 ﻿using TagTool.Cache;
-using TagTool.Commands.Editing;
+using TagTool.Cache.HaloOnline;
+using TagTool.Cache.Monolithic;
+using TagTool.Commands.Bitmaps;
+using TagTool.Commands.CollisionModels;
 using TagTool.Commands.Common;
 using TagTool.Commands.Definitions;
+using TagTool.Commands.Editing;
 using TagTool.Commands.Files;
-using TagTool.Commands.Strings;
-using TagTool.Commands.Sounds;
-using TagTool.Commands.Porting;
-using TagTool.Commands.Modding;
-using TagTool.Commands.Bitmaps;
-using TagTool.Commands.PhysicsModels;
-using TagTool.Commands.CollisionModels;
-using TagTool.Commands.ModelAnimationGraphs;
-using TagTool.Commands.Shaders;
+using TagTool.Commands.Forge;
 using TagTool.Commands.GUI;
 using TagTool.Commands.HUD;
-using TagTool.Commands.Forge;
-using TagTool.Cache.HaloOnline;
-using TagTool.Commands.Scenarios;
-using TagTool.Cache.Monolithic;
 using TagTool.Commands.Mod;
+using TagTool.Commands.Modding;
+using TagTool.Commands.ModelAnimationGraphs;
+using TagTool.Commands.PhysicsModels;
+using TagTool.Commands.Porting;
+using TagTool.Commands.Scenarios;
+using TagTool.Commands.Shaders;
+using TagTool.Commands.Sounds;
+using TagTool.Commands.Strings;
+using TagTool.Porting;
 using TagTool.Scripting.CSharp;
 
 namespace TagTool.Commands.Tags
@@ -76,8 +77,11 @@ namespace TagTool.Commands.Tags
 
             context.AddCommand(new EditBlfCommand(contextStack, cache as GameCacheHaloOnline, cache));
             context.AddCommand(new ConvertVariantCommand(cache));
+            context.AddCommand(new ConvertToAresVariantCommand(cache));
             context.AddCommand(new ConvertReachMapVariantCommand(cache as GameCacheHaloOnline));
             context.AddCommand(new ConvertHalo3MapVariantCommand(cache as GameCacheHaloOnline));
+
+            context.AddCommand(new DebugTestCommand(cache, cache as GameCacheHaloOnline, contextStack));
 
             // Halo Online Specific Commands
             if (cache is GameCacheHaloOnlineBase)

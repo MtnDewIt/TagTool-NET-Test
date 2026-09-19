@@ -23,8 +23,8 @@ namespace TagTool.Cache.CacheFile
 
                 int stringCount = localeBlock.StringCount;
                 int tableSize = localeBlock.LocaleTableSize;
-                uint offsetsTableOffset = sectionTable.GetOffset(CacheFileSectionType.LocalizationSection, localeBlock.LocaleIndexTableAddress);
-                uint tableOffset = sectionTable.GetOffset(CacheFileSectionType.LocalizationSection, localeBlock.LocaleDataIndexAddress);
+                uint offsetsTableOffset = sectionTable.GetOffset(CacheFileSectionType.LanguagePackSection, localeBlock.LocaleIndexTableAddress);
+                uint tableOffset = sectionTable.GetOffset(CacheFileSectionType.LanguagePackSection, localeBlock.LocaleDataIndexAddress);
 
                 reader.SeekTo(offsetsTableOffset);
                 var stringOffsets = new int[stringCount];

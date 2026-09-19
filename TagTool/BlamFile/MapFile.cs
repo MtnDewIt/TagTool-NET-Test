@@ -124,6 +124,17 @@ namespace TagTool.BlamFile
                 return false;
         }
 
+        private static bool IsAres(EndianReader reader)
+        {
+            reader.SeekTo(0x300);
+            var xdkVersion = reader.ReadUInt32();
+
+            if (xdkVersion == 0)
+                return true;
+            else
+                return false;
+        }
+
         private static bool IsModifiedReachFormat(EndianReader reader)
         {
             reader.SeekTo(0x120);
@@ -157,6 +168,9 @@ namespace TagTool.BlamFile
                 case CacheFileVersion.Halo3Epsilon:
                 case CacheFileVersion.Halo3:
                 case CacheFileVersion.HaloOnline:
+                    if (IsAres(reader))
+                        reader.SeekTo(0x120);
+                    else
                         reader.SeekTo(0x11C);
                     break;
 

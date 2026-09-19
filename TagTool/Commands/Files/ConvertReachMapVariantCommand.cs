@@ -184,7 +184,7 @@ namespace TagTool.Commands.Files
             }
             else
             {
-                Log.Error("Unsupported Map Variant version");
+                Log.Error("Unsupported map variant version");
                 return null; // Needs to throw something
             }
         }

@@ -10,6 +10,29 @@ namespace TagTool.IO
         const int BufferSize = 8192;
 
         /// <summary>
+        /// Copies exactly the specified number of bytes from the source stream to the destination stream.
+        /// </summary>
+        /// <param name="source">The stream to read the data from.</param>
+        /// <param name="destination">The stream to write the data to.</param>
+        /// <param name="count">The exact number of bytes to copy.</param>
+        /// </exception>
+        public static void CopyExactlyTo(this Stream source, Stream destination, long count)
+        {
+            byte[] buffer = new byte[1024 * 1024];
+            long remaining = count;
+
+            while (remaining > 0)
+            {
+                int read = source.Read(buffer, 0, (int)Math.Min(buffer.Length, remaining));
+                if (read <= 0)
+                    throw new EndOfStreamException();
+
+                destination.Write(buffer, 0, read);
+                remaining -= read;
+            }
+        }
+
+        /// <summary>
         /// Copies data between two different streams.
         /// </summary>
         /// <param name="input">The stream to read from.</param>

@@ -227,7 +227,7 @@ namespace TagTool.BlamFile
             paletteEntry.PlacedOnMap = 0;
             paletteEntry.MaximumCount = paletteEntry.PlacedOnMap;
             paletteEntry.MaxAllowed = -1;
-            paletteEntry.Cost = 0;
+            paletteEntry.Cost = 0.0f;
             mapVariant.PlaceableQuotaCount++;
             return firstEmptyIndex;
         }

@@ -183,7 +183,7 @@ namespace TagTool.Commands.Files
                         };
                         blf.ContentFlags |= Blf.BlfFileContentFlags.MapVariantTagNames;
 
-                        // The main issue is the scenario object placements. If objects still aren't appearinf on the map, try decreasing the scenario object count
+                        // The main issue is the scenario object placements. If objects still aren't appearing on the map, try decreasing the scenario object count
 
                         for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++)
                         {
@@ -202,7 +202,7 @@ namespace TagTool.Commands.Files
                             {
                                 quota.ObjectDefinitionIndex = 0;
                                 quota.MaxAllowed = -1;
-                                quota.Cost = -1;
+                                quota.Cost = 0.0f;
                             }
                         }
 

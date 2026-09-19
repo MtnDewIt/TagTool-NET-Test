@@ -79,18 +79,37 @@ namespace TagTool.Cache.Gen3
                 }
             }
             else if (baseMapFile.Platform == CachePlatform.MCC)
-                Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
+            {
+                switch (baseMapFile.Version)
+                {
+                    case CacheVersion.Halo3Ares when baseMapFile.Header.GetBuildNumber().Equals("Oct  1 2014 16:20:07"):
+                        Resolver = new StringIdResolverHalo3AresA();
+                        break;
+
+                    case CacheVersion.Halo3Ares when baseMapFile.Header.GetBuildNumber().Equals("Oct 30 2014 19:01:55"):
+                        Resolver = new StringIdResolverHalo3AresB();
+                        break;
+
+                    case CacheVersion.Halo3Ares when baseMapFile.Header.GetBuildNumber().Equals("Mar 25 2015 15:34:41"):
+                        Resolver = new StringIdResolverHalo3AresB();
+                        break;
+
+                    default:
+                        Resolver = new StringIdResolverMCC(reader, sectionTable, namespaceCount, namespaceOffset);
+                        break;
+                }
+            }
 
             // means no strings
-            if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.StringSection].Size == 0)
+            if (sectionTable != null && sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.DebugSection].Size == 0)
                 return;
 
             uint stringIdTableOffset;
             uint stringIdDataOffset;
             if (baseMapFile.Version > CacheVersion.Halo3Epsilon)
             {
-                stringIdTableOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, indexOffset);
-                stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.StringSection, dataOffset);
+                stringIdTableOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, indexOffset);
+                stringIdDataOffset = sectionTable.GetOffset(CacheFileSectionType.DebugSection, dataOffset);
             }
             else
             {

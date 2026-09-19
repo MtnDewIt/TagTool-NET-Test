@@ -36,6 +36,7 @@ namespace TagTool.Cache
                     CacheVersion.HaloCustomEdition => deserializer.Deserialize<CacheFileHeaderHalo1MCC>(dataContext),
                     CacheVersion.Halo2PC => deserializer.Deserialize<CacheFileHeaderHalo2MCC>(dataContext),
                     CacheVersion.Halo3Retail => deserializer.Deserialize<CacheFileHeaderHalo3MCC>(dataContext),
+                    CacheVersion.Halo3Ares => deserializer.Deserialize<CacheFileHeaderHalo3Ares>(dataContext),
                     CacheVersion.Halo3ODST => deserializer.Deserialize<CacheFileHeaderHalo3ODSTMCC>(dataContext),
                     CacheVersion.HaloReach => deserializer.Deserialize<CacheFileHeaderHaloReachMCC>(dataContext),
                     CacheVersion.Halo4 => deserializer.Deserialize<CacheFileHeaderHalo4MCC>(dataContext),
@@ -103,6 +104,7 @@ namespace TagTool.Cache
                     CacheVersion.HaloCustomEdition => typeof(CacheFileHeaderHalo1MCC),
                     CacheVersion.Halo2PC => typeof(CacheFileHeaderHalo2MCC),
                     CacheVersion.Halo3Retail => typeof(CacheFileHeaderHalo3MCC),
+                    CacheVersion.Halo3Ares => typeof(CacheFileHeaderHalo3Ares),
                     CacheVersion.Halo3ODST => typeof(CacheFileHeaderHalo3ODSTMCC),
                     CacheVersion.HaloReach => typeof(CacheFileHeaderHaloReachMCC),
                     CacheVersion.Halo4 => typeof(CacheFileHeaderHalo4MCC),
@@ -202,5 +204,9 @@ namespace TagTool.Cache
 
         public virtual void SetScenarioIndex(int index) { return; }
         public virtual void SetScenarioType(ScenarioType scenarioType) { return; }
+
+        public virtual CacheFileCompressedSection[] GetCompressedSectionOffset() { return null; }
+        public virtual CacheFileCompressedSection[] GetCompressedSectionSize() { return null; }
+        public virtual CacheFileCompressionCodec[] GetCompressedSectionCodec() { return null; }
     }
 }

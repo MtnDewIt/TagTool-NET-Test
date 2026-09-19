@@ -171,7 +171,7 @@ namespace TagTool.Cache
             if (LocaleTables != null)
                 return;
 
-            if (TagCacheGen4.Count == 0 || sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LocalizationSection].Size == 0)
+            if (TagCacheGen4.Count == 0 || sectionTable.OriginalSectionBounds[(int)CacheFileSectionType.LanguagePackSection].Size == 0)
                 return;
 
             try

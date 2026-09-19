@@ -66,10 +66,10 @@ namespace TagTool.Cache
     /// </summary>
     public enum CacheFileSectionType : int
     {
-        StringSection,
+        DebugSection,
         ResourceSection,
         TagSection,
-        LocalizationSection,
+        LanguagePackSection,
 
         Count
     }
