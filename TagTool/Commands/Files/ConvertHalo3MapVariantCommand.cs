@@ -195,15 +195,16 @@ namespace TagTool.Commands.Files
                             {
                                 blf.MapVariantTagNames.Names[i].Name = $"{quotaObject.Name}.{quotaObject.Group.Tag}";
                                 quota.ObjectDefinitionIndex = 0;
-                                quota.MaximumCount = 255;
-                                quota.MaxAllowed = -1;
                             }
                             else 
                             {
                                 quota.ObjectDefinitionIndex = 0;
-                                quota.MaxAllowed = -1;
-                                quota.Cost = 0.0f;
                             }
+
+                            quota.PlacedOnMap = 0;
+                            quota.MaximumCount = 0;
+                            quota.MaxAllowed = 0;
+                            quota.Cost = 0.0f;
                         }
 
                         var newObjectIndexes = new short[15];
