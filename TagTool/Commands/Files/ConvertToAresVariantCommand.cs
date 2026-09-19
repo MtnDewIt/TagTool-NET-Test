@@ -174,44 +174,11 @@ namespace TagTool.Commands.Files
                         blf.MapVariant.MapVariant.Metadata.UniqueId = blf.MapVariant.MapVariant.Metadata.Timestamp ^ blf.MapVariant.MapVariant.Metadata.AuthorId;
                     }
 
-                    /*
-                    short newObjectCount = 0;
-                    VariantObjectDatum[] newObjectList = new VariantObjectDatum[640];
-
-                    for (int i = 0; i < blf.MapVariant.MapVariant.ObjectTypeStartIndex.Length; i++)
-                    {
-                        if (blf.MapVariant.MapVariant.ObjectTypeStartIndex[i] != -1)
-                        {
-                            blf.MapVariant.MapVariant.ObjectTypeStartIndex[i] = (short)i;
-                            newObjectCount++;
-                        }
-                        else
-                        {
-                            blf.MapVariant.MapVariant.ObjectTypeStartIndex[i] = -1;
-                        }
-                    }
-
-                    blf.MapVariant.MapVariant.ScenarioObjectCount = newObjectCount;
-
-                    for (int i = newObjectCount; i < blf.MapVariant.MapVariant.Objects.Length; i++) 
-                    {
-                        if (blf.MapVariant.MapVariant.Objects[i].Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.Edited))
-                        {
-                            newObjectList[newObjectCount] = blf.MapVariant.MapVariant.Objects[i];
-                            newObjectList[newObjectCount].Flags &= ~VariantObjectDatum.VariantObjectPlacementFlags.ScenarioObject;
-                            newObjectCount++;
-                        }
-
-                        blf.MapVariant.MapVariant.ObjectTypeStartIndex[i] += newObjectCount;
-                    }
-
-                    blf.MapVariant.MapVariant.VariantObjectCount = newObjectCount;
-                    blf.MapVariant.MapVariant.Objects = newObjectList;
-                    */
-
                     for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++) 
                     {
-                        if (blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex > 0)
+                        // Object definition indices are datum indices (tag indices) stored as negative
+                        // 32-bit values in the BLF. Empty quota slots are stored as 0, not -1.
+                        if (blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex != 0)
                         {
                             string x360ObjectTag = x360Mapping[blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex];
                             int aresObjectIndex = aresMapping.FirstOrDefault(x => string.Equals(x.Value, x360ObjectTag)).Key;
@@ -223,7 +190,7 @@ namespace TagTool.Commands.Files
                         }
                         else 
                         {
-                            blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex = -1;
+                            blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex = 0;
                         }
 
                         blf.MapVariant.MapVariant.Quotas[i].PlacedOnMap = 0;
