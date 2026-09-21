@@ -370,8 +370,6 @@ namespace TagTool.Commands.Files
                         blf.ContentFlags |= Blf.BlfFileContentFlags.GameVariant;
                         blf.GameVariant.Signature = new Tag("mpvr");
                         blf.GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfGameVariant), blf.Version, blf.CachePlatform);
-
-                        // #TODO: We may need to account for packed data here
                     }
 
                     if (blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.FileshareMetadata)) 
@@ -391,7 +389,7 @@ namespace TagTool.Commands.Files
 
                 using (var stream = new FileInfo(output).Create())
                 {
-                    ByteSwapAndWrite(stream, blf);
+                    blf.WriteWithByteSwappedHeaders(stream);
                 }
 
                 if (uniqueId != 0)
@@ -402,29 +400,6 @@ namespace TagTool.Commands.Files
             catch (Exception e)
             {
                 ErrorLog.Add($"Error converting \"{filePath}\" : {e.Message}");
-            }
-        }
-
-        private void ByteSwapAndWrite(FileStream stream, Blf blf)
-        {
-            var buffer = new byte[blf.GetVariantFileSize()];
-
-            using (var memoryStream = new MemoryStream(buffer)) 
-            {
-                var writer = new EndianWriter(memoryStream, EndianFormat.LittleEndian);
-                var writerContext = new DataSerializationContext(writer);
-
-                blf.Format = EndianFormat.LittleEndian;
-                blf.StartOfFile?.ByteSwap();
-                blf.Author?.ByteSwap();
-                blf.ContentHeader?.ByteSwap();
-                blf.GameVariant?.ByteSwap();
-                blf.MapVariant?.ByteSwap();
-                blf.EndOfFile?.ByteSwap();
-
-                blf.Write(writer);
-
-                stream.Write(buffer);
             }
         }
 

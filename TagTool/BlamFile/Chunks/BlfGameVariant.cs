@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using TagTool.BlamFile.Chunks.GameVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
@@ -123,32 +122,61 @@ namespace TagTool.BlamFile.Chunks
 
         public static void Encode(EndianWriter writer, TagSerializer serializer, DataSerializationContext dataContext, BlfGameVariant gameVariant, bool packed) 
         {
-            if (!packed && CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.Halo3Retail, CacheVersion.HaloOnline700123)) 
-            {
-                gameVariant.Variant = gameVariant.GameVariantType switch
-                {
-                    GameEngineType.CaptureTheFlag => gameVariant.Variant as GameVariantCtf,
-                    GameEngineType.Slayer => gameVariant.Variant as GameVariantSlayer,
-                    GameEngineType.Oddball => gameVariant.Variant as GameVariantOddball,
-                    GameEngineType.KingOfTheHill => gameVariant.Variant as GameVariantKing,
-                    GameEngineType.Sandbox => gameVariant.Variant as GameVariantSandbox,
-                    GameEngineType.Vip => gameVariant.Variant as GameVariantVip,
-                    GameEngineType.Juggernaut => gameVariant.Variant as GameVariantJuggernaut,
-                    GameEngineType.Territories => gameVariant.Variant as GameVariantTerritories,
-                    GameEngineType.Assault => gameVariant.Variant as GameVariantAssault,
-                    GameEngineType.Infection => gameVariant.Variant as GameVariantInfection,
-                    _ => gameVariant.Variant as GameVariantNone,
-                };
-
-                serializer.Serialize(dataContext, gameVariant);
-
-                return;
-            }
-
             writer.Write(gameVariant.Signature.Value);
             writer.Write(gameVariant.Length);
             writer.Write(gameVariant.MajorVersion);
             writer.Write(gameVariant.MinorVersion);
+
+            if (!packed) 
+            {
+                writer.Write((int)gameVariant.GameVariantType);
+                writer.Write(gameVariant.VTablePointer);
+                writer.Write(gameVariant.VariantChecksum);
+
+                if (CacheVersionDetection.IsBetween(serializer.Version, CacheVersion.HaloOnlineED, CacheVersion.HaloOnline700123))
+                    serializer.Serialize(dataContext, gameVariant.VariantName);
+
+                serializer.Serialize(dataContext, gameVariant.Metadata);
+
+                switch (gameVariant.GameVariantType)
+                {
+                    case GameEngineType.CaptureTheFlag:
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantCtf);
+                        break;
+                    case GameEngineType.Slayer: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantSlayer);
+                        break;
+                    case GameEngineType.Oddball: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantOddball);
+                        break;
+                    case GameEngineType.KingOfTheHill: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantKing);
+                        break;
+                    case GameEngineType.Sandbox:
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantSandbox);
+                        break;
+                    case GameEngineType.Vip: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantVip);
+                        break;
+                    case GameEngineType.Juggernaut: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantJuggernaut);
+                        break;
+                    case GameEngineType.Territories: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantTerritories);
+                        break;
+                    case GameEngineType.Assault: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantAssault);
+                        break;
+                    case GameEngineType.Infection: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantInfection);
+                        break;
+                    default: 
+                        serializer.Serialize(dataContext, gameVariant.Variant as GameVariantNone);
+                        break;
+                };
+
+                return;
+            }
 
             if (serializer.Version == CacheVersion.HaloReach)
             {

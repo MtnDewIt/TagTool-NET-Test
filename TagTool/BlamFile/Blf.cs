@@ -347,6 +347,81 @@ namespace TagTool.BlamFile
             return true;
         }
 
+        public void ReadWithByteSwappedHeaders(FileStream stream) 
+        {
+            var buffer = new byte[stream.Length];
+            stream.ReadExactly(buffer);
+
+            using (var memoryStream = new MemoryStream(buffer))
+            {
+                var deserializer = new TagDeserializer(Version, CachePlatform);
+                var serializer = new TagSerializer(Version, CachePlatform);
+
+                var reader = new EndianReader(memoryStream, EndianFormat.BigEndian);
+                var writer = new EndianWriter(memoryStream, EndianFormat.LittleEndian);
+                var readerContext = new DataSerializationContext(reader);
+                var writerContext = new DataSerializationContext(writer);
+
+                if (reader.ReadTag() != "_blf")
+                {
+                    memoryStream.Position = 0;
+
+                    if (!Read(reader))
+                        throw new Exception("Unable to parse BLF data");
+                }
+
+                reader.BaseStream.Position = 0;
+
+                while (true)
+                {
+                    if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                        break;
+
+                    var pos = reader.BaseStream.Position;
+                    var header = deserializer.Deserialize<BlfChunkHeader>(readerContext);
+
+                    writer.BaseStream.Position = pos;
+                    serializer.Serialize(writerContext, header);
+
+                    if (header.Signature == "_eof")
+                        break;
+
+                    reader.BaseStream.Position += header.Length - (int)TagStructure.GetStructureSize(typeof(BlfChunkHeader), Version, CachePlatform);
+                }
+
+                memoryStream.Position = 0xC;
+                writer.Format = EndianFormat.LittleEndian;
+                writer.Write((short)-2);
+                memoryStream.Position = 0;
+
+                if (!Read(reader))
+                    throw new Exception("Unable to parse BLF data");
+            }
+        }
+
+        public void WriteWithByteSwappedHeaders(FileStream stream) 
+        {
+            var buffer = new byte[GetVariantFileSize()];
+
+            using (var memoryStream = new MemoryStream(buffer))
+            {
+                var writer = new EndianWriter(memoryStream, EndianFormat.LittleEndian);
+                var writerContext = new DataSerializationContext(writer);
+
+                Format = EndianFormat.LittleEndian;
+                StartOfFile?.ByteSwap();
+                Author?.ByteSwap();
+                ContentHeader?.ByteSwap();
+                GameVariant?.ByteSwap();
+                MapVariant?.ByteSwap();
+                EndOfFile?.ByteSwap();
+
+                Write(writer);
+
+                stream.Write(buffer);
+            }
+        }
+
         /// <summary>
         /// Verifies if the stream points to a valid blf start chunk and set the endian format.
         /// </summary>
