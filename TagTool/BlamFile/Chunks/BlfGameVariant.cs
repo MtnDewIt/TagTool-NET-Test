@@ -96,7 +96,7 @@ namespace TagTool.BlamFile.Chunks
                     var buffer = reader.ReadBytes(gameVariant.Length - 0xC);
 
                     var stream = new MemoryStream(buffer);
-                    var bitStream = new BitStreamReader(stream);
+                    var bitStream = new BitStreamReader(stream, deserializer.Version, deserializer.CachePlatform);
 
                     gameVariant.GameVariantType = (GameEngineType)bitStream.ReadUnsigned(4);
                     gameVariant.Metadata = ContentItemMetadata.Decode(bitStream);
@@ -157,7 +157,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = new byte[gameVariant.Length - 0x20];
 
                 var bitStream = new MemoryStream(buffer);
-                var bitWriter = new BitStreamWriter(bitStream);
+                var bitWriter = new BitStreamWriter(bitStream, serializer.Version, serializer.CachePlatform);
 
                 Log.Warning("Reach Game Variants Not Supported. Skipping...");
 
@@ -170,7 +170,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = new byte[gameVariant.Length - 0x20];
 
                 var bitStream = new MemoryStream(buffer);
-                var bitWriter = new BitStreamWriter(bitStream);
+                var bitWriter = new BitStreamWriter(bitStream, serializer.Version, serializer.CachePlatform);
 
                 Log.Warning("Gen 4 Game Variants Not Supported. Skipping...");
 
@@ -181,7 +181,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = new byte[gameVariant.Length - 0xC];
 
                 var bitStream = new MemoryStream(buffer);
-                var bitWriter = new BitStreamWriter(bitStream);
+                var bitWriter = new BitStreamWriter(bitStream, serializer.Version, serializer.CachePlatform);
 
                 writer.Write(buffer);
             }

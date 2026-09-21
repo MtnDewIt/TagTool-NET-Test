@@ -48,7 +48,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = reader.ReadBytes(blfChunk.Length - 0x24);
 
                 var stream = new MemoryStream(buffer);
-                var bitStream = new BitStreamReader(stream);
+                var bitStream = new BitStreamReader(stream, deserializer.Version, deserializer.CachePlatform);
 
                 blfChunk.ReachMapVariant = ReachMapVariant.Decode(bitStream);
             }
@@ -66,7 +66,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = reader.ReadBytes(blfChunk.Length - 0xC);
 
                 var stream = new MemoryStream(buffer);
-                var bitStream = new BitStreamReader(stream);
+                var bitStream = new BitStreamReader(stream, deserializer.Version, deserializer.CachePlatform);
 
                 blfChunk.MapVariant = MapVariant.Decode(bitStream);
             }
@@ -95,7 +95,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = new byte[mapVariant.Length - 0x24];
 
                 var bitStream = new MemoryStream(buffer);
-                var bitWriter = new BitStreamWriter(bitStream);
+                var bitWriter = new BitStreamWriter(bitStream, serializer.Version, serializer.CachePlatform);
 
                 ReachMapVariant.Encode(bitWriter, mapVariant.ReachMapVariant);
 
@@ -109,7 +109,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = new byte[mapVariant.Length - 0x24];
 
                 var bitStream = new MemoryStream(buffer);
-                var bitWriter = new BitStreamWriter(bitStream);
+                var bitWriter = new BitStreamWriter(bitStream, serializer.Version, serializer.CachePlatform);
 
                 Log.Warning("Gen 4 Map Variants Not Supported. Skipping...");
 
@@ -120,7 +120,7 @@ namespace TagTool.BlamFile.Chunks
                 var buffer = new byte[mapVariant.Length - 0xC];
 
                 var bitStream = new MemoryStream(buffer);
-                var bitWriter = new BitStreamWriter(bitStream);
+                var bitWriter = new BitStreamWriter(bitStream, serializer.Version, serializer.CachePlatform);
 
                 MapVariant.Encode(bitWriter, mapVariant.MapVariant);
 

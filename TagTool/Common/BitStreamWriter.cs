@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using TagTool.Cache;
 using TagTool.IO;
 
 namespace TagTool.Common
@@ -11,9 +12,15 @@ namespace TagTool.Common
         private ulong _accumulator;
         private int _accumulatorBitsUsed;
 
-        public BitStreamWriter(Stream stream)
+        public CacheVersion Version;
+        public CachePlatform Platform;
+
+        public BitStreamWriter(Stream stream, CacheVersion version, CachePlatform platform)
         {
             _writer = new EndianWriter(stream, EndianFormat.BigEndian);
+
+            Version = version;
+            Platform = platform;
         }
 
         public void WriteBool(bool value) 

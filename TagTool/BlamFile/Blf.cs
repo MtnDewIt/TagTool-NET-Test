@@ -80,6 +80,27 @@ namespace TagTool.BlamFile
         // TODO: Update definition versioning (Should stop all the damn warnings)
         // TODO: look into reach MCC support
 
+        public int GetVariantFileSize()
+        {
+            return (StartOfFile?.Length ?? 0) +
+                   (EndOfFile?.Length ?? 0) +
+                   (Author?.Length ?? 0) +
+                   (Campaign?.Length ?? 0) +
+                   (Scenario?.Length ?? 0) +
+                   (ModReference?.Length ?? 0) +
+                   (MapVariantTagNames?.Length ?? 0) +
+                   (MapVariant?.Length ?? 0) +
+                   (GameVariant?.Length ?? 0) +
+                   (ContentHeader?.Length ?? 0) +
+                   (MapImage?.Length ?? 0) +
+                   (SavedFilmData?.Length ?? 0) +
+                   (SavedFilmHeader?.Length ?? 0) +
+                   (ScreenshotCamera?.Length ?? 0) +
+                   (ScreenshotData?.Length ?? 0) +
+                   (ServerSignature?.Length ?? 0) +
+                   (FileshareMetadata?.Length ?? 0);
+        }
+
         public bool Read(EndianReader reader)
         {
             if (!IsValid(reader))
@@ -221,13 +242,22 @@ namespace TagTool.BlamFile
                         break;
 
                     default:
-                        Log.Warning($"BLF chunk type {header.Signature} not implemented! Skipping...");
-                        var currentHeader = (BlfChunkHeader)deserializer.Deserialize(dataContext, typeof(BlfChunkHeader));
-                        dataContext.Reader.SeekTo(dataContext.Reader.Position + (currentHeader.Length - 0xC));
-                        break;
+                        if (header.Signature.Value == 0 && (ContentFlags.HasFlag(BlfFileContentFlags.EndOfFile) || ContentFlags.HasFlag(BlfFileContentFlags.FileshareMetadata)))
+                        {
+                            // This is only here to account for padding after the end of file chunk or the fileshare metadata chunk
+                            dataContext.Reader.SeekTo(dataContext.Reader.Length);
+                            break;
+                        }
+                        else 
+                        {
+                            Log.Warning($"BLF chunk type {header.Signature} not implemented! Skipping...");
+                            var currentHeader = deserializer.Deserialize<BlfChunkHeader>(dataContext);
+                            dataContext.Reader.SeekTo(dataContext.Reader.Position + (currentHeader.Length - 0xC));
+                            break;
+                        }
                 }
 
-                if (reader.Position < (chunkHeaderPosition + header.Length))
+                if (reader.Position <= (chunkHeaderPosition + header.Length))
                 {
                     reader.SeekTo(reader.Position + Math.Abs((chunkHeaderPosition + header.Length) - reader.Position));
                 }
@@ -348,6 +378,13 @@ namespace TagTool.BlamFile
                 return false;
         }
 
+        /// <summary>
+        /// Get the version and platform of the file.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="version"></param>
+        /// <param name="platform"></param>
+        /// <returns></returns>
         private static void GetFileVersion(EndianReader reader, ref CacheVersion version, ref CachePlatform platform) 
         {
             var startOfFile = reader.Position;
@@ -683,6 +720,9 @@ namespace TagTool.BlamFile
             Scenario.Length = 0x98C0;
         }
 
+        /// <summary>
+        /// Converts a Halo Reach Scenario chunk (levl) to ODST format (HO)
+        /// </summary>
         private void ConvertReachToODSTScenarioChunk()
         {
             if (!ContentFlags.HasFlag(BlfFileContentFlags.Scenario))

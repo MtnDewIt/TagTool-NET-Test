@@ -193,7 +193,9 @@ namespace TagTool.Commands.Files
 
                             if (quotaObject != null)
                             {
-                                blf.MapVariantTagNames.Names[i].Name = $"{quotaObject.Name}.{quotaObject.Group.Tag}";
+                                string tagName = $"{quotaObject.Name}.{quotaObject.Group.Tag}";
+
+                                blf.MapVariantTagNames.Names[i].Name = tagName;
                                 quota.ObjectDefinitionIndex = 0;
                             }
                             else 

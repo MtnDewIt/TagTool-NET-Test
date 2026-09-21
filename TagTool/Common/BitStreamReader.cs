@@ -1,22 +1,29 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using TagTool.Cache;
 using TagTool.IO;
 
 namespace TagTool.Common
 {
     public class BitStreamReader
     {
-        const int QWORD_BITS = 64;
+        private const int QWORD_BITS = 64;
 
         private readonly EndianReader _reader;
         private ulong _accumulator;
         private int _accumulatorBitsUsed;
 
-        public BitStreamReader(Stream stream)
+        public CacheVersion Version;
+        public CachePlatform Platform;
+
+        public BitStreamReader(Stream stream, CacheVersion version, CachePlatform platform)
         {
             _reader = new EndianReader(stream, EndianFormat.BigEndian);
             _accumulator = DecodeAccumulator();
+
+            Version = version;
+            Platform = platform;
         }
 
         // TODO: Redo Base Read Functions

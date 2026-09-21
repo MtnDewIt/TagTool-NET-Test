@@ -7,12 +7,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TagTool.BlamFile;
+using TagTool.BlamFile.Chunks;
 using TagTool.BlamFile.Chunks.MapVariants;
 using TagTool.BlamFile.Chunks.Metadata;
 using TagTool.Cache;
 using TagTool.Commands.Common;
+using TagTool.Common;
 using TagTool.IO;
 using TagTool.Serialization;
+using TagTool.Tags;
 
 namespace TagTool.Commands.Files
 {
@@ -144,7 +147,6 @@ namespace TagTool.Commands.Files
             var input = new FileInfo(filePath);
             var blf = new Blf(Cache.Version, Cache.Platform);
 
-            long streamLength = 0;
             string variantName = "";
             ulong uniqueId = 0;
             ContentItemMetadata.ContentItemType contentType = ContentItemMetadata.ContentItemType.None;
@@ -157,49 +159,202 @@ namespace TagTool.Commands.Files
 
                     Dictionary<int, string> aresMapping = GetAresMapping(blf.MapVariant.MapVariant.MapId);
                     Dictionary<int, string> x360Mapping = GetX360Mapping(blf.MapVariant.MapVariant.MapId);
-
-                    blf.MapVariant.MapVariant.VariantVersion = 12;
+                    Dictionary<(VariantObjectQuota.MapVariantQuotaPalette, short), string> mccMapping = GetMCCMapping(blf.MapVariant.MapVariant.MapId);
 
                     // This is the checksum of empty RSA
-                    blf.MapVariant.MapVariant.OriginalMapRSASignatureHash = 0xF2697AA7;
+                    blf?.MapVariant?.MapVariant?.OriginalMapRSASignatureHash = 0xF2697AA7;
 
                     // Force a unique id by xor'ing the timestamp and the xuid (only if either chunk lacks a unique id)
-                    if (blf.ContentHeader.Metadata.UniqueId == 0) 
+                    if (blf?.ContentHeader?.Metadata?.UniqueId == 0) 
                     {
-                        blf.ContentHeader.Metadata.UniqueId = blf.ContentHeader.Metadata.Timestamp ^ blf.ContentHeader.Metadata.AuthorId;
+                        blf?.ContentHeader?.Metadata?.UniqueId = blf.ContentHeader.Metadata.Timestamp ^ blf.ContentHeader.Metadata.AuthorId;
                     }
 
-                    if (blf.MapVariant.MapVariant.Metadata.UniqueId == 0) 
+                    if (blf?.MapVariant?.MapVariant?.Metadata?.UniqueId == 0) 
                     {
-                        blf.MapVariant.MapVariant.Metadata.UniqueId = blf.MapVariant.MapVariant.Metadata.Timestamp ^ blf.MapVariant.MapVariant.Metadata.AuthorId;
+                        blf?.MapVariant?.MapVariant?.Metadata?.UniqueId = blf.MapVariant.MapVariant.Metadata.Timestamp ^ blf.MapVariant.MapVariant.Metadata.AuthorId;
                     }
 
-                    for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++) 
+                    if (blf?.MapVariant?.MapVariant?.VariantVersion == 13 || blf?.MapVariant?.MapVariant?.VariantVersion == 14)
                     {
-                        // Object definition indices are datum indices (tag indices) stored as negative
-                        // 32-bit values in the BLF. Empty quota slots are stored as 0, not -1.
-                        if (blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex != 0)
+                        List<VariantObjectDatum> objectList = [.. blf.MapVariant.MapVariant.Objects];
+                        List<VariantObjectQuota> quotaList = [.. blf.MapVariant.MapVariant.Quotas];
+
+                        List<int> badBudgetIndices = [];
+
+                        for (int i = blf.MapVariant.MapVariant.PlaceableQuotaCount - 1; i >= 0; i--)
                         {
-                            string x360ObjectTag = x360Mapping[blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex];
-                            int aresObjectIndex = aresMapping.FirstOrDefault(x => string.Equals(x.Value, x360ObjectTag)).Key;
+                            int aresObjectIndex = -1;
 
-                            string aresObjectTag = aresMapping[aresObjectIndex];
-                            Debug.Assert(string.Equals(x360ObjectTag, aresObjectTag));
+                            if (mccMapping.TryGetValue((quotaList[i].TagBlockIndex, quotaList[i].TagBlockElementIndex), out string mccObjectTag))
+                            {
+                                var aresMatch = aresMapping.FirstOrDefault(x => string.Equals(x.Value, mccObjectTag));
 
-                            blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex = aresObjectIndex;
+                                if (!string.IsNullOrEmpty(aresMatch.Value))
+                                {
+                                    aresObjectIndex = aresMatch.Key;
+                                }
+                                else
+                                {
+                                    ErrorLog.Add($"WARNING: Object Mismatch {mccObjectTag}");
+                                }
+                            }
+
+                            if (aresObjectIndex != -1)
+                            {
+                                quotaList[i].ObjectDefinitionIndex = aresObjectIndex;
+                            }
+                            else
+                            {
+                                quotaList.RemoveAt(i);
+                                quotaList.Add(new VariantObjectQuota());
+                                blf.MapVariant.MapVariant.PlaceableQuotaCount -= 1;
+                                badBudgetIndices.Add(i);
+                            }
                         }
-                        else 
+
+                        for (int i = 0; i < blf.MapVariant.MapVariant.PlaceableQuotaCount; i++)
                         {
-                            blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex = 0;
+                            quotaList[i].PlacedOnMap = 0;
+                            quotaList[i].MaximumCount = 0;
+                            quotaList[i].MaxAllowed = 0;
+                            quotaList[i].Cost = 0.0f;
                         }
 
-                        blf.MapVariant.MapVariant.Quotas[i].PlacedOnMap = 0;
-                        blf.MapVariant.MapVariant.Quotas[i].MaximumCount = 0;
-                        blf.MapVariant.MapVariant.Quotas[i].MaxAllowed = 0;
-                        blf.MapVariant.MapVariant.Quotas[i].Cost = 0.0f;
+                        int removedObjectsCount = 0;
+
+                        for (int i = blf.MapVariant.MapVariant.VariantObjectCount - 1; i >= 0; i--)
+                        {
+                            if (badBudgetIndices.Contains(objectList[i].QuotaIndex))
+                            {
+                                objectList.RemoveAt(i);
+                                objectList.Add(new VariantObjectDatum());
+                                blf?.MapVariant?.MapVariant?.VariantObjectCount -= 1;
+                                removedObjectsCount += 1;
+                            }
+                        }
+
+                        if (removedObjectsCount > 0)
+                        {
+                            ErrorLog.Add($"WARNING: {blf.MapVariant.MapVariant.Metadata.Name}: {removedObjectsCount} objects have been removed.");
+                        }
+
+                        foreach (int badIndex in badBudgetIndices)
+                        {
+                            for (int i = 0; i < blf?.MapVariant?.MapVariant?.VariantObjectCount; i++)
+                            {
+                                if (objectList[i].QuotaIndex > badIndex)
+                                {
+                                    objectList[i].QuotaIndex -= 1;
+                                }
+                            }
+                        }
+
+                        blf?.MapVariant?.MapVariant?.Objects = [.. objectList];
+                        blf?.MapVariant?.MapVariant?.Quotas = [.. quotaList];
+
+                        blf?.MapVariant?.MapVariant?.VariantVersion = 12;
+                    }
+                    else 
+                    {
+                        for (int i = 0; i < blf?.MapVariant?.MapVariant?.Quotas.Length; i++)
+                        {
+                            // Object definition indices are datum indices (tag indices) stored as negative
+                            // 32-bit values in the BLF. Empty quota slots are stored as 0, not -1.
+                            if (blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex != 0)
+                            {
+                                if (x360Mapping.TryGetValue(blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex, out string x360ObjectTag))
+                                {
+                                    int aresObjectIndex = aresMapping.FirstOrDefault(x => string.Equals(x.Value, x360ObjectTag)).Key;
+
+                                    string aresObjectTag = aresMapping.GetValueOrDefault(aresObjectIndex);
+
+                                    if (!string.Equals(x360ObjectTag, aresObjectTag))
+                                    {
+                                        ErrorLog.Add($"WARNING: Object Mismatch {x360ObjectTag} != {aresObjectTag}");
+                                    }
+
+                                    blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex = aresObjectIndex;
+                                }
+                            }
+                            else
+                            {
+                                blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex = 0;
+                            }
+
+                            blf?.MapVariant?.MapVariant?.Quotas[i].PlacedOnMap = 0;
+                            blf?.MapVariant?.MapVariant?.Quotas[i].MaximumCount = 0;
+                            blf?.MapVariant?.MapVariant?.Quotas[i].MaxAllowed = 0;
+                            blf?.MapVariant?.MapVariant?.Quotas[i].Cost = 0.0f;
+                        }
                     }
 
-                    streamLength = stream.Length;
+                    blf?.MapVariant?.MapVariant?.VariantVersion = 12;
+                    blf?.StartOfFile?.FileType = string.Empty;
+
+                    blf?.Version = CacheVersion.Halo3Retail;
+                    blf?.CachePlatform = CachePlatform.Original;
+
+                    if (blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.Author)) 
+                    {
+                        blf.ContentFlags &= ~Blf.BlfFileContentFlags.Author;
+                        blf.ContentFlags |= Blf.BlfFileContentFlags.ContentHeader;
+                        blf.Author = null;
+
+                        blf.ContentHeader = new BlfContentHeader
+                        {
+                            Signature = new Tag("chdr"),
+                            Length = (int)TagStructure.GetStructureSize(typeof(BlfContentHeader), blf.Version, blf.CachePlatform),
+                            MajorVersion = 9,
+                            MinorVersion = 2,
+                            BuildVersion = -1,
+                            MapMinorVersion = 0,
+                            Metadata = blf?.MapVariant?.MapVariant?.Metadata
+                        };
+                    }
+
+                    if (blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.PackedMapVariant))
+                    {
+                        blf.ContentFlags &= ~Blf.BlfFileContentFlags.PackedMapVariant;
+                        blf.ContentFlags |= Blf.BlfFileContentFlags.MapVariant;
+                        blf.MapVariant.Signature = new Tag("mapv");
+                        blf.MapVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfMapVariant), blf.Version, blf.CachePlatform);
+
+                        VariantObjectDatum[] newObjectList = new VariantObjectDatum[640];
+
+                        for (int i = 0; i < blf.MapVariant.MapVariant.Objects.Length; i++) 
+                        {
+                            newObjectList[i] = blf.MapVariant.MapVariant.Objects[i];
+                        }
+
+                        blf.MapVariant.MapVariant.Objects = newObjectList;
+
+                        VariantObjectQuota[] newQuotaList = new VariantObjectQuota[256];
+
+                        for (int i = 0; i < blf.MapVariant.MapVariant.Quotas.Length; i++)
+                        {
+                            newQuotaList[i] = blf.MapVariant.MapVariant.Quotas[i];
+                        }
+
+                        blf.MapVariant.MapVariant.Quotas = newQuotaList;
+                    }
+
+                    if (blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.PackedGameVariant))
+                    {
+                        blf.ContentFlags &= ~Blf.BlfFileContentFlags.PackedGameVariant;
+                        blf.ContentFlags |= Blf.BlfFileContentFlags.GameVariant;
+                        blf.GameVariant.Signature = new Tag("mpvr");
+                        blf.GameVariant.Length = (int)TagStructure.GetStructureSize(typeof(BlfGameVariant), blf.Version, blf.CachePlatform);
+
+                        // #TODO: We may need to account for packed data here
+                    }
+
+                    if (blf.ContentFlags.HasFlag(Blf.BlfFileContentFlags.FileshareMetadata)) 
+                    {
+                        blf.ContentFlags &= ~Blf.BlfFileContentFlags.FileshareMetadata;
+                        blf.FileshareMetadata = null;
+                    }
+
                     uniqueId = blf.ContentHeader?.Metadata?.UniqueId ?? 0;
                     variantName = blf.ContentHeader?.Metadata?.Name ?? "";
                     contentType = blf.ContentHeader?.Metadata?.ContentType ?? ContentItemMetadata.ContentItemType.None;
@@ -211,7 +366,7 @@ namespace TagTool.Commands.Files
 
                 using (var stream = new FileInfo(output).Create())
                 {
-                    ByteSwapAndWrite(stream, streamLength, blf);
+                    ByteSwapAndWrite(stream, blf);
                 }
 
                 if (uniqueId != 0)
@@ -225,9 +380,9 @@ namespace TagTool.Commands.Files
             }
         }
 
-        private void ByteSwapAndWrite(FileStream stream, long streamLength, Blf blf)
+        private void ByteSwapAndWrite(FileStream stream, Blf blf)
         {
-            var buffer = new byte[streamLength];
+            var buffer = new byte[blf.GetVariantFileSize()];
 
             using (var memoryStream = new MemoryStream(buffer)) 
             {
@@ -260,7 +415,8 @@ namespace TagTool.Commands.Files
         {
             string mappingPath = $"{DirectoryPaths.Data}\\mappings\\h3_ares\\{MapIdToMapFile[mapId]}_mappings.json";
 
-            // INSERT FILE CHECK
+            if (!File.Exists(mappingPath))
+                throw new FileNotFoundException();
 
             return JsonConvert.DeserializeObject<Dictionary<int, string>>(File.ReadAllText(mappingPath));
         }
@@ -269,9 +425,40 @@ namespace TagTool.Commands.Files
         {
             string mappingPath = $"{DirectoryPaths.Data}\\mappings\\h3_360\\{MapIdToMapFile[mapId]}_mappings.json";
 
-            // INSERT FILE CHECK
+            if (!File.Exists(mappingPath))
+                throw new FileNotFoundException();
 
             return JsonConvert.DeserializeObject<Dictionary<int, string>>(File.ReadAllText(mappingPath));
+        }
+
+        private Dictionary<(VariantObjectQuota.MapVariantQuotaPalette, short), string> GetMCCMapping(int mapId)
+        {
+            string mappingPath = $"{DirectoryPaths.Data}\\mappings\\h3_mcc\\{MapIdToMapFile[mapId]}_mappings.json";
+
+            if (!File.Exists(mappingPath))
+                throw new FileNotFoundException();
+
+            var rawDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(mappingPath));
+            var resultDict = new Dictionary<(VariantObjectQuota.MapVariantQuotaPalette, short), string>();
+
+            if (rawDict == null)
+                return resultDict;
+
+            foreach (var kvp in rawDict)
+            {
+                string cleanKey = kvp.Key.Trim('(', ')');
+                string[] parts = cleanKey.Split(',');
+
+                if (parts.Length != 2)
+                    throw new FormatException($"Invalid tuple key format in JSON: {kvp.Key}");
+
+                var palette = Enum.Parse<VariantObjectQuota.MapVariantQuotaPalette>(parts[0].Trim(), ignoreCase: true);
+                short index = short.Parse(parts[1].Trim());
+
+                resultDict[(palette, index)] = kvp.Value;
+            }
+
+            return resultDict;
         }
 
         private string GetOutputPath(string variantName, ContentItemMetadata.ContentItemType contentType, ulong uniqueId)

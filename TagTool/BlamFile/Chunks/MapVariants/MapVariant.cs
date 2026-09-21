@@ -311,18 +311,53 @@ namespace TagTool.BlamFile.Chunks.MapVariants
     [TagStructure(Size = 0xC)]
     public class VariantObjectQuota : TagStructure
     {
-        public int ObjectDefinitionIndex = -1;
+        [TagField(Platform = CachePlatform.Original)]
+        [TagField(Version = CacheVersion.Halo3Ares, Platform = CachePlatform.MCC)]
+        public int ObjectDefinitionIndex;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+        public MapVariantQuotaPalette TagBlockIndex;
+
+        [TagField(MinVersion = CacheVersion.Halo3Retail, Platform = CachePlatform.MCC)]
+        public short TagBlockElementIndex;
+
         public byte MinimumCount;
         public byte MaximumCount;
         public byte PlacedOnMap;
-        public sbyte MaxAllowed = -1;
-        public float Cost = -1.0f;
+        public sbyte MaxAllowed;
+        public float Cost = 0.0f;
+
+        public enum MapVariantQuotaPalette : short
+        {
+            None,
+            Vehicle,
+            Weapon,
+            Equipment,
+            Scenery,
+            Teleporter,
+            Goal,
+            SpawnObjects,
+            SceneryRuntime,
+            VehicleRuntime,
+            WeaponRuntime,
+            EquipmentRuntime,
+            Crate,
+        };
 
         public static VariantObjectQuota Decode(BitStreamReader stream)
         {
             var quotaDatum = new VariantObjectQuota();
 
-            quotaDatum.ObjectDefinitionIndex = (int)stream.ReadUnsigned(32);
+            if (stream.Version >= CacheVersion.Halo3Retail && stream.Platform == CachePlatform.MCC)
+            {
+                quotaDatum.TagBlockIndex = (MapVariantQuotaPalette)stream.ReadUnsigned(16);
+                quotaDatum.TagBlockElementIndex = (short)stream.ReadUnsigned(16);
+            }
+            else 
+            {
+                quotaDatum.ObjectDefinitionIndex = (int)stream.ReadUnsigned(32);
+            }
+
             quotaDatum.MinimumCount = (byte)stream.ReadUnsigned(8);
             quotaDatum.MaximumCount = (byte)stream.ReadUnsigned(8);
             quotaDatum.PlacedOnMap = (byte)stream.ReadUnsigned(8);
@@ -334,6 +369,16 @@ namespace TagTool.BlamFile.Chunks.MapVariants
 
         public static void Encode(BitStreamWriter stream, VariantObjectQuota objectQuota)
         {
+            if (stream.Version >= CacheVersion.Halo3Retail && stream.Platform == CachePlatform.MCC)
+            {
+                stream.WriteInteger((uint)objectQuota.TagBlockIndex, 16);
+                stream.WriteInteger((uint)objectQuota.TagBlockElementIndex, 16);
+            }
+            else
+            {
+                stream.WriteInteger((uint)objectQuota.ObjectDefinitionIndex, 32);
+            }
+
             stream.WriteInteger((uint)objectQuota.ObjectDefinitionIndex, 32);
             stream.WriteInteger(objectQuota.MinimumCount, 8);
             stream.WriteInteger(objectQuota.MaximumCount, 8);
