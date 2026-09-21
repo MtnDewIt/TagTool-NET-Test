@@ -242,8 +242,8 @@ namespace TagTool.Common
         public static void DequantizeUnitVector3d(int value, out RealVector3d vector)
         {
             int face = value & 7;
-            float x = DequantizeReal((value >> 3) & 0xFF, -1.0f, 1.0f, 8, false, true);
-            float y = DequantizeReal((value >> 11) & 0xFF, -1.0f, 1.0f, 8, false, true);
+            float x = DequantizeReal((value >> 3) & 0xFF, -1.0f, 1.0f, 8, true, true);
+            float y = DequantizeReal((value >> 11) & 0xFF, -1.0f, 1.0f, 8, true, true);
 
             vector = face switch
             {
