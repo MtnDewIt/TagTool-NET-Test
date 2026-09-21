@@ -157,154 +157,164 @@ namespace TagTool.Commands.Files
                 {
                     ReadBlf(stream, blf);
 
-                    Dictionary<int, string> aresMapping = GetAresMapping(blf.MapVariant.MapVariant.MapId);
-                    Dictionary<int, string> x360Mapping = GetX360Mapping(blf.MapVariant.MapVariant.MapId);
-                    Dictionary<(VariantObjectQuota.MapVariantQuotaPalette, short), string> mccMapping = GetMCCMapping(blf.MapVariant.MapVariant.MapId);
-
-                    // This is the checksum of empty RSA
-                    blf?.MapVariant?.MapVariant?.OriginalMapRSASignatureHash = 0xF2697AA7;
-
-                    // Force a unique id by xor'ing the timestamp and the xuid (only if either chunk lacks a unique id)
-                    if (blf?.ContentHeader?.Metadata?.UniqueId == 0) 
+                    if (blf?.MapVariant != null) 
                     {
-                        blf?.ContentHeader?.Metadata?.UniqueId = blf.ContentHeader.Metadata.Timestamp ^ blf.ContentHeader.Metadata.AuthorId;
-                    }
+                        Dictionary<int, string> aresMapping = GetAresMapping(blf.MapVariant.MapVariant.MapId);
+                        Dictionary<int, string> x360Mapping = GetX360Mapping(blf.MapVariant.MapVariant.MapId);
+                        Dictionary<(VariantObjectQuota.MapVariantQuotaPalette, short), string> mccMapping = GetMCCMapping(blf.MapVariant.MapVariant.MapId);
 
-                    if (blf?.MapVariant?.MapVariant?.Metadata?.UniqueId == 0) 
-                    {
-                        blf?.MapVariant?.MapVariant?.Metadata?.UniqueId = blf.MapVariant.MapVariant.Metadata.Timestamp ^ blf.MapVariant.MapVariant.Metadata.AuthorId;
-                    }
+                        // This is the checksum of empty RSA
+                        blf?.MapVariant?.MapVariant?.OriginalMapRSASignatureHash = 0xF2697AA7;
 
-                    if (blf?.MapVariant?.MapVariant?.VariantVersion == 13 || blf?.MapVariant?.MapVariant?.VariantVersion == 14)
-                    {
-                        List<VariantObjectDatum> objectList = [.. blf.MapVariant.MapVariant.Objects];
-                        List<VariantObjectQuota> quotaList = [.. blf.MapVariant.MapVariant.Quotas];
-
-                        List<int> badBudgetIndices = [];
-                        List<int> badBoundaryIndices = [];
-
-                        for (int i = blf.MapVariant.MapVariant.PlaceableQuotaCount - 1; i >= 0; i--)
+                        // Force a unique id by xor'ing the timestamp and the xuid (only if either chunk lacks a unique id)
+                        if (blf?.ContentHeader?.Metadata?.UniqueId == 0)
                         {
-                            int aresObjectIndex = -1;
+                            blf?.ContentHeader?.Metadata?.UniqueId = blf.ContentHeader.Metadata.Timestamp ^ blf.ContentHeader.Metadata.AuthorId;
+                        }
 
-                            if (mccMapping.TryGetValue((quotaList[i].TagBlockIndex, quotaList[i].TagBlockElementIndex), out string mccObjectTag))
+                        if (blf?.MapVariant?.MapVariant?.Metadata?.UniqueId == 0)
+                        {
+                            blf?.MapVariant?.MapVariant?.Metadata?.UniqueId = blf.MapVariant.MapVariant.Metadata.Timestamp ^ blf.MapVariant.MapVariant.Metadata.AuthorId;
+                        }
+
+                        if (blf?.MapVariant?.MapVariant?.VariantVersion == 13 || blf?.MapVariant?.MapVariant?.VariantVersion == 14)
+                        {
+                            List<VariantObjectDatum> objectList = [.. blf.MapVariant.MapVariant.Objects];
+                            List<VariantObjectQuota> quotaList = [.. blf.MapVariant.MapVariant.Quotas];
+
+                            List<int> badBudgetIndices = [];
+                            List<int> badBoundaryIndices = [];
+
+                            for (int i = blf.MapVariant.MapVariant.PlaceableQuotaCount - 1; i >= 0; i--)
                             {
-                                var aresMatch = aresMapping.FirstOrDefault(x => string.Equals(x.Value, mccObjectTag));
+                                int aresObjectIndex = -1;
 
-                                if (!string.IsNullOrEmpty(aresMatch.Value))
+                                if (mccMapping.TryGetValue((quotaList[i].TagBlockIndex, quotaList[i].TagBlockElementIndex), out string mccObjectTag))
                                 {
-                                    aresObjectIndex = aresMatch.Key;
+                                    var aresMatch = aresMapping.FirstOrDefault(x => string.Equals(x.Value, mccObjectTag));
+
+                                    if (!string.IsNullOrEmpty(aresMatch.Value))
+                                    {
+                                        aresObjectIndex = aresMatch.Key;
+                                    }
+                                    else
+                                    {
+                                        ErrorLog.Add($"WARNING: Object Mismatch {mccObjectTag}");
+                                    }
+                                }
+
+                                if (aresObjectIndex != -1)
+                                {
+                                    quotaList[i].ObjectDefinitionIndex = aresObjectIndex;
                                 }
                                 else
                                 {
-                                    ErrorLog.Add($"WARNING: Object Mismatch {mccObjectTag}");
+                                    quotaList.RemoveAt(i);
+                                    quotaList.Add(new VariantObjectQuota());
+                                    blf.MapVariant.MapVariant.PlaceableQuotaCount -= 1;
+                                    badBudgetIndices.Add(i);
                                 }
                             }
 
-                            if (aresObjectIndex != -1)
+                            for (int i = 0; i < quotaList.Count; i++)
                             {
-                                quotaList[i].ObjectDefinitionIndex = aresObjectIndex;
-                            }
-                            else
-                            {
-                                quotaList.RemoveAt(i);
-                                quotaList.Add(new VariantObjectQuota());
-                                blf.MapVariant.MapVariant.PlaceableQuotaCount -= 1;
-                                badBudgetIndices.Add(i);
-                            }
-                        }
-
-                        for (int i = 0; i < quotaList.Count; i++) 
-                        {
-                            if (quotaList[i].TagBlockIndex == VariantObjectQuota.MapVariantQuotaPalette.Goal ||
-                                quotaList[i].TagBlockIndex == VariantObjectQuota.MapVariantQuotaPalette.Teleporter)
-                            {
-                                badBoundaryIndices.Add(i);
-                            }
-
-                            quotaList[i].PlacedOnMap = 0;
-                            quotaList[i].MaximumCount = 0;
-                            quotaList[i].MaxAllowed = 0;
-                            quotaList[i].Cost = 0.0f;
-                        }
-
-                        int removedObjectsCount = 0;
-
-                        for (int i = blf.MapVariant.MapVariant.VariantObjectCount - 1; i >= 0; i--)
-                        {
-                            if (badBudgetIndices.Contains(objectList[i].QuotaIndex))
-                            {
-                                objectList.RemoveAt(i);
-                                objectList.Add(new VariantObjectDatum());
-                                blf?.MapVariant?.MapVariant?.VariantObjectCount -= 1;
-                                removedObjectsCount += 1;
-                            }
-                        }
-
-                        if (removedObjectsCount > 0)
-                        {
-                            ErrorLog.Add($"WARNING: {blf.MapVariant.MapVariant.Metadata.Name}: {removedObjectsCount} objects have been removed.");
-                        }
-
-                        foreach (int badIndex in badBudgetIndices)
-                        {
-                            for (int i = 0; i < blf?.MapVariant?.MapVariant?.VariantObjectCount; i++)
-                            {
-                                if (objectList[i].QuotaIndex > badIndex)
+                                if (quotaList[i].TagBlockIndex == VariantObjectQuota.MapVariantQuotaPalette.Goal ||
+                                    quotaList[i].TagBlockIndex == VariantObjectQuota.MapVariantQuotaPalette.Teleporter)
                                 {
-                                    objectList[i].QuotaIndex -= 1;
+                                    badBoundaryIndices.Add(i);
+                                }
+
+                                quotaList[i].PlacedOnMap = 0;
+                                quotaList[i].MaximumCount = 0;
+                                quotaList[i].MaxAllowed = 0;
+                                quotaList[i].Cost = 0.0f;
+                            }
+
+                            int removedObjectsCount = 0;
+
+                            for (int i = blf.MapVariant.MapVariant.VariantObjectCount - 1; i >= 0; i--)
+                            {
+                                if (badBudgetIndices.Contains(objectList[i].QuotaIndex))
+                                {
+                                    objectList.RemoveAt(i);
+                                    objectList.Add(new VariantObjectDatum());
+                                    blf?.MapVariant?.MapVariant?.VariantObjectCount -= 1;
+                                    removedObjectsCount += 1;
                                 }
                             }
-                        }
 
-                        for (int i = 0; i < objectList.Count; i++) 
-                        {
-                            if (badBoundaryIndices.Contains(objectList[i].QuotaIndex)) 
+                            if (removedObjectsCount > 0)
                             {
-                                objectList[i].Properties.Boundary.NegativeHeight = 1.0f;
+                                ErrorLog.Add($"WARNING: {blf.MapVariant.MapVariant.Metadata.Name}: {removedObjectsCount} objects have been removed.");
+                            }
+
+                            foreach (int badIndex in badBudgetIndices)
+                            {
+                                for (int i = 0; i < blf?.MapVariant?.MapVariant?.VariantObjectCount; i++)
+                                {
+                                    if (objectList[i].QuotaIndex > badIndex)
+                                    {
+                                        objectList[i].QuotaIndex -= 1;
+                                    }
+                                }
+                            }
+
+                            for (int i = 0; i < objectList.Count; i++)
+                            {
+                                if (!objectList[i].Flags.HasFlag(VariantObjectDatum.VariantObjectPlacementFlags.None) && quotaList[objectList[i].QuotaIndex].ObjectDefinitionIndex == 0) 
+                                {
+                                    objectList[i].ObjectIndex = -1;
+                                    quotaList[objectList[i].QuotaIndex].ObjectDefinitionIndex = -1;
+                                }
+
+                                if (badBoundaryIndices.Contains(objectList[i].QuotaIndex))
+                                {
+                                    objectList[i].Properties?.Boundary?.NegativeHeight = 1.0f;
+                                }
+                            }
+
+                            blf?.MapVariant?.MapVariant?.Objects = [.. objectList];
+                            blf?.MapVariant?.MapVariant?.Quotas = [.. quotaList];
+
+                            blf?.MapVariant?.MapVariant?.VariantVersion = 12;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < blf?.MapVariant?.MapVariant?.Quotas.Length; i++)
+                            {
+                                // Object definition indices are datum indices (tag indices) stored as negative
+                                // 32-bit values in the BLF. Empty quota slots are stored as 0, not -1.
+                                if (blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex != 0)
+                                {
+                                    if (x360Mapping.TryGetValue(blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex, out string x360ObjectTag))
+                                    {
+                                        int aresObjectIndex = aresMapping.FirstOrDefault(x => string.Equals(x.Value, x360ObjectTag)).Key;
+
+                                        string aresObjectTag = aresMapping.GetValueOrDefault(aresObjectIndex);
+
+                                        if (!string.Equals(x360ObjectTag, aresObjectTag))
+                                        {
+                                            ErrorLog.Add($"WARNING: Object Mismatch {x360ObjectTag} != {aresObjectTag}");
+                                        }
+
+                                        blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex = aresObjectIndex;
+                                    }
+                                }
+                                else
+                                {
+                                    blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex = 0;
+                                }
+
+                                blf?.MapVariant?.MapVariant?.Quotas[i].PlacedOnMap = 0;
+                                blf?.MapVariant?.MapVariant?.Quotas[i].MaximumCount = 0;
+                                blf?.MapVariant?.MapVariant?.Quotas[i].MaxAllowed = 0;
+                                blf?.MapVariant?.MapVariant?.Quotas[i].Cost = 0.0f;
                             }
                         }
-
-                        blf?.MapVariant?.MapVariant?.Objects = [.. objectList];
-                        blf?.MapVariant?.MapVariant?.Quotas = [.. quotaList];
 
                         blf?.MapVariant?.MapVariant?.VariantVersion = 12;
                     }
-                    else 
-                    {
-                        for (int i = 0; i < blf?.MapVariant?.MapVariant?.Quotas.Length; i++)
-                        {
-                            // Object definition indices are datum indices (tag indices) stored as negative
-                            // 32-bit values in the BLF. Empty quota slots are stored as 0, not -1.
-                            if (blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex != 0)
-                            {
-                                if (x360Mapping.TryGetValue(blf.MapVariant.MapVariant.Quotas[i].ObjectDefinitionIndex, out string x360ObjectTag))
-                                {
-                                    int aresObjectIndex = aresMapping.FirstOrDefault(x => string.Equals(x.Value, x360ObjectTag)).Key;
 
-                                    string aresObjectTag = aresMapping.GetValueOrDefault(aresObjectIndex);
-
-                                    if (!string.Equals(x360ObjectTag, aresObjectTag))
-                                    {
-                                        ErrorLog.Add($"WARNING: Object Mismatch {x360ObjectTag} != {aresObjectTag}");
-                                    }
-
-                                    blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex = aresObjectIndex;
-                                }
-                            }
-                            else
-                            {
-                                blf?.MapVariant?.MapVariant?.Quotas[i].ObjectDefinitionIndex = 0;
-                            }
-
-                            blf?.MapVariant?.MapVariant?.Quotas[i].PlacedOnMap = 0;
-                            blf?.MapVariant?.MapVariant?.Quotas[i].MaximumCount = 0;
-                            blf?.MapVariant?.MapVariant?.Quotas[i].MaxAllowed = 0;
-                            blf?.MapVariant?.MapVariant?.Quotas[i].Cost = 0.0f;
-                        }
-                    }
-
-                    blf?.MapVariant?.MapVariant?.VariantVersion = 12;
                     blf?.StartOfFile?.FileType = string.Empty;
 
                     blf?.Version = CacheVersion.Halo3Retail;
