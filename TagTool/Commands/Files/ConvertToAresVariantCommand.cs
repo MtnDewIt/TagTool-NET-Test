@@ -181,6 +181,7 @@ namespace TagTool.Commands.Files
                         List<VariantObjectQuota> quotaList = [.. blf.MapVariant.MapVariant.Quotas];
 
                         List<int> badBudgetIndices = [];
+                        List<int> badBoundaryIndices = [];
 
                         for (int i = blf.MapVariant.MapVariant.PlaceableQuotaCount - 1; i >= 0; i--)
                         {
@@ -213,8 +214,14 @@ namespace TagTool.Commands.Files
                             }
                         }
 
-                        for (int i = 0; i < blf.MapVariant.MapVariant.PlaceableQuotaCount; i++)
+                        for (int i = 0; i < quotaList.Count; i++) 
                         {
+                            if (quotaList[i].TagBlockIndex == VariantObjectQuota.MapVariantQuotaPalette.Goal ||
+                                quotaList[i].TagBlockIndex == VariantObjectQuota.MapVariantQuotaPalette.Teleporter)
+                            {
+                                badBoundaryIndices.Add(i);
+                            }
+
                             quotaList[i].PlacedOnMap = 0;
                             quotaList[i].MaximumCount = 0;
                             quotaList[i].MaxAllowed = 0;
@@ -247,6 +254,14 @@ namespace TagTool.Commands.Files
                                 {
                                     objectList[i].QuotaIndex -= 1;
                                 }
+                            }
+                        }
+
+                        for (int i = 0; i < objectList.Count; i++) 
+                        {
+                            if (badBoundaryIndices.Contains(objectList[i].QuotaIndex)) 
+                            {
+                                objectList[i].Properties.Boundary.NegativeHeight = 1.0f;
                             }
                         }
 
